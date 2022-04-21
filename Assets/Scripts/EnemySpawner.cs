@@ -39,5 +39,5 @@ public class EnemySpawner : MonoBehaviour
  * 현재는 별도의 조건없이 무한으로 적을 생성하기 때문에 추후에 한 웨이브당 n마리 생성 하는 식으로 수정해야 할 듯.
  * 
  * Update : 2022/04/21 THU 09:26
- * 코루틴 메서드 SpawnEnemy()를 호출할 때 생성할 적의 수를 매개변수로 받도록하여 createEnemyCount 만큼의 몬스터를 소환하도록 변경
+ * 코루틴 메서드 SpawnEnemy()를 호출할 때 생성할 적의 수를 매개변수로 받도록하여 일정수 만큼의 몬스터를 소환하도록 변경
  */
