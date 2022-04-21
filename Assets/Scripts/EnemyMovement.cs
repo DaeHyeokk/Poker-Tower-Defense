@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Movement2D : MonoBehaviour
+public class EnemyMovement : MonoBehaviour
 {
     [SerializeField]
     private float moveSpeed = 0.0f;
@@ -16,14 +16,14 @@ public class Movement2D : MonoBehaviour
         transform.position += moveDirection * moveSpeed * Time.deltaTime;
     }
 
-    public void moveTo(Vector3 direction)
+    public void MoveTo(Vector3 direction)
     {
         moveDirection = direction;
     }
 }
 
 /*
- * File : Movement2D.cs
+ * File : EnemyMovement.cs
  * First Update : 2022/04/20 WED 14:57
- * 움직일 수 있는 오브젝트에 부착하여 오브젝트의 이동을 수행한다.  
+ * Enemy 오브젝트에 부착하여 오브젝트의 이동을 수행한다.  
  */
