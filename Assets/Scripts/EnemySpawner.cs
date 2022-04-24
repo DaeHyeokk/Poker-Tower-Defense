@@ -13,6 +13,7 @@ public class EnemySpawner : MonoBehaviour
 
     private List<Enemy> enemies = new List<Enemy>();
     private bool isSpawn = false;
+
     private void Update()
     {
         // 게임오버 상태일때는 적을 생성하지 않음
@@ -38,7 +39,7 @@ public class EnemySpawner : MonoBehaviour
         isSpawn = true;
 
         yield return new WaitForSeconds(3f);    // 3초 후 Enemy 생성
-
+        
         int spawnEnemy = 0;
         int round = GameManager.instance.GetRound();
         while(spawnEnemy++ < 40)
@@ -46,9 +47,8 @@ public class EnemySpawner : MonoBehaviour
             Enemy enemy = ObjectPool.instance.GetEnemyObject();   // 생성한 오브젝트에서 Enemy 컴포넌트를 가져옴
             enemy.Setup(wayPoints, enemyDatas[round - 1]);  // Enemy Setup() 메서드의 매개변수로 웨이포인트 정보와 enemyData 정보를 전달
             enemies.Add(enemy);                             // enemies 리스트에 추가함 -> 필드 위에 남아있는 Enemy의 개수를 알기 위함
-            enemy.OnMissing += () => enemies.Remove(enemy); // Enemy를 잡지 못하고 놓칠 경우 리스트에서 삭제
-            enemy.OnDeath += () => enemies.Remove(enemy);   // Enemy를 잡을 경우 리스트에서 삭제
-
+            enemy.actionOnMissing += () => enemies.Remove(enemy); // Enemy를 잡지 못하고 놓칠 경우 리스트에서 삭제
+            enemy.actionOnDeath += () => enemies.Remove(enemy);   // Enemy를 잡을 경우 리스트에서 삭제
             yield return new WaitForSeconds(spawnTime);     // spawnTime 시간 동안 대기
         }
 

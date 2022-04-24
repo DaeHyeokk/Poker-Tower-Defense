@@ -18,27 +18,25 @@ public class ObjectPool : MonoBehaviour
             return m_instance;
         }
     }
-
+ 
     [SerializeField]
     private GameObject enemyPrefab;     // 오브젝트풀에서 관리할 enemy 프리팹
-    [SerializeField]
-    private GameObject towerPrefab;     // 오브젝트풀에서 관리할 tower 프리팹
+    //[SerializeField]
+    //private GameObject towerPrefab;     // 오브젝트풀에서 관리할 tower 프리팹
 
-    private Stack<Enemy> enemyStack = new Stack<Enemy>();
-    // private Stack<Tower> towerQueue = new Stack<Tower>();    // 아직 타워오브젝트는 구현안함
+    private Stack<Enemy> enemyStack = new Stack<Enemy>(40);
+    // private Stack<Tower> towerStack = new Stack<Tower>();    // 아직 타워오브젝트는 구현안함
 
     private void Awake()
     {
-        // 씬에 싱글톤 오브젝트가 된 다른 GameManager 오브젝트가 있다면
         if (instance != this)
         {
             Destroy(gameObject);    // 자신을 파괴
             return;
         }
-
         Initialize();
     }
-
+    
     private void Initialize()
     {
         int newEnemyCount = 40;
@@ -56,25 +54,25 @@ public class ObjectPool : MonoBehaviour
 
         return newEnemy;
     }
-
     public Enemy GetEnemyObject()
     {
+        Enemy retEnemy;
         // enemyStack 스택에 생성된 Enemy가 남아있는 경우 새로 생성하지 않고 스택에서 빼냄
         if(instance.enemyStack.Count > 0)
         {
-            Enemy retEnemy = instance.enemyStack.Pop();
+            retEnemy = instance.enemyStack.Pop();
             retEnemy.transform.SetParent(null);
             retEnemy.gameObject.SetActive(true);
-            return retEnemy;
         }
         // enemyStack 스택이 비어있는 경우
         else
         {
-            Enemy retEnemy = instance.CreateNewEnemyObject();
+            retEnemy = instance.CreateNewEnemyObject();
             retEnemy.transform.SetParent(null);
             retEnemy.gameObject.SetActive(true);
-            return retEnemy;
         }
+
+        return retEnemy;
     }
 
     public void ReturnObject(Enemy enemy)
@@ -83,6 +81,7 @@ public class ObjectPool : MonoBehaviour
         enemy.transform.SetParent(instance.transform);
         instance.enemyStack.Push(enemy);
     }
+
 }
 
 /*

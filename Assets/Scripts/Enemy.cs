@@ -6,20 +6,22 @@ using System;
 public class Enemy : MonoBehaviour
 {
     private Transform[] wayPoints;  // 이동경로 좌표 배열
-
     private int wayPointCount;     // 이동경로 개수
     private int currentIndex;   // 현재 목표지점 인덱스
+
     private float maxHealth;  // Enemy의 최대 체력
     private float health;     // Enemy의 현재 체력
+
     private EnemyMovement movement2D;  // 오브젝트 이동 제어
 
-    public event Action OnDeath;
-    public event Action OnMissing;
+    public event Action actionOnDeath;
+    public event Action actionOnMissing;
 
     private void Awake()
     {
         movement2D = GetComponent<EnemyMovement>();
     }
+
     public void Setup(Transform[] _wayPoints, EnemyData enemyData)
     {
         if(wayPoints == null)
@@ -74,8 +76,8 @@ public class Enemy : MonoBehaviour
         else
         {
             StopCoroutine("OnMove");
-            if (OnMissing != null)
-                OnMissing();
+            if (actionOnMissing != null)
+                actionOnMissing();
 
             ObjectPool.instance.ReturnObject(this);
         }

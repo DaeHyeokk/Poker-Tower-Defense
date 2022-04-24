@@ -43,5 +43,5 @@ public class GameManager : MonoBehaviour
  * File : GameManager.cs
  * First Update : 2022/04/22 FRI 02:30
  * PokerTower Defense 게임의 전체적인 정보를 관리할 GameManager 스크립트
- * 진행중인 게임의 라운드와 Gameover 상태를 갖고 있음.
+ * 진행중인 게임의 라운드와 Gameover 상태를 갖고 있음
  */
