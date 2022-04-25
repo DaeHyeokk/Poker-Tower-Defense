@@ -1,13 +1,71 @@
-
+# =============== #
+ 
+# Unity generated #
+ 
+# =============== #
+ 
 Temp/
-Library/PackageCache/com.unity.burst@1.6.4/.Runtime/hostlin/lld
-Library/PackageCache/com.unity.burst@1.6.4/.Runtime/hostmac/lld
-Temp/FSTimeGet-3bec4b8058084d04d94d6dfc6700a0e6
-Temp/FSTimeGet-f63e9ff6f64c7aa40a8b12cab7ed08b8
-Temp/UnityLockfile
-Temp/FSTimeGet-aaa44fd3c19eae44798cb805d1e2d49f
-Temp/FSTimeGet-c4998b358aa38ec4fb86602d1c14dcd5
-Temp/FSTimeGet-666a5d976259a7f4abcdd5d66949115a
-Temp/FSTimeGet-9e641ec02854ae84d925f6999c428f74
-Temp/FSTimeGet-11c004a8b7f2aaf47a0c61154a38b6cf
-Temp/FSTimeGet-69ead0fbd04020d47ab1f7e6f9c35265
+ 
+Obj/
+ 
+UnityGenerated/
+ 
+Library/
+ 
+ 
+ 
+# ===================================== #
+ 
+# Visual Studio / MonoDevelop generated #
+ 
+# ===================================== #
+ 
+ExportedObj/
+ 
+*.svd
+ 
+*.userprefs
+ 
+*.csproj
+ 
+*.pidb
+ 
+*.suo
+ 
+*.sln
+ 
+*.user
+ 
+*.unityproj
+ 
+*.booproj
+ 
+ 
+ 
+# ============ #
+ 
+# OS generated #
+ 
+# ============ #
+ 
+.DS_Store
+ 
+.DS_Store?
+ 
+._*
+ 
+.Spotlight-V100
+ 
+.Trashes
+ 
+Icon?
+ 
+ehthumbs.db
+ 
+Thumbs.db
+ 
+GraphicsSettings.asset
+ 
+ProjectSettings.asset
+ 
+ProjectVersion.txt
