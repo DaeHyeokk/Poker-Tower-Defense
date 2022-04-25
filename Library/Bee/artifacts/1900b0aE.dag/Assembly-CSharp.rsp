@@ -399,13 +399,17 @@
 "Assets/Photon/PhotonLibs/WebSocket/SocketWebTcp.cs"
 "Assets/Photon/PhotonLibs/WebSocket/WebSocket.cs"
 "Assets/Photon/PhotonRealtime/Demos/DemoLoadBalancing/ConnectAndJoinRandomLb.cs"
-"Assets/Scripts/Enemy.cs"
-"Assets/Scripts/EnemyData.cs"
-"Assets/Scripts/EnemyMovement.cs"
-"Assets/Scripts/EnemySpawner.cs"
+"Assets/Scripts/Enemy/Enemy.cs"
+"Assets/Scripts/Enemy/EnemyData.cs"
+"Assets/Scripts/Enemy/EnemyMovement.cs"
+"Assets/Scripts/Enemy/EnemySpawner.cs"
 "Assets/Scripts/GameManager.cs"
+"Assets/Scripts/ObjectDetector.cs"
 "Assets/Scripts/ObjectPool.cs"
-"Assets/Scripts/TowerSpawner.cs"
+"Assets/Scripts/Tile.cs"
+"Assets/Scripts/Tower/TowerData.cs"
+"Assets/Scripts/Tower/TowerWeapon.cs"
+"Assets/Scripts/TowerBuilder.cs"
 -langversion:9.0
 
 /deterministic
