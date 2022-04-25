@@ -12,29 +12,29 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5850fbb6d57a9294dabcef9160da1c71, type: 3}
   m_Name: FourCardTower
   m_EditorClassIdentifier: 
-  towerPrefab: {fileID: 8064724718479844658, guid: 89ed091b71654d94486111af11d761ad, type: 3}
+  towerPrefab: {fileID: 3487499066583778357, guid: 89ed091b71654d94486111af11d761ad, type: 3}
   weapons:
-  - attackDamage: 0
-    attackRate: 0
-    attackRange: 0
+  - damage: 0
+    rate: 0
+    range: 0
     upgradeDIP: 0
     upgradeSIP: 0
     upgradeRIP: 0
-  - attackDamage: 0
-    attackRate: 0
-    attackRange: 0
+  - damage: 0
+    rate: 0
+    range: 0
     upgradeDIP: 0
     upgradeSIP: 0
     upgradeRIP: 0
-  - attackDamage: 0
-    attackRate: 0
-    attackRange: 0
+  - damage: 0
+    rate: 0
+    range: 0
     upgradeDIP: 0
     upgradeSIP: 0
     upgradeRIP: 0
-  - attackDamage: 0
-    attackRate: 0
-    attackRange: 0
+  - damage: 0
+    rate: 0
+    range: 0
     upgradeDIP: 0
     upgradeSIP: 0
     upgradeRIP: 0

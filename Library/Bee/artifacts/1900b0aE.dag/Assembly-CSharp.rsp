@@ -408,7 +408,17 @@
 "Assets/Scripts/ObjectPool.cs"
 "Assets/Scripts/Tile.cs"
 "Assets/Scripts/Tower/TowerData.cs"
-"Assets/Scripts/Tower/TowerWeapon.cs"
+"Assets/Scripts/Tower/TowerType.cs"
+"Assets/Scripts/Tower/TowerWeapons/FlushTower.cs"
+"Assets/Scripts/Tower/TowerWeapons/FourCardTower.cs"
+"Assets/Scripts/Tower/TowerWeapons/FullHouseTower.cs"
+"Assets/Scripts/Tower/TowerWeapons/MountainTower.cs"
+"Assets/Scripts/Tower/TowerWeapons/OnePairTower.cs"
+"Assets/Scripts/Tower/TowerWeapons/StraightFlushTower.cs"
+"Assets/Scripts/Tower/TowerWeapons/StraightTower.cs"
+"Assets/Scripts/Tower/TowerWeapons/TopTower.cs"
+"Assets/Scripts/Tower/TowerWeapons/TripleTower.cs"
+"Assets/Scripts/Tower/TowerWeapons/TwoPairTower.cs"
 "Assets/Scripts/TowerBuilder.cs"
 -langversion:9.0
 
