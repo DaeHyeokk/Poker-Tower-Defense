@@ -41,7 +41,7 @@ public class EnemySpawner : MonoBehaviour
         yield return new WaitForSeconds(3f);    // 3초 후 Enemy 생성
         
         int spawnEnemy = 0;
-        int round = GameManager.instance.GetRound();
+        int round = GameManager.instance.round;
         while(spawnEnemy++ < 40)
         {
             Enemy enemy = ObjectPool.instance.GetEnemyObject();   // 생성한 오브젝트에서 Enemy 컴포넌트를 가져옴

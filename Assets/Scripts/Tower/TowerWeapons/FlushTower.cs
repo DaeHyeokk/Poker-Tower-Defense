@@ -2,9 +2,10 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class FlushTower : TowerType
+public class FlushTower : TowerWeapon
 {
-    public override void OnSkill()
+    public override string towerName => "Flush Tower";
+    public override void OnSkill() 
     {
         return;
     }

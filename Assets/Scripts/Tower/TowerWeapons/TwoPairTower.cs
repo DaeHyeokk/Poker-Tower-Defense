@@ -2,8 +2,10 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class TwoPairTower : TowerType
+public class TwoPairTower : TowerWeapon
 {
+    public override string towerName => "TwoPair Tower";
+
     public override void OnSkill()
     {
         return;

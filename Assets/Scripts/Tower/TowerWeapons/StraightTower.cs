@@ -2,8 +2,9 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class StraightTower : TowerType
+public class StraightTower : TowerWeapon
 {
+    public override string towerName => "Straight Tower";
     public override void OnSkill()
     {
         return;

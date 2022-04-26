@@ -2,8 +2,10 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class FullHouseTower : TowerType
+public class FullHouseTower : TowerWeapon
 {
+    public override string towerName => "FullHouse Tower";
+
     public override void OnSkill()
     {
         return;

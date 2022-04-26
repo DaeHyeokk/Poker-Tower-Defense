@@ -40,7 +40,7 @@ public class ObjectDetector : MonoBehaviour
                 }
                 else if(hit.transform.CompareTag("Tower"))
                 {
-                    hit.transform.GetComponent<TowerType>().GradeUp();
+                    hit.transform.GetComponent<TowerWeapon>().GradeUp();
                 }
             }
         }

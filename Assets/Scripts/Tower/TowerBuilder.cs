@@ -17,7 +17,7 @@ public class TowerBuilder : MonoBehaviour
             // 타워가 지어져있지 않다면 해당 타일에 타워를 건설하고, isBuildTower 값을 true로 설정
             TowerData towerData = towerDatas[Random.Range(0, 10)];
             GameObject clone = Instantiate(towerData.towerPrefab, tileTransform.position + Vector3.back, Quaternion.identity);
-            clone.GetComponent<TowerType>().Setup(towerData);
+            clone.GetComponent<TowerWeapon>().Setup(towerData);
 
             tile.isBuildTower = true;
         }

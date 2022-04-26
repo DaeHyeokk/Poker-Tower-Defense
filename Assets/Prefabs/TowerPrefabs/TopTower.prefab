@@ -108,7 +108,7 @@ Transform:
   m_GameObject: {fileID: 2590802678061337091}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 0.8, y: 0.8, z: 0.8}
+  m_LocalScale: {x: 0.8, y: 0.75, z: 0.8}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 4031671922826577905}
@@ -141,7 +141,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 87c31ed4e6dca2b42a97c3db8396e431, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  gradeLayout: {fileID: 84965535304335147}
+  _gradeLayout: {fileID: 84965535304335147}
 --- !u!1 &3614435356718847349
 GameObject:
   m_ObjectHideFlags: 0

@@ -4,27 +4,27 @@ using UnityEngine;
 
 public class ObjectPool : MonoBehaviour
 {
-    private static ObjectPool m_instance;
+    private static ObjectPool _instance;
     public static ObjectPool instance
     {
         get
         {
-            if(m_instance == null)
+            if(_instance == null)
             {
                 // 씬에서 ObjectPool 오브젝트를 찾아 할당
-                m_instance = FindObjectOfType<ObjectPool>();
+                _instance = FindObjectOfType<ObjectPool>();
             }
 
-            return m_instance;
+            return _instance;
         }
     }
  
     [SerializeField]
-    private GameObject enemyPrefab;     // 오브젝트풀에서 관리할 enemy 프리팹
+    private GameObject _enemyPrefab;     // 오브젝트풀에서 관리할 enemy 프리팹
     //[SerializeField]
-    //private GameObject towerPrefab;     // 오브젝트풀에서 관리할 tower 프리팹
+    //private GameObject _towerPrefab;     // 오브젝트풀에서 관리할 tower 프리팹
 
-    private Stack<Enemy> enemyStack = new Stack<Enemy>(40);
+    private Stack<Enemy> _enemyStack;
     // private Stack<Tower> towerStack = new Stack<Tower>();    // 아직 타워오브젝트는 구현안함
 
     private void Awake()
@@ -34,6 +34,9 @@ public class ObjectPool : MonoBehaviour
             Destroy(gameObject);    // 자신을 파괴
             return;
         }
+
+        _enemyStack = new Stack<Enemy>(40);
+
         Initialize();
     }
     
@@ -41,14 +44,12 @@ public class ObjectPool : MonoBehaviour
     {
         int newEnemyCount = 40;
         for (int i = 0; i < newEnemyCount; i++)
-        {
-            enemyStack.Push(CreateNewEnemyObject());
-        }
+            _enemyStack.Push(CreateNewEnemyObject());
     }
 
     private Enemy CreateNewEnemyObject()
     {
-        Enemy newEnemy = Instantiate(enemyPrefab).GetComponent<Enemy>();
+        Enemy newEnemy = Instantiate(_enemyPrefab).GetComponent<Enemy>();
         newEnemy.gameObject.SetActive(false);
         newEnemy.transform.SetParent(this.transform);
 
@@ -58,9 +59,9 @@ public class ObjectPool : MonoBehaviour
     {
         Enemy retEnemy;
         // enemyStack 스택에 생성된 Enemy가 남아있는 경우 새로 생성하지 않고 스택에서 빼냄
-        if(instance.enemyStack.Count > 0)
+        if(instance._enemyStack.Count > 0)
         {
-            retEnemy = instance.enemyStack.Pop();
+            retEnemy = instance._enemyStack.Pop();
             retEnemy.transform.SetParent(null);
             retEnemy.gameObject.SetActive(true);
         }
@@ -79,7 +80,7 @@ public class ObjectPool : MonoBehaviour
     {
         enemy.gameObject.SetActive(false);
         enemy.transform.SetParent(instance.transform);
-        instance.enemyStack.Push(enemy);
+        instance._enemyStack.Push(enemy);
     }
 
 }

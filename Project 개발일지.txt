@@ -1,3 +1,8 @@
+Start : 2022/04/20 WED
+< Project Goal >
+1. C# naming rule에 맞춰 스크립트를 작성하여 누구나 보기 쉬운 코드를 작성할 것!
+  참고 링크: https://docs.microsoft.com/ko-kr/dotnet/csharp/fundamentals/coding-style/coding-conventions
+
 Date : 2022/04/20 WED
 < List >
 ☑ Stage Tilemap 필드 구현

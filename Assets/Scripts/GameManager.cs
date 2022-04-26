@@ -4,38 +4,39 @@ using UnityEngine;
 
 public class GameManager : MonoBehaviour
 {
-    private static GameManager m_instance;
+    private static GameManager _instance;
     public static GameManager instance
     {
         get
         {
-            if (m_instance == null)
+            if (_instance == null)
             {
-                m_instance = FindObjectOfType<GameManager>();
-                return m_instance;
+                _instance = FindObjectOfType<GameManager>();
+                return _instance;
             }
-            else
-                return m_instance;
+
+            return _instance;
         }
     }
 
-    private int round = 0;
-    public bool isGameover { get; private set; }
+    private int _round;
+    private bool _isGameover;
+
+    public int round => _round;
+    public bool isGameover => _isGameover;
+
     private void Awake()
     {
         if (instance != this)
             Destroy(gameObject);
 
-        isGameover = false;
+        _round = 0;
+        _isGameover = false;
     }
 
     public void IncreaseRound()
     {
-        round++;
-    }
-    public int GetRound()
-    {
-        return round;
+        _round++;
     }
 }
 

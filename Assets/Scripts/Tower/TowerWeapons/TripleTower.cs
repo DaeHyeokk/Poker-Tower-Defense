@@ -2,8 +2,9 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class TripleTower : TowerType
+public class TripleTower : TowerWeapon
 {
+    public override string towerName => "Triple Tower";
     public override void OnSkill()
     {
         return;
