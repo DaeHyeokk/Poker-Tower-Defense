@@ -272,6 +272,7 @@ GameObject:
   - component: {fileID: 171619834891711431}
   - component: {fileID: 7061808518725037725}
   - component: {fileID: 5312622565252339560}
+  - component: {fileID: 7481618646137499907}
   m_Layer: 0
   m_Name: MountainTower
   m_TagString: Tower
@@ -322,6 +323,18 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _gradeLayout: {fileID: 2076416105982516019}
+--- !u!114 &7481618646137499907
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6275002075091230110}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cb41a05f75581b94d989fa43a0e0b90c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &7534149173650642848
 GameObject:
   m_ObjectHideFlags: 0

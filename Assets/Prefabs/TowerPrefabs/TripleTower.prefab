@@ -353,6 +353,7 @@ GameObject:
   - component: {fileID: 7272563177558365261}
   - component: {fileID: 4725802069430814502}
   - component: {fileID: 1582076085026113182}
+  - component: {fileID: 3422489049600168453}
   m_Layer: 0
   m_Name: TripleTower
   m_TagString: Tower
@@ -403,6 +404,18 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _gradeLayout: {fileID: 2416902294715369071}
+--- !u!114 &3422489049600168453
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6541470257951302052}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cb41a05f75581b94d989fa43a0e0b90c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &7183640489968107135
 GameObject:
   m_ObjectHideFlags: 0

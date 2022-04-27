@@ -87,6 +87,7 @@ GameObject:
   - component: {fileID: 8862399728429523979}
   - component: {fileID: 7123192724157999730}
   - component: {fileID: 4679970570353247065}
+  - component: {fileID: 3073912111644102047}
   m_Layer: 0
   m_Name: TwoPairTower
   m_TagString: Tower
@@ -137,6 +138,18 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _gradeLayout: {fileID: 2064239523211251146}
+--- !u!114 &3073912111644102047
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1192475048590821316}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cb41a05f75581b94d989fa43a0e0b90c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1489826998966267261
 GameObject:
   m_ObjectHideFlags: 0

@@ -36,9 +36,9 @@ public abstract class TowerWeapon : MonoBehaviour
 
         _colorDatas = new Color[3];
 
-        _colorDatas[0] = new Color(200, 0, 0);
-        _colorDatas[1] = new Color(0, 200, 0);
-        _colorDatas[2] = new Color(0, 0, 200);
+        _colorDatas[0] = new Color(180, 0, 0);
+         _colorDatas[1] = new Color(0, 180, 0);
+        _colorDatas[2] = new Color(0, 20, 200);
     }
 
     // Tower의 능력치, 등급, 색상타입 세팅
@@ -91,3 +91,12 @@ public abstract class TowerWeapon : MonoBehaviour
     // 자식클래스에서 OnSkill() 메서드를 직접 구현하도록 강제하기 위해 Abstract Method로 선언
     public abstract void OnSkill();
 }
+
+/*
+ * File : TowerWeapon.cs
+ * First Update : 2022/04/25 MON 10:52
+ * 타워의 공격을 담당하는 스크립트.
+ * 타워의 종류, 공격력, 공격속도 등 공격에 관련된 데이터를 가지고 있으며,
+ * 타워 종류마다 각각 다른 스킬을 구현해야 하기 때문에 추상 클래스로 선언하였다.
+ * TowerWeapon 클래스를 상속받는 9개의 서브클래스가 있으며 서브클래스에서 OnSkill() 메서드를 구현한다.
+ */

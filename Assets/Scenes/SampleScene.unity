@@ -619,7 +619,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
-  m_RaycastTarget: 1
+  m_RaycastTarget: 0
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
   m_OnCullStateChanged:
@@ -1030,9 +1030,9 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 'Touch &
+  m_text: 'TILE
 
-    Drop'
+    TOUCH!'
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2100000, guid: e73a58f6e2794ae7b1b7e50b7fb811b0, type: 2}
@@ -1364,7 +1364,7 @@ MonoBehaviour:
       m_Calls: []
   m_text: 'CARD
 
-    PICK'
+    DRAW'
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2100000, guid: e73a58f6e2794ae7b1b7e50b7fb811b0, type: 2}
@@ -2539,7 +2539,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 972dbcae73265774e98baf8e2c2f6083, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  towerDatas:
+  _towerDatas:
   - {fileID: 11400000, guid: ffc524092775e2b4bbc068e4fd43d00d, type: 2}
   - {fileID: 11400000, guid: b17996bf10cdfe844b58c994d3b10a5f, type: 2}
   - {fileID: 11400000, guid: e86ca606695028f42b156b3256da050b, type: 2}
@@ -2550,6 +2550,7 @@ MonoBehaviour:
   - {fileID: 11400000, guid: a9ff068d391f08f488282f3162c151eb, type: 2}
   - {fileID: 11400000, guid: e5ec31a285118ec49bac7352257527be, type: 2}
   - {fileID: 11400000, guid: bed6df07150260d4a866ce289feb5d55, type: 2}
+  _cardDrawer: {fileID: 1706234931}
 --- !u!4 &275253621
 Transform:
   m_ObjectHideFlags: 0
@@ -2920,7 +2921,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &337174934
 RectTransform:
   m_ObjectHideFlags: 0
@@ -2985,7 +2986,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 337174936}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 1706234931}
+        m_TargetAssemblyTypeName: CardPicker, Assembly-CSharp
+        m_MethodName: ChangeCard
+        m_Mode: 3
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 3
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &337174936
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3192,7 +3205,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &364516137
 RectTransform:
   m_ObjectHideFlags: 0
@@ -3257,7 +3270,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 364516139}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 1706234931}
+        m_TargetAssemblyTypeName: CardPicker, Assembly-CSharp
+        m_MethodName: ChangeCard
+        m_Mode: 3
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 2
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &364516139
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -6355,6 +6380,131 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 7822894339843223569, guid: 0ad0551fbe3926141bd2bf5040a8b65b, type: 3}
   m_PrefabInstance: {fileID: 732376474}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &740340694
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 740340696}
+  - component: {fileID: 740340695}
+  m_Layer: 0
+  m_Name: UIManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &740340695
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 740340694}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 15851941b0a7c914586e30f48c3289a6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _cardImages:
+  - {fileID: 393011423}
+  - {fileID: 1976685168}
+  - {fileID: 219474168}
+  - {fileID: 195636709}
+  - {fileID: 1195680636}
+  _towerPreviewImage: {fileID: 81843808}
+  _changeButtons:
+  - {fileID: 1777986090}
+  - {fileID: 2140906326}
+  - {fileID: 364516138}
+  - {fileID: 337174935}
+  - {fileID: 1378220721}
+  _handText: {fileID: 1663749731}
+  _drawButton: {fileID: 1456755652}
+  _getButton: {fileID: 1310328153}
+  _cardBackSprite: {fileID: 21300000, guid: c0406ad709298384db4d06046e4f9ff0, type: 3}
+  _cardSprites:
+  - {fileID: 21300000, guid: f681a1dd6a394d34ebc4e9e7c0dcb168, type: 3}
+  - {fileID: 21300000, guid: d4b01c1f3a961874990e9d5514746958, type: 3}
+  - {fileID: 21300000, guid: c58d36213d01e5b4f95b751bf8e05626, type: 3}
+  - {fileID: 21300000, guid: e0c9aea0d2dc71643a1702f8d9216192, type: 3}
+  - {fileID: 21300000, guid: 1ab1c15e05636b34ab5ade48d103fae0, type: 3}
+  - {fileID: 21300000, guid: f861d33cc9eb8294faafe5e088ae3d28, type: 3}
+  - {fileID: 21300000, guid: 0ca3b94815b33ce468dd71adb41ef463, type: 3}
+  - {fileID: 21300000, guid: 09c015a352979bd4586720caa0a233ab, type: 3}
+  - {fileID: 21300000, guid: 87cfe2a29088b8d4eac74c2be74118a1, type: 3}
+  - {fileID: 21300000, guid: 62b06614c4fe1e142a86d0000fe7785f, type: 3}
+  - {fileID: 21300000, guid: eb3cf4a2e1aa84a4cb09741dd17aedfd, type: 3}
+  - {fileID: 21300000, guid: 6b80f948b6d6a0f45950a2160e71a18d, type: 3}
+  - {fileID: 21300000, guid: 59d311270ef917744b6d3ba79251e750, type: 3}
+  - {fileID: 21300000, guid: 76653c2c04d898841878e5a0deb95324, type: 3}
+  - {fileID: 21300000, guid: 82d9c354f7db60f4ea5e3394e6503f67, type: 3}
+  - {fileID: 21300000, guid: ec5348dbf2143ae43a256214c6dd420c, type: 3}
+  - {fileID: 21300000, guid: 799b912ccdb7500408155a3a2574f9d5, type: 3}
+  - {fileID: 21300000, guid: c7f788de95f0c7c48b3b6d3b8a078d04, type: 3}
+  - {fileID: 21300000, guid: 43aa464947ed7494e908f42c2abe906c, type: 3}
+  - {fileID: 21300000, guid: c7ab196c66d5b0b49bc986915af0e350, type: 3}
+  - {fileID: 21300000, guid: ed188db936efea4408e122ed96cc2584, type: 3}
+  - {fileID: 21300000, guid: 6a38e9722d544b24abefc3d0d604314c, type: 3}
+  - {fileID: 21300000, guid: 193502ef0ef27184d8fb31b553451eb6, type: 3}
+  - {fileID: 21300000, guid: 40bbc501123644346aee5c1f6a9abf3a, type: 3}
+  - {fileID: 21300000, guid: 2f0b6085db505d840bd7ac21e88efc25, type: 3}
+  - {fileID: 21300000, guid: 1894fc39f310e5d47b73bb53403b722c, type: 3}
+  - {fileID: 21300000, guid: c24eb8d46365990408eaf97b71c0e76d, type: 3}
+  - {fileID: 21300000, guid: 90c14ba1e7238b941ba306b4c65ba178, type: 3}
+  - {fileID: 21300000, guid: 9c35d9f52d5f83143a5c4a7b36f4d0d0, type: 3}
+  - {fileID: 21300000, guid: daa4af553dc034e41a3c7155cd331216, type: 3}
+  - {fileID: 21300000, guid: b986c7231d7363f4492642d5cb1d3241, type: 3}
+  - {fileID: 21300000, guid: a3ff556c184bcc34d98320bec0b3f9a9, type: 3}
+  - {fileID: 21300000, guid: fb2fc7c0ac891824abff97c3c2dc3a2d, type: 3}
+  - {fileID: 21300000, guid: 8d72196719bda544a81dd61b6cf29737, type: 3}
+  - {fileID: 21300000, guid: cf5e41de9f098da429f5aefc64f352ab, type: 3}
+  - {fileID: 21300000, guid: 478ab5662f8d04d4d94de328fc590b6c, type: 3}
+  - {fileID: 21300000, guid: 46acbbef2efec874f9d72161cf3da2c9, type: 3}
+  - {fileID: 21300000, guid: 7d0442c1e78ae0946b76f43b095480ce, type: 3}
+  - {fileID: 21300000, guid: 68c07e20d25460a4daf8325cf5a080f8, type: 3}
+  - {fileID: 21300000, guid: 3bc53f8ede4543c47bcb10c0e4b71380, type: 3}
+  - {fileID: 21300000, guid: 9ffa12d9e205ce44e87c2ffcb4bb642a, type: 3}
+  - {fileID: 21300000, guid: df3c62d8234d9a643994d4e23b976497, type: 3}
+  - {fileID: 21300000, guid: 2b9c4fa475e6ab14281e9f145461702f, type: 3}
+  - {fileID: 21300000, guid: 05c3e37975f02f54db4962ccae9263d7, type: 3}
+  - {fileID: 21300000, guid: eefd837853a3ed74a95b76a5900bfbda, type: 3}
+  - {fileID: 21300000, guid: 5861de8ae967db143920a15dda895bfd, type: 3}
+  - {fileID: 21300000, guid: 7ea2aff82914d734bb9eecfab6798bfc, type: 3}
+  - {fileID: 21300000, guid: 3285e1022a2d28f4c813dfa8d433da81, type: 3}
+  - {fileID: 21300000, guid: 0dfebd539acb01b40a0e79e097cdf059, type: 3}
+  - {fileID: 21300000, guid: 2364f7bb817e05244af74e6681adb19a, type: 3}
+  - {fileID: 21300000, guid: 6b04aa754bdf0d7438d3ed501d60bd23, type: 3}
+  - {fileID: 21300000, guid: ca999f92dfbdd8945819a71fa761b276, type: 3}
+  _towerSprites:
+  - {fileID: 21300000, guid: c6336ac36222aa247b4dcd560fcdba6e, type: 3}
+  - {fileID: 21300000, guid: 6f56895c6009bf144949623006a00a95, type: 3}
+  - {fileID: 21300000, guid: 534e6f552870e6644be9525b7014591c, type: 3}
+  - {fileID: 21300000, guid: 21b49d6e495281144b7c75e0850a4b70, type: 3}
+  - {fileID: 21300000, guid: 0fadad6a73abc1f40a863cfadfe39ad2, type: 3}
+  - {fileID: 21300000, guid: 4b61753ec90220a408a7a769bcde9dd6, type: 3}
+  - {fileID: 21300000, guid: 141e0cbc0341d2a41b0040118bf97cfd, type: 3}
+  - {fileID: 21300000, guid: 3689d152d3208a94582d5b5cede472cc, type: 3}
+  - {fileID: 21300000, guid: 2ced1912cb5c4184da275f9cc2b3ba49, type: 3}
+  - {fileID: 21300000, guid: a21ca5d027d05da4c9569ff52bdc4504, type: 3}
+--- !u!4 &740340696
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 740340694}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 11
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!4 &784588606 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 7822894339843223569, guid: 0ad0551fbe3926141bd2bf5040a8b65b, type: 3}
@@ -9781,7 +9931,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
   m_Color: {r: 0.3679245, g: 0.35924706, b: 0.35924706, a: 0.8666667}
-  m_RaycastTarget: 1
+  m_RaycastTarget: 0
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
   m_OnCullStateChanged:
@@ -10479,7 +10629,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &1310328152
 RectTransform:
   m_ObjectHideFlags: 0
@@ -10509,7 +10659,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1310328151}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 4e29b1a8efbd4b44bb3f3716e73f07ff, type: 3}
   m_Name: 
@@ -10560,7 +10710,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
-  m_RaycastTarget: 1
+  m_RaycastTarget: 0
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
   m_OnCullStateChanged:
@@ -10949,7 +11099,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &1378220720
 RectTransform:
   m_ObjectHideFlags: 0
@@ -11014,7 +11164,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1378220722}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 1706234931}
+        m_TargetAssemblyTypeName: CardPicker, Assembly-CSharp
+        m_MethodName: ChangeCard
+        m_Mode: 3
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 4
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &1378220722
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -11748,7 +11910,7 @@ GameObject:
   - component: {fileID: 1456755653}
   - component: {fileID: 1456755652}
   m_Layer: 5
-  m_Name: PickButton
+  m_Name: DrawButton
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -11819,7 +11981,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1456755653}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 1706234931}
+        m_TargetAssemblyTypeName: CardDrawer, Assembly-CSharp
+        m_MethodName: DrawCardAll
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &1456755653
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -12854,12 +13028,12 @@ GameObject:
   - component: {fileID: 1663749732}
   - component: {fileID: 1663749731}
   m_Layer: 5
-  m_Name: ResultText
+  m_Name: HandText
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &1663749730
 RectTransform:
   m_ObjectHideFlags: 0
@@ -12900,7 +13074,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: RESULT
+  m_text: TEXT
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -13193,8 +13367,10 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1706234929}
+  - component: {fileID: 1706234931}
+  - component: {fileID: 1706234930}
   m_Layer: 0
-  m_Name: CardPicker
+  m_Name: CardDrawer
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -13208,13 +13384,37 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1706234928}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -2.8949614, y: -0.4431603, z: -0.032752406}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 9
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1706234930
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1706234928}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4bf42ee87e697804f8a1a4e2a8c88ec8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &1706234931
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1706234928}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5c232db3611b9ce4a80cbb3ab5dd50ba, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &1710177899
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -14343,7 +14543,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &1777986089
 RectTransform:
   m_ObjectHideFlags: 0
@@ -14408,7 +14608,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1777986091}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 1706234931}
+        m_TargetAssemblyTypeName: CardPicker, Assembly-CSharp
+        m_MethodName: ChangeCard
+        m_Mode: 3
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &1777986091
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -17671,7 +17883,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &2140906325
 RectTransform:
   m_ObjectHideFlags: 0
@@ -17736,7 +17948,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 2140906327}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 1706234931}
+        m_TargetAssemblyTypeName: CardPicker, Assembly-CSharp
+        m_MethodName: ChangeCard
+        m_Mode: 3
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 1
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &2140906327
 MonoBehaviour:
   m_ObjectHideFlags: 0

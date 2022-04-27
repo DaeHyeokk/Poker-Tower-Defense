@@ -92,6 +92,7 @@ GameObject:
   - component: {fileID: 4988043925668851102}
   - component: {fileID: 5329891383913292502}
   - component: {fileID: 619676913136234958}
+  - component: {fileID: 3396492390373023807}
   m_Layer: 0
   m_Name: TopTower
   m_TagString: Tower
@@ -142,6 +143,18 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _gradeLayout: {fileID: 84965535304335147}
+--- !u!114 &3396492390373023807
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2590802678061337091}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cb41a05f75581b94d989fa43a0e0b90c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &3614435356718847349
 GameObject:
   m_ObjectHideFlags: 0
