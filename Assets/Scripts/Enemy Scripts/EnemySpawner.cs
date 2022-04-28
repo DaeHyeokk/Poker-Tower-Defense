@@ -5,14 +5,18 @@ using UnityEngine;
 public class EnemySpawner : MonoBehaviour
 {
     [SerializeField]
-    private float spawnTime;            // 적 생성 주기
+    private float _spawnTime;            // 적 생성 주기
     [SerializeField]
-    private Transform[] wayPoints;      // 현재 스테이지의 이동 경로
+    private Transform[] _wayPoints;      // 현재 스테이지의 이동 경로
     [SerializeField]
-    private EnemyData[] enemyDatas;
+    private EnemyData[] _enemyDatas;
 
-    private List<Enemy> enemies = new List<Enemy>();
-    private bool isSpawn = false;
+    private List<Enemy> _enemyList = new List<Enemy>();
+    private bool _isSpawn = false;
+
+    public float spawnTime => _spawnTime;
+    public List<Enemy> enemyList => _enemyList;
+    public bool isSpawn => _isSpawn;
 
     private void Update()
     {
@@ -23,7 +27,7 @@ public class EnemySpawner : MonoBehaviour
         }
 
         // 현재 몬스터를 생성 중이 아니고, 적의 숫자가 0마리라면 다음 웨이브 몬스터를 생성
-        if (!isSpawn && enemies.Count <= 0)
+        if (!_isSpawn && _enemyList.Count <= 0)
             ActiveSpawnEnemy();
 
     }
@@ -36,7 +40,7 @@ public class EnemySpawner : MonoBehaviour
 
     private IEnumerator SpawnEnemy()
     {
-        isSpawn = true;
+        _isSpawn = true;
 
         yield return new WaitForSeconds(3f);    // 3초 후 Enemy 생성
         
@@ -45,14 +49,14 @@ public class EnemySpawner : MonoBehaviour
         while(spawnEnemy++ < 40)
         {
             Enemy enemy = ObjectPool.instance.GetEnemyObject();   // 생성한 오브젝트에서 Enemy 컴포넌트를 가져옴
-            enemy.Setup(wayPoints, enemyDatas[round - 1]);  // Enemy Setup() 메서드의 매개변수로 웨이포인트 정보와 enemyData 정보를 전달
-            enemies.Add(enemy);                             // enemies 리스트에 추가함 -> 필드 위에 남아있는 Enemy의 개수를 알기 위함
-            enemy.actionOnMissing += () => enemies.Remove(enemy); // Enemy를 잡지 못하고 놓칠 경우 리스트에서 삭제
-            enemy.actionOnDeath += () => enemies.Remove(enemy);   // Enemy를 잡을 경우 리스트에서 삭제
-            yield return new WaitForSeconds(spawnTime);     // spawnTime 시간 동안 대기
+            enemy.Setup(_wayPoints, _enemyDatas[round - 1]);  // Enemy Setup() 메서드의 매개변수로 웨이포인트 정보와 enemyData 정보를 전달
+            _enemyList.Add(enemy);                             // _enemyList 리스트에 추가함 -> 필드 위에 남아있는 Enemy의 개수를 알기 위함
+            enemy.actionOnMissing += () => _enemyList.Remove(enemy); // Enemy를 잡지 못하고 놓칠 경우 리스트에서 삭제
+            enemy.actionOnDeath += () => _enemyList.Remove(enemy);   // Enemy를 잡을 경우 리스트에서 삭제
+            yield return new WaitForSeconds(_spawnTime);     // _spawnTime 시간 동안 대기
         }
 
-        isSpawn = false;
+        _isSpawn = false;
     }
 }
 
@@ -61,7 +65,7 @@ public class EnemySpawner : MonoBehaviour
  * File : EnemySpawner.cs
  * First Update : 2022/04/20 WED 15:23
  * Enemy 프리팹을 통해 Enemy 오브젝트를 생성하는 EnemySpawner 오브젝트에 부착할 스크립트.
- * SpawnEnemy 코루틴 함수를 통해 spawnTime 시간을 주기로 Enemy 오브젝트를 생성한다.
+ * SpawnEnemy 코루틴 함수를 통해 _spawnTime 시간을 주기로 Enemy 오브젝트를 생성한다.
  * 현재는 별도의 조건없이 무한으로 적을 생성하기 때문에 추후에 한 웨이브당 n마리 생성 하는 식으로 수정해야 할 듯.
  * 
  * Update : 2022/04/21 THU 13:20
@@ -73,7 +77,7 @@ public class EnemySpawner : MonoBehaviour
  * 몬스터가 모두 없어지는 것을 판별하는 로직은 List에 enemy 오브젝트를 담아서 List의 원소 갯수를 확인하는 방식으로 구현함
  * EnemyData 배열을 통해 라운드마다 그에 대응하는 배열 인덱스로 접근하여 몬스터의 능력치를 다르게 Setup() 함
  * 플레이어의 타워가 강력하여 Enemy가 리젠되고 다음 Enemy가 나오기 전에 잡아버릴 경우 SpawnEnemy() 메서드를 중복 호출할 우려가 있음
- * 따라서 bool 타입 isSpawn 변수를 추가하여 isSpawn 값이 false일 때만 SpawnEnemy() 메서드를 호출하도록 구현하였음 
- * Enemy의 델리게이트 멤버변수 OnMissing과 onDeath를 구독하여 enemies.Remove(enemy) 구문을 수행하도록 함으로써 
+ * 따라서 bool 타입 _isSpawn 변수를 추가하여 _isSpawn 값이 false일 때만 SpawnEnemy() 메서드를 호출하도록 구현하였음 
+ * Enemy의 델리게이트 멤버변수 OnMissing과 onDeath를 구독하여 _enemyList.Remove(enemy) 구문을 수행하도록 함으로써 
  * 적을 죽이거나, 놓쳤을 때 List에서 해당 enemy 원소를 삭제하도록 구현
  */

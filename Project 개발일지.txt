@@ -1,6 +1,6 @@
 Start : 2022/04/20 WED
 < Project Goal >
-1. C# naming rule에 맞춰 스크립트를 작성하여 누구나 보기 쉬운 코드를 작성할 것!
+1. C# naming rule에 맞춰 스크립트를 작성하여 누구나 보기 쉬운 코드를 작성할 것
   참고 링크: https://docs.microsoft.com/ko-kr/dotnet/csharp/fundamentals/coding-style/coding-conventions
 
 Date : 2022/04/20 WED
@@ -36,3 +36,11 @@ Date : 2022/04/28 WED
 ☑ 카드와 관련된 UI들을 제어하기 위한 CardUIController 컴포넌트 구현.
 ☑ 인게임 내 전체 UI의 상태 변경을 담당하는 UIManager 구현.
 ☑ TowerBuilder 컴포넌트에서 CardDrawer에서 뽑은 족보에 맞는 타워를 건설하도록 변경
+
+Date : 2022/04/29 THU
+< List >
+☑ Enemy 이미지 변경 및 체력바 변경.
+☑ 이미지를 변경하면서 오브젝트가 바라보는 방향이 중요해짐. 진행 방향에 따른 방향 전환 구현.
+☑ 우주 배경 이미지 추가. 백그라운드 스크롤링을 통해 천천히 왼쪽으로 움직이도록 구현.
+☑ 타워의 Enemy 탐색 기능 구현.
+☑ 타일맵 디자인 개선.

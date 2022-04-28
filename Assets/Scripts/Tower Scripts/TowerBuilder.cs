@@ -8,6 +8,8 @@ public class TowerBuilder : MonoBehaviour
     private TowerData[] _towerDatas;
     [SerializeField]
     private CardDrawer _cardDrawer;
+    [SerializeField]
+    private EnemySpawner _enemySpawner;
 
     public void BuildTower(Transform tileTransform)
     {
@@ -20,7 +22,7 @@ public class TowerBuilder : MonoBehaviour
             // 타워가 지어져있지 않고 카드를 뽑은 상태라면 해당 타일에 타워를 건설한 다음, isBuildTower 값을 true로 설정한다.
             TowerData towerData = _towerDatas[(int)_cardDrawer.drawHand];
             GameObject clone = Instantiate(towerData.towerPrefab, tileTransform.position + Vector3.back, Quaternion.identity);
-            clone.GetComponent<TowerWeapon>().Setup(towerData);
+            clone.GetComponent<TowerWeapon>().Setup(towerData, _enemySpawner);
 
             tile.isBuildTower = true;
 

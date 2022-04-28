@@ -101,6 +101,37 @@ MonoBehaviour:
   m_BlockingMask:
     serializedVersion: 2
     m_Bits: 4294967295
+--- !u!1 &4114825141802109038
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 7574925169794480386}
+  m_Layer: 0
+  m_Name: SpawnPoint
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &7574925169794480386
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4114825141802109038}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1.25, y: 1.3333334, z: 1.25}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1442155249405847857}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &4456965564169017777
 GameObject:
   m_ObjectHideFlags: 0
@@ -129,7 +160,8 @@ Transform:
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
-  m_Children: []
+  m_Children:
+  - {fileID: 7574925169794480386}
   m_Father: {fileID: 171619834891711431}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -272,7 +304,6 @@ GameObject:
   - component: {fileID: 171619834891711431}
   - component: {fileID: 7061808518725037725}
   - component: {fileID: 5312622565252339560}
-  - component: {fileID: 7481618646137499907}
   m_Layer: 0
   m_Name: MountainTower
   m_TagString: Tower
@@ -322,19 +353,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d5f9c19d77cb0c84b8bdceea6ba4e28b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _projectile: {fileID: 1377828739939112424, guid: e9a691b2030ea6d40ac541ef9bfe8c1c, type: 3}
+  _spawnPoint: {fileID: 7574925169794480386}
   _gradeLayout: {fileID: 2076416105982516019}
---- !u!114 &7481618646137499907
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6275002075091230110}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: cb41a05f75581b94d989fa43a0e0b90c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &7534149173650642848
 GameObject:
   m_ObjectHideFlags: 0

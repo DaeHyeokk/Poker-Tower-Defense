@@ -24,12 +24,13 @@ public class CardUIController : MonoBehaviour
         for (int index = 0; index < _cardDrawer.drawCards.Length; index++)
         {
             UIManager.instance.EnableCard(index, _cardDrawer.drawCards[index]);
+            UIManager.instance.EnableChangeButton(index);
             yield return new WaitForSeconds(0.15f);
         }
 
         SetHandUI();
         UIManager.instance.EnableGetButton();
-        // 플레이어의 화면에 카드를 모두 표시하고난 이후로 플레이어는 타워를 지을 수 있는 상태가 된다.
+        // 플레이어의 화면에 카드를 모두 표시하고난 이후에 플레이어는 타워를 지을 수 있는 상태가 된다.
         _cardDrawer.ReadyBuildTower();
     }
 
@@ -44,41 +45,37 @@ public class CardUIController : MonoBehaviour
         yield return new WaitForSeconds(0.15f);
 
         UIManager.instance.EnableCard(index, _cardDrawer.drawCards[index]);
+        UIManager.instance.EnableChangeButton(index);
         SetHandUI();
     }
+    public void AllDisableCardUI()
+    {
+        for (int index = 0; index < 5; index++)
+        {
+            DisableCardUI(index);
+            DisableChangeButton(index);
+        }
+    }
+
+    public void DisableCardUI(int index) => UIManager.instance.DisableCard(index);
+
+    public void EnableChangeButton(int index) => UIManager.instance.EnableChangeButton(index);
+
+    public void DisableChangeButton(int index) => UIManager.instance.DisableChangeButton(index);
 
     public void SetHandUI()
     {
         UIManager.instance.SetHandText(_cardDrawer.drawHand.ToString());
+        UIManager.instance.EnableHandText();
         UIManager.instance.SetTowerPreviewImage((int)_cardDrawer.drawHand);
         UIManager.instance.EnableTowerPreviewImage();
     }
 
-    public void DisableHandTextUI()
-    {
-        UIManager.instance.DisableHandText();
-    }
+    public void DisableHandTextUI() => UIManager.instance.DisableHandText();
 
-    public void AllDisableCardUI()
-    {
-        for (int index = 0; index < 5; index++)
-            DisableCardUI(index);
-    }
+    public void DisableDrawButtonUI() => UIManager.instance.DisableDrawButton();
 
-    public void DisableCardUI(int index)
-    {
-        UIManager.instance.DisableCard(index);
-    }
-
-    public void DisableDrawButtonUI()
-    {
-        UIManager.instance.DisableDrawButton();
-    }
-
-    public void EnableDrawButtonUI()
-    {
-        UIManager.instance.EnableDrawButton();
-    }
+    public void EnableDrawButtonUI() => UIManager.instance.EnableDrawButton();
 
     public void DisableGetButtonUI()
     {
@@ -86,10 +83,7 @@ public class CardUIController : MonoBehaviour
         UIManager.instance.DisableTowerPreviewImage();
     }
 
-    public void EnableGetButtonUI()
-    {
-        UIManager.instance.EnableGetButton();
-    }
+    public void EnableGetButtonUI() => UIManager.instance.EnableGetButton();
 }
 
 

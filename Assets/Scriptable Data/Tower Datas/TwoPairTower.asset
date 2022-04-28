@@ -15,8 +15,8 @@ MonoBehaviour:
   towerPrefab: {fileID: 1192475048590821316, guid: 1d78682d75cb86141aaff28f98d05d3a, type: 3}
   weapons:
   - damage: 0
-    rate: 0
-    range: 0
+    rate: 0.2
+    range: 2
     upgradeDIP: 0
     upgradeSIP: 0
     upgradeRIP: 0
