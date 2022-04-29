@@ -53,7 +53,7 @@ public class Enemy : MonoBehaviour
         while (true)
         {
             isNextMove = false;
-            nowDistance = Vector3.Distance(transform.position, _wayPoints[_currentIndex].position);
+            nowDistance = Vector3.Distance(_wayPoints[_currentIndex].position, this.transform.position);
             // 현재 enemy의 위치와 목표 지점의 위치 사이의 거리가 0.1보다 가깝다면 다음 목표 지점을 탐색한다
             // 0.1f에 MoveSpeed를 곱해주는 이유는 이동 속도가 빠른 enemy일 경우 한 프레임에 0.1f보다 많이 이동할 수도 있기 때문에
             // if 조건문에 걸리지 않고 목표 경로를 잃은 enemy 오브젝트가 발생할 수 있기 때문이다.
@@ -96,8 +96,6 @@ public class Enemy : MonoBehaviour
             StopCoroutine("OnMove");
             if (actionOnMissing != null)
                 actionOnMissing();
-
-            ObjectPool.instance.ReturnObject(this);
         }
     }
 
@@ -131,7 +129,7 @@ public class Enemy : MonoBehaviour
  * Enemy가 목표 지점에 도달할 경우 처리해야 할 연산이 델리게이트 Action를 통해 이루어지도록 구현
  * 
  * Update : 2022/04/28 THU 16:40
- * Enemy가 회전할 때 짧게라도 렉이 걸리는 경우 다음 경로를 배정받지 못하고 경로를 이탈하는 Enemy가 발생하는 버그를 발견.
+ * Enemy가 회전할 때 짧게라도 렉이 걸리는 경우 다음 경로를 배정받지 못하고 경로를 이탈하는 Enemy가 발생하는 버그가 발견됨.
  * 현재 enemy와 목표물과의 거리를 nowDistance, 한 프레임 전 enemy와 목표물과의 거리를 lastDistance 변수에 저장하고, 그 값을 비교함으로써
  * nowDistance 값이 lastDistance 값보다 클 경우 목표물과 멀어지고 있다고 판단하고 enemy의 position을 목표 waypoint의 position값으로 바꿔
  * 이탈한 경로를 다시 잡아주는 로직을 추가하여 이를 해결하였다.

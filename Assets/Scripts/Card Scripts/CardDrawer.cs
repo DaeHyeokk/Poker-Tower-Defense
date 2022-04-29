@@ -2,10 +2,11 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+public enum PokerHand { Top, OnePair, TwoPair, Triple, Straight, Mountain, Flush, FullHouse, FourKind, StraightFlush }
+
 public class CardDrawer : MonoBehaviour
 {
     private const int MAX_NUMBER = 13, MAX_PATTERN = 4, MAX_CARD = 52;
-    public enum PokerHand { Top, OnePair, TwoPair, Triple, Straight, Mountain, Flush, FullHouse, FourKind, StraightFlush }
 
     private CardUIController _cardUIController;
 

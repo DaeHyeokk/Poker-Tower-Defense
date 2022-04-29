@@ -12,11 +12,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5850fbb6d57a9294dabcef9160da1c71, type: 3}
   m_Name: TopTower
   m_EditorClassIdentifier: 
-  towerPrefab: {fileID: 2590802678061337091, guid: d7898a5e2374d2744a4695eb23088396, type: 3}
+  spawnPoint: {x: 0.35, y: 0, z: 0}
   weapons:
   - damage: 0
     rate: 0.2
-    range: 2
+    range: 4
     upgradeDIP: 0
     upgradeSIP: 0
     upgradeRIP: 0

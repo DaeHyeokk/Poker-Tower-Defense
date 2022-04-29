@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5850fbb6d57a9294dabcef9160da1c71, type: 3}
   m_Name: TwoPairTower
   m_EditorClassIdentifier: 
-  towerPrefab: {fileID: 1192475048590821316, guid: 1d78682d75cb86141aaff28f98d05d3a, type: 3}
+  spawnPoint: {x: 0.25, y: 0, z: 0}
   weapons:
   - damage: 0
     rate: 0.2

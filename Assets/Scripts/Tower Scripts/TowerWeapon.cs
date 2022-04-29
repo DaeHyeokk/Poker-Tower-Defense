@@ -24,6 +24,7 @@ public abstract class TowerWeapon : MonoBehaviour
     private Transform _attackTarget;
     private ColorType _towerColor;
     private WeaponState _weaponState = WeaponState.SearchTarget;
+    private PokerHand _pokerHand;
 
     public float attackDamage => _towerData.weapons[_towerGrade].damage;
     public float attackRate => _towerData.weapons[_towerGrade].rate;
@@ -33,6 +34,7 @@ public abstract class TowerWeapon : MonoBehaviour
     public WeaponState weaponState => _weaponState;
     public Transform attackTarget => _attackTarget;
     public abstract String towerName { get; }
+    public PokerHand pokerHand => _pokerHand;
     // public int killCount { get; private set; }// 미구현 : 유닛당 킬수 카운팅. 게임 종료 시 플레이어 데이터에 누적하는 용도
 
     private void Awake()
@@ -42,7 +44,7 @@ public abstract class TowerWeapon : MonoBehaviour
         _gradeImages = new Image[3];
         _gradeImages = _gradeLayout.GetComponentsInChildren<Image>(true);
         _towerRenderer = GetComponentInChildren<SpriteRenderer>();
-
+       
         _colorDatas = new Color[3];
 
         _colorDatas[0] = new Color(180, 0, 0);
@@ -52,7 +54,7 @@ public abstract class TowerWeapon : MonoBehaviour
 
     // Tower의 능력치, 등급, 색상타입 세팅
     // 처음 생성되는 타워이므로 등급을 0으로 설정
-    public void Setup(TowerData towerData, EnemySpawner enemySpawner)
+    public void Setup(TowerData towerData, EnemySpawner enemySpawner, PokerHand pokerHand)
     {
         _towerData = towerData;
         _towerGrade = 0;
@@ -155,7 +157,8 @@ public abstract class TowerWeapon : MonoBehaviour
 
     private void SpawnProjectile()
     {
-        Instantiate(_projectile, _spawnPoint.position, Quaternion.identity);
+        GameObject clone = Instantiate(_projectile, _spawnPoint.position, Quaternion.identity);
+        clone.GetComponent<Projectile>().Setup(_attackTarget);
     }
     // Tower의 등급을 업그레이드 하는 메서드, Tower의 최대 등급은 3이다
     public void GradeUp()
@@ -188,6 +191,7 @@ public abstract class TowerWeapon : MonoBehaviour
     // OnSkill() 메서드는 Weapon Type마다 다르게 동작해야 하기 때문에
     // 자식클래스에서 OnSkill() 메서드를 직접 구현하도록 강제하기 위해 Abstract Method로 선언
     public abstract void OnSkill();
+
 }
 
 /*
@@ -197,4 +201,8 @@ public abstract class TowerWeapon : MonoBehaviour
  * 타워의 종류, 공격력, 공격속도 등 공격에 관련된 데이터를 가지고 있으며,
  * 타워 종류마다 각각 다른 스킬을 구현해야 하기 때문에 추상 클래스로 선언하였다.
  * TowerWeapon 클래스를 상속받는 9개의 서브클래스가 있으며 서브클래스에서 OnSkill() 메서드를 구현한다.
+ * 
+ * Update : 2022/04/28 THU 23:30
+ * 맵에 있는 Enemy 들의 정보를 가져와 사거리 내에 있는 적을 탐색하는 기능 구현.
+ * 목표물을 향해 공격속도 시간마다 발사체를 발사하는 기능 구현.
  */

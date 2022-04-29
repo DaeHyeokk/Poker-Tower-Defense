@@ -10,13 +10,26 @@ public class EnemySpawner : MonoBehaviour
     private Transform[] _wayPoints;      // 현재 스테이지의 이동 경로
     [SerializeField]
     private EnemyData[] _enemyDatas;
+    [SerializeField]
+    private GameObject _normalEnemyPrefab;
 
-    private List<Enemy> _enemyList = new List<Enemy>();
-    private bool _isSpawn = false;
+    private ObjectPool<Enemy> _normalEnemyPool;
+    private List<Enemy> _enemyList;
+    private bool _isSpawn;
+
+    private WaitForSeconds waitForSeconds;
 
     public float spawnTime => _spawnTime;
     public List<Enemy> enemyList => _enemyList;
     public bool isSpawn => _isSpawn;
+
+    private void Awake()
+    {
+        _normalEnemyPool = new ObjectPool<Enemy>(_normalEnemyPrefab, 40);
+        _enemyList = new List<Enemy>();
+        _isSpawn = false;
+        waitForSeconds = new WaitForSeconds(spawnTime);
+    }
 
     private void Update()
     {
@@ -42,18 +55,27 @@ public class EnemySpawner : MonoBehaviour
     {
         _isSpawn = true;
 
-        yield return new WaitForSeconds(3f);    // 3초 후 Enemy 생성
+        // 3초 후 Enemy 생성
+        yield return new WaitForSeconds(3f);
         
         int spawnEnemy = 0;
         int round = GameManager.instance.round;
         while(spawnEnemy++ < 40)
         {
-            Enemy enemy = ObjectPool.instance.GetEnemyObject();   // 생성한 오브젝트에서 Enemy 컴포넌트를 가져옴
-            enemy.Setup(_wayPoints, _enemyDatas[round - 1]);  // Enemy Setup() 메서드의 매개변수로 웨이포인트 정보와 enemyData 정보를 전달
-            _enemyList.Add(enemy);                             // _enemyList 리스트에 추가함 -> 필드 위에 남아있는 Enemy의 개수를 알기 위함
-            enemy.actionOnMissing += () => _enemyList.Remove(enemy); // Enemy를 잡지 못하고 놓칠 경우 리스트에서 삭제
-            enemy.actionOnDeath += () => _enemyList.Remove(enemy);   // Enemy를 잡을 경우 리스트에서 삭제
-            yield return new WaitForSeconds(_spawnTime);     // _spawnTime 시간 동안 대기
+            // 생성한 오브젝트에서 Enemy 컴포넌트를 가져옴
+            Enemy enemy = _normalEnemyPool.GetObject();
+            // Enemy Setup() 메서드의 매개변수로 웨이포인트 정보와 enemyData 정보를 전달
+            enemy.Setup(_wayPoints, _enemyDatas[round - 1]);
+            // _enemyList 리스트에 추가함 -> 필드 위에 남아있는 Enemy의 개수를 알기 위함
+            _enemyList.Add(enemy);
+            // Enemy를 잡지 못하고 놓칠 경우 리스트에서 삭제
+            enemy.actionOnMissing += () => _enemyList.Remove(enemy);
+            // Enemy 오브젝트를 오브젝트풀에 반납
+            enemy.actionOnMissing += () => _normalEnemyPool.ReturnObject(enemy);
+            // Enemy를 잡을 경우 리스트에서 삭제
+            enemy.actionOnDeath += () => _enemyList.Remove(enemy);
+            // _spawnTime 시간 동안 대기
+            yield return waitForSeconds;
         }
 
         _isSpawn = false;

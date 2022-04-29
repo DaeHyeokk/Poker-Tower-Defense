@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5850fbb6d57a9294dabcef9160da1c71, type: 3}
   m_Name: TripleTower
   m_EditorClassIdentifier: 
-  towerPrefab: {fileID: 6541470257951302052, guid: d9fac6f1b24f28c448251ff38ed85226, type: 3}
+  spawnPoint: {x: 0.35, y: 0, z: 0}
   weapons:
   - damage: 0
     rate: 0.2
