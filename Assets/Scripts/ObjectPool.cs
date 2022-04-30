@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System;
 
 public class ObjectPool<T> where T : Component
 {
@@ -19,8 +20,8 @@ public class ObjectPool<T> where T : Component
     public ObjectPool(GameObject[] prefabs, int initCount)
     {
         _prefabs = prefabs;
-        _objectStackList = new List<Stack<T>>();
         _objectStack = null;
+        _objectStackList = new List<Stack<T>>();
         Initialize(initCount);
     }
 
@@ -38,7 +39,7 @@ public class ObjectPool<T> where T : Component
             for(int i=0; i<_prefabs.Length; i++)
             {
                 _objectStackList.Add(new Stack<T>());
-                if (i < (int)PokerHand.Triple)
+                if (i <= (int)PokerHand.TwoPair)
                 {
                     for (int j = 0; j < newObjectCount; j++)
                         _objectStackList[i].Push(CreateNewObject(i));
@@ -49,7 +50,7 @@ public class ObjectPool<T> where T : Component
 
     private T CreateNewObject()
     {
-        T newObject = Object.Instantiate(_prefab).GetComponent<T>();
+        T newObject = UnityEngine.Object.Instantiate(_prefab).GetComponent<T>();
         newObject.gameObject.SetActive(false);
 
         return newObject;
@@ -57,7 +58,7 @@ public class ObjectPool<T> where T : Component
 
     private T CreateNewObject(int index)
     {
-        T newObject = Object.Instantiate(_prefabs[index]).GetComponent<T>();
+        T newObject = UnityEngine.Object.Instantiate(_prefabs[index]).GetComponent<T>();
         newObject.gameObject.SetActive(false);
 
         return newObject;
@@ -65,6 +66,9 @@ public class ObjectPool<T> where T : Component
 
     public T GetObject()
     {
+        if (_objectStack == null)
+            throw new Exception("ObjectPool<T>.GetObject() 메서드에 매개변수를 입력해야 합니다.");
+
         T retObject;
 
         if (_objectStack.Count > 0)
@@ -78,6 +82,9 @@ public class ObjectPool<T> where T : Component
 
     public T GetObject(int index)
     {
+        if (_objectStackList == null)
+            throw new Exception("ObjectPool<T>.GetObject() 메서드에 매개변수를 입력하지 마십시오.");
+
         T retObject;
 
         if (_objectStackList[index].Count > 0)
@@ -92,12 +99,17 @@ public class ObjectPool<T> where T : Component
 
     public void ReturnObject(T getObject)
     {
+        if (_objectStack == null)
+            throw new Exception("ObjectPool<T>.ReturnObject() 메서드에 매개변수를 입력해야 합니다.");
+
         getObject.gameObject.SetActive(false);
         _objectStack.Push(getObject);
     }
 
     public void ReturnObject(T getObject, int index)
     {
+        if (_objectStackList == null)
+            throw new Exception("ObjectPool<T>.ReturnObject() 메서드에 매개변수를 입력하지 마십시오.");
         getObject.gameObject.SetActive(false);
         _objectStackList[index].Push(getObject);
     }
@@ -120,4 +132,7 @@ public class ObjectPool<T> where T : Component
  * 하나의 싱글톤 오브젝트풀에서 각각의 오브젝트 타입마다 다른 메서드를 호출하는 방식으로 구현했던 것이 비효율적이라고 판단.
  * ObjectPool을 제네릭 클래스로 선언하여 <T> 로 받은 타입에 따라 동적으로 동작할 수 있도록 리팩토링함.
  * 풀링할 오브젝트 중에 현재 타워 오브젝트가 여러개의 프리팹을 가지고 있기 때문에 매개변수를 다르게 받는 메서드를 오버로딩하여 구현하였음.
+ * 
+ * Update : 2022/04/30 SAT 15:40
+ * 해당 ObjectPool을 사용하며 일어날 수 있는 예외 상황에 대비하여 예외 처리 해주는 구문 추가.
  */

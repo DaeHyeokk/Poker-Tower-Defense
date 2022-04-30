@@ -2,10 +2,9 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-[CreateAssetMenu(menuName = "Scriptable/TowerData", fileName = "Tower Data")]
-public class TowerData : ScriptableObject
+[CreateAssetMenu(menuName = "Scriptable/TowerWeaponData", fileName = "TowerWeapon Data")]
+public class WeaponData : ScriptableObject
 {
-    public Vector3 spawnPoint;
     public Weapon[] weapons;
 
     [System.Serializable]
@@ -23,7 +22,7 @@ public class TowerData : ScriptableObject
 
 
 /*
- * File : TowerData.cs
+ * File : WeaponData.cs
  * First Update : 2022/04/25 MON 06:45
  * 프로젝트에 사용되는 타워들의 정보를 저장하는 데이터 스크립터블
  * tower prefab과 타워 공격력, 공격속도, 사거리, 업글당 증가하는 값을 저장한다.
