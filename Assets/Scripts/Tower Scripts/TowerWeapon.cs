@@ -56,13 +56,13 @@ public abstract class TowerWeapon : MonoBehaviour
     {
         while(true)
         {
-            if (_targetDetector.target != null)
+            if (_targetDetector.enemyTarget != null)
             {
                 // 원점으로부터의 거리와 수평축으로부터의 각도를 이용해 위치를 구하는 극좌표계 이용
                 // 각도 = arctan(y/x)
                 // x, y 변위값 구하기
-                float dx = _targetDetector.target.position.x - _targetDetector.transform.position.x;
-                float dy = _targetDetector.target.position.y - _targetDetector.transform.position.y;
+                float dx = _targetDetector.enemyTarget.transform.position.x - _targetDetector.transform.position.x;
+                float dy = _targetDetector.enemyTarget.transform.position.y - _targetDetector.transform.position.y;
                 // x, y 변위값을 바탕으로 각도 구하기
                 // 각도가 radian 단위이기 때문에 Mathf.Rad2Deg를 곱해 도 단위를 구함
                 float degree = Mathf.Atan2(dy, dx) * Mathf.Rad2Deg;
@@ -78,12 +78,12 @@ public abstract class TowerWeapon : MonoBehaviour
         while( true )
         {
             // target이 있는지 검사 (다른 발사체에 의해 제거 or Goal 지점까지 이동해 삭제됨 등)
-            if (_targetDetector.target != null)
+            if (_targetDetector.enemyTarget != null)
             {
                 // 공격속도 시간만큼 대기 후 공격
                 yield return _attackRateDelay;
 
-                if (_targetDetector.target != null)
+                if (_targetDetector.enemyTarget != null)
                     SpawnProjectile();
             }
 
@@ -93,9 +93,8 @@ public abstract class TowerWeapon : MonoBehaviour
 
     private void SpawnProjectile()
     {
-        Debug.Log("총알생성");
         GameObject clone = Instantiate(_projectile, _spawnPoint.position, Quaternion.identity);
-        clone.GetComponent<Projectile>().Setup(_targetDetector.target);
+        clone.GetComponent<Projectile>().Setup(_targetDetector.enemyTarget.transform);
     }
 
 

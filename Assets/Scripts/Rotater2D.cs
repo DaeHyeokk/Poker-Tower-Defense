@@ -7,6 +7,10 @@ public class Rotater2D : MonoBehaviour
     [SerializeField]
     private SpriteRenderer _targetSprite;
 
+    public void NaturalRotate()
+    {
+        transform.Rotate(Vector3.forward * Time.deltaTime * 50f);
+    }
     public void Rotate(Vector3 direction)
     {
         if (direction == Vector3.right)

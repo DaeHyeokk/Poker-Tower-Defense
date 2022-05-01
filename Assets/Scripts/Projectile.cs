@@ -13,7 +13,7 @@ public class Projectile : MonoBehaviour
         _target = targetTransfrom;
        // _projectileSprite = projectileSprite;
         _movement2D = GetComponent<Movement2D>();
-        _movement2D.setMoveSpeed(1f);
+        _movement2D.setMoveSpeed(10f);
     }
 
     private void Update()

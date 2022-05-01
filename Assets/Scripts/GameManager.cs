@@ -20,17 +20,19 @@ public class GameManager : MonoBehaviour
     }
 
     private int _round;
+    private int _pokerCount;
     private bool _isGameover;
 
     public int round => _round;
+    public int pokerCount => _pokerCount;
     public bool isGameover => _isGameover;
-
     private void Awake()
     {
         if (instance != this)
             Destroy(gameObject);
 
         _round = 0;
+        _pokerCount = 7;
         _isGameover = false;
     }
 

@@ -17,7 +17,7 @@ public class EnemySpawner : MonoBehaviour
     private List<Enemy> _enemyList;
     private bool _isSpawn;
 
-    private WaitForSeconds waitForSeconds;
+    private WaitForSeconds _waitSpawnTime;
 
     public float spawnTime => _spawnTime;
     public List<Enemy> enemyList => _enemyList;
@@ -28,7 +28,7 @@ public class EnemySpawner : MonoBehaviour
         _normalEnemyPool = new ObjectPool<Enemy>(_normalEnemyPrefab, 40);
         _enemyList = new List<Enemy>();
         _isSpawn = false;
-        waitForSeconds = new WaitForSeconds(spawnTime);
+        _waitSpawnTime = new WaitForSeconds(spawnTime);
     }
 
     private void Update()
@@ -68,14 +68,12 @@ public class EnemySpawner : MonoBehaviour
             enemy.Setup(_wayPoints, _enemyDatas[round - 1]);
             // _enemyList 리스트에 추가함 -> 필드 위에 남아있는 Enemy의 개수를 알기 위함
             _enemyList.Add(enemy);
-            // Enemy를 잡지 못하고 놓칠 경우 리스트에서 삭제
-            enemy.actionOnMissing += () => _enemyList.Remove(enemy);
-            // Enemy 오브젝트를 오브젝트풀에 반납
-            enemy.actionOnMissing += () => _normalEnemyPool.ReturnObject(enemy);
             // Enemy를 잡을 경우 리스트에서 삭제
-            enemy.actionOnDeath += () => _enemyList.Remove(enemy);
+            enemy.actionOnDisable += () => _enemyList.Remove(enemy);
+            // Enemy 오브젝트를 오브젝트풀에 반납
+            enemy.actionOnDisable += () => _normalEnemyPool.ReturnObject(enemy);
             // _spawnTime 시간 동안 대기
-            yield return waitForSeconds;
+            yield return _waitSpawnTime;
         }
 
         _isSpawn = false;
@@ -100,6 +98,9 @@ public class EnemySpawner : MonoBehaviour
  * EnemyData 배열을 통해 라운드마다 그에 대응하는 배열 인덱스로 접근하여 몬스터의 능력치를 다르게 Setup() 함
  * 플레이어의 타워가 강력하여 Enemy가 리젠되고 다음 Enemy가 나오기 전에 잡아버릴 경우 SpawnEnemy() 메서드를 중복 호출할 우려가 있음
  * 따라서 bool 타입 _isSpawn 변수를 추가하여 _isSpawn 값이 false일 때만 SpawnEnemy() 메서드를 호출하도록 구현하였음 
- * Enemy의 델리게이트 멤버변수 OnMissing과 onDeath를 구독하여 _enemyList.Remove(enemy) 구문을 수행하도록 함으로써 
+ * Enemy의 델리게이트 멤버변수 onMissing과 onDeath를 구독하여 _enemyList.Remove(enemy) 구문을 수행하도록 함으로써 
  * 적을 죽이거나, 놓쳤을 때 List에서 해당 enemy 원소를 삭제하도록 구현
+ * 
+ * Update : 2022/05/01 SUN 15:18
+ * 게임상에서 Destroy 됐다고 인식하도록 하는 로직을 Action onDisable 델리게이트에 구독시키는 방식으로 변경.
  */

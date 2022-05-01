@@ -32,13 +32,8 @@ public class ObjectDetector : MonoBehaviour
             // 광선에 부딪히는 오브젝트를 검출해서 hit에 저장
             if (Physics.Raycast(ray, out hit, Mathf.Infinity))
             {
-                // 광선에 부딪힌 오브젝트의 태그가 "Tile"이면
-                if (hit.transform.CompareTag("Tile"))
-                {
-                    // towerBuilder의 BuildTower(Transform) 메서드 호출
-                    towerBuilder.BuildTower(hit.transform);
-                }
-                else if (hit.transform.CompareTag("Tower"))
+                // 광선에 부딪힌 타겟이 타워라면 레벨업.
+                if (hit.transform.CompareTag("Tower"))
                 {
                     hit.transform.GetComponent<TowerLevel>().LevelUp();
                 }
@@ -54,4 +49,8 @@ public class ObjectDetector : MonoBehaviour
  * 플레이어의 마우스 클릭(모바일에서는 화면 터치)를 인식하고 그에 대한 작업을 담당하는 스크립트
  * Camera 컴포넌트의 ScreenPointToRay() 메서드를 통해 플레이어가 클릭한 좌표를 향해 광선을 발사하여
  * 광선과 충돌하는 오브젝트의 정보를 hit에 담아 오브젝트와의 상호작용을 수행한다.
+ * 
+ * Update : 2022/05/02 MON 02:12
+ * 필드 디자인을 바꾸면서 타일 위에 짓는 방식이 아닌 맵의 중앙에서 생성되는 방식으로 바뀌었으므로, 
+ * 플레이어가 타일을 터치했는지 확인하는 로직 삭제.
  */

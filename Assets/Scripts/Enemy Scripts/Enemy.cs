@@ -14,8 +14,10 @@ public class Enemy : MonoBehaviour
 
     private Movement2D _movement2D;  // 오브젝트 이동 제어
     private Rotater2D _rotater2D;
-    public event Action actionOnDeath;
+
+    public event Action actionOnDisable;
     public event Action actionOnMissing;
+    public event Action actionOnDeath;
 
     private void Awake()
     {
@@ -55,9 +57,9 @@ public class Enemy : MonoBehaviour
             isNextMove = false;
             nowDistance = Vector3.Distance(_wayPoints[_currentIndex].position, this.transform.position);
             // 현재 enemy의 위치와 목표 지점의 위치 사이의 거리가 0.1보다 가깝다면 다음 목표 지점을 탐색한다
-            // 0.1f에 MoveSpeed를 곱해주는 이유는 이동 속도가 빠른 enemy일 경우 한 프레임에 0.1f보다 많이 이동할 수도 있기 때문에
+            // 0.1f에 MoveSpeed를 곱해주는 이유는 이동 속도가 빠른 enemy일 경우 한 프레임에 0.2f보다 많이 이동할 수도 있기 때문에
             // if 조건문에 걸리지 않고 목표 경로를 잃은 enemy 오브젝트가 발생할 수 있기 때문이다.
-            if (Vector3.Distance(transform.position, _wayPoints[_currentIndex].position) < 0.05f * _movement2D.moveSpeed)
+            if (Vector3.Distance(transform.position, _wayPoints[_currentIndex].position) < 0.15f * _movement2D.moveSpeed)
             {
                 NextMoveTo();
                 isNextMove = true;
@@ -79,24 +81,16 @@ public class Enemy : MonoBehaviour
 
     private void NextMoveTo()
     {
-        // 다음 목표 지점이 남아있다면
-        if (_currentIndex < _wayPointCount - 1)
-        {
-            // Enemy의 위치를 정확하게 목표 위치로 설정
-            transform.position = _wayPoints[_currentIndex].position;
-            _currentIndex++;
+        // Enemy의 위치를 정확하게 목표 위치로 설정
+        transform.position = _wayPoints[_currentIndex].position;
+        _currentIndex++;
 
-            Vector3 direction = (_wayPoints[_currentIndex].position - transform.position).normalized;
-            _movement2D.MoveTo(direction);
-            _rotater2D.Rotate(direction);
-        }
-        // 현재 위치가 마지막 목표 지점이라면
-        else
-        {
-            StopCoroutine("OnMove");
-            if (actionOnMissing != null)
-                actionOnMissing();
-        }
+        if (_currentIndex >= _wayPointCount)
+            _currentIndex = 0;
+
+        Vector3 direction = (_wayPoints[_currentIndex].position - transform.position).normalized;
+        _movement2D.MoveTo(direction);
+        _rotater2D.Rotate(direction);
     }
 
     public void OnDamage(float damage)
@@ -133,4 +127,7 @@ public class Enemy : MonoBehaviour
  * 현재 enemy와 목표물과의 거리를 nowDistance, 한 프레임 전 enemy와 목표물과의 거리를 lastDistance 변수에 저장하고, 그 값을 비교함으로써
  * nowDistance 값이 lastDistance 값보다 클 경우 목표물과 멀어지고 있다고 판단하고 enemy의 position을 목표 waypoint의 position값으로 바꿔
  * 이탈한 경로를 다시 잡아주는 로직을 추가하여 이를 해결하였다.
+ * 
+ * Update : 2022/05/01 SUN 22:10
+ * 필드 디자인 변경으로 마지막 웨이포인트에 도달하면 없어지는 로직에서 다시 첫번째 웨이포인트를 향해 이동하도록 변경하였음.
  */

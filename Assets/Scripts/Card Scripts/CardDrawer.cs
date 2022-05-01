@@ -20,6 +20,9 @@ public class CardDrawer : MonoBehaviour
     /// 카드가 뽑힌 상태인지 여부를 나타내는 변수
     private bool _isDraw;
 
+    /// 현재 카드를 뽑는중인지 여부를 나타내는 변수
+    private bool _isDrawing;
+
     /// 뽑은 카드들의 무늬 및 숫자 정보를 저장하는 변수.
     /// 플레이어의 화면에 뽑은 순서대로 카드를 보여주기 위한 Card[] 배열.
     private Card[] _drawCards;
@@ -36,32 +39,39 @@ public class CardDrawer : MonoBehaviour
     {
         _cardUIController = GetComponent<CardUIController>();
 
-        _drawCards = new Card[5];
+        _drawCards = new Card[GameManager.instance.pokerCount];
         _drawNumbers = new int[MAX_NUMBER];
         _drawPatterns = new int[MAX_PATTERN];
         _drawCardsMasking = 0;
         _isDraw = false;
+        _isDrawing = false;
 
-        for(int i=0; i<5; i++)
+        for(int i=0; i<GameManager.instance.pokerCount; i++)
             _drawCards[i] = new();
     }
 
     public void DrawCardAll()
     {
-        // 플레이어 화면에 오픈된 카드를 모두 뒤집는다.
-        _cardUIController.AllDisableCardUI();
-        // 카드 Draw 버튼을 비활성화 한다.
-        _cardUIController.DisableDrawButtonUI();
+        if (!_isDrawing)
+        {
+            _isDrawing = true;
+            ResetDrawer();
 
-        // 카드를 5장 뽑는다.
-        for(int drawed = 0; drawed <5; drawed++)
-            DrawCard(drawed);
+            // 플레이어 화면에 오픈된 카드를 모두 뒤집는다.
+            _cardUIController.AllDisableCardUI();
+            // 카드 Draw 버튼을 비활성화 한다.
+            _cardUIController.DisableDrawButtonUI();
 
-        // 족보 정보를 업데이트 한다.
-        UpdateHandInfo();
+            // 카드를 7장 뽑는다.
+            for (int drawed = 0; drawed < GameManager.instance.pokerCount; drawed++)
+                DrawCard(drawed);
 
-        // 플레이어 화면에 새로 뽑은 카드를 보여준다.
-        _cardUIController.AllEnableCardUI();
+            // 족보 정보를 업데이트 한다.
+            UpdateHandInfo();
+
+            // 플레이어 화면에 새로 뽑은 카드를 보여준다.
+            _cardUIController.AllEnableCardUI();
+        }
     }
 
     public void ChangeCard(int changeIndex)
@@ -75,7 +85,7 @@ public class CardDrawer : MonoBehaviour
         // 새로운 카드를 뽑는다.
         DrawCard(changeIndex);
 
-        // 임시로 저장해놓은 index를 이용해 마스킹한 비트를 0으로 바꿔준다.
+        // 임시로 저장해놓은 index를 이용해 마스킹한 비트를 끈다.
         // 뽑은 이후에 수행하는 이유는 바꾸려고 하는 카드가 다시 뽑히는 일이 없도록 하기 위함.
         _drawCardsMasking &= ~((long)1 << changeBitIndex);
 
@@ -96,7 +106,7 @@ public class CardDrawer : MonoBehaviour
             DrawCard(index);
         else
         {
-            // 뽑은 카드의 index번째 비트를 마스킹한다.
+            // 뽑은 카드의 index번째 비트를 켠다.
             _drawCardsMasking |= ((long)1 << drawCardIndex);
             // 뽑은 카드 정보를 저장.
             AccumulateCardInfo(drawCardIndex, index);
@@ -225,10 +235,55 @@ public class CardDrawer : MonoBehaviour
         }
 
         // 마지막으로 스트레이트나 마운틴 둘중 하나와 플러쉬가 true 라면, 스트레이트플러쉬가 된다.
-        if((isStraight || isMountain) && isFlush)
+        if ((isStraight || isMountain) && isFlush)
         {
-            if (_drawHand < PokerHand.StraightFlush)
-                _drawHand = PokerHand.StraightFlush;
+            int patternStartNumber;
+            long compareMasking;
+
+            for (int pattern = 0; pattern < MAX_PATTERN; pattern++)
+            {
+                // 각 패턴의 시작 번호는 0, 13, 26, 39 순임.
+                patternStartNumber = pattern * MAX_NUMBER;
+                
+                // 비트마스킹 변수 초기화.
+                compareMasking = 0;
+
+                for(int number = 0; number < MAX_NUMBER; number++)
+                {
+                    // 현재 카드 번호 위치의 비트를 켠다.
+                    compareMasking |= (long)1 << (patternStartNumber + number);
+
+                    // 카드를 5장 마킹 한다음부터는 플레이어가 뽑은 카드와 비교한다.
+                    if (number >= 4)
+                    {
+                        // 플레이어가 뽑은 카드에 마스킹한 카드가 모두 포함되어 있다면 스트레이트 플러쉬가 된다.
+                        if(compareMasking == (compareMasking & _drawCardsMasking))
+                        {
+                            // 가장 높은 패라는것이 명확하기 때문에 기존 패와 비교는 하지 않는다.
+                            _drawHand = PokerHand.StraightFlush;
+
+                            // 뒤에 for문을 더 반복할 필요 없이 즉시 함수를 리턴한다.
+                            return;
+                        }
+
+                        // 5장을 마킹하고 비교했다면, 뒤에 번호를 마킹하기 위해 가장 앞에 번호의 비트를 끈다.
+                        compareMasking &= ~((long)1 << (patternStartNumber + number - 4));
+                    }
+                }
+
+                // 로열 스트레이트 플러쉬인지 확인하기 위해 현재 무늬의 Ace 위치 비트를 켠다.
+                compareMasking |= (long)1 << patternStartNumber;
+
+                // 플레이어가 뽑은 카드에 마스킹한 카드가 모두 포함되어 있다면 로열 스트레이트 플러쉬가 된다.
+                if (compareMasking == (compareMasking & _drawCardsMasking))
+                {
+                    // 가장 높은 패라는것이 명확하기 때문에 기존 패와 비교는 하지 않는다.
+                    _drawHand = PokerHand.StraightFlush;
+
+                    // 뒤에 for문을 더 반복할 필요 없이 즉시 함수를 리턴한다.
+                    return;
+                }
+            }
         }
     }
 
@@ -236,6 +291,11 @@ public class CardDrawer : MonoBehaviour
     {
         // 카드를 뽑은 상태로 바꾼다.
         _isDraw = true;
+    }
+
+    public void ReadyDrawCard()
+    {
+        _isDrawing = false;
     }
 
     public void ResetDrawer()
@@ -265,4 +325,9 @@ public class CardDrawer : MonoBehaviour
  * 이미 뽑은 카드를 다시 뽑지 않기 위한 방법으로 뽑은 Cards[] 배열을 탐색하는 방법이 아닌,
  * 비트마스킹 기법을 통해 비트연산으로 O(1) 중에서도 아주 빠르게 체크할 수 있도록 구현하였다.
  * 카드가 5장으로 제한되어 있어 인게임에 영향을 미칠 정도의 성능 향상은 기대하기 어렵겠지만 그 목적에 의의를 두고 있다. 
+ * 
+ * Update : 2022/05/02 MON 01:58
+ * 카드를 5장 뽑는 방식에서 7장 뽑는 방식으로 변경.
+ * 카드를 7장 뽑기 때문에 스트레이트와 플러쉬이면서 스트레이트 플러쉬가 안되는 경우가 생길 수 있게 되어 이를 구체적으로 확인하는 로직으로 변경.
+ * 스트레이트 플러쉬인지 확인하기 위해선 플레이어가 뽑은 카드의 정확한 정보를 가지고 비교 해야함. 비트마스킹 기법을 활용하여 구현하였음.
  */

@@ -24,24 +24,19 @@ public class TowerBuilder : MonoBehaviour
         _towerPool = new ObjectPool<Tower>(_towerPrefab, 20);
     }
 
-    public void BuildTower(Transform tileTransform)
+    public void BuildTower()
     {
-        Tile tile = tileTransform.GetComponent<Tile>();
-
-        // 타워를 지을 위치의 타일에 타워가 이미 지어져있는지 여부를 확인하고,
         // 타워를 짓기 위해 카드를 뽑은 상태인지 확인한다.
-        if (!tile.isBuildTower && _cardDrawer.isDraw)
+        if (_cardDrawer.isDraw)
         {
             Tower tower = _towerPool.GetObject();
             TowerWeapon towerWeapon = _weaponPool.GetObject((int)_cardDrawer.drawHand);
              
-            tower.transform.position = tileTransform.position + Vector3.back;
+            // 타워는 화면의 정중앙에서 생성 된다.
+            tower.transform.position = Vector3.zero;
             towerWeapon.transform.SetParent(tower.transform);
             towerWeapon.transform.localPosition = Vector3.zero;
             tower.DefaultSetup(_enemySpawner);
-
-            // 타워가 지어져있지 않고 카드를 뽑은 상태라면 해당 타일에 타워를 건설한 다음, isBuildTower 값을 true로 설정한다.
-            tile.isBuildTower = true;
 
             // 뽑았던 카드를 초기화 한다.
             _cardDrawer.ResetDrawer();
