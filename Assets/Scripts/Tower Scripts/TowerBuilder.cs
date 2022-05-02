@@ -9,6 +9,8 @@ public class TowerBuilder : MonoBehaviour
     [SerializeField]
     private EnemySpawner _enemySpawner;
     [SerializeField]
+    private ProjectileSpawner _projectileSpawner;
+    [SerializeField]
     private GameObject _towerPrefab;
     [SerializeField]
     private GameObject[] _weaponPrefabs;
@@ -36,10 +38,12 @@ public class TowerBuilder : MonoBehaviour
             tower.transform.position = Vector3.zero;
             towerWeapon.transform.SetParent(tower.transform);
             towerWeapon.transform.localPosition = Vector3.zero;
-            tower.DefaultSetup(_enemySpawner);
+            tower.DefaultSetup(_enemySpawner, _projectileSpawner);
 
             // 뽑았던 카드를 초기화 한다.
             _cardDrawer.ResetDrawer();
+            // 카드를 다시 뽑을 수 있는 상태로 바꾼다.
+            _cardDrawer.ReadyDrawCard();
         }
     }
 }
@@ -65,4 +69,7 @@ public class TowerBuilder : MonoBehaviour
  * 타워 오브젝트의 구조를 재설계 하면서 Tower 오브젝트도 추가로 생성하는걸로 바뀜.
  * 오브젝트를 생성한 뒤 TowerWeapon 오브젝트를 Tower 오브젝트의 자식으로 바꿔줌으로써 두 오브젝트가 서로의 컴포넌트에 접근할 수 있도록 구현함.
  * SetParent() 이후에 TowerWeapon 오브젝트의 localPosition 을 Vector3.zero 로 변경함으로써 Tower 오브젝트와 TowerWeapon 오브젝트의 위치를 동기화함.
+ * 
+ * Update : 2022/05/02 MON 18:12
+ * 타워가 맵 중앙에 생성되도록 변경.
  */

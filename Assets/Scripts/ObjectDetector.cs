@@ -4,18 +4,19 @@ using UnityEngine;
 
 public class ObjectDetector : MonoBehaviour
 {
-    [SerializeField]
-    private TowerBuilder towerBuilder;
-
+    private Tower _clickTower;
     private Camera mainCamera;
     private Ray ray;
     private RaycastHit hit;
+
+    private bool _isTowerMove;
 
     void Awake()
     {
         // 'MainCamera' 태그를 가지고 있는 오브젝트를 탐색 후 Camera 컴포넌트 정보 전달
         // GameObject.FindGameObjectWithTag("MainCamera").GetComponent<Camera>(); 와 동일
         mainCamera = Camera.main;
+        _isTowerMove = false;
     }
 
     private void Update()
@@ -32,11 +33,23 @@ public class ObjectDetector : MonoBehaviour
             // 광선에 부딪히는 오브젝트를 검출해서 hit에 저장
             if (Physics.Raycast(ray, out hit, Mathf.Infinity))
             {
-                // 광선에 부딪힌 타겟이 타워라면 레벨업.
+                // 광선에 부딪힌 타겟이 타워라면 마우스를 떼기 전까지 계속해서 마우스포인터를 따라감
                 if (hit.transform.CompareTag("Tower"))
                 {
-                    hit.transform.GetComponent<TowerLevel>().LevelUp();
+                    //hit.transform.GetComponent<TowerLevel>().LevelUp();
+                    _clickTower = hit.transform.GetComponent<Tower>();
+                    _clickTower.MoveTower();
+                    _isTowerMove = true;
                 }
+            }
+        }
+        if (Input.GetMouseButtonUp(0))
+        {
+            // 마우스를 뗐을 때 타워를 움직이는 중이었다면 중단한다.
+            if(_isTowerMove)
+            {
+                _clickTower.StopTower();
+                _isTowerMove = false;
             }
         }
     }
@@ -53,4 +66,8 @@ public class ObjectDetector : MonoBehaviour
  * Update : 2022/05/02 MON 02:12
  * 필드 디자인을 바꾸면서 타일 위에 짓는 방식이 아닌 맵의 중앙에서 생성되는 방식으로 바뀌었으므로, 
  * 플레이어가 타일을 터치했는지 확인하는 로직 삭제.
+ * 
+ * Update : 2022/05/02 MON 19:38
+ * 마우스로 타워를 클릭했을 때 타워가 마우스를 따라다니도록 하고, 
+ * 마우스를 떼면 타워가 마우스를 따라다니던 것을 멈추도록 하여 타워의 이동 구현.
  */

@@ -69,9 +69,9 @@ public class EnemySpawner : MonoBehaviour
             // _enemyList 리스트에 추가함 -> 필드 위에 남아있는 Enemy의 개수를 알기 위함
             _enemyList.Add(enemy);
             // Enemy를 잡을 경우 리스트에서 삭제
-            enemy.actionOnDisable += () => _enemyList.Remove(enemy);
+            enemy.actionOnDeath += () => _enemyList.Remove(enemy);
             // Enemy 오브젝트를 오브젝트풀에 반납
-            enemy.actionOnDisable += () => _normalEnemyPool.ReturnObject(enemy);
+            enemy.actionOnDeath += () => _normalEnemyPool.ReturnObject(enemy);
             // _spawnTime 시간 동안 대기
             yield return _waitSpawnTime;
         }

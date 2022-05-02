@@ -51,7 +51,7 @@ public class UIManager : MonoBehaviour
         }
     }
 
-    public void EnableCard(int index, Card card) => _cardImages[index].sprite = _cardSprites[card.GetIndex()];
+    public void EnableCard(int index, Card card) => _cardImages[index].sprite = _cardSprites[card.index];
 
     public void DisableCard(int index) => _cardImages[index].sprite = _cardBackSprite;
 

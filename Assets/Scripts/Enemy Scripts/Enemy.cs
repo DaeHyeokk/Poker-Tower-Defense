@@ -15,8 +15,6 @@ public class Enemy : MonoBehaviour
     private Movement2D _movement2D;  // 오브젝트 이동 제어
     private Rotater2D _rotater2D;
 
-    public event Action actionOnDisable;
-    public event Action actionOnMissing;
     public event Action actionOnDeath;
 
     private void Awake()

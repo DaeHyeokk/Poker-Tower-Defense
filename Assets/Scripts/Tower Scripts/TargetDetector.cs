@@ -4,11 +4,14 @@ using UnityEngine;
 
 public class TargetDetector : MonoBehaviour
 {
+    [SerializeField]
+    private Transform _attackRangeUI;
     private EnemySpawner _enemySpawner;
     private TowerWeapon _towerWeapon;
     private Enemy _enemyTarget;
 
     public Enemy enemyTarget => _enemyTarget;
+    public Transform attackRangeUI => _attackRangeUI;
 
     public void DefaultSetup(EnemySpawner enemySpawner)
     {
@@ -36,7 +39,6 @@ public class TargetDetector : MonoBehaviour
                 for (int i = 0; i < _enemySpawner.enemyList.Count; i++)
                 {
                     distance = Vector3.Distance(this.transform.position, _enemySpawner.enemyList[i].transform.position);
-
                     if (distance <= _towerWeapon.range && distance <= closestDistSqr)
                     {
                         closestDistSqr = distance;
@@ -45,14 +47,14 @@ public class TargetDetector : MonoBehaviour
                 }
 
                 if (_enemyTarget != null)
-                    _enemyTarget.actionOnDisable += EnemyTargetReset;
+                    _enemyTarget.actionOnDeath += EnemyTargetReset;
             }
             else
             {
                 distance = Vector3.Distance(this.transform.position, _enemyTarget.transform.position);
                 if (distance > _towerWeapon.range)
                 {
-                    _enemyTarget.actionOnDisable -= EnemyTargetReset;
+                    _enemyTarget.actionOnDeath -= EnemyTargetReset;
                     _enemyTarget = null;
                 }
             }
@@ -65,6 +67,12 @@ public class TargetDetector : MonoBehaviour
     {
         _enemyTarget = null;
     }
+
+    public void SetAttackRangeUIScale()
+    {
+        float attackRangeScale = _towerWeapon.range * 2 / this.transform.lossyScale.x;
+        _attackRangeUI.transform.localScale = new Vector3(attackRangeScale, attackRangeScale, 0);
+    }
 }
 
 /*
@@ -76,4 +84,7 @@ public class TargetDetector : MonoBehaviour
  * 
  * Update : 2022/05/01 SUM 15:30
  * 타겟이 사거리를 벗어나는 상황 외에 타겟이 죽거나, 골인 지점에 들어가는 상황일 때도 Target을 Reset하는 로직 추가.
+ * 
+ * Update : 2022/05/03 THU 03:13
+ * 타워의 사거리를 플레이어에게 보여주는 로직 추가.
  */

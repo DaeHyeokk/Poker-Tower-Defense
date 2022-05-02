@@ -32,8 +32,6 @@ public class CardUIController : MonoBehaviour
         UIManager.instance.EnableGetButton();
         // 플레이어의 화면에 카드를 모두 표시하고난 이후에 플레이어는 타워를 지을 수 있는 상태가 된다.
         _cardDrawer.ReadyBuildTower();
-        //
-        _cardDrawer.ReadyDrawCard();
     }
 
     public void EnableCardUI(int index)

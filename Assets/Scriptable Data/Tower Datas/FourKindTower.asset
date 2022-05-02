@@ -12,10 +12,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5850fbb6d57a9294dabcef9160da1c71, type: 3}
   m_Name: FourKindTower
   m_EditorClassIdentifier: 
-  spawnPoint: {x: 0.35, y: 0, z: 0}
   weapons:
   - damage: 0
-    rate: 0.2
+    rate: 1
     range: 2
     upgradeDIP: 0
     upgradeSIP: 0

@@ -12,10 +12,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5850fbb6d57a9294dabcef9160da1c71, type: 3}
   m_Name: StraightTower
   m_EditorClassIdentifier: 
-  towerPrefab: {fileID: 4615464137880089324, guid: 64326ecfc12d9d146ba24f65ad1b7fb1, type: 3}
   weapons:
   - damage: 0
-    rate: 0.2
+    rate: 1
     range: 2
     upgradeDIP: 0
     upgradeSIP: 0

@@ -13,6 +13,7 @@ public abstract class TowerWeapon : MonoBehaviour
     [SerializeField]
     private WeaponData _weaponData;
 
+    private ProjectileSpawner _projectileSpawner;
     private Transform _spawnPoint;
     private SpriteRenderer _towerRenderer;
     private TowerLevel _towerLevel;
@@ -32,11 +33,12 @@ public abstract class TowerWeapon : MonoBehaviour
         _towerRenderer = GetComponent<SpriteRenderer>();
     }
 
-    public void DefaultSetup()
+    public void DefaultSetup(ProjectileSpawner projectileSpawner)
     {
         _towerLevel = GetComponentInParent<TowerLevel>();
         _targetDetector = GetComponentInParent<TargetDetector>();
 
+        _projectileSpawner = projectileSpawner;
         _attackRateDelay = new WaitForSeconds(attackRate);
     }
 
@@ -93,10 +95,8 @@ public abstract class TowerWeapon : MonoBehaviour
 
     private void SpawnProjectile()
     {
-        GameObject clone = Instantiate(_projectile, _spawnPoint.position, Quaternion.identity);
-        clone.GetComponent<Projectile>().Setup(_targetDetector.enemyTarget.transform);
+        _projectileSpawner.SpawnProjectile(_spawnPoint.position, _targetDetector.enemyTarget.transform);
     }
-
 
     public virtual void OnAttack(Enemy enemy)
     {    
