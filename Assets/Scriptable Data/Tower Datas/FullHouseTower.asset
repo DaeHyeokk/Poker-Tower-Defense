@@ -12,26 +12,34 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5850fbb6d57a9294dabcef9160da1c71, type: 3}
   m_Name: FullHouseTower
   m_EditorClassIdentifier: 
+  bulletSprites:
+  - {fileID: 21300000, guid: 4b3cde31bdef54c458f0b04071d88cc5, type: 3}
+  - {fileID: 21300000, guid: c4b06c20a938a6e46949e8faac79b20e, type: 3}
+  - {fileID: 21300000, guid: fb49bbb3e2b49674f98799696c31c86c, type: 3}
   weapons:
-  - damage: 0
-    rate: 1
-    range: 2
+  - maxTargetCount: 1
+    damage: 0
+    rate: 0.8
+    range: 1.2
     upgradeDIP: 0
     upgradeSIP: 0
     upgradeRIP: 0
-  - damage: 0
+  - maxTargetCount: 1
+    damage: 0
     rate: 0
     range: 0
     upgradeDIP: 0
     upgradeSIP: 0
     upgradeRIP: 0
-  - damage: 0
+  - maxTargetCount: 1
+    damage: 0
     rate: 0
     range: 0
     upgradeDIP: 0
     upgradeSIP: 0
     upgradeRIP: 0
-  - damage: 0
+  - maxTargetCount: 1
+    damage: 0
     rate: 0
     range: 0
     upgradeDIP: 0

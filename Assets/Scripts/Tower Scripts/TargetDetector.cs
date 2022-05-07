@@ -2,77 +2,93 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class TargetDetector : MonoBehaviour
+public class TargetDetector
 {
-    [SerializeField]
-    private Transform _attackRangeUI;
+    public enum DetectingMode { Single, Multiple }
+
+    private Tower _tower;
     private EnemySpawner _enemySpawner;
-    private TowerWeapon _towerWeapon;
-    private Enemy _enemyTarget;
+    private List<Enemy> _targetList;
 
-    public Enemy enemyTarget => _enemyTarget;
-    public Transform attackRangeUI => _attackRangeUI;
+    private Enemy _tempTarget;
+    private float _distance;
+    private DetectingMode _detectingMode;
 
-    public void DefaultSetup(EnemySpawner enemySpawner)
+    public DetectingMode detectingMode { set => _detectingMode = value; }
+    public List<Enemy> targetList => _targetList;
+
+    public TargetDetector(Tower tower, EnemySpawner enemySpawner)
     {
-        if (_enemySpawner == null)
-        {
-            _enemySpawner = enemySpawner;
-        }
-        _towerWeapon = GetComponentInChildren<TowerWeapon>();
-        _enemyTarget = null;
+        _tower = tower;
+        _enemySpawner = enemySpawner;
+        _targetList = new List<Enemy>(_tower.maxTargetCount);
+        _distance = 0;
     }
 
-    public void StartSearchTarget() => StartCoroutine(SearchTarget());
-    public void StopSearchTarget() => StopCoroutine(SearchTarget());
-
-    private IEnumerator SearchTarget()
+    public void SearchTarget()
     {
-        float closestDistSqr, distance;
-
-        while (true)
+        if (_targetList.Count != 0)
         {
-            if (_enemyTarget == null)
+            int index = 0;
+            while (index < _targetList.Count)
             {
-                closestDistSqr = Mathf.Infinity;
+                _distance = Vector3.Distance(_tower.transform.position, _targetList[index].transform.position);
+                if (_distance > _tower.range)
+                {
+                    _targetList.RemoveAt(index);
+                }
+                else
+                {
+                    index++;
+                }
+            }
+        }
+
+        if (_targetList.Count < _tower.maxTargetCount)
+        {
+            if (_detectingMode == DetectingMode.Single)
+            {
+                float _closestDistSqr = Mathf.Infinity;
 
                 for (int i = 0; i < _enemySpawner.enemyList.Count; i++)
                 {
-                    distance = Vector3.Distance(this.transform.position, _enemySpawner.enemyList[i].transform.position);
-                    if (distance <= _towerWeapon.range && distance <= closestDistSqr)
+                    _distance = Vector3.Distance(_tower.transform.position, _enemySpawner.enemyList[i].transform.position);
+                    if (_distance <= _tower.range && _distance <= _closestDistSqr)
                     {
-                        closestDistSqr = distance;
-                        _enemyTarget = _enemySpawner.enemyList[i];
+                        _closestDistSqr = _distance;
+                        _tempTarget = _enemySpawner.enemyList[i];
                     }
                 }
 
-                if (_enemyTarget != null)
-                    _enemyTarget.actionOnDeath += EnemyTargetReset;
-            }
-            else
-            {
-                distance = Vector3.Distance(this.transform.position, _enemyTarget.transform.position);
-                if (distance > _towerWeapon.range)
+                if (_tempTarget != null)
                 {
-                    _enemyTarget.actionOnDeath -= EnemyTargetReset;
-                    _enemyTarget = null;
+                    targetList.Add(_tempTarget);
+                    _tempTarget = null;
                 }
             }
 
-            yield return null;
+            else // (_detectingMode == DetectingMode.Multiple)
+            {
+                for (int i = 0; i < _enemySpawner.enemyList.Count; i++)
+                {
+                    _distance = Vector3.Distance(_tower.transform.position, _enemySpawner.enemyList[i].transform.position);
+                    if (_distance <= _tower.range)
+                    {
+                        _targetList.Add(_enemySpawner.enemyList[i]);
+                    }
+
+                    if (_targetList.Count >= _tower.maxTargetCount)
+                        break;
+                }
+            }
         }
     }
 
-    private void EnemyTargetReset()
+    public void ResetTarget()
     {
-        _enemyTarget = null;
+        _targetList.Clear();
     }
 
-    public void SetAttackRangeUIScale()
-    {
-        float attackRangeScale = _towerWeapon.range * 2 / this.transform.lossyScale.x;
-        _attackRangeUI.transform.localScale = new Vector3(attackRangeScale, attackRangeScale, 0);
-    }
 }
 
 /*

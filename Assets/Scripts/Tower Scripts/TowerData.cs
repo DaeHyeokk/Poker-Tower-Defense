@@ -2,14 +2,19 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-[CreateAssetMenu(menuName = "Scriptable/TowerWeaponData", fileName = "TowerWeapon Data")]
-public class WeaponData : ScriptableObject
+[CreateAssetMenu(menuName = "Scriptable/TowerData", fileName = "Tower Data")]
+public class TowerData : ScriptableObject
 {
+    public Sprite[] normalProjectileSprites;
+    public Sprite[] specialProjectileSprites;
+
     public Weapon[] weapons;
 
     [System.Serializable]
     public struct Weapon
     {
+        public int maxTargetCount;
+
         public float damage;
         public float rate;
         public float range;

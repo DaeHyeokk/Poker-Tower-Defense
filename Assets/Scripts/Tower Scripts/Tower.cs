@@ -1,49 +1,139 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
+using System;
 
-public class Tower : MonoBehaviour
+public abstract class Tower : MonoBehaviour
 {
     [SerializeField]
+    private TowerData _towerData;
+    [SerializeField]
+    private Transform _spawnPoint;
+    [SerializeField]
     private Transform _attackRangeUI;
+
+    private ObjectFollowMousePosition _towerMovement;
+    private HorizontalLayoutGroup _levelLayout;
+    private SpriteRenderer _towerRenderer;
     private TowerColor _towerColor;
     private TowerLevel _towerLevel;
     private TargetDetector _targetDetector;
-    private ObjectFollowMousePosition _towerMovement;
-    private TowerWeapon _towerWeapon;
+    private ProjectileSpawner _projectileSpawner;
+    private Projectile _projectile;
+    private TowerBuilder _towerBuilder;
+    private WaitForSeconds _attackRateDelay;
+    private int _attackCount;
 
-    private void Awake()
+    protected ProjectileSpawner projectileSpawner => _projectileSpawner;
+    protected WaitForSeconds attackRateDelay => _attackRateDelay;
+
+    public TargetDetector targetDetector => _targetDetector;
+    public SpriteRenderer towerRenderer => _towerRenderer;
+    public TowerData towerData => _towerData;
+    public Sprite normalProjectileSprite => _towerData.normalProjectileSprites[(int)_towerColor.colorType];
+    public Sprite specialProjectileSprite => _towerData.specialProjectileSprites[(int)_towerColor.colorType];
+    public Transform spawnPoint => _spawnPoint;
+
+    public float damage => _towerData.weapons[_towerLevel.level].damage;
+    public float attackRate => _towerData.weapons[_towerLevel.level].rate;
+    public float range => _towerData.weapons[_towerLevel.level].range;
+    public int maxTargetCount => _towerData.weapons[_towerLevel.level].maxTargetCount;
+    public int level => _towerLevel.level;
+
+    public abstract String towerName { get; }
+
+    protected virtual void Awake()
     {
-        _towerColor = GetComponent<TowerColor>();
-        _towerLevel = GetComponent<TowerLevel>();
-        _targetDetector = GetComponent<TargetDetector>();
         _towerMovement = GetComponent<ObjectFollowMousePosition>();
+        _towerRenderer = GetComponentInChildren<SpriteRenderer>();
+        _levelLayout = GetComponentInChildren<HorizontalLayoutGroup>(true);
+
+        _projectileSpawner = FindObjectOfType<ProjectileSpawner>();
+        _towerBuilder = FindObjectOfType<TowerBuilder>();
+
+        _targetDetector = new TargetDetector(this, FindObjectOfType<EnemySpawner>());
+        _towerColor = new TowerColor(_towerRenderer);
+        _towerLevel = new TowerLevel(_levelLayout);
     }
 
-    public void DefaultSetup(EnemySpawner enemySpawner, ProjectileSpawner projectileSpawner)
+    public virtual void Setup()
     {
-        _towerWeapon = GetComponentInChildren<TowerWeapon>();
+        _towerLevel.Reset();
+        _towerColor.ChangeColor();
 
-        _targetDetector.DefaultSetup(enemySpawner);
-        _towerLevel.DefaultSetup();
-        _towerColor.DefaultSetup();
-        _towerWeapon.DefaultSetup(projectileSpawner);
+        _attackRateDelay = new WaitForSeconds(attackRate);
+        _attackCount = 0;
+        SetAttackRangeUIScale();
 
-        _targetDetector.SetAttackRangeUIScale();
-        _targetDetector.StartSearchTarget();
-        _towerWeapon.StartActionToTarget();
+        StartCoroutine(SearchAndAction());
     }
 
+    private void SetAttackRangeUIScale()
+    {
+        float attackRangeScale = range * 2 / this.transform.lossyScale.x;
+        _attackRangeUI.transform.localScale = new Vector3(attackRangeScale, attackRangeScale, 0);
+    }
+
+    protected virtual IEnumerator SearchAndAction()
+    {
+        while (true)
+        {
+            _targetDetector.SearchTarget();
+
+            if (_targetDetector.targetList.Count == 0)
+                yield return null;
+            else
+            {
+                for (int i = 0; i < _targetDetector.targetList.Count; i++)
+                    ShotProjectile(_targetDetector.targetList[i].transform);
+
+                yield return attackRateDelay;
+            }
+        }
+    }
+
+    protected virtual void ShotProjectile(Transform target)
+    {
+        _attackCount++;
+
+        if (_attackCount < 10)
+        {
+            _projectile = projectileSpawner.SpawnProjectile(spawnPoint, target, normalProjectileSprite);
+            _projectile.actionOnCollision += () => DoInflict(target);
+        }
+        else
+        {
+            _projectile = projectileSpawner.SpawnProjectile(spawnPoint, target, specialProjectileSprite);
+            _projectile.actionOnCollision += () => DoSpecialInflict(target);
+            _attackCount = 0;
+        }
+    }
+
+    public virtual void DoInflict(Transform target)
+    {
+        
+    }
+
+    public virtual void DoSpecialInflict(Transform target)
+    {
+
+    }
     public void MoveTower()
     {
         _towerMovement.StartFollowMousePosition();
-        _targetDetector.attackRangeUI.gameObject.SetActive(true);
+        _attackRangeUI.gameObject.SetActive(true);
     }
 
     public void StopTower()
     {
         _towerMovement.StopFollowMousePosition();
-        _targetDetector.attackRangeUI.gameObject.SetActive(false);
+        _attackRangeUI.gameObject.SetActive(false);
+    }
+
+    public void ReturnPool()
+    {
+        _towerBuilder.towerPool.ReturnObject(this);
     }
 }
 

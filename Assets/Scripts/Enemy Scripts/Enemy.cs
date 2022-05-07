@@ -54,8 +54,8 @@ public class Enemy : MonoBehaviour
         {
             isNextMove = false;
             nowDistance = Vector3.Distance(_wayPoints[_currentIndex].position, this.transform.position);
-            // 현재 enemy의 위치와 목표 지점의 위치 사이의 거리가 0.1보다 가깝다면 다음 목표 지점을 탐색한다
-            // 0.1f에 MoveSpeed를 곱해주는 이유는 이동 속도가 빠른 enemy일 경우 한 프레임에 0.2f보다 많이 이동할 수도 있기 때문에
+            // 현재 enemy의 위치와 목표 지점의 위치 사이의 거리가 0.15보다 가깝다면 다음 목표 지점을 탐색한다
+            // 0.15f에 MoveSpeed를 곱해주는 이유는 이동 속도가 빠른 enemy일 경우 한 프레임에 0.15f보다 많이 이동할 수도 있기 때문에
             // if 조건문에 걸리지 않고 목표 경로를 잃은 enemy 오브젝트가 발생할 수 있기 때문이다.
             if (Vector3.Distance(transform.position, _wayPoints[_currentIndex].position) < 0.15f * _movement2D.moveSpeed)
             {
@@ -97,7 +97,15 @@ public class Enemy : MonoBehaviour
         if (_health <= 0)
             Die();
     }
+    public void OnStun(float stunTime)
+    {
 
+    }
+
+    public void OnSlow(float slowPer)
+    {
+
+    }
     protected virtual void Die()
     {
 

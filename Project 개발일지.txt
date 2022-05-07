@@ -2,6 +2,7 @@ Start : 2022/04/20 WED
 < Project Goal >
 1. C# naming rule에 맞춰 스크립트를 작성하여 누구나 보기 쉬운 코드를 작성할 것
   참고 링크: https://docs.microsoft.com/ko-kr/dotnet/csharp/fundamentals/coding-style/coding-conventions
+2. 클래스를 꼼꼼히 설계하여 클래스끼리 최대한 약한 결합을 가지고, 코드의 중복을 최소화 할 것.
 
 Date : 2022/04/20 WED
 < List >
@@ -72,3 +73,7 @@ Date : 2022/05/02 MON
         함수의 실행 속도가 눈에 띄게 개선되었음.
 ☑ 드래그를 통해 타워를 움직이는 기능 구현.
 ☑ 타워를 드래그 하는 중일 때, 타워의 사거리를 표시하는 기능 구현.
+
+Date : 2022/05/03 THU
+< List >
+☑ 타워가 공격할 때 생성되는 발사체의 클래스 구조 설계, Enemy 클래스 구조 설계 진행중

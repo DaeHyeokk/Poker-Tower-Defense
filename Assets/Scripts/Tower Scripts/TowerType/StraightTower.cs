@@ -2,12 +2,13 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class StraightWeapon : TowerWeapon
+public class StraightTower : Tower
 {
-    public override string weaponName => "Straight";
-    public override void OnSkill()
+    public override string towerName => "Straight Tower";
+    protected override void Awake()
     {
-        return;
+        base.Awake();
+        targetDetector.detectingMode = TargetDetector.DetectingMode.Multiple;
     }
 }
 

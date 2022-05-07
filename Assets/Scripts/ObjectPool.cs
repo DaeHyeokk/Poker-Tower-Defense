@@ -75,6 +75,7 @@ public class ObjectPool<T> where T : Component
             retObject = _objectStack.Pop();
         else
             retObject = CreateNewObject();
+
         retObject.gameObject.SetActive(true);
 
         return retObject;
@@ -100,7 +101,7 @@ public class ObjectPool<T> where T : Component
     public void ReturnObject(T getObject)
     {
         if (_objectStack == null)
-            throw new Exception("ObjectPool<T>.ReturnObject() 메서드에 매개변수를 입력해야 합니다.");
+            throw new Exception("ObjectPool<T>.ReturnObject() 메서드에 index 매개변수를 입력해야 합니다.");
 
         getObject.gameObject.SetActive(false);
         _objectStack.Push(getObject);
@@ -109,7 +110,7 @@ public class ObjectPool<T> where T : Component
     public void ReturnObject(T getObject, int index)
     {
         if (_objectStackList == null)
-            throw new Exception("ObjectPool<T>.ReturnObject() 메서드에 매개변수를 입력하지 마십시오.");
+            throw new Exception("ObjectPool<T>.ReturnObject() 메서드에 index 매개변수를 입력하지 마십시오.");
         getObject.gameObject.SetActive(false);
         _objectStackList[index].Push(getObject);
     }

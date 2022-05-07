@@ -2,13 +2,13 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class FullHouseWeapon : TowerWeapon
+public class FullHouseTower : Tower
 {
-    public override string weaponName => "FullHouse";
-
-    public override void OnSkill()
+    public override string towerName => "FullHouse Tower";
+    protected override void Awake()
     {
-        return;
+        base.Awake();
+        targetDetector.detectingMode = TargetDetector.DetectingMode.Single;
     }
 }
 

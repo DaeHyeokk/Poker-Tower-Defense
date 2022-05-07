@@ -3,49 +3,57 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class TowerLevel : MonoBehaviour
+public class TowerLevel
 {
-    [SerializeField]
     private HorizontalLayoutGroup _levelLayout;
     private Image[] _levelImages;
 
-    private int _levelCount;
+    private int _level;
 
-    public int levelCount => _levelCount;
+    public int level => _level;
 
-    private void Awake()
+    public TowerLevel(HorizontalLayoutGroup levelLayout)
     {
+        _levelLayout = levelLayout;
         _levelLayout.gameObject.SetActive(false);
+
         _levelImages = new Image[3];
         _levelImages = _levelLayout.GetComponentsInChildren<Image>(true);
+
+        _level = 0;
     }
 
-    public void DefaultSetup()
+    public void Reset()
     {
-        _levelCount = 0;
+        // 활성화 시킨 level image를 모두 비활성화 시키고 _levelCount 값을 0으로 바꾼다.
+        while(_level > 0)
+        {
+            _levelImages[_level - 1].gameObject.SetActive(false);
+            _level--;
+        } 
     }
 
     // Tower의 등급을 업그레이드 하는 메서드, Tower의 최대 레벨은 3이다
     public void LevelUp()
     {
         // Tower가 최대 등급에 도달했을 경우 작업을 수행하지 않는다
-        if (_levelCount >= 3)
+        if (_level >= 3)
         {
             return;
         }
 
-        _levelCount++;
+        _level++;
         UpdateWeaponUI();
     }
 
     private void UpdateWeaponUI()
     {
         // 타워등급이 1이라면 => LevelUp()이 처음 실행됐다면
-        if (_levelCount == 1)
+        if (_level == 1)
             _levelLayout.gameObject.SetActive(true);  // layoutGroup UI를 활성화 한다
 
         // 등급을 나타내는 이미지 한개를 활성화 시킨다
-        _levelImages[_levelCount - 1].gameObject.SetActive(true);
+        _levelImages[_level - 1].gameObject.SetActive(true);
     }
 }
 
@@ -54,4 +62,7 @@ public class TowerLevel : MonoBehaviour
  * File : TowerLevel.cs
  * First Update : 2022/04/30 SAT 23:50
  * Tower의 레벨 관련 기능을 담당하는 스크립트.
+ * 
+ * Update : 2022/05/05 THU 23:15
+ * 컴포넌트에서 클래스로 변경. (?)
  */

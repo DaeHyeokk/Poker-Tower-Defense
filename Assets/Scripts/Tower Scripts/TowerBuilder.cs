@@ -7,23 +7,16 @@ public class TowerBuilder : MonoBehaviour
     [SerializeField]
     private CardDrawer _cardDrawer;
     [SerializeField]
-    private EnemySpawner _enemySpawner;
-    [SerializeField]
-    private ProjectileSpawner _projectileSpawner;
-    [SerializeField]
-    private GameObject _towerPrefab;
-    [SerializeField]
-    private GameObject[] _weaponPrefabs;
+    private GameObject[] _towerPrefabs;
 
 
-    private ObjectPool<TowerWeapon> _weaponPool;
     private ObjectPool<Tower> _towerPool;
 
+    public ObjectPool<Tower> towerPool => _towerPool;
 
     private void Awake()
     {
-        _weaponPool = new ObjectPool<TowerWeapon>(_weaponPrefabs, 10);
-        _towerPool = new ObjectPool<Tower>(_towerPrefab, 20);
+        _towerPool = new ObjectPool<Tower>(_towerPrefabs, 10);
     }
 
     public void BuildTower()
@@ -31,14 +24,11 @@ public class TowerBuilder : MonoBehaviour
         // 타워를 짓기 위해 카드를 뽑은 상태인지 확인한다.
         if (_cardDrawer.isDraw)
         {
-            Tower tower = _towerPool.GetObject();
-            TowerWeapon towerWeapon = _weaponPool.GetObject((int)_cardDrawer.drawHand);
+            Tower tower = _towerPool.GetObject((int)_cardDrawer.drawHand);
              
             // 타워는 화면의 정중앙에서 생성 된다.
             tower.transform.position = Vector3.zero;
-            towerWeapon.transform.SetParent(tower.transform);
-            towerWeapon.transform.localPosition = Vector3.zero;
-            tower.DefaultSetup(_enemySpawner, _projectileSpawner);
+            tower.Setup();
 
             // 뽑았던 카드를 초기화 한다.
             _cardDrawer.ResetDrawer();

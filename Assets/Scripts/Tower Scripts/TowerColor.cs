@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class TowerColor : MonoBehaviour
+public class TowerColor 
 {
     public enum ColorType { Red, Green, Blue }
 
@@ -13,8 +13,10 @@ public class TowerColor : MonoBehaviour
 
     public ColorType colorType => _colorType;
 
-    private void Awake()
+    public TowerColor(SpriteRenderer towerRenderer)
     {
+        _towerRenderer = towerRenderer;
+
         _colorDatas = new Color[3];
 
         _colorDatas[0] = new Color(180, 0, 0);  // Red
@@ -22,14 +24,12 @@ public class TowerColor : MonoBehaviour
         _colorDatas[2] = new Color(0, 0, 180);  // Blue
     }
 
-    public void DefaultSetup()
+    public void ChangeColor()
     {
         // 랜덤으로 ColorType 설정
         ColorType type = (ColorType)Random.Range((int)ColorType.Red, (int)ColorType.Blue + 1);
         _colorType = type;
 
-        // 자식오브젝트인 TowerWeapon에서 SpriteRenderer 컴포넌트를 찾아 값을 변경시킴
-        _towerRenderer = GetComponentInChildren<SpriteRenderer>();
         _towerRenderer.color = _colorDatas[(int)_colorType];
     }
 }
@@ -39,4 +39,7 @@ public class TowerColor : MonoBehaviour
  * File : TowerColor.cs
  * First Update : 2022/04/30 SAT 23:50
  * Tower의 Color 속성을 담당하는 스크립트.
+ * 
+ * Update : 2022/05/05 THU 23:05
+ * 컴포넌트에서 클래스로 변경. (?)
  */

@@ -6,25 +6,22 @@ public class ProjectileSpawner : MonoBehaviour
 {
     [SerializeField]
     private GameObject _projectilePrefab;
-
+    private Projectile _projectile;
     private ObjectPool<Projectile> _projectilePool;
+
+    public ObjectPool<Projectile> projectilePool => _projectilePool;
 
     private void Awake()
     {
-        _projectilePool = new ObjectPool<Projectile>(_projectilePrefab, 50);
+        _projectilePool = new ObjectPool<Projectile>(_projectilePrefab, 30);
     }
 
-    public void SpawnProjectile(Vector3 spawnPoint, Transform target)
+    public Projectile SpawnProjectile(Transform spawnPoint, Transform target, Sprite projectileSprite)
     {
-        Projectile projectile = _projectilePool.GetObject();
-        projectile.transform.position = spawnPoint;
-        projectile.Setup(target);
+        _projectile = _projectilePool.GetObject();
+        _projectile.transform.position = spawnPoint.position;
+        _projectile.Setup(target, projectileSprite);
+
+        return _projectile;
     }
 }
-
-
-/*
- * File : ProjectileSpawner.cs
- * First Update : 2022/04/25 MON 10:52
- * 타워가 공격할 때 생성되는 발사체의 생성을 담당하는 스크립트.
- */
