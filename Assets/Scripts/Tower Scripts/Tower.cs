@@ -6,6 +6,8 @@ using System;
 
 public abstract class Tower : MonoBehaviour
 {
+    public enum ProjectileType { Normal, Special }
+
     [SerializeField]
     private TowerData _towerData;
     [SerializeField]
@@ -20,10 +22,10 @@ public abstract class Tower : MonoBehaviour
     private TowerLevel _towerLevel;
     private TargetDetector _targetDetector;
     private ProjectileSpawner _projectileSpawner;
-    private Projectile _projectile;
     private TowerBuilder _towerBuilder;
     private WaitForSeconds _attackRateDelay;
     private int _attackCount;
+    private ProjectileType _projectileType;
 
     protected ProjectileSpawner projectileSpawner => _projectileSpawner;
     protected WaitForSeconds attackRateDelay => _attackRateDelay;
@@ -52,9 +54,9 @@ public abstract class Tower : MonoBehaviour
         _projectileSpawner = FindObjectOfType<ProjectileSpawner>();
         _towerBuilder = FindObjectOfType<TowerBuilder>();
 
-        _targetDetector = new TargetDetector(this, FindObjectOfType<EnemySpawner>());
         _towerColor = new TowerColor(_towerRenderer);
         _towerLevel = new TowerLevel(_levelLayout);
+        _targetDetector = new TargetDetector(this, FindObjectOfType<EnemySpawner>());
     }
 
     public virtual void Setup()
@@ -64,8 +66,9 @@ public abstract class Tower : MonoBehaviour
 
         _attackRateDelay = new WaitForSeconds(attackRate);
         _attackCount = 0;
-        SetAttackRangeUIScale();
+        _projectileType = ProjectileType.Normal;
 
+        SetAttackRangeUIScale();
         StartCoroutine(SearchAndAction());
     }
 
@@ -85,39 +88,53 @@ public abstract class Tower : MonoBehaviour
                 yield return null;
             else
             {
-                for (int i = 0; i < _targetDetector.targetList.Count; i++)
-                    ShotProjectile(_targetDetector.targetList[i].transform);
+                _attackCount++;
+                if (_attackCount >= 10)
+                {
+                    _projectileType = ProjectileType.Special;
+
+                    for (int i = 0; i < _targetDetector.targetList.Count; i++)
+                        ShotProjectile(_targetDetector.targetList[i], _projectileType);
+
+                    
+                    _projectileType = ProjectileType.Normal;
+                    _attackCount = 0;
+                }
+                else
+                {
+                    for (int i = 0; i < _targetDetector.targetList.Count; i++)
+                        ShotProjectile(_targetDetector.targetList[i], _projectileType);
+                }
 
                 yield return attackRateDelay;
             }
         }
     }
 
-    protected virtual void ShotProjectile(Transform target)
+    protected virtual void ShotProjectile(Enemy target, ProjectileType projectileType)
     {
-        _attackCount++;
-
-        if (_attackCount < 10)
+        if (projectileType == ProjectileType.Normal)
         {
-            _projectile = projectileSpawner.SpawnProjectile(spawnPoint, target, normalProjectileSprite);
-            _projectile.actionOnCollision += () => DoInflict(target);
+            Projectile projectile = projectileSpawner.SpawnProjectile(this, spawnPoint, target, normalProjectileSprite);
+            projectile.actionOnCollision += () => DoInflict(projectile, target);
         }
-        else
+        else // (projectileType == ProjectileType.Sepcial)
         {
-            _projectile = projectileSpawner.SpawnProjectile(spawnPoint, target, specialProjectileSprite);
-            _projectile.actionOnCollision += () => DoSpecialInflict(target);
-            _attackCount = 0;
+            Projectile projectile = projectileSpawner.SpawnProjectile(this, spawnPoint, target, specialProjectileSprite);
+            projectile.actionOnCollision += () => DoSpecialInflict(projectile, target);
         }
     }
 
-    public virtual void DoInflict(Transform target)
+    public virtual void DoInflict(Projectile projectile, Enemy target)
     {
-        
+        target.OnDamage(damage);
+        projectile.ReturnPool();
     }
 
-    public virtual void DoSpecialInflict(Transform target)
+    public virtual void DoSpecialInflict(Projectile projectile, Enemy target)
     {
-
+        target.OnDamage(damage * 2);
+        projectile.ReturnPool();
     }
     public void MoveTower()
     {

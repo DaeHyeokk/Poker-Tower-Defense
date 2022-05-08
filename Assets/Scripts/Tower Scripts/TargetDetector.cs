@@ -27,59 +27,50 @@ public class TargetDetector
 
     public void SearchTarget()
     {
-        if (_targetList.Count != 0)
+        if (_detectingMode == DetectingMode.Single)
         {
-            int index = 0;
-            while (index < _targetList.Count)
+            if (_targetList.Count != 0)
             {
-                _distance = Vector3.Distance(_tower.transform.position, _targetList[index].transform.position);
-                if (_distance > _tower.range)
-                {
-                    _targetList.RemoveAt(index);
-                }
+                _distance = Vector3.Distance(_tower.transform.position, _targetList[0].transform.position);
+                if (_distance > _tower.range || !_targetList[0].gameObject.activeInHierarchy)
+                    _targetList.RemoveAt(0);
                 else
+                    return;
+            }
+
+            float _closestDistSqr = Mathf.Infinity;
+
+            for (int i = 0; i < _enemySpawner.enemyList.Count; i++)
+            {
+                _distance = Vector3.Distance(_tower.transform.position, _enemySpawner.enemyList[i].transform.position);
+                if (_distance <= _tower.range && _distance <= _closestDistSqr)
                 {
-                    index++;
+                    _closestDistSqr = _distance;
+                    _tempTarget = _enemySpawner.enemyList[i];
                 }
+            }
+
+            if (_tempTarget != null)
+            {
+                targetList.Add(_tempTarget);
+                _tempTarget = null;
             }
         }
 
-        if (_targetList.Count < _tower.maxTargetCount)
+        else // (_detectingMode == DetectingMode.Multiple)
         {
-            if (_detectingMode == DetectingMode.Single)
+            _targetList.Clear();
+
+            for (int i = 0; i < _enemySpawner.enemyList.Count; i++)
             {
-                float _closestDistSqr = Mathf.Infinity;
-
-                for (int i = 0; i < _enemySpawner.enemyList.Count; i++)
+                _distance = Vector3.Distance(_tower.transform.position, _enemySpawner.enemyList[i].transform.position);
+                if (_distance <= _tower.range)
                 {
-                    _distance = Vector3.Distance(_tower.transform.position, _enemySpawner.enemyList[i].transform.position);
-                    if (_distance <= _tower.range && _distance <= _closestDistSqr)
-                    {
-                        _closestDistSqr = _distance;
-                        _tempTarget = _enemySpawner.enemyList[i];
-                    }
+                    _targetList.Add(_enemySpawner.enemyList[i]);
                 }
 
-                if (_tempTarget != null)
-                {
-                    targetList.Add(_tempTarget);
-                    _tempTarget = null;
-                }
-            }
-
-            else // (_detectingMode == DetectingMode.Multiple)
-            {
-                for (int i = 0; i < _enemySpawner.enemyList.Count; i++)
-                {
-                    _distance = Vector3.Distance(_tower.transform.position, _enemySpawner.enemyList[i].transform.position);
-                    if (_distance <= _tower.range)
-                    {
-                        _targetList.Add(_enemySpawner.enemyList[i]);
-                    }
-
-                    if (_targetList.Count >= _tower.maxTargetCount)
-                        break;
-                }
+                if (_targetList.Count >= _tower.maxTargetCount)
+                    break;
             }
         }
     }

@@ -13,7 +13,7 @@ public class Rotater2D : MonoBehaviour
         _targetSprite.transform.Rotate(Vector3.forward * Time.deltaTime * 50f);
     }
 
-    public void Rotate(Vector3 direction)
+    public void EnemyRotate(Vector3 direction)
     {
         if (direction == Vector3.right)
             _targetSprite.transform.rotation = Quaternion.Euler(0, 0, 0);
@@ -23,5 +23,10 @@ public class Rotater2D : MonoBehaviour
             _targetSprite.transform.rotation = Quaternion.Euler(0, 0, 180f);
         else
             _targetSprite.transform.rotation = Quaternion.Euler(0, 0, 270f);
+    }
+
+    public void ProjectileRotate(Quaternion quaternion)
+    {
+        _targetSprite.transform.rotation = quaternion;
     }
 }

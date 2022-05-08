@@ -8,10 +8,11 @@ public class Projectile : MonoBehaviour
     private ProjectileSpawner _projectileSpawner;
     private SpriteRenderer _spriteRenderer;
     private Movement2D _movement2D;
-
-    private Transform _target;
+    private Rotater2D _rotater2D;
+    private Enemy _target;
     private Tower _fromTower;
 
+    private bool _isCollision;
     public event Action actionOnCollision;
 
     private void Awake()
@@ -19,35 +20,42 @@ public class Projectile : MonoBehaviour
         _projectileSpawner = FindObjectOfType<ProjectileSpawner>();
         _spriteRenderer = GetComponent<SpriteRenderer>();
         _movement2D = GetComponent<Movement2D>();
+        _rotater2D = GetComponent<Rotater2D>();
+
+        _movement2D.moveSpeed = 10f;
     }
 
-    public void Setup(Transform targetTransfrom, Sprite projectileSprite)
+    public void Setup(Tower fromTower, Enemy target, Sprite projectileSprite)
     {
-        _target = targetTransfrom;
+        _fromTower = fromTower;
+        _target = target;
         _spriteRenderer.sprite = projectileSprite;
+        _isCollision = false;
     }
 
     private void Update()
     {
-        if(_target != null)
+        if (_target.isActiveAndEnabled)
         {
-            Vector3 direction = (_target.position - this.transform.position).normalized;
+            Vector3 direction = (_target.transform.position - this.transform.position).normalized;
             _movement2D.MoveTo(direction);
+            _rotater2D.ProjectileRotate(_fromTower.towerRenderer.transform.rotation);
         }
         else
         {
             ReturnPool();
         }
-        
+
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (!collision.CompareTag("Enemy")) return;
-        if (collision.transform != _target) return;
+        if (!collision.CompareTag("Enemy") || !_target.isActiveAndEnabled || collision.transform != _target.transform) return;
 
-        actionOnCollision();
-        ReturnPool();
+        _isCollision = true;
+
+        if(actionOnCollision != null)
+            actionOnCollision();
     }
 
     public void ReturnPool()

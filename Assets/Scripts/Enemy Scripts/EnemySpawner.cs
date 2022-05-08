@@ -13,13 +13,14 @@ public class EnemySpawner : MonoBehaviour
     [SerializeField]
     private GameObject _enemyPrefab;
 
-    private Enemy _enemy;
+   // private Enemy _enemy;
     private ObjectPool<Enemy> _enemyPool;
     private List<Enemy> _enemyList;
     private bool _isSpawn;
 
     private WaitForSeconds _waitSpawnTime;
 
+    public ObjectPool<Enemy> enemyPool => _enemyPool;
     public float spawnTime => _spawnTime;
     public List<Enemy> enemyList => _enemyList;
     public bool isSpawn => _isSpawn;
@@ -63,15 +64,11 @@ public class EnemySpawner : MonoBehaviour
         int round = GameManager.instance.round;
         while(spawnEnemy++ < 40)
         {
-            _enemy = _enemyPool.GetObject();
+            Enemy _enemy = _enemyPool.GetObject();
             // Enemy Setup() 메서드의 매개변수로 웨이포인트 정보와 enemyData 정보를 전달
             _enemy.Setup(_wayPoints, _enemyDatas[round - 1]);
             // _enemyList 리스트에 추가함 -> 필드 위에 남아있는 Enemy의 개수를 알기 위함
             _enemyList.Add(_enemy);
-            // Enemy를 잡을 경우 리스트에서 삭제
-            _enemy.actionOnDeath += () => _enemyList.Remove(_enemy);
-            // Enemy 오브젝트를 오브젝트풀에 반납
-            _enemy.actionOnDeath += () => _enemyPool.ReturnObject(_enemy);
 
             // _spawnTime 시간 동안 대기
             yield return _waitSpawnTime;

@@ -12,5 +12,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8e61bb01788e6b742b78dd0066b02575, type: 3}
   m_Name: Enemy Round 1
   m_EditorClassIdentifier: 
-  health: 50
-  moveSpeed: 0.8
+  health: 100
+  moveSpeed: 2

@@ -74,7 +74,7 @@ SpriteRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 1
   m_Sprite: {fileID: 21300000, guid: c854fd3df79772148befb8de1eb2b556, type: 3}
-  m_Color: {r: 0.6226415, g: 0.502225, b: 0.502225, a: 1}
+  m_Color: {r: 0.67096967, g: 0.52224994, b: 0.6792453, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
@@ -210,6 +210,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 55dcb9abc0d3c724e8d06450ac41ebcc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _healthSlider: {fileID: 2829038141269211417}
 --- !u!114 &2863491204728079660
 MonoBehaviour:
   m_ObjectHideFlags: 0

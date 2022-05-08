@@ -16,12 +16,11 @@ public class ProjectileSpawner : MonoBehaviour
         _projectilePool = new ObjectPool<Projectile>(_projectilePrefab, 30);
     }
 
-    public Projectile SpawnProjectile(Transform spawnPoint, Transform target, Sprite projectileSprite)
+    public Projectile SpawnProjectile(Tower fromTower, Transform spawnPoint, Enemy target, Sprite projectileSprite)
     {
         _projectile = _projectilePool.GetObject();
         _projectile.transform.position = spawnPoint.position;
-        _projectile.Setup(target, projectileSprite);
-
+        _projectile.Setup(fromTower, target, projectileSprite);
         return _projectile;
     }
 }
