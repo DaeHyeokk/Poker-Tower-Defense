@@ -22,10 +22,6 @@ public class LivingEntity : MonoBehaviour
         set => _health = value;
     }
 
-    private void OnEnable()
-    {
-        actionOnDeath = null;
-    }
 
     public void OnDamage(float damage)
     {
