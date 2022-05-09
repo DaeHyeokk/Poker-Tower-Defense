@@ -6,31 +6,68 @@ public class EnemySpawner : MonoBehaviour
 {
     [SerializeField]
     private float _spawnTime;            // 적 생성 주기
+    [Header("Round Enemy")]
     [SerializeField]
-    private Transform[] _wayPoints;      // 현재 스테이지의 이동 경로
+    private EnemyData[] _roundEnemyDatas;
     [SerializeField]
-    private EnemyData[] _enemyDatas;
-    [SerializeField]
-    private GameObject _enemyPrefab;
+    private GameObject _roundEnemyPrefab;
 
-   // private Enemy _enemy;
-    private ObjectPool<Enemy> _enemyPool;
-    private List<Enemy> _enemyList;
+    [Header("Round Boss")]
+    [SerializeField]
+    private EnemyData[] _roundBossEnemyDatas;
+    [SerializeField]
+    private GameObject _roundBossEnemyPrefab;
+
+    [Header("Mission Boss")]
+    [SerializeField]
+    private EnemyData[] _missionBossEnemyDatas;
+    [SerializeField]
+    private GameObject _missionBossEnemyPrefab;
+
+    [Header("Planet Boss")]
+    private Enemy _planetBossEnemy;
+
+
+    private ObjectPool<Enemy> _roundEnemyPool;
+    private List<Enemy> _roundEnemyList;
+
+    private Enemy _roundBossEnemy;
+    private Enemy[] _missionBossEnemies;
+    private List<Enemy> _missionBossEnemyList;
+
     private bool _isSpawn;
 
     private WaitForSeconds _waitSpawnTime;
 
-    public ObjectPool<Enemy> enemyPool => _enemyPool;
-    public float spawnTime => _spawnTime;
-    public List<Enemy> enemyList => _enemyList;
+    public ObjectPool<Enemy> roundEnemyPool => _roundEnemyPool;
+    public List<Enemy> roundEnemyList => _roundEnemyList;
+    public List<Enemy> missionBossEnemyList => _missionBossEnemyList;
+    public Enemy planetBossEnemy => _planetBossEnemy;
     public bool isSpawn => _isSpawn;
 
     private void Awake()
     {
-        _enemyPool = new ObjectPool<Enemy>(_enemyPrefab, 40);
-        _enemyList = new List<Enemy>();
+        _roundEnemyPool = new ObjectPool<Enemy>(_roundEnemyPrefab, 20);
+        _roundEnemyList = new List<Enemy>();
+        _missionBossEnemyList = new List<Enemy>();
+
+        InstantiateBossEnemy();
+
         _isSpawn = false;
-        _waitSpawnTime = new WaitForSeconds(spawnTime);
+        _waitSpawnTime = new WaitForSeconds(_spawnTime);
+    }
+
+    private void InstantiateBossEnemy()
+    {
+        _roundBossEnemy = Instantiate(_roundBossEnemyPrefab).GetComponent<Enemy>();
+        _roundBossEnemy.gameObject.SetActive(false);
+
+        _missionBossEnemies = new Enemy[3];
+        for (int i = 0; i < 3; i++)
+        {
+            _missionBossEnemies[i] = Instantiate(_missionBossEnemyPrefab).GetComponent<Enemy>();
+            _missionBossEnemies[i].gameObject.SetActive(false);
+        }
     }
 
     private void Update()
@@ -42,18 +79,18 @@ public class EnemySpawner : MonoBehaviour
         }
 
         // 현재 몬스터를 생성 중이 아니고, 적의 숫자가 0마리라면 다음 웨이브 몬스터를 생성
-        if (!_isSpawn && _enemyList.Count <= 0)
-            ActiveSpawnEnemy();
+        if (!_isSpawn && _roundEnemyList.Count <= 0)
+            SpawnEnemy();
 
     }
 
-    public void ActiveSpawnEnemy()
+    public void SpawnEnemy()
     {
         GameManager.instance.IncreaseRound();
-        StartCoroutine("SpawnEnemy");
+        StartCoroutine(SpawnEnemyCoroutine());
     }
 
-    private IEnumerator SpawnEnemy()
+    private IEnumerator SpawnEnemyCoroutine()
     {
         _isSpawn = true;
 
@@ -62,20 +99,44 @@ public class EnemySpawner : MonoBehaviour
 
         int spawnEnemy = 0;
         int round = GameManager.instance.round;
-        while(spawnEnemy++ < 40)
-        {
-            Enemy _enemy = _enemyPool.GetObject();
-            // Enemy Setup() 메서드의 매개변수로 웨이포인트 정보와 enemyData 정보를 전달
-            _enemy.Setup(_wayPoints, _enemyDatas[round - 1]);
-            // _enemyList 리스트에 추가함 -> 필드 위에 남아있는 Enemy의 개수를 알기 위함
-            _enemyList.Add(_enemy);
 
-            // _spawnTime 시간 동안 대기
-            yield return _waitSpawnTime;
+        if (round % 10 != 0)
+        {
+            while (spawnEnemy++ < 40)
+            {
+                Enemy _enemy = _roundEnemyPool.GetObject();
+                // Enemy Setup() 메서드의 매개변수로 웨이포인트 정보와 enemyData 정보를 전달
+                _enemy.Setup(_roundEnemyDatas[round - 1]);
+                // _enemyList 리스트에 추가함 -> 필드 위에 남아있는 Enemy의 개수를 알기 위함
+                _roundEnemyList.Add(_enemy);
+
+                // _spawnTime 시간 동안 대기
+                yield return _waitSpawnTime;
+            }
+        }
+        // 10의 배수 라운드는 보스 라운드임.
+        else
+        {
+            _roundBossEnemy.gameObject.SetActive(true);
+            _roundBossEnemy.Setup(_roundBossEnemyDatas[round / 11]);
+            _roundEnemyList.Add(_roundBossEnemy);
         }
 
         _isSpawn = false;
     }
+
+    public void SpawnMissionBoss(int bossLevel)
+    {
+        // 현재 소환하려는 보스가 필드에 이미 소환된 상태면 소환하지 않는다.
+        // 혹시모를 중복 소환 버그 방지
+        if (_missionBossEnemies[bossLevel].gameObject.activeInHierarchy)
+            return;
+
+        _missionBossEnemies[bossLevel].gameObject.SetActive(true);
+        _missionBossEnemies[bossLevel].Setup(_missionBossEnemyDatas[bossLevel]);
+        _missionBossEnemyList.Add(_missionBossEnemies[bossLevel]);
+    }
+
 }
 
 

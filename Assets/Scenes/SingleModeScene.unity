@@ -4060,6 +4060,7 @@ GameObject:
   - component: {fileID: 2114560456}
   - component: {fileID: 2114560455}
   - component: {fileID: 2114560458}
+  - component: {fileID: 2114560459}
   m_Layer: 0
   m_Name: Lava-PLanet
   m_TagString: Untagged
@@ -4160,6 +4161,22 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _targetSprite: {fileID: 2114560456}
+--- !u!58 &2114560459
+CircleCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2114560453}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: 0, y: 0}
+  serializedVersion: 2
+  m_Radius: 0.5
 --- !u!1 &2135271845
 GameObject:
   m_ObjectHideFlags: 0

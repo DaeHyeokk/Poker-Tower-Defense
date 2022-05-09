@@ -35,7 +35,8 @@ public class Projectile : MonoBehaviour
 
     private void Update()
     {
-        if (_target.isActiveAndEnabled)
+        // _target 오브젝트가 씬에 활성화된 상태라면 _target을 계속 추적한다.
+        if (_target.gameObject.activeInHierarchy)
         {
             Vector3 direction = (_target.transform.position - this.transform.position).normalized;
             _movement2D.MoveTo(direction);
@@ -50,7 +51,9 @@ public class Projectile : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (!collision.CompareTag("Enemy") || !_target.isActiveAndEnabled || collision.transform != _target.transform) return;
+        if (!collision.CompareTag("Enemy") 
+            || !_target.gameObject.activeInHierarchy 
+            || collision.transform != _target.transform) return;
 
         _isCollision = true;
 

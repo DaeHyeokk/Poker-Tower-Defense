@@ -102,3 +102,8 @@ Date : 2022/05/08 SUN
     구현하였음.
     (예를 들어 5초 스턴과 3초 스턴 공격을 받는다고 했을 때 stunCount 값은 2가 되고 3초 스턴이 풀리면 1로 감소, 5초 스턴이 풀리면서 0이 되어 이동 속도가 
     원래대로 돌아옴.)
+
+Date : 2022/05/09 MON
+☑ Enemy 클래스 세분화 -> Enemy(FieldEnemy(RoundEnemy,FieldBossEnemy(RoundBossEnemy, MissionBossEnemy), PlanetBossEnemy)
+☑ RoundBossEnemy, MissionBossEnemy, PlanetBossEnemy 구현.
+☑ GameManager에 남은 라이프, 현재 골드, 미네랄, 카드 변경권 횟수 추가.

@@ -215,7 +215,6 @@ public class CardDrawer : MonoBehaviour
                     UpdateHand(PokerHand.StraightFlush);
                 else
                     UpdateHand(PokerHand.Flush);
-
             }
         }
     }

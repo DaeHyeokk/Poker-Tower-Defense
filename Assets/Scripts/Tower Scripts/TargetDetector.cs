@@ -40,13 +40,13 @@ public class TargetDetector
 
             float _closestDistSqr = Mathf.Infinity;
 
-            for (int i = 0; i < _enemySpawner.enemyList.Count; i++)
+            for (int i = 0; i < _enemySpawner.roundEnemyList.Count; i++)
             {
-                _distance = Vector3.Distance(_tower.transform.position, _enemySpawner.enemyList[i].transform.position);
+                _distance = Vector3.Distance(_tower.transform.position, _enemySpawner.roundEnemyList[i].transform.position);
                 if (_distance <= _tower.range && _distance <= _closestDistSqr)
                 {
                     _closestDistSqr = _distance;
-                    _tempTarget = _enemySpawner.enemyList[i];
+                    _tempTarget = _enemySpawner.roundEnemyList[i];
                 }
             }
 
@@ -61,12 +61,12 @@ public class TargetDetector
         {
             _targetList.Clear();
 
-            for (int i = 0; i < _enemySpawner.enemyList.Count; i++)
+            for (int i = 0; i < _enemySpawner.roundEnemyList.Count; i++)
             {
-                _distance = Vector3.Distance(_tower.transform.position, _enemySpawner.enemyList[i].transform.position);
+                _distance = Vector3.Distance(_tower.transform.position, _enemySpawner.roundEnemyList[i].transform.position);
                 if (_distance <= _tower.range)
                 {
-                    _targetList.Add(_enemySpawner.enemyList[i]);
+                    _targetList.Add(_enemySpawner.roundEnemyList[i]);
                 }
 
                 if (_targetList.Count >= _tower.maxTargetCount)
