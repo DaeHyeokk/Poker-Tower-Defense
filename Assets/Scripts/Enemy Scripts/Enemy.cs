@@ -11,32 +11,17 @@ public abstract class Enemy : MonoBehaviour
     protected float _maxHealth;  // Enemy의 최대 체력
     protected float _health;     // Enemy의 현재 체력
 
-    protected EnemySpawner _enemySpawner;
-
-    protected virtual void Awake()
-    {
-        _enemySpawner = FindObjectOfType<EnemySpawner>();
-    }
-
-    public virtual void Setup(EnemyData enemyData)
-    {
-        // 생성할 Enemy의 체력 설정
-        _maxHealth = enemyData.health;
-        _health = _maxHealth;
-
-        _healthSlider.maxValue = _maxHealth;
-        _healthSlider.value = _maxHealth;
-    }
-
     public virtual void OnDamage(float damage)
     {
         _health -= damage;
-        _healthSlider.value = _health;
+        _healthSlider.value -= damage;
 
         if (_health <= 0)
             Die();
     }
 
+    public abstract void OnStun(float stunTime);
+    public abstract void OnSlow(float slowPer, float slowTime);
     protected abstract void Die();
 }
 

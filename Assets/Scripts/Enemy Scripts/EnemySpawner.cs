@@ -6,6 +6,9 @@ public class EnemySpawner : MonoBehaviour
 {
     [SerializeField]
     private float _spawnTime;            // 적 생성 주기
+    [SerializeField]
+    private Transform[] _wayPoints; // 필드 몬스터 이동경로 배열
+
     [Header("Round Enemy")]
     [SerializeField]
     private EnemyData[] _roundEnemyDatas;
@@ -22,34 +25,38 @@ public class EnemySpawner : MonoBehaviour
     [SerializeField]
     private EnemyData[] _missionBossEnemyDatas;
     [SerializeField]
-    private GameObject _missionBossEnemyPrefab;
+    private GameObject[] _missionBossEnemyPrefab;
 
-    [Header("Planet Boss")]
-    private Enemy _planetBossEnemy;
+    [Header("Special Boss")]
+    [SerializeField]
+    private GameObject _SpecialBossEnemyPrefab;
+    [SerializeField]
+    private Transform _specialBossSpawnPoint;
 
 
-    private ObjectPool<Enemy> _roundEnemyPool;
-    private List<Enemy> _roundEnemyList;
+    private ObjectPool<RoundEnemy> _roundEnemyPool;
+    private RoundBossEnemy _roundBossEnemy;
+    private List<FieldEnemy> _roundEnemyList;
 
-    private Enemy _roundBossEnemy;
-    private Enemy[] _missionBossEnemies;
-    private List<Enemy> _missionBossEnemyList;
+    private MissionBossEnemy[] _missionBossEnemies;
+    private List<MissionBossEnemy> _missionBossEnemyList;
+
+    private SpecialBossEnemy _specialBossEnemy;
 
     private bool _isSpawn;
-
     private WaitForSeconds _waitSpawnTime;
 
-    public ObjectPool<Enemy> roundEnemyPool => _roundEnemyPool;
-    public List<Enemy> roundEnemyList => _roundEnemyList;
-    public List<Enemy> missionBossEnemyList => _missionBossEnemyList;
-    public Enemy planetBossEnemy => _planetBossEnemy;
+    public ObjectPool<RoundEnemy> roundEnemyPool => _roundEnemyPool;
+    public List<FieldEnemy> roundEnemyList => _roundEnemyList;
+    public List<MissionBossEnemy> missionBossEnemyList => _missionBossEnemyList;
+    public SpecialBossEnemy specialBossEnemy => _specialBossEnemy;
     public bool isSpawn => _isSpawn;
 
     private void Awake()
     {
-        _roundEnemyPool = new ObjectPool<Enemy>(_roundEnemyPrefab, 20);
-        _roundEnemyList = new List<Enemy>();
-        _missionBossEnemyList = new List<Enemy>();
+        _roundEnemyPool = new ObjectPool<RoundEnemy>(_roundEnemyPrefab, 20);
+        _roundEnemyList = new List<FieldEnemy>();
+        _missionBossEnemyList = new List<MissionBossEnemy>();
 
         InstantiateBossEnemy();
 
@@ -59,15 +66,17 @@ public class EnemySpawner : MonoBehaviour
 
     private void InstantiateBossEnemy()
     {
-        _roundBossEnemy = Instantiate(_roundBossEnemyPrefab).GetComponent<Enemy>();
+        _roundBossEnemy = Instantiate(_roundBossEnemyPrefab).GetComponent<RoundBossEnemy>();
         _roundBossEnemy.gameObject.SetActive(false);
 
-        _missionBossEnemies = new Enemy[3];
+        _missionBossEnemies = new MissionBossEnemy[3];
         for (int i = 0; i < 3; i++)
         {
-            _missionBossEnemies[i] = Instantiate(_missionBossEnemyPrefab).GetComponent<Enemy>();
+            _missionBossEnemies[i] = Instantiate(_missionBossEnemyPrefab[i]).GetComponent<MissionBossEnemy>();
             _missionBossEnemies[i].gameObject.SetActive(false);
         }
+
+        _specialBossEnemy = Instantiate(_SpecialBossEnemyPrefab, _specialBossSpawnPoint.position, Quaternion.identity).GetComponent<SpecialBossEnemy>();
     }
 
     private void Update()
@@ -104,10 +113,10 @@ public class EnemySpawner : MonoBehaviour
         {
             while (spawnEnemy++ < 40)
             {
-                Enemy _enemy = _roundEnemyPool.GetObject();
+                FieldEnemy _enemy = _roundEnemyPool.GetObject();
                 // Enemy Setup() 메서드의 매개변수로 웨이포인트 정보와 enemyData 정보를 전달
-                _enemy.Setup(_roundEnemyDatas[round - 1]);
-                // _enemyList 리스트에 추가함 -> 필드 위에 남아있는 Enemy의 개수를 알기 위함
+                _enemy.Setup(_wayPoints, _roundEnemyDatas[round - 1]);
+                // _roundEnemyList 리스트에 추가함 -> 필드 위에 남아있는 Enemy의 개수를 알기 위함
                 _roundEnemyList.Add(_enemy);
 
                 // _spawnTime 시간 동안 대기
@@ -118,7 +127,7 @@ public class EnemySpawner : MonoBehaviour
         else
         {
             _roundBossEnemy.gameObject.SetActive(true);
-            _roundBossEnemy.Setup(_roundBossEnemyDatas[round / 11]);
+            _roundBossEnemy.Setup(_wayPoints, _roundBossEnemyDatas[round / 11]);
             _roundEnemyList.Add(_roundBossEnemy);
         }
 
@@ -133,7 +142,7 @@ public class EnemySpawner : MonoBehaviour
             return;
 
         _missionBossEnemies[bossLevel].gameObject.SetActive(true);
-        _missionBossEnemies[bossLevel].Setup(_missionBossEnemyDatas[bossLevel]);
+        _missionBossEnemies[bossLevel].Setup(_wayPoints, _missionBossEnemyDatas[bossLevel]);
         _missionBossEnemyList.Add(_missionBossEnemies[bossLevel]);
     }
 

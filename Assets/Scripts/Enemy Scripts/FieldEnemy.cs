@@ -5,7 +5,6 @@ using UnityEngine.UI;
 
 public abstract class FieldEnemy : Enemy
 {
-    [SerializeField]
     private Transform[] _wayPoints;  // 이동경로 좌표 배열
     private int _wayPointCount;     // 이동경로 개수
     private int _currentIndex;   // 현재 목표지점 인덱스
@@ -14,27 +13,32 @@ public abstract class FieldEnemy : Enemy
     private int _stunCount; // 스턴을 중첩해서 맞을 경우 가장 마지막에 풀리는 스턴을 알기 위한 변수
 
     private Movement2D _movement2D;  // 오브젝트 이동 제어
-    private Rotater2D _rotater2D; // 오브젝트 회전 제어
+    protected EnemySpawner _enemySpawner;
 
-    protected override void Awake()
+    protected virtual void Awake()
     {
-        base.Awake();
         _movement2D = GetComponent<Movement2D>();
-        _rotater2D = GetComponent<Rotater2D>();
+        _enemySpawner = FindObjectOfType<EnemySpawner>();
     }
 
-    public override void Setup(EnemyData enemyData)
+    public virtual void Setup(Transform[] wayPoints, EnemyData enemyData)
     {
-        base.Setup(enemyData);
+        if(_wayPoints == null)
+        {
+            _wayPoints = wayPoints;
+            _wayPointCount = wayPoints.Length;
+        }
 
+        // 생성할 Enemy의 체력 설정
+        _maxHealth = enemyData.health;
+        _health = _maxHealth;
+        _healthSlider.maxValue = _maxHealth;
+        _healthSlider.value = _maxHealth;
         // 생성할 Enemy의 이동속도 설정
         _movement2D.moveSpeed = enemyData.moveSpeed;
         _baseMoveSpeed = enemyData.moveSpeed;
 
         _stunCount = 0;
-
-        _healthSlider.maxValue = _maxHealth;
-        _healthSlider.value = _maxHealth;
 
         this.transform.rotation = Quaternion.Euler(0, 0, 0);
         // 웨이포인트 배열의 첫번째 원소부터 탐색하기 위해 currentIndex 값을 0으로 바꿈
@@ -55,10 +59,8 @@ public abstract class FieldEnemy : Enemy
         {
             isNextMove = false;
             nowDistance = Vector3.Distance(this.transform.position, _wayPoints[_currentIndex].position);
-            // 현재 enemy의 위치와 목표 지점의 위치 사이의 거리가 0.1f보다 가깝다면 다음 목표 지점을 탐색한다
-            // 0.1f에 MoveSpeed를 곱해주는 이유는 이동 속도가 빠른 enemy일 경우 한 프레임에 0.1f보다 많이 이동할 수도 있기 때문에
-            // if 조건문에 걸리지 않고 목표 경로를 잃은 enemy 오브젝트가 발생할 수 있기 때문이다.
-            if (Vector3.Distance(transform.position, _wayPoints[_currentIndex].position) < 0.1f)
+            // 현재 enemy의 위치와 목표 지점의 위치 사이의 거리가 0.05f보다 가깝다면 다음 목표 지점을 탐색한다
+            if (Vector3.Distance(transform.position, _wayPoints[_currentIndex].position) < 0.05f)
             {
                 NextMoveTo();
                 isNextMove = true;
@@ -95,10 +97,9 @@ public abstract class FieldEnemy : Enemy
 
         Vector3 direction = (_wayPoints[_currentIndex].position - transform.position).normalized;
         _movement2D.MoveTo(direction);
-        _rotater2D.EnemyRotate(direction);
     }
 
-    public void OnStun(float stunTime)
+    public override void OnStun(float stunTime)
     {
         StartCoroutine(OnStunCoroutine(stunTime));
     }
@@ -121,7 +122,7 @@ public abstract class FieldEnemy : Enemy
     }
 
 
-    public void OnSlow(float slowPer, float slowTime)
+    public override void OnSlow(float slowPer, float slowTime)
     {
         StartCoroutine(OnSlowCoroutine(slowPer, slowTime));
     }

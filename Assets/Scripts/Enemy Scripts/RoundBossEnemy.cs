@@ -24,7 +24,7 @@ public class RoundBossEnemy : FieldBossEnemy
     {
         // 100골드, 카드 변환권 주기
         GameManager.instance.IncreaseGold(100);
-        GameManager.instance.IncreaseChangeChance(3);
+        GameManager.instance.IncreaseChangeChance(2);
         ReturnObject();
     }
 

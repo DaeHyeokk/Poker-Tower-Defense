@@ -27,8 +27,34 @@ public class TargetDetector
 
     public void SearchTarget()
     {
+        
+        // 단일 타겟 타워일 경우 수행
         if (_detectingMode == DetectingMode.Single)
         {
+            _distance = Vector3.Distance(_tower.transform.position, _enemySpawner.specialBossEnemy.transform.position);
+            if (_distance <= _tower.range)
+            {
+                if (_targetList.Count != 0)
+                    _targetList.RemoveAt(0);
+
+                _targetList.Add(_enemySpawner.specialBossEnemy);
+                return;
+            }
+
+            // 타워는 보스를 우선 타격하기 때문에 보스 몬스터를 먼저 탐색한다.
+            for (int i = 0; i < _enemySpawner.missionBossEnemyList.Count; i++)
+            {
+                _distance = Vector3.Distance(_tower.transform.position, _enemySpawner.roundEnemyList[i].transform.position);
+                if (_distance <= _tower.range)
+                {
+                    if (_targetList.Count != 0)
+                        _targetList.RemoveAt(0);
+
+                    _targetList.Add(_enemySpawner.missionBossEnemyList[i]);
+                    return;
+                }
+            }
+
             if (_targetList.Count != 0)
             {
                 _distance = Vector3.Distance(_tower.transform.position, _targetList[0].transform.position);
@@ -56,10 +82,21 @@ public class TargetDetector
                 _tempTarget = null;
             }
         }
-
+        // 다중 타겟 타워일 경우 수행
         else // (_detectingMode == DetectingMode.Multiple)
         {
             _targetList.Clear();
+
+            // 타워는 보스를 우선 타격하기 때문에 보스 몬스터를 먼저 탐색한다.
+            for (int i = 0; i < _enemySpawner.missionBossEnemyList.Count; i++)
+            {
+                _distance = Vector3.Distance(_tower.transform.position, _enemySpawner.roundEnemyList[i].transform.position);
+                if (_distance <= _tower.range)
+                    _targetList.Add(_enemySpawner.missionBossEnemyList[i]);
+
+                if (_targetList.Count >= _tower.maxTargetCount)
+                    break;
+            }
 
             for (int i = 0; i < _enemySpawner.roundEnemyList.Count; i++)
             {
