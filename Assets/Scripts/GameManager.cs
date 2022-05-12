@@ -19,16 +19,18 @@ public class GameManager : MonoBehaviour
         }
     }
 
+    [SerializeField]
+    private int _pokerCount;
+
     private int _round;
     private int _finalRound;
     private int _life;
     private int _gold;
     private int _mineral;
     private int _changeChance;
-    private int _pokerCount;
     private bool _isGameover;
 
-    private int _colorUpgradeIncrementCost;
+    private int[] _colorUpgradeIncrementCost;
     private int[] _colorUpgradeCounts;
     private int[] _colorUpgradeCosts;
 
@@ -49,16 +51,16 @@ public class GameManager : MonoBehaviour
         _finalRound = 40;
         _life = 100;
         _gold = 400;
-        _mineral = 0;
+        _mineral = 400;
         _changeChance = 3;
-        _pokerCount = 7;
         _isGameover = false;
 
-        _colorUpgradeIncrementCost = 1;
+        _colorUpgradeIncrementCost = new int[3];
         _colorUpgradeCounts = new int[3];
         _colorUpgradeCosts = new int[3];
         for(int i=0; i<3; i++)
         {
+            _colorUpgradeIncrementCost[i] = 1;
             _colorUpgradeCounts[i] = 0;
             _colorUpgradeCosts[i] = 5;
         }
@@ -135,8 +137,20 @@ public class GameManager : MonoBehaviour
 
     public void UpgradeColor(int index)
     {
+        if (_colorUpgradeCosts[index] > _mineral)
+            return;
 
+        DecreaseMineral(_colorUpgradeCosts[index]);
+
+        _colorUpgradeCounts[index]++;
+        UIManager.instance.SetColorUpgradeCountText(index, _colorUpgradeCounts[index]);
+
+        _colorUpgradeCosts[index] += _colorUpgradeIncrementCost[index];
+        UIManager.instance.SetColorUpgradeCostText(index, _colorUpgradeCosts[index]);
+
+        _colorUpgradeIncrementCost[index]++;
     }
+
     public bool IsFinalRound() { return _round == _finalRound; }
 }
 

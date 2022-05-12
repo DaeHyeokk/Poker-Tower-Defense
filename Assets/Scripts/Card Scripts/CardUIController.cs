@@ -1,52 +1,12 @@
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
 
-public class CardUIController : MonoBehaviour
+public class CardUIController
 {
-    private CardDrawer _cardDrawer;
-
-    private void Awake()
+    public void ReverseCardFrountUI(int index, Card card)
     {
-        _cardDrawer = GetComponent<CardDrawer>();
-    }
-
-    public void AllReverseCardFrontUI()
-    {
-        UIManager.instance.HideHandText();
-        StartCoroutine(AllReverseCardFrontUICoroutine());
-    }
-
-    private IEnumerator AllReverseCardFrontUICoroutine()
-    {
-        yield return new WaitForSeconds(0.1f);
-
-        for (int index = 0; index < _cardDrawer.drawCards.Length; index++)
-        {
-            UIManager.instance.ReverseCardFront(index, _cardDrawer.drawCards[index]);
-            UIManager.instance.ShowChangeButton(index);
-            yield return new WaitForSeconds(0.1f);
-        }
-
-        SetHandUI();
-        UIManager.instance.ShowGetButton();
-        // 플레이어의 화면에 카드를 모두 표시하고난 이후에 플레이어는 타워를 지을 수 있는 상태가 된다.
-        _cardDrawer.ReadyBuildTower();
-    }
-
-    public void ReverseCardFrountUI(int index)
-    {
-        StartCoroutine(ReverseCardFrountUICoroutine(index));
-    }
-
-    private IEnumerator ReverseCardFrountUICoroutine(int index)
-    {
-        yield return new WaitForSeconds(0.1f);
-
-        UIManager.instance.ReverseCardFront(index, _cardDrawer.drawCards[index]);
+        UIManager.instance.ReverseCardFront(index, card);
         UIManager.instance.ShowChangeButton(index);
-        SetHandUI();
     }
+
     public void AllReverseCardBackUI()
     {
         for (int index = 0; index < GameManager.instance.pokerCount; index++)
@@ -62,12 +22,22 @@ public class CardUIController : MonoBehaviour
 
     public void HideChangeButton(int index) => UIManager.instance.HideChangeButton(index);
 
-    public void SetHandUI()
+    public void SetHandUI(PokerHand drawHand)
     {
-        UIManager.instance.SetHandText(_cardDrawer.drawHand.ToString());
+        UIManager.instance.SetHandText(drawHand.ToString());
         UIManager.instance.ShowHandText();
-        UIManager.instance.SetTowerPreviewImage((int)_cardDrawer.drawHand);
+    }
+
+    public void SetTowerPreviewUI(int towerIndex)
+    {
+        UIManager.instance.SetTowerPreviewImage(towerIndex);
         UIManager.instance.ShowTowerPreviewImage();
+    }
+
+    public void SetMineralPreviewUI(int mineralAmount)
+    {
+        UIManager.instance.SetMineralGetText(mineralAmount);
+        UIManager.instance.ShowMineralGetText();
     }
 
     public void HideHandTextUI() => UIManager.instance.HideHandText();
@@ -82,12 +52,13 @@ public class CardUIController : MonoBehaviour
         UIManager.instance.ShowTowerGambleButton();
         UIManager.instance.ShowMineralGambleButton();
     }
+
     public void HideGetButtonUI()
     {
         UIManager.instance.HideGetButton();
         UIManager.instance.HideTowerPreviewImage();
+        UIManager.instance.HideMineralGetText();
     }
-
     public void ShowGetButtonUI() => UIManager.instance.ShowGetButton();
 }
 

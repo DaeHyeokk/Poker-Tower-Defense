@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class EnemySpawner : MonoBehaviour
 {
@@ -26,6 +27,8 @@ public class EnemySpawner : MonoBehaviour
     private EnemyData[] _missionBossEnemyDatas;
     [SerializeField]
     private GameObject[] _missionBossEnemyPrefab;
+    [SerializeField]
+    private float[] _missionBossRespawnCooltimes;
 
     [Header("Special Boss")]
     [SerializeField]
@@ -45,6 +48,7 @@ public class EnemySpawner : MonoBehaviour
 
     private bool _isSpawn;
     private WaitForSeconds _waitSpawnTime;
+    private WaitForSeconds _waitUpdateTime;
 
     public ObjectPool<RoundEnemy> roundEnemyPool => _roundEnemyPool;
     public List<FieldEnemy> roundEnemyList => _roundEnemyList;
@@ -59,9 +63,11 @@ public class EnemySpawner : MonoBehaviour
         _missionBossEnemyList = new List<MissionBossEnemy>();
 
         InstantiateBossEnemy();
+        MissionBossCooltimeSetup();
 
         _isSpawn = false;
         _waitSpawnTime = new WaitForSeconds(_spawnTime);
+        _waitUpdateTime = new WaitForSeconds(1f);
     }
 
     private void InstantiateBossEnemy()
@@ -77,6 +83,12 @@ public class EnemySpawner : MonoBehaviour
         }
 
         _specialBossEnemy = Instantiate(_SpecialBossEnemyPrefab, _specialBossSpawnPoint.position, Quaternion.identity).GetComponent<SpecialBossEnemy>();
+    }
+
+    private void MissionBossCooltimeSetup()
+    {
+        for (int i = 0; i < 3; i++)
+            UIManager.instance.SetMissionBossCooltimeSlider(i, _missionBossRespawnCooltimes[i]);
     }
 
     private void Update()
@@ -144,8 +156,34 @@ public class EnemySpawner : MonoBehaviour
         _missionBossEnemies[bossLevel].gameObject.SetActive(true);
         _missionBossEnemies[bossLevel].Setup(_wayPoints, _missionBossEnemyDatas[bossLevel]);
         _missionBossEnemyList.Add(_missionBossEnemies[bossLevel]);
+
+        StartCoroutine(MissionBossCoolTimeCoroutine(bossLevel));
     }
 
+    private IEnumerator MissionBossCoolTimeCoroutine(int bossLevel)
+    {
+        // 미션 보스를 소환하는 버튼의 상호작용 기능 해제
+        UIManager.instance.DisableMissionButton(bossLevel);
+
+        float remainCooltime = _missionBossRespawnCooltimes[bossLevel];
+
+        UIManager.instance.SetMissionBossCooltimeText(bossLevel, remainCooltime);
+        UIManager.instance.ResetMissionBossCooltimeSliderValue(bossLevel);
+        UIManager.instance.ShowMissionBossCooltimeSlider(bossLevel);
+
+        while (remainCooltime > 0)
+        {
+            yield return _waitUpdateTime;
+            remainCooltime -= 1f;
+            UIManager.instance.SetMissionBossCooltimeText(bossLevel, remainCooltime);
+            UIManager.instance.DecreaseMissionBossCooltimeSliderValue(bossLevel, 1);
+        }
+
+        UIManager.instance.HideMissionBossCooltimeSlider(bossLevel);
+
+        // 미션 보스를 소환하는 버튼의 상호작용 기능 활성화
+        UIManager.instance.EnableMissionButton(bossLevel);
+    }
 }
 
 

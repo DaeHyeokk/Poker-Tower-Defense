@@ -5,8 +5,6 @@ using UnityEngine;
 public class TowerBuilder : MonoBehaviour
 {
     [SerializeField]
-    private CardDrawer _cardDrawer;
-    [SerializeField]
     private GameObject[] _towerPrefabs;
 
 
@@ -19,22 +17,13 @@ public class TowerBuilder : MonoBehaviour
         _towerPool = new ObjectPool<Tower>(_towerPrefabs, 10);
     }
 
-    public void BuildTower()
+    public void BuildTower(int towerIndex)
     {
-        // 타워를 짓기 위해 카드를 뽑은 상태인지 확인한다.
-        if (_cardDrawer.isDraw)
-        {
-            Tower tower = _towerPool.GetObject((int)_cardDrawer.drawHand);
-             
-            // 타워는 화면의 정중앙에서 생성 된다.
-            tower.transform.position = Vector3.zero;
-            tower.Setup();
+        Tower tower = _towerPool.GetObject(towerIndex);
 
-            // 뽑았던 카드를 초기화 한다.
-            _cardDrawer.ResetDrawer();
-            // 카드를 다시 뽑을 수 있는 상태로 바꾼다.
-            _cardDrawer.ReadyDrawCard();
-        }
+        // 타워는 화면의 정중앙에서 생성 된다.
+        tower.transform.position = Vector3.zero;
+        tower.Setup();
     }
 }
 

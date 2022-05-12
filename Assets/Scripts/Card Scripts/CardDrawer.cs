@@ -3,86 +3,46 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public enum PokerHand { Top, OnePair, TwoPair, Triple, Straight, Mountain, Flush, FullHouse, FourKind, StraightFlush }
-
-public class CardDrawer : MonoBehaviour
+public class CardDrawer
 {
-    private CardUIController _cardUIController;
-
-    /// 뽑은 카드의 족보값(?)을 저장하는 변수.
+    // 뽑은 카드의 족보값(?)을 저장하는 변수.
     private PokerHand _drawHand;
 
-    /// 뽑은 카드들의 목록을 비트마스킹 기법으로 저장하는 변수.
-    /// 카드가 총 52장이기 때문에 64bit 자료형인 long 을 사용함.
+    // 뽑은 카드들의 목록을 비트마스킹 기법으로 저장하는 변수.
+    // 카드가 총 52장이기 때문에 64bit 자료형인 long 을 사용함.
     private long _drawCardsMasking;
 
-    /// 카드가 뽑힌 상태인지 여부를 나타내는 변수
-    private bool _isDraw;
 
-    /// 현재 카드를 뽑는중인지 여부를 나타내는 변수
-    private bool _isDrawing;
-
-    /// 뽑은 카드들의 무늬 및 숫자 정보를 저장하는 변수.
-    /// 플레이어의 화면에 뽑은 순서대로 카드를 보여주기 위한 Card[] 배열.
+    // 뽑은 카드들의 무늬 및 숫자 정보를 저장하는 변수.
+    // 플레이어의 화면에 뽑은 순서대로 카드를 보여주기 위한 Card[] 배열.
     private Card[] _drawCards;
 
     public Card[] drawCards => _drawCards;
     public PokerHand drawHand => _drawHand;
-    public bool isDraw => _isDraw;
 
-    private void Awake()
+    public CardDrawer()
     {
-        _cardUIController = GetComponent<CardUIController>();
-
-        _drawCards = new Card[GameManager.instance.pokerCount];
         _drawCardsMasking = 0;
-        _isDraw = false;
-        _isDrawing = false;
+        _drawCards = new Card[GameManager.instance.pokerCount];
 
         for (int i = 0; i < GameManager.instance.pokerCount; i++)
+        {
             _drawCards[i] = new();
+        }
     }
 
     public void DrawCardAll()
     {
-        // 이미 카드를 뽑고있는 중이라면 수행하지 않는다.
-        if (_isDrawing) return;
-
-        // 타워를 짓기 위한 100골드를 보유하고 있지 않다면 수행하지 않는다.
-        if (GameManager.instance.gold < 100) return;
-
-        // 플레이어의 골드에서 100골드를 차감한다.
-        GameManager.instance.DecreaseGold(100);
-
-        // 현재 카드를 뽑고있는중인 상태로 바꾼다.
-        _isDrawing = true;
-
-        // 플레이어 화면에 오픈된 카드를 모두 뒤집는다.
-        _cardUIController.AllReverseCardBackUI();
-        // 카드 Draw 버튼을 화면에서 숨긴다.
-        _cardUIController.HideDrawButtonUI();
-
         // 카드를 7장 뽑는다.
         for (int drawed = 0; drawed < GameManager.instance.pokerCount; drawed++)
             DrawCard(drawed);
 
         // 족보 정보를 업데이트 한다.
         UpdateHandInfo();
-
-        // 플레이어 화면에 새로 뽑은 카드를 보여준다.
-        _cardUIController.AllReverseCardFrontUI();
     }
 
     public void ChangeCard(int changeIndex)
     {
-        // 플레이어의 ChangeChance 횟수가 0 이하라면 수행하지 않는다.
-        if (GameManager.instance.changeChance <= 0) return;
-
-        // 플레이어의 ChangeChance 횟수를 1 차감한다.
-        GameManager.instance.DecreaseChangeChance();
-
-        // 플레이어 화면에 오픈된 카드 중 바꿀 카드를 뒤집는다.
-        _cardUIController.ReverseCardBackUI(changeIndex);
-
         // 새로운 카드를 뽑고 정보를 저장하기 전에 바꾸기 전 카드의 index정보를 임시로 저장해둔다.
         int changeBitIndex = _drawCards[changeIndex].index;
 
@@ -95,9 +55,6 @@ public class CardDrawer : MonoBehaviour
 
         // 족보 정보를 업데이트 한다.
         UpdateHandInfo();
-
-        // 플레이어 화면에 새로 뽑은 카드를 보여준다.
-        _cardUIController.ReverseCardFrountUI(changeIndex);
     }
 
     private void DrawCard(int index)
@@ -236,33 +193,10 @@ public class CardDrawer : MonoBehaviour
             _drawHand = pokerHand;
     }
 
-    public void ReadyBuildTower()
-    {
-        // 카드를 뽑은 상태로 바꾼다.
-        _isDraw = true;
-    }
-
-    public void ReadyDrawCard()
-    {
-        // 카드를 뽑는중이 아닌 상태로 바꾼다.
-        _isDrawing = false;
-    }
-
     public void ResetDrawer()
     {
         // 이전에 마스킹했던 정보를 초기화한다.
         _drawCardsMasking = 0;
-        // 카드를 안뽑은 상태로 되돌린다.
-        _isDraw = false;
-
-        // 카드를 모두 뒤집는다.
-        _cardUIController.AllReverseCardBackUI();
-        // 타워를 Get 하는 버튼을 화면에서 숨긴다.
-        _cardUIController.HideGetButtonUI();
-        // 만들어진 족보를 나타내는 텍스트를 화면에서 숨긴다.
-        _cardUIController.HideHandTextUI();
-        // 카드 Draw 버튼을 화면에 나타낸다.
-        _cardUIController.ShowDrawButtonUI();
     }
 }
 

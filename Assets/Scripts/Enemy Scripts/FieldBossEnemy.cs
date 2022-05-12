@@ -10,11 +10,11 @@ public abstract class FieldBossEnemy : FieldEnemy
     [SerializeField]
     private TextMeshProUGUI _limitTimeText;
 
-    private WaitForSeconds _oneSecond;
+    private WaitForSeconds _waitOneSecond;
     protected override void Awake()
     {
         base.Awake();
-        _oneSecond = new WaitForSeconds(1f);
+        _waitOneSecond = new WaitForSeconds(1f);
         StartCoroutine(LimitTimer());
     }
 
@@ -32,7 +32,7 @@ public abstract class FieldBossEnemy : FieldEnemy
 
         while (missingCount > 0)
         {
-            yield return _oneSecond;
+            yield return _waitOneSecond;
             missingCount--;
 
             // 남은 시간이 10초 미만이 되면 텍스트 색깔을 빨간색으로 변경

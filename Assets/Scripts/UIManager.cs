@@ -1,6 +1,5 @@
 using System.Collections;
 using System.Collections.Generic;
-using System.Text;
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
@@ -21,6 +20,7 @@ public class UIManager : MonoBehaviour
             return _instance;
         }
     }
+
     [Header("Show Game Goods Infomation")]
     [SerializeField]
     private TextMeshProUGUI _cardChangeAmountText;
@@ -41,6 +41,8 @@ public class UIManager : MonoBehaviour
     [SerializeField]
     private TextMeshProUGUI _handText;
     [SerializeField]
+    private TextMeshProUGUI _mineralGetText;
+    [SerializeField]
     private Button _towerGambleButton;
     [SerializeField]
     private Button _mineralGambleButton;
@@ -57,7 +59,11 @@ public class UIManager : MonoBehaviour
     [Header("Used by Enemy Spawner")]
     [SerializeField]
     private Button[] _missionBossButtons;
-    
+    [SerializeField]
+    private Slider[] _missionBossCooltimeSliders;
+    [SerializeField]
+    private TextMeshProUGUI[] _missionBossCooltimeTexts;
+
     [Header("Used by Tower")]
     [SerializeField]
     private Button[] _colorUpgradeButton;
@@ -75,35 +81,57 @@ public class UIManager : MonoBehaviour
         }
     }
 
-    public void EnableMissionButton(int index) => _missionBossButtons[index].interactable = true;
-    public void DisableMissionButton(int index) => _missionBossButtons[index].interactable = false;
+    public void SetCardChangeAmountText(int amount) => _cardChangeAmountText.text = amount.ToString();
+    public void SetGoldAmountText(int amount) => _goldAmountText.text = amount.ToString();
+    public void SetLiftAmountText(int amount) => _lifeAmountText.text = amount.ToString();
+    public void SetMineralAmountText(int amount) => _mineralAmountText.text = amount.ToString();
 
     public void EnableUpgradeButton(int index) => _colorUpgradeButton[index].interactable = true;
     public void DisableUpgradeButton(int index) => _colorUpgradeButton[index].interactable = false;
+
     public void SetColorUpgradeCostText(int index, int amount) => _colorUpgradeCostTexts[index].text = amount.ToString() + 'M';
     public void SetColorUpgradeCountText(int index, int amount) => _colorUpgradeCountTexts[index].text = '+' + amount.ToString();
 
     public void ReverseCardFront(int index, Card card) => _cardImages[index].sprite = _cardSprites[card.index];
     public void ReverseCardBack(int index) => _cardImages[index].sprite = _cardBackSprite;
+
     public void ShowChangeButton(int index) => _changeButtons[index].gameObject.SetActive(true);
     public void HideChangeButton(int index) => _changeButtons[index].gameObject.SetActive(false);
-    public void HideHandText() => _handText.gameObject.SetActive(false);
+
     public void ShowHandText() => _handText.gameObject.SetActive(true);
+    public void HideHandText() => _handText.gameObject.SetActive(false);
     public void SetHandText(string handString) => _handText.text = handString;
+
+    public void ShowMineralGetText() => _mineralGetText.gameObject.SetActive(true);
+    public void HideMineralGetText() => _mineralGetText.gameObject.SetActive(false);
+    public void SetMineralGetText(int amount) => _mineralGetText.text = '+' + amount.ToString() + 'M';
+
     public void SetTowerPreviewImage(int index) => _towerPreviewImage.sprite = _towerSprites[index];
     public void HideTowerPreviewImage() => _towerPreviewImage.gameObject.SetActive(false);
     public void ShowTowerPreviewImage() => _towerPreviewImage.gameObject.SetActive(true);
+
     public void HideTowerGambleButton() => _towerGambleButton.gameObject.SetActive(false);
     public void ShowTowerGambleButton() => _towerGambleButton.gameObject.SetActive(true);
+
     public void HideMineralGambleButton() => _mineralGambleButton.gameObject.SetActive(false);
     public void ShowMineralGambleButton() => _mineralGambleButton.gameObject.SetActive(true);
+
     public void HideGetButton() => _getButton.gameObject.SetActive(false);
     public void ShowGetButton() => _getButton.gameObject.SetActive(true);
 
-    public void SetCardChangeAmountText(int amount) => _cardChangeAmountText.text = amount.ToString();
-    public void SetGoldAmountText(int amount) => _goldAmountText.text = amount.ToString();
-    public void SetLiftAmountText(int amount) => _lifeAmountText.text = amount.ToString();
-    public void SetMineralAmountText(int amount) => _mineralAmountText.text = amount.ToString();
+    public void EnableMissionButton(int index) => _missionBossButtons[index].interactable = true;
+    public void DisableMissionButton(int index) => _missionBossButtons[index].interactable = false;
+    public void HideMissionBossCooltimeSlider(int index) => _missionBossCooltimeSliders[index].gameObject.SetActive(false);
+    public void ShowMissionBossCooltimeSlider(int index) => _missionBossCooltimeSliders[index].gameObject.SetActive(true);
+    public void SetMissionBossCooltimeSlider(int index, float maxValue)
+    {
+        _missionBossCooltimeSliders[index].maxValue = maxValue;
+        _missionBossCooltimeSliders[index].value = maxValue;
+        _missionBossCooltimeSliders[index].gameObject.SetActive(false);
+    }
+    public void ResetMissionBossCooltimeSliderValue(int index) => _missionBossCooltimeSliders[index].value = _missionBossCooltimeSliders[index].maxValue;
+    public void DecreaseMissionBossCooltimeSliderValue(int index, float amount) => _missionBossCooltimeSliders[index].value -= amount; 
+    public void SetMissionBossCooltimeText(int index, float cooltime) => _missionBossCooltimeTexts[index].text = cooltime.ToString();
 }
 
 

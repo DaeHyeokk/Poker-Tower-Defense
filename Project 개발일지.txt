@@ -111,9 +111,16 @@ Date : 2022/05/09 MON
 Date : 2022/05/10 TUE
 ☑ EnemySpawner에서 보스 몬스터를 소환하는 로직 추가.
 ☑ 보스 소환 버튼, 색깔 업그레이드 버튼, 게임에 사용되는 재화 UI 추가.
-    -> UI 요소들을 게임 화면에 어떻게 배치할지 고민 많이 하고 배치했으나, 너무 번잡한 느낌이 강함. 타 게임들은 어떻게 배치했는지 찾아봐야 할듯.
+    -> UI 요소들을 게임 화면에 어떻게 배치할지 고민 많이 하고 배치했으나, 너무 번잡하다는 느낌을 받음. 타 게임들은 어떻게 배치했는지 찾아봐야 할듯.
 
 Date : 2022/05/11 WED
 ☑ 게임 UI Canvas의 Render mode World space에서 Screen space - overlay로 변경, UI Scale mode Scale With Screen Size로 변경.
     -> why? World space로 배치하는게 편리해서 그렇게 구현하였지만 모바일 플랫폼 게임을 만드는 것이 목적이었기 때문에 다양한 모바일 기기 화면에 동적으로
     UI의 비율을 맞추기 위함.
+
+Date : 2022/05/12 THU
+☑ 미네랄 뽑기 기능 구현.
+☑ 타워 뽑기, 미네랄 뽑기 두가지 기능을 수행하는 CardGambler 컴포넌트 구현.
+☑ CardGambler를 추가하면서 기존에 CardDrawer, CardUIController 클래스가 Monobehaviour 클래스를 상속받던 것을 삭제하고 CardGambler가 생성하고 제어하도록 변경.
+☑ Color Upgrade 기능 구현.
+☑ Mission Boss 쿨타임 기능 구현.
