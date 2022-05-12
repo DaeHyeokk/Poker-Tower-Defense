@@ -28,11 +28,16 @@ public class GameManager : MonoBehaviour
     private int _pokerCount;
     private bool _isGameover;
 
+    private int _colorUpgradeIncrementCost;
+    private int[] _colorUpgradeCounts;
+    private int[] _colorUpgradeCosts;
+
     public int round => _round;
     public int life => _life;
     public int gold => _gold;
     public int mineral => _mineral;
     public int changeChance => _changeChance;
+    public int[] colorUpgradeCount => _colorUpgradeCounts;
     public int pokerCount => _pokerCount;
     public bool isGameover => _isGameover;
     private void Awake()
@@ -45,16 +50,46 @@ public class GameManager : MonoBehaviour
         _life = 100;
         _gold = 400;
         _mineral = 0;
-        _changeChance = 0;
+        _changeChance = 3;
         _pokerCount = 7;
         _isGameover = false;
+
+        _colorUpgradeIncrementCost = 1;
+        _colorUpgradeCounts = new int[3];
+        _colorUpgradeCosts = new int[3];
+        for(int i=0; i<3; i++)
+        {
+            _colorUpgradeCounts[i] = 0;
+            _colorUpgradeCosts[i] = 5;
+        }
+
+        GameInfoUISetup();
     }
 
-    public void IncreaseRound() => _round++;
+    private void GameInfoUISetup()
+    {
+        UIManager.instance.SetLiftAmountText(_life);
+        UIManager.instance.SetGoldAmountText(_gold);
+        UIManager.instance.SetMineralAmountText(_mineral);
+        UIManager.instance.SetCardChangeAmountText(_changeChance);
+        
+        for(int i=0; i<3; i++)
+        {
+            UIManager.instance.SetColorUpgradeCountText(i, _colorUpgradeCounts[i]);
+            UIManager.instance.SetColorUpgradeCostText(i, _colorUpgradeCosts[i]);
+        }
+    }
+
+    public void IncreaseRound()
+    {
+        _round++;
+        IncreaseGold(200);
+    }
 
     public void DecreaseLife(int decreaseCount)
     {
         _life -= decreaseCount;
+        UIManager.instance.SetLiftAmountText(_life);
 
         if (_life <= 0)
             EndGame();
@@ -64,15 +99,44 @@ public class GameManager : MonoBehaviour
         _isGameover = true;
     }
 
-    public void IncreaseGold(int increaseCount) => _gold += increaseCount;
-    public void DecreaseGold(int decreaseCount) => _gold -= decreaseCount;
+    public void IncreaseGold(int increaseCount)
+    {
+        _gold += increaseCount;
+        UIManager.instance.SetGoldAmountText(_gold);
+    }
+    public void DecreaseGold(int decreaseCount)
+    {
+        _gold -= decreaseCount;
+        UIManager.instance.SetGoldAmountText(_gold);
+    }
 
-    public void IncreaseMineral(int increaseCount) => _mineral += increaseCount;
-    public void DecreaseMineral(int decreaseCount) => _mineral -= decreaseCount;
+    public void IncreaseMineral(int increaseCount)
+    {
+        _mineral += increaseCount;
+        UIManager.instance.SetMineralAmountText(_mineral);
+    }
 
-    public void IncreaseChangeChance(int increaseCount) => _changeChance += increaseCount;
-    public void DecreaseChangeChance() => _changeChance--;
+    public void DecreaseMineral(int decreaseCount)
+    {
+        _mineral -= decreaseCount;
+        UIManager.instance.SetMineralAmountText(_mineral);
+    }
 
+    public void IncreaseChangeChance(int increaseCount)
+    {
+        _changeChance += increaseCount;
+        UIManager.instance.SetCardChangeAmountText(_changeChance);
+    }
+    public void DecreaseChangeChance()
+    {
+        _changeChance--;
+        UIManager.instance.SetCardChangeAmountText(_changeChance);
+    }
+
+    public void UpgradeColor(int index)
+    {
+
+    }
     public bool IsFinalRound() { return _round == _finalRound; }
 }
 

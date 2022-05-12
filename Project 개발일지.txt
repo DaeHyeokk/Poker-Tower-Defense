@@ -112,3 +112,8 @@ Date : 2022/05/10 TUE
 ☑ EnemySpawner에서 보스 몬스터를 소환하는 로직 추가.
 ☑ 보스 소환 버튼, 색깔 업그레이드 버튼, 게임에 사용되는 재화 UI 추가.
     -> UI 요소들을 게임 화면에 어떻게 배치할지 고민 많이 하고 배치했으나, 너무 번잡한 느낌이 강함. 타 게임들은 어떻게 배치했는지 찾아봐야 할듯.
+
+Date : 2022/05/11 WED
+☑ 게임 UI Canvas의 Render mode World space에서 Screen space - overlay로 변경, UI Scale mode Scale With Screen Size로 변경.
+    -> why? World space로 배치하는게 편리해서 그렇게 구현하였지만 모바일 플랫폼 게임을 만드는 것이 목적이었기 때문에 다양한 모바일 기기 화면에 동적으로
+    UI의 비율을 맞추기 위함.

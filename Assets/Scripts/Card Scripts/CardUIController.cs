@@ -11,79 +11,84 @@ public class CardUIController : MonoBehaviour
         _cardDrawer = GetComponent<CardDrawer>();
     }
 
-    public void AllEnableCardUI()
+    public void AllReverseCardFrontUI()
     {
-        UIManager.instance.DisableHandText();
-        StartCoroutine(AllEnableCardUICoroutine());
+        UIManager.instance.HideHandText();
+        StartCoroutine(AllReverseCardFrontUICoroutine());
     }
 
-    private IEnumerator AllEnableCardUICoroutine()
+    private IEnumerator AllReverseCardFrontUICoroutine()
     {
         yield return new WaitForSeconds(0.1f);
 
         for (int index = 0; index < _cardDrawer.drawCards.Length; index++)
         {
-            UIManager.instance.EnableCard(index, _cardDrawer.drawCards[index]);
-            UIManager.instance.EnableChangeButton(index);
-            yield return new WaitForSeconds(0.15f);
+            UIManager.instance.ReverseCardFront(index, _cardDrawer.drawCards[index]);
+            UIManager.instance.ShowChangeButton(index);
+            yield return new WaitForSeconds(0.1f);
         }
 
         SetHandUI();
-        UIManager.instance.EnableGetButton();
+        UIManager.instance.ShowGetButton();
         // 플레이어의 화면에 카드를 모두 표시하고난 이후에 플레이어는 타워를 지을 수 있는 상태가 된다.
         _cardDrawer.ReadyBuildTower();
     }
 
-    public void EnableCardUI(int index)
+    public void ReverseCardFrountUI(int index)
     {
-      //  UIManager.instance.DisableHandText();
-        StartCoroutine(EnableCardUICoroutine(index));
+        StartCoroutine(ReverseCardFrountUICoroutine(index));
     }
 
-    private IEnumerator EnableCardUICoroutine(int index)
+    private IEnumerator ReverseCardFrountUICoroutine(int index)
     {
-        yield return new WaitForSeconds(0.15f);
+        yield return new WaitForSeconds(0.1f);
 
-        UIManager.instance.EnableCard(index, _cardDrawer.drawCards[index]);
-        UIManager.instance.EnableChangeButton(index);
+        UIManager.instance.ReverseCardFront(index, _cardDrawer.drawCards[index]);
+        UIManager.instance.ShowChangeButton(index);
         SetHandUI();
     }
-    public void AllDisableCardUI()
+    public void AllReverseCardBackUI()
     {
         for (int index = 0; index < GameManager.instance.pokerCount; index++)
         {
-            DisableCardUI(index);
-            DisableChangeButton(index);
+            ReverseCardBackUI(index);
+            HideChangeButton(index);
         }
     }
 
-    public void DisableCardUI(int index) => UIManager.instance.DisableCard(index);
+    public void ReverseCardBackUI(int index) => UIManager.instance.ReverseCardBack(index);
 
-    public void EnableChangeButton(int index) => UIManager.instance.EnableChangeButton(index);
+    public void ShowChangeButton(int index) => UIManager.instance.ShowChangeButton(index);
 
-    public void DisableChangeButton(int index) => UIManager.instance.DisableChangeButton(index);
+    public void HideChangeButton(int index) => UIManager.instance.HideChangeButton(index);
 
     public void SetHandUI()
     {
         UIManager.instance.SetHandText(_cardDrawer.drawHand.ToString());
-        UIManager.instance.EnableHandText();
+        UIManager.instance.ShowHandText();
         UIManager.instance.SetTowerPreviewImage((int)_cardDrawer.drawHand);
-        UIManager.instance.EnableTowerPreviewImage();
+        UIManager.instance.ShowTowerPreviewImage();
     }
 
-    public void DisableHandTextUI() => UIManager.instance.DisableHandText();
+    public void HideHandTextUI() => UIManager.instance.HideHandText();
 
-    public void DisableDrawButtonUI() => UIManager.instance.DisableDrawButton();
-
-    public void EnableDrawButtonUI() => UIManager.instance.EnableDrawButton();
-
-    public void DisableGetButtonUI()
+    public void HideDrawButtonUI()
     {
-        UIManager.instance.DisableGetButton();
-        UIManager.instance.DisableTowerPreviewImage();
+        UIManager.instance.HideTowerGambleButton();
+        UIManager.instance.HideMineralGambleButton();
+    }
+    public void ShowDrawButtonUI()
+    {
+        UIManager.instance.ShowTowerGambleButton();
+        UIManager.instance.ShowMineralGambleButton();
+    }
+    public void HideGetButtonUI()
+    {
+        UIManager.instance.HideGetButton();
+        UIManager.instance.HideTowerPreviewImage();
     }
 
-    public void EnableGetButtonUI() => UIManager.instance.EnableGetButton();
+    public void ShowGetButtonUI() => UIManager.instance.ShowGetButton();
 }
 
 

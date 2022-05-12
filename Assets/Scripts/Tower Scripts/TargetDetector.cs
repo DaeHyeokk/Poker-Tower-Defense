@@ -44,7 +44,7 @@ public class TargetDetector
             // 타워는 보스를 우선 타격하기 때문에 보스 몬스터를 먼저 탐색한다.
             for (int i = 0; i < _enemySpawner.missionBossEnemyList.Count; i++)
             {
-                _distance = Vector3.Distance(_tower.transform.position, _enemySpawner.roundEnemyList[i].transform.position);
+                _distance = Vector3.Distance(_tower.transform.position, _enemySpawner.missionBossEnemyList[i].transform.position);
                 if (_distance <= _tower.range)
                 {
                     if (_targetList.Count != 0)
@@ -90,7 +90,7 @@ public class TargetDetector
             // 타워는 보스를 우선 타격하기 때문에 보스 몬스터를 먼저 탐색한다.
             for (int i = 0; i < _enemySpawner.missionBossEnemyList.Count; i++)
             {
-                _distance = Vector3.Distance(_tower.transform.position, _enemySpawner.roundEnemyList[i].transform.position);
+                _distance = Vector3.Distance(_tower.transform.position, _enemySpawner.missionBossEnemyList[i].transform.position);
                 if (_distance <= _tower.range)
                     _targetList.Add(_enemySpawner.missionBossEnemyList[i]);
 

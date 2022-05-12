@@ -45,16 +45,21 @@ public class CardDrawer : MonoBehaviour
     public void DrawCardAll()
     {
         // 이미 카드를 뽑고있는 중이라면 수행하지 않는다.
-        if (_isDrawing)
-            return;
+        if (_isDrawing) return;
+
+        // 타워를 짓기 위한 100골드를 보유하고 있지 않다면 수행하지 않는다.
+        if (GameManager.instance.gold < 100) return;
+
+        // 플레이어의 골드에서 100골드를 차감한다.
+        GameManager.instance.DecreaseGold(100);
 
         // 현재 카드를 뽑고있는중인 상태로 바꾼다.
         _isDrawing = true;
 
         // 플레이어 화면에 오픈된 카드를 모두 뒤집는다.
-        _cardUIController.AllDisableCardUI();
-        // 카드 Draw 버튼을 비활성화 한다.
-        _cardUIController.DisableDrawButtonUI();
+        _cardUIController.AllReverseCardBackUI();
+        // 카드 Draw 버튼을 화면에서 숨긴다.
+        _cardUIController.HideDrawButtonUI();
 
         // 카드를 7장 뽑는다.
         for (int drawed = 0; drawed < GameManager.instance.pokerCount; drawed++)
@@ -64,13 +69,19 @@ public class CardDrawer : MonoBehaviour
         UpdateHandInfo();
 
         // 플레이어 화면에 새로 뽑은 카드를 보여준다.
-        _cardUIController.AllEnableCardUI();
+        _cardUIController.AllReverseCardFrontUI();
     }
 
     public void ChangeCard(int changeIndex)
     {
+        // 플레이어의 ChangeChance 횟수가 0 이하라면 수행하지 않는다.
+        if (GameManager.instance.changeChance <= 0) return;
+
+        // 플레이어의 ChangeChance 횟수를 1 차감한다.
+        GameManager.instance.DecreaseChangeChance();
+
         // 플레이어 화면에 오픈된 카드 중 바꿀 카드를 뒤집는다.
-        _cardUIController.DisableCardUI(changeIndex);
+        _cardUIController.ReverseCardBackUI(changeIndex);
 
         // 새로운 카드를 뽑고 정보를 저장하기 전에 바꾸기 전 카드의 index정보를 임시로 저장해둔다.
         int changeBitIndex = _drawCards[changeIndex].index;
@@ -86,7 +97,7 @@ public class CardDrawer : MonoBehaviour
         UpdateHandInfo();
 
         // 플레이어 화면에 새로 뽑은 카드를 보여준다.
-        _cardUIController.EnableCardUI(changeIndex);
+        _cardUIController.ReverseCardFrountUI(changeIndex);
     }
 
     private void DrawCard(int index)
@@ -245,13 +256,13 @@ public class CardDrawer : MonoBehaviour
         _isDraw = false;
 
         // 카드를 모두 뒤집는다.
-        _cardUIController.AllDisableCardUI();
-        // 타워를 Get 하는 버튼을 비활성화 한다.
-        _cardUIController.DisableGetButtonUI();
-        // 만들어진 족보를 나타내는 텍스트를 비활성화 한다.
-        _cardUIController.DisableHandTextUI();
-        // 카드 Draw 버튼을 활성화 한다.
-        _cardUIController.EnableDrawButtonUI();
+        _cardUIController.AllReverseCardBackUI();
+        // 타워를 Get 하는 버튼을 화면에서 숨긴다.
+        _cardUIController.HideGetButtonUI();
+        // 만들어진 족보를 나타내는 텍스트를 화면에서 숨긴다.
+        _cardUIController.HideHandTextUI();
+        // 카드 Draw 버튼을 화면에 나타낸다.
+        _cardUIController.ShowDrawButtonUI();
     }
 }
 
