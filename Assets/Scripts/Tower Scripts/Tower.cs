@@ -6,7 +6,7 @@ using System;
 
 public abstract class Tower : MonoBehaviour
 {
-    public enum ProjectileType { Normal, Special }
+    public enum AttackType { Basic, Special }
 
     [SerializeField]
     private TowerData _towerData;
@@ -23,27 +23,33 @@ public abstract class Tower : MonoBehaviour
     private TargetDetector _targetDetector;
     private ProjectileSpawner _projectileSpawner;
     private TowerBuilder _towerBuilder;
-    private WaitForSeconds _attackRateDelay;
+    private float _defaultAttackRate;
+    private float _increaseAttackRate;
+    private float _increaseDamageRate;
     private int _attackCount;
-    private ProjectileType _projectileType;
+    private int _specialAttackCount;
+
+    protected List<IInflictable> basicInflictorList { get; set; }
+    protected List<IInflictable> specialInflictorList { get; set; }
 
     protected ProjectileSpawner projectileSpawner => _projectileSpawner;
-    protected WaitForSeconds attackRateDelay => _attackRateDelay;
+    protected Transform spawnPoint => _spawnPoint;
 
     public TargetDetector targetDetector => _targetDetector;
     public SpriteRenderer towerRenderer => _towerRenderer;
-    public TowerData towerData => _towerData;
     public Sprite normalProjectileSprite => _towerData.normalProjectileSprites[(int)_towerColor.colorType];
     public Sprite specialProjectileSprite => _towerData.specialProjectileSprites[(int)_towerColor.colorType];
-    public Transform spawnPoint => _spawnPoint;
 
-    public float damage => _towerData.weapons[_towerLevel.level].damage;
-    public float attackRate => _towerData.weapons[_towerLevel.level].rate;
-    public float range => _towerData.weapons[_towerLevel.level].range;
-    public int maxTargetCount => _towerData.weapons[_towerLevel.level].maxTargetCount;
+    public TowerColor.ColorType colorType => _towerColor.colorType;
+    public int upgradeCount => GameManager.instance.colorUpgradeCounts[(int)colorType];
     public int level => _towerLevel.level;
-
+    public float damage => (_towerData.weapons[level].damage + (upgradeCount * _towerData.weapons[level].upgradeDIP)) * (1f + (_increaseDamageRate * 0.01f));
+    public float attackRate => _defaultAttackRate - (_towerData.weapons[level].rate + (_towerData.weapons[level].rate * (_increaseAttackRate * 0.01f)));
+    public float range => _towerData.weapons[level].range;
+    public int maxTargetCount => _towerData.weapons[level].maxTargetCount;
+    public int attackCount => _attackCount;
     public abstract String towerName { get; }
+
 
     protected virtual void Awake()
     {
@@ -57,6 +63,12 @@ public abstract class Tower : MonoBehaviour
         _towerColor = new TowerColor(_towerRenderer);
         _towerLevel = new TowerLevel(_levelLayout);
         _targetDetector = new TargetDetector(this, FindObjectOfType<EnemySpawner>());
+
+        basicInflictorList = new List<IInflictable>();
+        specialInflictorList = new List<IInflictable>();
+
+        _defaultAttackRate = 3f;
+        _specialAttackCount = 10;
     }
 
     public virtual void Setup()
@@ -64,10 +76,10 @@ public abstract class Tower : MonoBehaviour
         _towerLevel.Reset();
         _towerColor.ChangeColor();
 
-        _attackRateDelay = new WaitForSeconds(attackRate);
+     //   _attackRateDelay = new WaitForSeconds(attackRate);
         _attackCount = 0;
-        _projectileType = ProjectileType.Normal;
-
+        _increaseAttackRate = 0;
+        _increaseDamageRate = 0;
         SetAttackRangeUIScale();
         StartCoroutine(SearchAndAction());
     }
@@ -89,53 +101,132 @@ public abstract class Tower : MonoBehaviour
             else
             {
                 _attackCount++;
-                if (_attackCount >= 10)
-                {
-                    _projectileType = ProjectileType.Special;
 
-                    for (int i = 0; i < _targetDetector.targetList.Count; i++)
-                        ShotProjectile(_targetDetector.targetList[i], _projectileType);
-
-                    
-                    _projectileType = ProjectileType.Normal;
-                    _attackCount = 0;
-                }
-                else
+                for (int i = 0; i < _targetDetector.targetList.Count; i++)
                 {
-                    for (int i = 0; i < _targetDetector.targetList.Count; i++)
-                        ShotProjectile(_targetDetector.targetList[i], _projectileType);
+                    if(_attackCount < _specialAttackCount)
+                        ShotProjectile(_targetDetector.targetList[i], AttackType.Basic);
+                    else
+                        ShotProjectile(_targetDetector.targetList[i], AttackType.Special);
                 }
 
-                yield return attackRateDelay;
+                if (_attackCount >= _specialAttackCount) _attackCount = 0;
+
+                yield return new WaitForSeconds(attackRate);
             }
         }
     }
 
-    protected virtual void ShotProjectile(Enemy target, ProjectileType projectileType)
-    {
-        if (projectileType == ProjectileType.Normal)
-        {
-            Projectile projectile = projectileSpawner.SpawnProjectile(this, spawnPoint, target, normalProjectileSprite);
-            projectile.actionOnCollision += () => DoInflict(projectile, target);
-        }
-        else // (projectileType == ProjectileType.Sepcial)
-        {
-            Projectile projectile = projectileSpawner.SpawnProjectile(this, spawnPoint, target, specialProjectileSprite);
-            projectile.actionOnCollision += () => DoSpecialInflict(projectile, target);
-        }
-    }
+    protected abstract void ShotProjectile(Enemy target, AttackType attackType);
 
-    public virtual void DoInflict(Projectile projectile, Enemy target)
+    protected virtual void BasicInflict(Projectile projectile, Enemy target)
     {
-        target.OnDamage(damage);
+        for (int i = 0; i < basicInflictorList.Count; i++)
+            if (target.gameObject.activeInHierarchy)
+                basicInflictorList[i].Inflict(target.gameObject);
+
         projectile.ReturnPool();
     }
 
-    public virtual void DoSpecialInflict(Projectile projectile, Enemy target)
+    protected virtual void BasicInflict(Tower target)
     {
-        target.OnDamage(damage * 2);
+        for (int i = 0; i < basicInflictorList.Count; i++)
+            basicInflictorList[i].Inflict(target.gameObject);
+    }
+
+    protected virtual void BasicInflict(Projectile projectile, Enemy target, float range)
+    {
+        Vector3 tempScale = projectile.transform.localScale;
+        projectile.transform.localScale = new Vector3(range / 2, range / 2, 0f);
+
+        Collider2D[] collider2D = Physics2D.OverlapCircleAll(target.transform.position, range / 2);
+
+        for (int i = 0; i < collider2D.Length; i++)
+            for (int j = 0; j < basicInflictorList.Count; j++)
+                if(collider2D[i].gameObject.activeInHierarchy)
+                    basicInflictorList[j].Inflict(collider2D[i].gameObject);
+
+        projectile.DelayReturnPool(0.2f);
+        projectile.transform.localScale = tempScale;
+    }
+
+    protected virtual void BasicInflict(Tower target, float range)
+    {
+        Collider2D[] collider2D = Physics2D.OverlapCircleAll(target.transform.position, range / 2);
+
+        for (int i = 0; i < collider2D.Length; i++)
+            for (int j = 0; j < basicInflictorList.Count; j++)
+                basicInflictorList[j].Inflict(collider2D[i].gameObject);
+    }
+
+    protected virtual void SpecialInflict(Projectile projectile, Enemy target)
+    {
+        for (int i = 0; i < specialInflictorList.Count; i++)
+            if (target.gameObject.activeInHierarchy)
+                specialInflictorList[i].Inflict(target.gameObject);
+
         projectile.ReturnPool();
     }
+
+    protected virtual void SpecialInflict(Tower target)
+    {
+        for (int i = 0; i < specialInflictorList.Count; i++)
+            specialInflictorList[i].Inflict(target.gameObject);
+    }
+
+    protected virtual void SpecialInflict(Projectile projectile, Enemy target, float range)
+    {
+        Vector3 tempScale = projectile.transform.localScale;
+        projectile.transform.localScale = new Vector3(range / 2, range / 2, 0f);
+
+        Collider2D[] collider2D = Physics2D.OverlapCircleAll(target.transform.position, range / 2);
+
+        for (int i = 0; i < collider2D.Length; i++)
+            for (int j = 0; j < specialInflictorList.Count; j++)
+                if (collider2D[i].gameObject.activeInHierarchy)
+                    specialInflictorList[j].Inflict(collider2D[i].gameObject);
+
+        projectile.DelayReturnPool(0.2f);
+        projectile.transform.localScale = tempScale;
+    }
+
+    protected virtual void SpecialInflict(Tower target, float range)
+    {
+        Collider2D[] collider2D = Physics2D.OverlapCircleAll(target.transform.position, range / 2);
+
+        for (int i = 0; i < collider2D.Length; i++)
+            for (int j = 0; j < specialInflictorList.Count; j++)
+                specialInflictorList[j].Inflict(collider2D[i].gameObject);
+    }
+
+    public void TakeIncreaseAttackRate(float increaseAttackRate, float duration)
+    {
+        StartCoroutine(IncreaseAttackRateCoroutine(increaseAttackRate, duration));
+    }
+
+    private IEnumerator IncreaseAttackRateCoroutine(float increaseAttackRate, float duration)
+    {
+        _increaseAttackRate += increaseAttackRate;
+
+        yield return new WaitForSeconds(duration);
+
+        _increaseAttackRate -= increaseAttackRate;
+    }
+
+    public void TakeIncreaseDamageRate(float increaseDamageRate, float duration)
+    {
+        StartCoroutine(IncreaseDamageRateCoroutine(increaseDamageRate, duration));
+    }
+
+    private IEnumerator IncreaseDamageRateCoroutine(float increaseDamageRate, float duration)
+    {
+        _increaseDamageRate += increaseDamageRate;
+
+        yield return new WaitForSeconds(duration);
+
+        _increaseDamageRate -= increaseDamageRate;
+    }
+
     public void MoveTower()
     {
         _towerMovement.StartFollowMousePosition();
@@ -166,5 +257,13 @@ public abstract class Tower : MonoBehaviour
  * Update : 2022/05/03 03:10
  * 타워가 마우스 드래그에 따라 움직이도록 ObjectFollowMousePosition 컴포넌트를 제어하는 로직 구현.
  * 타워를 드래그로 움직일 때 타워의 사거리가 표시되도록 TargetDetector 컴포넌트를 제어하는 로직 구현.
+ * 
+ * Update : 2022/05/07 16:20
+ * 타워 구조 다시 변경.
+ *     => Tower 오브젝트를 추상클래스로 정의하고 이를 상속받아 구현하는 서브클래스(Top Tower, Onepair Tower, Twopair Tower etc...)를 구현하였음.
+ *     => 따라서 TowerWeapon 클래스는 삭제됨. 
+ *     => 기존의 TowerColor, TowerLevel, TargetDetector 클래스는 Monobehaviour 상속을 제거하고 Tower 클래스에서 생성 및 제어하도록 변경.
+ * 타워가 사거리 내의 적을 탐색하고 공격하는 로직 구현.    
+ * TargetDetector 클래스에서 담당하던 타워 사거리 표시 기능을 Tower 클래스에서 수행하도록 변경
  * 
  */

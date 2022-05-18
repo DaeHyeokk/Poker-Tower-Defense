@@ -95,7 +95,7 @@ Date : 2022/05/08 SUN
     -> 오브젝트풀에서 꺼낸 오브젝트를 다 사용하고나서 다시 오브젝트풀에 반납하기 위해 Action 델리게이트에 람다식으로 ReturnObject() 메서드를 구독 시켜놓았는데,
     구독 시킨 메소드를 구독 취소하는 과정에서 버그가 발생했던 걸로 파악됨. Enemy와 Projectile 오브젝트가 각각 EnemySpawner와 ProjectileSpawner를 참조하도록 
     하고, 직접 ReturnObject() 메서드를 호출하는 방식으로 변경하여 이를 해결함. 델리게이트를 잘 사용하기 위한 공부가 더 필요할 듯.
-☑ Enemy의 상태이상(슬로우, 스턴) 기능 구현.
+☑ Enemy의 디버프(슬로우, 스턴) 기능 구현.
     -> 슬로우는 중첩되도록 구현하였고, 감소된 이동 속도를 기준으로 슬로우를 적용하여 여러번 중첩되어도 이동 속도가 0이 되지 않도록 하였음.
     -> 스턴은 가장 긴 스턴 시간을 기준으로 동작하도록 구현하였음. 메소드가 호출될 때마다 StunCount 변수에 스턴 횟수를 누적 시키고, 
     스턴 시간이 지나면 누적시켰던 스턴 횟수를 다시 감소 시킨 다음, StunCount 가 0일 때(누적된 스턴 시간이 없을 때)만 이동 속도를 원래대로 되돌리도록 
@@ -124,3 +124,18 @@ Date : 2022/05/12 THU
 ☑ CardGambler를 추가하면서 기존에 CardDrawer, CardUIController 클래스가 Monobehaviour 클래스를 상속받던 것을 삭제하고 CardGambler가 생성하고 제어하도록 변경.
 ☑ Color Upgrade 기능 구현.
 ☑ Mission Boss 쿨타임 기능 구현.
+
+Date: 2022/05/13 FRI
+☑ 타워의 특수 능력 구상 중..
+
+Date: 2022/05/15 SUN
+☑ 타워가 다른 오브젝트(Enemy, Tower)들과 상호작용 하기 위한 Inflict 클래스 설계.
+☑ IInflictable 인터페이스 추가.
+☑ IInflictable 을 구현하는 다양한 Inflictor 클래스 구현 
+    -> BasicAttack, CriticalStrike, Slowing, Stun, IncreaseAttackRate, IncreaseDamageRate, IncreaseReceivedDamageRate
+
+Date: 2022/05/16 MON
+☑ FlushTower, FullHouseTower, FourKindTower, OnepairTower 타워의 특수 능력 구현.
+
+Date: 2022/05/18 TUE
+☑ 나머지 타워들의 특수 능력 구현.

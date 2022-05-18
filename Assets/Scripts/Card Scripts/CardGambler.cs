@@ -82,7 +82,7 @@ public class CardGambler : MonoBehaviour
         _cardDrawer.ChangeCard(changeIndex);
 
         // 바꾼 카드를 플레이어에게 보여준다.
-        //  StartCoroutine(ReverseCardFrountUICoroutine(changeIndex));
+        StartCoroutine(ReverseCardFrountUICoroutine(changeIndex));
         
     }
 

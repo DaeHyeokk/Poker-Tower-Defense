@@ -38,7 +38,7 @@ public class MissionBossEnemy : FieldBossEnemy
 
     protected override void ReturnObject()
     {
-        _enemySpawner.missionBossEnemyList.Remove(this);
+        enemySpawner.missionBossEnemyList.Remove(this);
         this.gameObject.SetActive(false);
     }
 }

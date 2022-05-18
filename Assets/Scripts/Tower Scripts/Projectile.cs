@@ -5,6 +5,8 @@ using System;
 
 public class Projectile : MonoBehaviour
 {
+    public enum ProjectileType { Normal, Special }
+
     private ProjectileSpawner _projectileSpawner;
     private SpriteRenderer _spriteRenderer;
     private Movement2D _movement2D;
@@ -12,7 +14,6 @@ public class Projectile : MonoBehaviour
     private Enemy _target;
     private Tower _fromTower;
 
-    private bool _isCollision;
     public event Action actionOnCollision;
 
     private void Awake()
@@ -30,7 +31,6 @@ public class Projectile : MonoBehaviour
         _fromTower = fromTower;
         _target = target;
         _spriteRenderer.sprite = projectileSprite;
-        _isCollision = false;
     }
 
     private void Update()
@@ -55,7 +55,6 @@ public class Projectile : MonoBehaviour
             || !_target.gameObject.activeInHierarchy 
             || collision.transform != _target.transform) return;
 
-        _isCollision = true;
 
         if(actionOnCollision != null)
             actionOnCollision();
@@ -65,6 +64,18 @@ public class Projectile : MonoBehaviour
     {
         actionOnCollision = null;
         _projectileSpawner.projectilePool.ReturnObject(this);
+    }
+
+    public void DelayReturnPool(float delayTime)
+    {
+        StartCoroutine(DelayReturnPoolCoroutine(delayTime));
+    }
+
+    public IEnumerator DelayReturnPoolCoroutine(float delayTime)
+    {
+        yield return new WaitForSeconds(delayTime);
+
+        ReturnPool();
     }
 }
 

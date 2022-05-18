@@ -39,7 +39,7 @@ public class GameManager : MonoBehaviour
     public int gold => _gold;
     public int mineral => _mineral;
     public int changeChance => _changeChance;
-    public int[] colorUpgradeCount => _colorUpgradeCounts;
+    public int[] colorUpgradeCounts => _colorUpgradeCounts;
     public int pokerCount => _pokerCount;
     public bool isGameover => _isGameover;
     private void Awake()
@@ -160,7 +160,10 @@ public class GameManager : MonoBehaviour
  * PokerTower Defense 게임의 전체적인 정보를 관리할 GameManager 스크립트
  * 진행중인 게임의 라운드와 Gameover 상태를 갖고 있음
  * 
- * Update : 2022/05/10 THU 06:30
+ * Update : 2022/05/10 TUE 06:30
  * 진행중인 게임의 남은 라이프, 골드와 미네랄, 카드 변경권 횟수를 관리하는 로직 추가.
  * 현재 라운드가 마지막 라운드인지 확인하는 로직 추가.
+ * 
+ * Update : 2022/05/12 THU 23:30
+ * Color Upgrade 로직 추가.
  */

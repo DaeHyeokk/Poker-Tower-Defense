@@ -11,14 +11,16 @@ public abstract class FieldEnemy : Enemy
 
     private float _baseMoveSpeed; // Enemy의 이동 속도 (상태 이상에 사용되는 이동속도)
     private int _stunCount; // 스턴을 중첩해서 맞을 경우 가장 마지막에 풀리는 스턴을 알기 위한 변수
+    private float _increaseReceiveDamageRate; // Enemy가 공격 당할 때 받는 피해량
 
     private Movement2D _movement2D;  // 오브젝트 이동 제어
-    protected EnemySpawner _enemySpawner;
+
+    protected EnemySpawner enemySpawner { get; set; }
 
     protected virtual void Awake()
     {
         _movement2D = GetComponent<Movement2D>();
-        _enemySpawner = FindObjectOfType<EnemySpawner>();
+        enemySpawner = FindObjectOfType<EnemySpawner>();
     }
 
     public virtual void Setup(Transform[] wayPoints, EnemyData enemyData)
@@ -30,15 +32,16 @@ public abstract class FieldEnemy : Enemy
         }
 
         // 생성할 Enemy의 체력 설정
-        _maxHealth = enemyData.health;
-        _health = _maxHealth;
-        _healthSlider.maxValue = _maxHealth;
-        _healthSlider.value = _maxHealth;
+        maxHealth = enemyData.health;
+        health = maxHealth;
+        healthSlider.maxValue = maxHealth;
+        healthSlider.value = maxHealth;
         // 생성할 Enemy의 이동속도 설정
         _movement2D.moveSpeed = enemyData.moveSpeed;
         _baseMoveSpeed = enemyData.moveSpeed;
 
         _stunCount = 0;
+        _increaseReceiveDamageRate = 0;
 
         this.transform.rotation = Quaternion.Euler(0, 0, 0);
         // 웨이포인트 배열의 첫번째 원소부터 탐색하기 위해 currentIndex 값을 0으로 바꿈
@@ -99,11 +102,22 @@ public abstract class FieldEnemy : Enemy
         _movement2D.MoveTo(direction);
     }
 
-    public override void OnStun(float stunTime)
+    public override void TakeDamage(float damage)
     {
-        StartCoroutine(OnStunCoroutine(stunTime));
+        damage *= 1f + (_increaseReceiveDamageRate * 0.01f);
+        
+        health -= damage;
+        healthSlider.value -= damage;
+
+        if (health <= 0)
+            Die();
     }
-    private IEnumerator OnStunCoroutine(float stunTime)
+
+    public override void TakeStun(float duration)
+    {
+        StartCoroutine(StunCoroutine(duration));
+    }
+    private IEnumerator StunCoroutine(float duration)
     {
         // stunCount 1 증가.
         _stunCount++;
@@ -111,7 +125,7 @@ public abstract class FieldEnemy : Enemy
         _movement2D.moveSpeed = 0f;
 
         // stunTime 만큼 지연
-        yield return new WaitForSeconds(stunTime);
+        yield return new WaitForSeconds(duration);
 
         // 스턴 시간이 종료 되었으므로 stunCount 1 감소.
         _stunCount--;
@@ -122,14 +136,14 @@ public abstract class FieldEnemy : Enemy
     }
 
 
-    public override void OnSlow(float slowPer, float slowTime)
+    public override void TakeSlowing(float slowingRate, float duration)
     {
-        StartCoroutine(OnSlowCoroutine(slowPer, slowTime));
+        StartCoroutine(SlowingCoroutine(slowingRate, duration));
     }
-    private IEnumerator OnSlowCoroutine(float slowPer, float slowTime)
+    private IEnumerator SlowingCoroutine(float slowingRate, float duration)
     {
         // 감소하는 이동 속도를 저장해둔다.
-        float slowSpeed = _baseMoveSpeed * slowPer * 0.01f;
+        float slowSpeed = _baseMoveSpeed * slowingRate * 0.01f;
 
         // 감소하는 이동 속도만큼 감소시킨다.
         _baseMoveSpeed -= slowSpeed;
@@ -139,13 +153,27 @@ public abstract class FieldEnemy : Enemy
         if (_stunCount == 0)
             _movement2D.moveSpeed = _baseMoveSpeed;
 
-        yield return new WaitForSeconds(slowTime);
+        yield return new WaitForSeconds(duration);
 
         // 감소시켰던 이동 속도를 되돌린다.
         _baseMoveSpeed += slowSpeed;
         // 위와 동일.
         if (_stunCount == 0)
             _movement2D.moveSpeed = _baseMoveSpeed;
+    }
+
+    public override void TakeIncreaseReceivedDamage(float increaseReceivedDamageRate, float duration)
+    {
+        StartCoroutine(IncreaseReceivedDamageCoroutine(increaseReceivedDamageRate, duration));
+    }
+
+    private IEnumerator IncreaseReceivedDamageCoroutine(float increaseReceivedDamageRate, float duration)
+    {
+        _increaseReceiveDamageRate += increaseReceivedDamageRate;
+
+        yield return new WaitForSeconds(duration);
+
+        _increaseReceiveDamageRate -= increaseReceivedDamageRate;
     }
 
     protected abstract void OnMissing();

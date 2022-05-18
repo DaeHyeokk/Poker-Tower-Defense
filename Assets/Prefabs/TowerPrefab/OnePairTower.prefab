@@ -403,6 +403,33 @@ MonoBehaviour:
   _towerData: {fileID: 11400000, guid: b17996bf10cdfe844b58c994d3b10a5f, type: 2}
   _spawnPoint: {fileID: 7418287326925778583}
   _attackRangeUI: {fileID: 5494624406448220749}
+  _basicSlowingAttributes:
+  - rate: 30
+    duration: 2
+    chance: 20
+  - rate: 40
+    duration: 2
+    chance: 30
+  - rate: 50
+    duration: 2
+    chance: 50
+  - rate: 60
+    duration: 2
+    chance: 70
+  _specialSlowingAttributes:
+  - rate: 20
+    duration: 2
+    chance: 60
+  - rate: 25
+    duration: 2
+    chance: 65
+  - rate: 30
+    duration: 2
+    chance: 70
+  - rate: 40
+    duration: 2
+    chance: 80
+  _specialRange: 1
 --- !u!114 &3885174388594063204
 MonoBehaviour:
   m_ObjectHideFlags: 0

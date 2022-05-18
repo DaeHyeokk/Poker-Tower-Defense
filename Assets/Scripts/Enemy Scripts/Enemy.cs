@@ -6,22 +6,16 @@ using UnityEngine.UI;
 public abstract class Enemy : MonoBehaviour
 {
     [SerializeField]
-    protected Slider _healthSlider;
+    private Slider _healthSlider;
 
-    protected float _maxHealth;  // Enemy의 최대 체력
-    protected float _health;     // Enemy의 현재 체력
+    protected Slider healthSlider => _healthSlider;
+    protected float maxHealth { get; set; }  // Enemy의 최대 체력
+    protected float health { get; set; }     // Enemy의 현재 체력
 
-    public virtual void OnDamage(float damage)
-    {
-        _health -= damage;
-        _healthSlider.value -= damage;
-
-        if (_health <= 0)
-            Die();
-    }
-
-    public abstract void OnStun(float stunTime);
-    public abstract void OnSlow(float slowPer, float slowTime);
+    public abstract void TakeDamage(float damage);
+    public abstract void TakeIncreaseReceivedDamage(float increaseReceivedDamageRate, float duration);
+    public abstract void TakeStun(float duration);
+    public abstract void TakeSlowing(float slowingRate, float duration);
     protected abstract void Die();
 }
 

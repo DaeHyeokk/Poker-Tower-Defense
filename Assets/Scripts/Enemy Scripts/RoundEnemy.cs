@@ -18,8 +18,8 @@ public class RoundEnemy : FieldEnemy
 
     protected override void ReturnObject()
     {
-        _enemySpawner.roundEnemyList.Remove(this);
-        _enemySpawner.roundEnemyPool.ReturnObject(this);
+        enemySpawner.roundEnemyList.Remove(this);
+        enemySpawner.roundEnemyPool.ReturnObject(this);
     }
 }
 
