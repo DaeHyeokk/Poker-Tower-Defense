@@ -23,7 +23,7 @@ public class Projectile : MonoBehaviour
         _movement2D = GetComponent<Movement2D>();
         _rotater2D = GetComponent<Rotater2D>();
 
-        _movement2D.moveSpeed = 10f;
+        _movement2D.moveSpeed = 6f;
     }
 
     public void Setup(Tower fromTower, Enemy target, Sprite projectileSprite)

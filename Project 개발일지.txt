@@ -137,5 +137,9 @@ Date: 2022/05/15 SUN
 Date: 2022/05/16 MON
 ☑ FlushTower, FullHouseTower, FourKindTower, OnepairTower 타워의 특수 능력 구현.
 
-Date: 2022/05/18 TUE
+Date: 2022/05/17 TUE
 ☑ 나머지 타워들의 특수 능력 구현.
+
+Date: 2022/05/18 WED
+☑ 메인 스테이지 디자인 변경.
+☑ 타워를 임의의 포지션이 아닌 타일 위에만 배치할 수 있도록 변경.

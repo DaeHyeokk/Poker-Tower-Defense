@@ -48,6 +48,8 @@ public abstract class Tower : MonoBehaviour
     public float range => _towerData.weapons[level].range;
     public int maxTargetCount => _towerData.weapons[level].maxTargetCount;
     public int attackCount => _attackCount;
+    public bool isOnTile { get; set; }
+    public Tile onTile { get; set; }
     public abstract String towerName { get; }
 
 
@@ -76,10 +78,13 @@ public abstract class Tower : MonoBehaviour
         _towerLevel.Reset();
         _towerColor.ChangeColor();
 
-     //   _attackRateDelay = new WaitForSeconds(attackRate);
         _attackCount = 0;
         _increaseAttackRate = 0;
         _increaseDamageRate = 0;
+
+        isOnTile = false;
+        onTile = null;
+
         SetAttackRangeUIScale();
         StartCoroutine(SearchAndAction());
     }
@@ -96,7 +101,8 @@ public abstract class Tower : MonoBehaviour
         {
             _targetDetector.SearchTarget();
 
-            if (_targetDetector.targetList.Count == 0)
+            // 공격할 타겟이 없거나 타워가 타일 위에 있는 상태가 아니라면 공격하지 않는다.
+            if (_targetDetector.targetList.Count == 0 || !isOnTile)
                 yield return null;
             else
             {
@@ -137,10 +143,10 @@ public abstract class Tower : MonoBehaviour
     protected virtual void BasicInflict(Projectile projectile, Enemy target, float range)
     {
         Vector3 tempScale = projectile.transform.localScale;
-        projectile.transform.localScale = new Vector3(range / 2, range / 2, 0f);
+        projectile.transform.localScale = new Vector3(5, 5, 0f);
 
         Collider2D[] collider2D = Physics2D.OverlapCircleAll(target.transform.position, range / 2);
-
+        Debug.Log("범위공격 닿은 유닛수: " + collider2D.Length);
         for (int i = 0; i < collider2D.Length; i++)
             for (int j = 0; j < basicInflictorList.Count; j++)
                 if(collider2D[i].gameObject.activeInHierarchy)
@@ -177,10 +183,10 @@ public abstract class Tower : MonoBehaviour
     protected virtual void SpecialInflict(Projectile projectile, Enemy target, float range)
     {
         Vector3 tempScale = projectile.transform.localScale;
-        projectile.transform.localScale = new Vector3(range / 2, range / 2, 0f);
+        projectile.transform.localScale = new Vector3(5, 5, 0f);
 
         Collider2D[] collider2D = Physics2D.OverlapCircleAll(target.transform.position, range / 2);
-
+        Debug.Log("범위공격 닿은 유닛수: " + collider2D.Length);
         for (int i = 0; i < collider2D.Length; i++)
             for (int j = 0; j < specialInflictorList.Count; j++)
                 if (collider2D[i].gameObject.activeInHierarchy)

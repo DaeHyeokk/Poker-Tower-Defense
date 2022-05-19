@@ -8,6 +8,7 @@ public class ObjectDetector : MonoBehaviour
     private Camera mainCamera;
     private Ray ray;
     private RaycastHit hit;
+    private RaycastHit[] hits;
 
     private bool _isTowerMove;
 
@@ -36,8 +37,8 @@ public class ObjectDetector : MonoBehaviour
                 // 광선에 부딪힌 타겟이 타워라면 마우스를 떼기 전까지 계속해서 마우스포인터를 따라감
                 if (hit.transform.CompareTag("Tower"))
                 {
-                    //hit.transform.GetComponent<TowerLevel>().LevelUp();
                     _clickTower = hit.transform.GetComponent<Tower>();
+                    _clickTower.isOnTile = false;
                     _clickTower.MoveTower();
                     _isTowerMove = true;
                 }
@@ -50,6 +51,45 @@ public class ObjectDetector : MonoBehaviour
             {
                 _clickTower.StopTower();
                 _isTowerMove = false;
+
+                // 카메라 위치에서 화면의 마우스 커서를 관통하는 광선(ray) 생성
+                ray = mainCamera.ScreenPointToRay(Input.mousePosition);
+                hits = Physics.RaycastAll(ray, Mathf.Infinity);
+
+                for (int i = 0; i < hits.Length; i++)
+                {
+                    // 광선에 부딪힌 타겟이 Tile이고 현재 비어있는 타일이라면 해당 타일 위로 타워를 배치.
+                    if (hits[i].transform.CompareTag("Tile"))
+                    {
+                        Tile tile = hits[i].transform.GetComponent<Tile>();
+                        if (tile.isEmpty)
+                        {
+                            // 이동시키는 타워가 이전에 다른 타일 위에 있었다면 이전 타일을 빈 타일로 바꿔준다.
+                            if (_clickTower.onTile != null)
+                                _clickTower.onTile.ToggleIsEmpty();
+
+                            _clickTower.onTile = tile;
+                            _clickTower.transform.position = tile.transform.position;
+                            _clickTower.isOnTile = true;
+                            tile.ToggleIsEmpty();
+                            return;
+                        }
+                    }
+                }
+
+                // 빈 타일위로 이동시키는 경우가 아니라면 원래 위치로 되돌린다.
+                // 이전에 타일 위에 있던 타워라면 이전 타일 위치로 되돌린다.
+                if (_clickTower.onTile != null)
+                {
+                    _clickTower.transform.position = _clickTower.onTile.transform.position;
+                    _clickTower.isOnTile = true;
+                }
+
+                // 아직 배치하기 전 타워라면 초기 생성 위치로 되돌린다.
+                else
+                    _clickTower.transform.position = Vector3.zero;
+
+                
             }
         }
     }

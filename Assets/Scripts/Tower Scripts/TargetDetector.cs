@@ -31,6 +31,7 @@ public class TargetDetector
         // 단일 타겟 타워일 경우 수행
         if (_detectingMode == DetectingMode.Single)
         {
+            // 사거리 내에 스폐셜보스가 있다면 가장 우선 타격한다.
             _distance = Vector3.Distance(_tower.transform.position, _enemySpawner.specialBossEnemy.transform.position);
             if (_distance <= _tower.range)
             {
@@ -86,6 +87,16 @@ public class TargetDetector
         else // (_detectingMode == DetectingMode.Multiple)
         {
             _targetList.Clear();
+
+            // 사거리 내에 스폐셜보스가 있다면 가장 우선 타격한다.
+            _distance = Vector3.Distance(_tower.transform.position, _enemySpawner.specialBossEnemy.transform.position);
+            if (_distance <= _tower.range)
+            {
+                if (_targetList.Count != 0)
+                    _targetList.RemoveAt(0);
+
+                _targetList.Add(_enemySpawner.specialBossEnemy);
+            }
 
             // 타워는 보스를 우선 타격하기 때문에 보스 몬스터를 먼저 탐색한다.
             for (int i = 0; i < _enemySpawner.missionBossEnemyList.Count; i++)
