@@ -16,7 +16,7 @@ public class BackgroundLoop : MonoBehaviour
     // 위치를 리셋하는 메서드
     private void Reposition()
     {
-        Vector2 offset = new Vector2(width * 2f, 0);
-        transform.position = (Vector2)transform.position + offset;
+        Vector3 offset = new Vector3(width * 2f, 0f, 0f);
+        transform.position = transform.position + offset;
     }
 }

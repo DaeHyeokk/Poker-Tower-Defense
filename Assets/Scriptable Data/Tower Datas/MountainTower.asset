@@ -24,7 +24,7 @@ MonoBehaviour:
   - maxTargetCount: 3
     damage: 30
     rate: 1.5
-    range: 1
+    range: 1.2
     upgradeDIP: 5
     upgradeSIP: 0
     upgradeRIP: 0

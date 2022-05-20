@@ -143,10 +143,10 @@ public abstract class Tower : MonoBehaviour
     protected virtual void BasicInflict(Projectile projectile, Enemy target, float range)
     {
         Vector3 tempScale = projectile.transform.localScale;
-        projectile.transform.localScale = new Vector3(5, 5, 0f);
+        projectile.transform.localScale = new Vector3(5f, 5f, 0f);
 
-        Collider2D[] collider2D = Physics2D.OverlapCircleAll(target.transform.position, range / 2);
-        Debug.Log("¹üÀ§°ø°Ý ´êÀº À¯´Ö¼ö: " + collider2D.Length);
+        Collider2D[] collider2D = Physics2D.OverlapCircleAll(target.transform.position, range * 0.5f);
+
         for (int i = 0; i < collider2D.Length; i++)
             for (int j = 0; j < basicInflictorList.Count; j++)
                 if(collider2D[i].gameObject.activeInHierarchy)
@@ -183,10 +183,10 @@ public abstract class Tower : MonoBehaviour
     protected virtual void SpecialInflict(Projectile projectile, Enemy target, float range)
     {
         Vector3 tempScale = projectile.transform.localScale;
-        projectile.transform.localScale = new Vector3(5, 5, 0f);
+        projectile.transform.localScale = new Vector3(5f, 5f, 0f);
 
         Collider2D[] collider2D = Physics2D.OverlapCircleAll(target.transform.position, range / 2);
-        Debug.Log("¹üÀ§°ø°Ý ´êÀº À¯´Ö¼ö: " + collider2D.Length);
+
         for (int i = 0; i < collider2D.Length; i++)
             for (int j = 0; j < specialInflictorList.Count; j++)
                 if (collider2D[i].gameObject.activeInHierarchy)

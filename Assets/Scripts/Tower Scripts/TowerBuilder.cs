@@ -6,7 +6,8 @@ public class TowerBuilder : MonoBehaviour
 {
     [SerializeField]
     private GameObject[] _towerPrefabs;
-
+    [SerializeField]
+    private Transform _towerSpawnPoint;
 
     private ObjectPool<Tower> _towerPool;
 
@@ -22,7 +23,7 @@ public class TowerBuilder : MonoBehaviour
         Tower tower = _towerPool.GetObject(towerIndex);
 
         // 타워는 화면의 정중앙에서 생성 된다.
-        tower.transform.position = Vector3.zero;
+        tower.transform.position = _towerSpawnPoint.position;
         tower.Setup();
     }
 }

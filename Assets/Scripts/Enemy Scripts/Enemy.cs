@@ -5,18 +5,44 @@ using UnityEngine.UI;
 
 public abstract class Enemy : MonoBehaviour
 {
-    [SerializeField]
     private Slider _healthSlider;
+    private SpriteRenderer _enemySprite;
+    private WaitForSeconds _takeDamageAnimationDelay;
 
     protected Slider healthSlider => _healthSlider;
+    protected SpriteRenderer enemySprite => _enemySprite;
     protected float maxHealth { get; set; }  // Enemy의 최대 체력
     protected float health { get; set; }     // Enemy의 현재 체력
 
-    public abstract void TakeDamage(float damage);
+    protected virtual void Awake()
+    {
+        _healthSlider = GetComponentInChildren<Slider>();
+        _enemySprite = GetComponentInChildren<SpriteRenderer>();
+
+        _takeDamageAnimationDelay = new WaitForSeconds(0.05f);
+    }
+
+    public virtual void TakeDamage(float damage)
+    {
+        StartCoroutine(EnemyTakeDamageAnimationCoroutine());
+    }
+
     public abstract void TakeIncreaseReceivedDamage(float increaseReceivedDamageRate, float duration);
     public abstract void TakeStun(float duration);
     public abstract void TakeSlowing(float slowingRate, float duration);
-    protected abstract void Die();
+    protected virtual void Die()
+    {
+        ParticleSpawner.instance.PlayParticle(transform.position, _enemySprite.transform.lossyScale);
+    }
+
+    private IEnumerator EnemyTakeDamageAnimationCoroutine()
+    {
+        _enemySprite.color = Color.red;
+
+        yield return _takeDamageAnimationDelay;
+
+        _enemySprite.color = Color.white;
+    }
 }
 
 /*

@@ -13,6 +13,7 @@ public class RoundEnemy : FieldEnemy
 
     protected override void Die()
     {
+        base.Die();
         ReturnObject();
     }
 

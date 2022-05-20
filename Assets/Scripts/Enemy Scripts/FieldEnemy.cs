@@ -6,7 +6,6 @@ using UnityEngine.UI;
 public abstract class FieldEnemy : Enemy
 {
     private Transform[] _wayPoints;  // 이동경로 좌표 배열
-    private int _wayPointCount;     // 이동경로 개수
     private int _currentIndex;   // 현재 목표지점 인덱스
 
     private float _baseMoveSpeed; // Enemy의 이동 속도 (상태 이상에 사용되는 이동속도)
@@ -17,8 +16,10 @@ public abstract class FieldEnemy : Enemy
 
     protected EnemySpawner enemySpawner { get; set; }
 
-    protected virtual void Awake()
+    protected override void Awake()
     {
+        base.Awake();
+
         _movement2D = GetComponent<Movement2D>();
         enemySpawner = FindObjectOfType<EnemySpawner>();
     }
@@ -26,16 +27,15 @@ public abstract class FieldEnemy : Enemy
     public virtual void Setup(Transform[] wayPoints, EnemyData enemyData)
     {
         if(_wayPoints == null)
-        {
             _wayPoints = wayPoints;
-            _wayPointCount = wayPoints.Length;
-        }
 
-        // 생성할 Enemy의 체력 설정
+        // 생성할 Enemy의 체력, 색깔 설정
         maxHealth = enemyData.health;
         health = maxHealth;
         healthSlider.maxValue = maxHealth;
         healthSlider.value = maxHealth;
+        enemySprite.color = Color.white;
+
         // 생성할 Enemy의 이동속도 설정
         _movement2D.moveSpeed = enemyData.moveSpeed;
         _baseMoveSpeed = enemyData.moveSpeed;
@@ -95,7 +95,7 @@ public abstract class FieldEnemy : Enemy
         transform.position = _wayPoints[_currentIndex].position;
         _currentIndex++;
 
-        if (_currentIndex >= _wayPointCount)
+        if (_currentIndex >= _wayPoints.Length)
             _currentIndex = 0;
 
         Vector3 direction = (_wayPoints[_currentIndex].position - transform.position).normalized;
@@ -104,6 +104,8 @@ public abstract class FieldEnemy : Enemy
 
     public override void TakeDamage(float damage)
     {
+        base.TakeDamage(damage);
+
         damage *= 1f + (_increaseReceiveDamageRate * 0.01f);
         
         health -= damage;

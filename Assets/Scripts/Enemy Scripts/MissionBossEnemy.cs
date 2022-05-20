@@ -20,6 +20,8 @@ public class MissionBossEnemy : FieldBossEnemy
 
     protected override void Die()
     {
+        base.Die();
+
         switch (_bossLevel)
         {
             case 1:

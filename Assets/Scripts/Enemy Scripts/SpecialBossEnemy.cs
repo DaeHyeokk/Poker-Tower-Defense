@@ -10,8 +10,10 @@ public class SpecialBossEnemy : Enemy
     [SerializeField]
     private float _specialBossHealth;
 
-    protected void Awake()
+    protected override void Awake()
     {
+        base.Awake();
+
         // 생성할 Planet의 체력 설정
         maxHealth = _specialBossHealth;
         health = maxHealth;
@@ -22,6 +24,8 @@ public class SpecialBossEnemy : Enemy
 
     public override void TakeDamage(float damage)
     {
+        base.TakeDamage(damage);
+
         // Special Boss는 공격력에 상관없이 1의 데미지를 받음.
         health--;
         healthSlider.value++;
@@ -50,10 +54,12 @@ public class SpecialBossEnemy : Enemy
 
     protected override void Die()
     {
+        base.Die();
+        this.gameObject.SetActive(false);
         // 플레이어에게 카드 변경권 5장을 지급한다.
         GameManager.instance.IncreaseChangeChance(5);
 
-        ResetPlanet();
+        Invoke("ResetPlanet", 0.4f);
     }
 
     private void ResetPlanet()
@@ -61,6 +67,9 @@ public class SpecialBossEnemy : Enemy
         health = maxHealth;
         _healthText.text = maxHealth.ToString();
         healthSlider.value = 0;
+
+        enemySprite.color = Color.white;
+        this.gameObject.SetActive(true);
     }
 
 }

@@ -5,6 +5,7 @@ using UnityEngine;
 public class ObjectDetector : MonoBehaviour
 {
     private Tower _clickTower;
+    private Vector3 _tempPosition;
     private Camera mainCamera;
     private Ray ray;
     private RaycastHit hit;
@@ -38,6 +39,7 @@ public class ObjectDetector : MonoBehaviour
                 if (hit.transform.CompareTag("Tower"))
                 {
                     _clickTower = hit.transform.GetComponent<Tower>();
+                    _tempPosition = _clickTower.transform.position;
                     _clickTower.isOnTile = false;
                     _clickTower.MoveTower();
                     _isTowerMove = true;
@@ -78,18 +80,10 @@ public class ObjectDetector : MonoBehaviour
                 }
 
                 // 빈 타일위로 이동시키는 경우가 아니라면 원래 위치로 되돌린다.
-                // 이전에 타일 위에 있던 타워라면 이전 타일 위치로 되돌린다.
+                _clickTower.transform.position = _tempPosition;
+
                 if (_clickTower.onTile != null)
-                {
-                    _clickTower.transform.position = _clickTower.onTile.transform.position;
                     _clickTower.isOnTile = true;
-                }
-
-                // 아직 배치하기 전 타워라면 초기 생성 위치로 되돌린다.
-                else
-                    _clickTower.transform.position = Vector3.zero;
-
-                
             }
         }
     }
@@ -110,4 +104,8 @@ public class ObjectDetector : MonoBehaviour
  * Update : 2022/05/02 MON 19:38
  * 마우스로 타워를 클릭했을 때 타워가 마우스를 따라다니도록 하고, 
  * 마우스를 떼면 타워가 마우스를 따라다니던 것을 멈추도록 하여 타워의 이동 구현.
+ * 
+ * Update : 2022/05/18 WED
+ * 타워를 움직여서 타일 위에 배치하는 로직 구현.
+ * 타일이 아닌 포지션으로 이동시키거나, 이미 타워가 배치 되어 있는 타일 위로 이동시키는 경우 원래 위치로 되돌아 가도록 구현하였음.
  */

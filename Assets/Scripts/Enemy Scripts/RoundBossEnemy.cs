@@ -22,6 +22,7 @@ public class RoundBossEnemy : FieldBossEnemy
 
     protected override void Die()
     {
+        base.Die();
         // 100골드, 카드 변환권 주기
         GameManager.instance.IncreaseGold(100);
         GameManager.instance.IncreaseChangeChance(2);
