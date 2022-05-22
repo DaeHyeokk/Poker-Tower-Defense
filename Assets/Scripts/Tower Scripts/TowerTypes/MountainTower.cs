@@ -12,9 +12,11 @@ public class MountainTower : Tower
     [SerializeField]
     private IncreaseDamageRate.Attribute[] _specialIDRateAttributes;
     [SerializeField]
-    private float _specialIDRateRange;
+    private float _specialRange;
 
-    public override string towerName => "Mountain Tower";
+    private readonly string _towerName = "Mountain Tower";
+    public override string towerName => _towerName;
+    public override int towerIndex => 5;
 
     protected override void Awake()
     {
@@ -43,7 +45,7 @@ public class MountainTower : Tower
             Projectile projectile = projectileSpawner.SpawnProjectile(this, spawnPoint, target, normalProjectileSprite);
             projectile.actionOnCollision += () => BasicInflict(projectile, target);
 
-            SpecialInflict(this, _specialIDRateRange);
+            SpecialInflict(this, _specialRange);
         }
     }
 }
@@ -56,4 +58,7 @@ public class MountainTower : Tower
  * 
  * Update : 2022/04/30 SAT
  * TowerWeapon 관련 리팩토링을 진행하면서 기존 Tower에서 Weapon으로 이름 변경
+ * 
+ * Update : 2022/05/17 TUE
+ * 타워의 특수 공격 구현.
  */

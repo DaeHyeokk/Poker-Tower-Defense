@@ -23,11 +23,13 @@ public abstract class Tower : MonoBehaviour
     private TargetDetector _targetDetector;
     private ProjectileSpawner _projectileSpawner;
     private TowerBuilder _towerBuilder;
+    private Tile _onTile;
     private float _defaultAttackRate;
     private float _increaseAttackRate;
     private float _increaseDamageRate;
     private int _attackCount;
     private int _specialAttackCount;
+    private bool _isMove;
 
     protected List<IInflictable> basicInflictorList { get; set; }
     protected List<IInflictable> specialInflictorList { get; set; }
@@ -48,9 +50,50 @@ public abstract class Tower : MonoBehaviour
     public float range => _towerData.weapons[level].range;
     public int maxTargetCount => _towerData.weapons[level].maxTargetCount;
     public int attackCount => _attackCount;
-    public bool isOnTile { get; set; }
-    public Tile onTile { get; set; }
+    public bool isMove
+    {
+        get => _isMove;
+        set
+        {
+            if(value)
+            {
+                _isMove = true;
+                _towerMovement.StartFollowMousePosition();
+                _attackRangeUI.gameObject.SetActive(true);
+            }
+            else
+            {
+                _isMove = false;
+                _towerMovement.StopFollowMousePosition();
+                _attackRangeUI.gameObject.SetActive(false);
+            }
+        }
+    }
+    public Tile onTile
+    {
+        get => _onTile;
+        set
+        {
+            if (value == null)
+            {
+                _onTile.collocationTower = null;
+                _onTile = null;
+            }
+            else
+            {
+                if (_onTile != null)
+                    _onTile.collocationTower = null;
+
+                _onTile = value;
+                _onTile.collocationTower = this;
+
+                this.transform.position = _onTile.transform.position;
+            }
+        }
+    }
+
     public abstract String towerName { get; }
+    public abstract int towerIndex { get; }
 
 
     protected virtual void Awake()
@@ -71,19 +114,18 @@ public abstract class Tower : MonoBehaviour
 
         _defaultAttackRate = 3f;
         _specialAttackCount = 10;
+
+        _isMove = false;
+        _onTile = null;
     }
 
     public virtual void Setup()
     {
-        _towerLevel.Reset();
         _towerColor.ChangeColor();
 
         _attackCount = 0;
         _increaseAttackRate = 0;
         _increaseDamageRate = 0;
-
-        isOnTile = false;
-        onTile = null;
 
         SetAttackRangeUIScale();
         StartCoroutine(SearchAndAction());
@@ -101,8 +143,8 @@ public abstract class Tower : MonoBehaviour
         {
             _targetDetector.SearchTarget();
 
-            // 공격할 타겟이 없거나 타워가 타일 위에 있는 상태가 아니라면 공격하지 않는다.
-            if (_targetDetector.targetList.Count == 0 || !isOnTile)
+            // 공격할 타겟이 없거나 타워가 움직이고 있는 상태라면 공격하지 않는다.
+            if (_targetDetector.targetList.Count == 0 || isMove)
                 yield return null;
             else
             {
@@ -142,9 +184,6 @@ public abstract class Tower : MonoBehaviour
 
     protected virtual void BasicInflict(Projectile projectile, Enemy target, float range)
     {
-        Vector3 tempScale = projectile.transform.localScale;
-        projectile.transform.localScale = new Vector3(5f, 5f, 0f);
-
         Collider2D[] collider2D = Physics2D.OverlapCircleAll(target.transform.position, range * 0.5f);
 
         for (int i = 0; i < collider2D.Length; i++)
@@ -152,8 +191,7 @@ public abstract class Tower : MonoBehaviour
                 if(collider2D[i].gameObject.activeInHierarchy)
                     basicInflictorList[j].Inflict(collider2D[i].gameObject);
 
-        projectile.DelayReturnPool(0.2f);
-        projectile.transform.localScale = tempScale;
+        projectile.ReturnPool();
     }
 
     protected virtual void BasicInflict(Tower target, float range)
@@ -182,9 +220,6 @@ public abstract class Tower : MonoBehaviour
 
     protected virtual void SpecialInflict(Projectile projectile, Enemy target, float range)
     {
-        Vector3 tempScale = projectile.transform.localScale;
-        projectile.transform.localScale = new Vector3(5f, 5f, 0f);
-
         Collider2D[] collider2D = Physics2D.OverlapCircleAll(target.transform.position, range / 2);
 
         for (int i = 0; i < collider2D.Length; i++)
@@ -192,8 +227,7 @@ public abstract class Tower : MonoBehaviour
                 if (collider2D[i].gameObject.activeInHierarchy)
                     specialInflictorList[j].Inflict(collider2D[i].gameObject);
 
-        projectile.DelayReturnPool(0.2f);
-        projectile.transform.localScale = tempScale;
+        projectile.ReturnPool();
     }
 
     protected virtual void SpecialInflict(Tower target, float range)
@@ -233,21 +267,40 @@ public abstract class Tower : MonoBehaviour
         _increaseDamageRate -= increaseDamageRate;
     }
 
-    public void MoveTower()
+    private bool IsCompareTower(Tower compareTower)
     {
-        _towerMovement.StartFollowMousePosition();
-        _attackRangeUI.gameObject.SetActive(true);
+        // 타워의 종류, 색깔, 레벨이 모두 같다면 true 아니면 false 반환.
+        if ((this.towerIndex == compareTower.towerIndex)
+            && (this.colorType == compareTower.colorType)
+            && (this.level == compareTower.level))
+            return true;
+
+        return false;
     }
 
-    public void StopTower()
+    public bool MergeTower(Tower mergeTower)
     {
-        _towerMovement.StopFollowMousePosition();
-        _attackRangeUI.gameObject.SetActive(false);
+        if (IsCompareTower(mergeTower))
+        {
+            if (_towerLevel.LevelUp())
+            {
+                _towerColor.ChangeColor();
+                mergeTower.ReturnPool();
+                return true;
+            }
+        }
+
+        return false;
     }
 
-    public void ReturnPool()
+    private void ReturnPool()
     {
-        _towerBuilder.towerPool.ReturnObject(this);
+        if (onTile != null)
+            onTile = null;
+
+        _towerLevel.Reset();
+
+        _towerBuilder.towerPool.ReturnObject(this, towerIndex);
     }
 }
 

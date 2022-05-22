@@ -18,10 +18,11 @@ public class FlushTower : Tower
 
     [Header("Inflict Range")]
     [SerializeField]
-    private int _specialRange;
+    private float _specialRange;
 
-    private int specialRange => _specialRange;
-    public override string towerName => "Flush Tower";
+    private readonly string _towerName = "Flush Tower";
+    public override string towerName => _towerName;
+    public override int towerIndex => 6;
 
     protected override void Awake()
     {
@@ -51,7 +52,7 @@ public class FlushTower : Tower
         else // (attackType == AttackType.Special)
         {
             Projectile projectile = projectileSpawner.SpawnProjectile(this, spawnPoint, target, specialProjectileSprite);
-            projectile.actionOnCollision += () => SpecialInflict(projectile, target, specialRange);
+            projectile.actionOnCollision += () => SpecialInflict(projectile, target, _specialRange);
         }
     }
 }
@@ -61,5 +62,8 @@ public class FlushTower : Tower
  * File : FlushTower.cs
  * First Update : 2022/04/26 TUE 10:50
  * 추상클래스 Tower를 상속받아 추상메서드를 구현하는 컴포넌트
+ * 
+ * Update : 2022/05/16 MON
+ * 타워의 특수 공격 구현.
  * 
  */

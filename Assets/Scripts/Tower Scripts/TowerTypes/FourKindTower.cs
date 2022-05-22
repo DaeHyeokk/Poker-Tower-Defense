@@ -26,9 +26,9 @@ public class FourKindTower : Tower
     [SerializeField]
     private float _specialRange;
 
-    private float basicRange => _basicRange;
-    private float specialRange => _specialRange;
-    public override string towerName => "FourKind Tower";
+    private readonly string _towerName = "FourKind Tower";
+    public override string towerName => _towerName;
+    public override int towerIndex => 8;
 
     protected override void Awake()
     {
@@ -53,12 +53,12 @@ public class FourKindTower : Tower
         if (attackType == AttackType.Basic)
         {
             Projectile projectile = projectileSpawner.SpawnProjectile(this, spawnPoint, target, normalProjectileSprite);
-            projectile.actionOnCollision += () => BasicInflict(projectile, target, basicRange);
+            projectile.actionOnCollision += () => BasicInflict(projectile, target, _basicRange);
         }
         else // (attackType == AttackType.Special)
         {
             Projectile projectile = projectileSpawner.SpawnProjectile(this, spawnPoint, target, specialProjectileSprite);
-            projectile.actionOnCollision += () => SpecialInflict(projectile, target, specialRange);
+            projectile.actionOnCollision += () => SpecialInflict(projectile, target, _specialRange);
         }
     }
 }
@@ -71,4 +71,7 @@ public class FourKindTower : Tower
  * 
  * Update : 2022/04/30 SAT
  * TowerWeapon 관련 리팩토링을 진행하면서 기존 Tower에서 Weapon으로 이름 변경
+ * 
+ * Update : 2022/05/16 MON
+ * 타워의 특수 공격 구현.
  */

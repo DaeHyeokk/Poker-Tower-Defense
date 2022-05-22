@@ -11,14 +11,11 @@ public class ObjectDetector : MonoBehaviour
     private RaycastHit hit;
     private RaycastHit[] hits;
 
-    private bool _isTowerMove;
-
     void Awake()
     {
         // 'MainCamera' 태그를 가지고 있는 오브젝트를 탐색 후 Camera 컴포넌트 정보 전달
         // GameObject.FindGameObjectWithTag("MainCamera").GetComponent<Camera>(); 와 동일
         mainCamera = Camera.main;
-        _isTowerMove = false;
     }
 
     private void Update()
@@ -40,19 +37,16 @@ public class ObjectDetector : MonoBehaviour
                 {
                     _clickTower = hit.transform.GetComponent<Tower>();
                     _tempPosition = _clickTower.transform.position;
-                    _clickTower.isOnTile = false;
-                    _clickTower.MoveTower();
-                    _isTowerMove = true;
+                    _clickTower.isMove = true;
                 }
             }
         }
         if (Input.GetMouseButtonUp(0))
         {
             // 마우스를 뗐을 때 타워를 움직이는 중이었다면 중단한다.
-            if(_isTowerMove)
+            if(_clickTower != null && _clickTower.isMove)
             {
-                _clickTower.StopTower();
-                _isTowerMove = false;
+                _clickTower.isMove = false;
 
                 // 카메라 위치에서 화면의 마우스 커서를 관통하는 광선(ray) 생성
                 ray = mainCamera.ScreenPointToRay(Input.mousePosition);
@@ -60,30 +54,34 @@ public class ObjectDetector : MonoBehaviour
 
                 for (int i = 0; i < hits.Length; i++)
                 {
-                    // 광선에 부딪힌 타겟이 Tile이고 현재 비어있는 타일이라면 해당 타일 위로 타워를 배치.
+                    // 광선에 부딪힌 타겟이 Tile일 때 수행.
                     if (hits[i].transform.CompareTag("Tile"))
                     {
                         Tile tile = hits[i].transform.GetComponent<Tile>();
-                        if (tile.isEmpty)
-                        {
-                            // 이동시키는 타워가 이전에 다른 타일 위에 있었다면 이전 타일을 빈 타일로 바꿔준다.
-                            if (_clickTower.onTile != null)
-                                _clickTower.onTile.ToggleIsEmpty();
 
+                        // 마우스를 뗀 좌표에 위치한 타일이 클릭중인 타워가 되돌아갈 타일이라면
+                        // 타워를 타일 위에 배치하거나 타워 합치기 작업을 수행할 필요가 없다.
+                        if (tile.transform.position == _tempPosition)
+                            break;
+
+                        // 현재 비어있는 타일이라면 해당 타일 위로 타워를 배치.
+                        if (tile.collocationTower == null)
+                        {
                             _clickTower.onTile = tile;
-                            _clickTower.transform.position = tile.transform.position;
-                            _clickTower.isOnTile = true;
-                            tile.ToggleIsEmpty();
                             return;
+                        }
+                        // 다른 타워가 이미 배치된 타일이라면 타워 합치기 시도.
+                        else
+                        {
+                            // 타워 합치기에 성공했다면 함수를 종료한다.
+                            if (tile.collocationTower.MergeTower(_clickTower))
+                                return;
                         }
                     }
                 }
 
-                // 빈 타일위로 이동시키는 경우가 아니라면 원래 위치로 되돌린다.
+                // 타워 합치기에 성공하거나 빈 타일위로 이동시키는 경우가 아니라면 타워를 원래 위치로 되돌린다.
                 _clickTower.transform.position = _tempPosition;
-
-                if (_clickTower.onTile != null)
-                    _clickTower.isOnTile = true;
             }
         }
     }
@@ -108,4 +106,7 @@ public class ObjectDetector : MonoBehaviour
  * Update : 2022/05/18 WED
  * 타워를 움직여서 타일 위에 배치하는 로직 구현.
  * 타일이 아닌 포지션으로 이동시키거나, 이미 타워가 배치 되어 있는 타일 위로 이동시키는 경우 원래 위치로 되돌아 가도록 구현하였음.
+ * 
+ * Update : 2022/05/21 SAT
+ * 타워를 움직여서 타워 위에 놓을 경우 타워 합치기를 시도하는 로직 구현.
  */

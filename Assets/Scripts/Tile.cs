@@ -10,27 +10,25 @@ public class Tile : MonoBehaviour
     private Sprite _nonEmptySprite;
 
     private SpriteRenderer _spriteRenderer;
-    private bool _isEmpty;
+    private Tower _collocationTower;
 
-    public bool isEmpty => _isEmpty;
+    public Tower collocationTower
+    {
+        get => _collocationTower;
+        set
+        {
+            _collocationTower = value;
+
+            if (_collocationTower == null)
+                _spriteRenderer.sprite = _emptySprite;
+            else
+                _spriteRenderer.sprite = _nonEmptySprite;
+        }
+    }
 
     private void Awake()
     {
         _spriteRenderer = GetComponent<SpriteRenderer>();
-        _isEmpty = true;
-    }
-
-    public void ToggleIsEmpty()
-    {
-        if(_isEmpty)
-        {
-            _isEmpty = !_isEmpty;
-            _spriteRenderer.sprite = _nonEmptySprite;
-        }
-        else
-        {
-            _isEmpty = !_isEmpty;
-            _spriteRenderer.sprite = _emptySprite;
-        }
+        collocationTower = null;
     }
 }

@@ -29,12 +29,12 @@ MonoBehaviour:
     upgradeSIP: 0
     upgradeRIP: 0
   - maxTargetCount: 1
-    damage: 0
-    rate: 0
-    range: 0
-    upgradeDIP: 0
-    upgradeSIP: 0
-    upgradeRIP: 0
+    damage: 40
+    rate: 1.8
+    range: 1.3
+    upgradeDIP: 10
+    upgradeSIP: 20
+    upgradeRIP: 30
   - maxTargetCount: 1
     damage: 0
     rate: 0

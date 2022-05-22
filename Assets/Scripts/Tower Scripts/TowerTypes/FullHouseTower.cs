@@ -16,8 +16,9 @@ public class FullHouseTower : Tower
     [SerializeField]
     private IncreaseAttackRate.Attribute[] _specialIncreaseAttackRateAttributes;
 
-    public override string towerName => "FullHouse Tower";
-
+    private readonly string _towerName = "FullHouse Tower";
+    public override string towerName => _towerName;
+    public override int towerIndex => 7;
     protected override void Awake()
     {
         base.Awake();
@@ -58,4 +59,7 @@ public class FullHouseTower : Tower
  * 
  * Update : 2022/04/30 SAT
  * TowerWeapon 관련 리팩토링을 진행하면서 기존 Tower에서 Weapon으로 이름 변경
+ * 
+ * Update : 2022/05/16 MON
+ * 타워의 특수 공격 구현.
  */

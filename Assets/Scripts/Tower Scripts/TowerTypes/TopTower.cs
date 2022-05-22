@@ -16,7 +16,9 @@ public class TopTower : Tower
     [SerializeField]
     private Slowing.Attribute[] _specialSlowingAttributes;
 
-    public override string towerName => "Top Tower";
+    private readonly string _towername = "Top Tower";
+    public override string towerName => _towername;
+    public override int towerIndex => 0;
 
     protected override void Awake()
     {
@@ -56,4 +58,7 @@ public class TopTower : Tower
  * 
  * Update : 2022/04/30 SAT
  * TowerWeapon 관련 리팩토링을 진행하면서 기존 Tower에서 Weapon으로 이름 변경
+ * 
+ * Update : 2022/05/17 TUE
+ * 타워의 특수 공격 구현.
  */

@@ -34,16 +34,17 @@ public class TowerLevel
     }
 
     // Tower의 등급을 업그레이드 하는 메서드, Tower의 최대 레벨은 3이다
-    public void LevelUp()
+    public bool LevelUp()
     {
         // Tower가 최대 등급에 도달했을 경우 작업을 수행하지 않는다
         if (_level >= 3)
         {
-            return;
+            return false;
         }
 
         _level++;
         UpdateWeaponUI();
+        return true;
     }
 
     private void UpdateWeaponUI()

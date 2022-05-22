@@ -50,7 +50,7 @@ public class GameManager : MonoBehaviour
         _round = 0;
         _finalRound = 40;
         _life = 100;
-        _gold = 400;
+        _gold = 3800;
         _mineral = 400;
         _changeChance = 3;
         _isGameover = false;
