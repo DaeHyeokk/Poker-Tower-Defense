@@ -34,11 +34,55 @@ public class GameManager : MonoBehaviour
     private int[] _colorUpgradeCounts;
     private int[] _colorUpgradeCosts;
 
-    public int round => _round;
-    public int life => _life;
-    public int gold => _gold;
-    public int mineral => _mineral;
-    public int changeChance => _changeChance;
+    public int round { get; set; }
+
+    public int life
+    {
+        get => _life;
+        set
+        {
+            _life = value;
+
+            if (_life < 0) 
+                _life = 0;
+
+            UIManager.instance.SetLiftAmountText(_life);
+
+            if (_life == 0) { }
+                EndGame();
+        }
+    }
+
+    public int gold
+    {
+        get => _gold;
+        set
+        {
+            _gold = value;
+            UIManager.instance.SetGoldAmountText(_gold);
+        }
+    }
+
+    public int mineral
+    {
+        get => _mineral;
+        set
+        {
+            _mineral = value;
+            UIManager.instance.SetMineralAmountText(_mineral);
+        }
+    }
+
+    public int changeChance
+    {
+        get => _changeChance;
+        set
+        {
+            _changeChance = value;
+            UIManager.instance.SetCardChangeAmountText(_changeChance);
+        }
+    }
+
     public int[] colorUpgradeCounts => _colorUpgradeCounts;
     public int pokerCount => _pokerCount;
     public bool isGameover => _isGameover;
@@ -47,13 +91,13 @@ public class GameManager : MonoBehaviour
         if (instance != this)
             Destroy(gameObject);
 
-        _round = 0;
-        _finalRound = 40;
-        _life = 100;
-        _gold = 3800;
-        _mineral = 400;
-        _changeChance = 3;
+        round = 0;
+        life = 100;
+        gold = 3800;
+        mineral = 400;
+        changeChance = 3;
         _isGameover = false;
+        _finalRound = 40;
 
         _colorUpgradeIncrementCost = new int[3];
         _colorUpgradeCounts = new int[3];
@@ -61,94 +105,51 @@ public class GameManager : MonoBehaviour
         for(int i=0; i<3; i++)
         {
             _colorUpgradeIncrementCost[i] = 1;
-            _colorUpgradeCounts[i] = 0;
-            _colorUpgradeCosts[i] = 5;
+            SetColorUpgradeCount(i, 0);
+            SetColorUpgradeCost(i, 5);
         }
 
-        GameInfoUISetup();
+        ScreenSleepSetup();
     }
-
-    private void GameInfoUISetup()
+    private void ScreenSleepSetup()
     {
-        UIManager.instance.SetLiftAmountText(_life);
-        UIManager.instance.SetGoldAmountText(_gold);
-        UIManager.instance.SetMineralAmountText(_mineral);
-        UIManager.instance.SetCardChangeAmountText(_changeChance);
-        
-        for(int i=0; i<3; i++)
-        {
-            UIManager.instance.SetColorUpgradeCountText(i, _colorUpgradeCounts[i]);
-            UIManager.instance.SetColorUpgradeCostText(i, _colorUpgradeCosts[i]);
-        }
+        Screen.sleepTimeout = SleepTimeout.NeverSleep;
     }
 
     public void IncreaseRound()
     {
-        _round++;
-        IncreaseGold(200);
-    }
-
-    public void DecreaseLife(int decreaseCount)
-    {
-        _life -= decreaseCount;
-        UIManager.instance.SetLiftAmountText(_life);
-
-        if (_life <= 0)
-            EndGame();
-    }
-    private void EndGame()
-    {
-        _isGameover = true;
-    }
-
-    public void IncreaseGold(int increaseCount)
-    {
-        _gold += increaseCount;
-        UIManager.instance.SetGoldAmountText(_gold);
-    }
-    public void DecreaseGold(int decreaseCount)
-    {
-        _gold -= decreaseCount;
-        UIManager.instance.SetGoldAmountText(_gold);
-    }
-
-    public void IncreaseMineral(int increaseCount)
-    {
-        _mineral += increaseCount;
-        UIManager.instance.SetMineralAmountText(_mineral);
-    }
-
-    public void DecreaseMineral(int decreaseCount)
-    {
-        _mineral -= decreaseCount;
-        UIManager.instance.SetMineralAmountText(_mineral);
-    }
-
-    public void IncreaseChangeChance(int increaseCount)
-    {
-        _changeChance += increaseCount;
-        UIManager.instance.SetCardChangeAmountText(_changeChance);
-    }
-    public void DecreaseChangeChance()
-    {
-        _changeChance--;
-        UIManager.instance.SetCardChangeAmountText(_changeChance);
+        round++;
+        gold += 200;
     }
 
     public void UpgradeColor(int index)
     {
-        if (_colorUpgradeCosts[index] > _mineral)
+        if (_colorUpgradeCosts[index] > mineral)
             return;
 
-        DecreaseMineral(_colorUpgradeCosts[index]);
+        mineral -= _colorUpgradeCosts[index];
 
-        _colorUpgradeCounts[index]++;
-        UIManager.instance.SetColorUpgradeCountText(index, _colorUpgradeCounts[index]);
-
-        _colorUpgradeCosts[index] += _colorUpgradeIncrementCost[index];
-        UIManager.instance.SetColorUpgradeCostText(index, _colorUpgradeCosts[index]);
-
+        SetColorUpgradeCount(index, _colorUpgradeCounts[index]+1);
+        SetColorUpgradeCost(index, _colorUpgradeCosts[index]+1);
+        
         _colorUpgradeIncrementCost[index]++;
+    }
+
+    private void SetColorUpgradeCount(int index, int value)
+    {
+        _colorUpgradeCounts[index] = value;
+        UIManager.instance.SetColorUpgradeCountText(index, _colorUpgradeCounts[index]);
+    }
+
+    private void SetColorUpgradeCost(int index, int value)
+    {
+        _colorUpgradeCosts[index] = value;
+        UIManager.instance.SetColorUpgradeCostText(index, _colorUpgradeCosts[index]);
+    }
+
+    private void EndGame()
+    {
+        _isGameover = true;
     }
 
     public bool IsFinalRound() { return _round == _finalRound; }

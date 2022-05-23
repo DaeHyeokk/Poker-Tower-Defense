@@ -2502,6 +2502,17 @@ MonoBehaviour:
   - {fileID: 3586989087962006377, guid: ec96373c7b5bd0d4aa17fc3a0ff40cdb, type: 3}
   - {fileID: 2790401590470640239, guid: a7f771242651884488772da01f526e6a, type: 3}
   - {fileID: 152845140840246733, guid: 77cc3a1a0130b4e4a9afb195d629c386, type: 3}
+  _followTowerPrefabs:
+  - {fileID: 5139550238564921745, guid: 6ad46791b5769c142af72f0f2ab570d3, type: 3}
+  - {fileID: 2018105800427153331, guid: b906d25764ef94949b83c62b017f56bc, type: 3}
+  - {fileID: 4920641071558795671, guid: c425735b82cdd6040b9fd2c13ec167df, type: 3}
+  - {fileID: 5872902943932550505, guid: e69b4eb1a7baa09428871e312ed030ec, type: 3}
+  - {fileID: 5369906809452343783, guid: 48c4f48fc28465b43945862e15d3d02e, type: 3}
+  - {fileID: 681219511803657423, guid: ed8c352df9cfc5f408450b586e58fee5, type: 3}
+  - {fileID: 6342583125339140969, guid: c3117e54cc319414ca63d12759e90742, type: 3}
+  - {fileID: 3586989087962006377, guid: ee54944e3a560ec488f24cc38daac89b, type: 3}
+  - {fileID: 2790401590470640239, guid: 718e073fdda723f4bbd03abef2d9a31e, type: 3}
+  - {fileID: 152845140840246733, guid: 43b0889cc3e6a28428edb17e65b2309d, type: 3}
   _towerSpawnPoint: {fileID: 2016882026}
 --- !u!4 &275253621
 Transform:
@@ -2870,6 +2881,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a80bc55303d77be4e9dc7294934442eb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _followTowerPrefabs: []
 --- !u!4 &397369517
 Transform:
   m_ObjectHideFlags: 0

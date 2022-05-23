@@ -7,7 +7,7 @@ public class RoundEnemy : FieldEnemy
 
     protected override void OnMissing()
     {
-        GameManager.instance.DecreaseLife(1);
+        GameManager.instance.life--;
         ReturnObject();
     }
 

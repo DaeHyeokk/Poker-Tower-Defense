@@ -27,7 +27,9 @@ public class TargetDetector
 
     public void SearchTarget()
     {
-        
+        // 타워가 타일 위에 배치된 상태가 아니라면 공격할 타겟을 탐색하지 않는다.
+        if (_tower.onTile == null) return;
+
         // 단일 타겟 타워일 경우 수행
         if (_detectingMode == DetectingMode.Single)
         {

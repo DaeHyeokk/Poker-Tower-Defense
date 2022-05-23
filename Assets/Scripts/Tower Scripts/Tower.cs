@@ -12,10 +12,7 @@ public abstract class Tower : MonoBehaviour
     private TowerData _towerData;
     [SerializeField]
     private Transform _spawnPoint;
-    [SerializeField]
-    private Transform _attackRangeUI;
 
-    private ObjectFollowMousePosition _towerMovement;
     private HorizontalLayoutGroup _levelLayout;
     private SpriteRenderer _towerRenderer;
     private TowerColor _towerColor;
@@ -29,7 +26,6 @@ public abstract class Tower : MonoBehaviour
     private float _increaseDamageRate;
     private int _attackCount;
     private int _specialAttackCount;
-    private bool _isMove;
 
     protected List<IInflictable> basicInflictorList { get; set; }
     protected List<IInflictable> specialInflictorList { get; set; }
@@ -43,6 +39,7 @@ public abstract class Tower : MonoBehaviour
     public Sprite specialProjectileSprite => _towerData.specialProjectileSprites[(int)_towerColor.colorType];
 
     public TowerColor.ColorType colorType => _towerColor.colorType;
+    public Color color => _towerColor.color;
     public int upgradeCount => GameManager.instance.colorUpgradeCounts[(int)colorType];
     public int level => _towerLevel.level;
     public float damage => (_towerData.weapons[level].damage + (upgradeCount * _towerData.weapons[level].upgradeDIP)) * (1f + (_increaseDamageRate * 0.01f));
@@ -50,25 +47,7 @@ public abstract class Tower : MonoBehaviour
     public float range => _towerData.weapons[level].range;
     public int maxTargetCount => _towerData.weapons[level].maxTargetCount;
     public int attackCount => _attackCount;
-    public bool isMove
-    {
-        get => _isMove;
-        set
-        {
-            if(value)
-            {
-                _isMove = true;
-                _towerMovement.StartFollowMousePosition();
-                _attackRangeUI.gameObject.SetActive(true);
-            }
-            else
-            {
-                _isMove = false;
-                _towerMovement.StopFollowMousePosition();
-                _attackRangeUI.gameObject.SetActive(false);
-            }
-        }
-    }
+
     public Tile onTile
     {
         get => _onTile;
@@ -98,10 +77,8 @@ public abstract class Tower : MonoBehaviour
 
     protected virtual void Awake()
     {
-        _towerMovement = GetComponent<ObjectFollowMousePosition>();
         _towerRenderer = GetComponentInChildren<SpriteRenderer>();
-        _levelLayout = GetComponentInChildren<HorizontalLayoutGroup>(true);
-
+        _levelLayout = GetComponentInChildren<HorizontalLayoutGroup>();
         _projectileSpawner = FindObjectOfType<ProjectileSpawner>();
         _towerBuilder = FindObjectOfType<TowerBuilder>();
 
@@ -115,7 +92,6 @@ public abstract class Tower : MonoBehaviour
         _defaultAttackRate = 3f;
         _specialAttackCount = 10;
 
-        _isMove = false;
         _onTile = null;
     }
 
@@ -127,14 +103,7 @@ public abstract class Tower : MonoBehaviour
         _increaseAttackRate = 0;
         _increaseDamageRate = 0;
 
-        SetAttackRangeUIScale();
         StartCoroutine(SearchAndAction());
-    }
-
-    private void SetAttackRangeUIScale()
-    {
-        float attackRangeScale = range * 2 / this.transform.lossyScale.x;
-        _attackRangeUI.transform.localScale = new Vector3(attackRangeScale, attackRangeScale, 0);
     }
 
     protected virtual IEnumerator SearchAndAction()
@@ -143,8 +112,8 @@ public abstract class Tower : MonoBehaviour
         {
             _targetDetector.SearchTarget();
 
-            // 공격할 타겟이 없거나 타워가 움직이고 있는 상태라면 공격하지 않는다.
-            if (_targetDetector.targetList.Count == 0 || isMove)
+            // 공격할 타겟이 없다면 공격하지 않는다.
+            if (_targetDetector.targetList.Count == 0)
                 yield return null;
             else
             {
@@ -293,6 +262,29 @@ public abstract class Tower : MonoBehaviour
         return false;
     }
 
+    public void MoveTower()
+    {
+        FollowTower followTower = _towerBuilder.followTowers[towerIndex];
+
+        followTower.Setup(this);
+        followTower.gameObject.SetActive(true);
+        followTower.StartFollowMousePosition();
+
+        Color color = _towerRenderer.color;
+        color.a = 0.3f;
+        _towerRenderer.color = color;
+    }
+
+    public void StopTower()
+    {
+        FollowTower followTower = _towerBuilder.followTowers[towerIndex];
+
+        followTower.StopFollowMousePosition();
+        followTower.gameObject.SetActive(false);
+
+        _towerRenderer.color = _towerColor.color;
+    }
+
     private void ReturnPool()
     {
         if (onTile != null)
@@ -313,11 +305,11 @@ public abstract class Tower : MonoBehaviour
  *     => 기존 TowerWeapon에서 한번에 수행하던 역할들을 세분화 하여 Tower 오브젝트의 컴포넌트로 구현. (TowerColor, TowerLevel, TargetDetector)
  *     => Tower 오브젝트의 전체적인 동작들을 Tower 클래스를 통해 수행하도록 구현할 예정.
  *     
- * Update : 2022/05/03 03:10
+ * Update : 2022/05/03 TUE 03:10
  * 타워가 마우스 드래그에 따라 움직이도록 ObjectFollowMousePosition 컴포넌트를 제어하는 로직 구현.
  * 타워를 드래그로 움직일 때 타워의 사거리가 표시되도록 TargetDetector 컴포넌트를 제어하는 로직 구현.
  * 
- * Update : 2022/05/07 16:20
+ * Update : 2022/05/07 SAT 16:20
  * 타워 구조 다시 변경.
  *     => Tower 오브젝트를 추상클래스로 정의하고 이를 상속받아 구현하는 서브클래스(Top Tower, Onepair Tower, Twopair Tower etc...)를 구현하였음.
  *     => 따라서 TowerWeapon 클래스는 삭제됨. 
@@ -325,4 +317,7 @@ public abstract class Tower : MonoBehaviour
  * 타워가 사거리 내의 적을 탐색하고 공격하는 로직 구현.    
  * TargetDetector 클래스에서 담당하던 타워 사거리 표시 기능을 Tower 클래스에서 수행하도록 변경
  * 
+ * Update : 2022/05/22 SUN
+ * MoveTower(), StopTower() 메소드에서 Follow Tower 오브젝트를 참조하여 사용하는 로직 구현.
+ * 타워가 이동할 때 타워의 스프라이트가 반투명해지는 로직 구현.
  */

@@ -14,7 +14,7 @@ public class MissionBossEnemy : FieldBossEnemy
 
     protected override void OnMissing()
     {
-        GameManager.instance.DecreaseLife(10 * _bossLevel);
+        GameManager.instance.life -= 10 * _bossLevel;
         ReturnObject();
     }
 
@@ -25,13 +25,13 @@ public class MissionBossEnemy : FieldBossEnemy
         switch (_bossLevel)
         {
             case 1:
-                GameManager.instance.IncreaseGold(100);
+                GameManager.instance.gold += 100;
                 break;
             case 2:
-                GameManager.instance.IncreaseGold(200);
+                GameManager.instance.gold += 200;
                 break;
             case 3:
-                GameManager.instance.IncreaseGold(500);
+                GameManager.instance.gold += 500;
                 break;
         }
 

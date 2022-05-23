@@ -38,7 +38,7 @@ public class CardGambler : MonoBehaviour
         if (GameManager.instance.gold < 100) return;
 
         // 플레이어의 골드에서 100골드를 차감한다.
-        GameManager.instance.DecreaseGold(100);
+        GameManager.instance.gold -= 100;
 
         if (gambleType == (int)GambleType.Tower)
         {
@@ -73,7 +73,7 @@ public class CardGambler : MonoBehaviour
         if (GameManager.instance.changeChance <= 0) return;
 
         // 플레이어의 ChangeChance 횟수를 1 차감한다.
-        GameManager.instance.DecreaseChangeChance();
+        GameManager.instance.changeChance--;
 
         // 플레이어 화면에 오픈된 카드 중 바꿀 카드를 뒤집는다.
         _cardUIController.ReverseCardBackUI(changeIndex);
@@ -123,7 +123,7 @@ public class CardGambler : MonoBehaviour
         if (gambleType == GambleType.Tower)
             _towerBuilder.BuildTower((int)_cardDrawer.drawHand);
         else
-            GameManager.instance.IncreaseMineral(_mineralGambleAmounts[(int)_cardDrawer.drawHand]);
+            GameManager.instance.mineral += _mineralGambleAmounts[(int)_cardDrawer.drawHand];
 
         ResetGambler();
     }

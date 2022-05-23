@@ -15,7 +15,6 @@ public class TowerLevel
     public TowerLevel(HorizontalLayoutGroup levelLayout)
     {
         _levelLayout = levelLayout;
-        _levelLayout.gameObject.SetActive(false);
 
         _levelImages = new Image[3];
         _levelImages = _levelLayout.GetComponentsInChildren<Image>(true);
@@ -43,16 +42,12 @@ public class TowerLevel
         }
 
         _level++;
-        UpdateWeaponUI();
+        UpdateLevelImage();
         return true;
     }
 
-    private void UpdateWeaponUI()
+    private void UpdateLevelImage()
     {
-        // 타워등급이 1이라면 => LevelUp()이 처음 실행됐다면
-        if (_level == 1)
-            _levelLayout.gameObject.SetActive(true);  // layoutGroup UI를 활성화 한다
-
         // 등급을 나타내는 이미지 한개를 활성화 시킨다
         _levelImages[_level - 1].gameObject.SetActive(true);
     }

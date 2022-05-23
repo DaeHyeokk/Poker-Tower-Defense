@@ -4,6 +4,10 @@ using UnityEngine;
 
 public class ObjectDetector : MonoBehaviour
 {
+    [SerializeField]
+    private GameObject[] _followTowerPrefabs;
+
+    private FollowTower[] _followTowers;
     private Tower _clickTower;
     private Vector3 _tempPosition;
     private Camera mainCamera;
@@ -16,6 +20,8 @@ public class ObjectDetector : MonoBehaviour
         // 'MainCamera' 태그를 가지고 있는 오브젝트를 탐색 후 Camera 컴포넌트 정보 전달
         // GameObject.FindGameObjectWithTag("MainCamera").GetComponent<Camera>(); 와 동일
         mainCamera = Camera.main;
+
+        _clickTower = null;
     }
 
     private void Update()
@@ -23,6 +29,9 @@ public class ObjectDetector : MonoBehaviour
         // 마우스 왼쪽 버튼을 눌렀을 때
         if (Input.GetMouseButtonDown(0))
         {
+            // 이미 타워를 움직이고 있는 상태라면 건너뛴다.
+            if (_clickTower != null) return;
+
             // 카메라 위치에서 화면의 마우스 커서를 관통하는 광선(ray) 생성
             // ray.origin : 광선의 시작 위치 (= 카메라 위치)
             // ray.direction : 광선의 진행 방향
@@ -36,20 +45,21 @@ public class ObjectDetector : MonoBehaviour
                 if (hit.transform.CompareTag("Tower"))
                 {
                     _clickTower = hit.transform.GetComponent<Tower>();
-                    _tempPosition = _clickTower.transform.position;
-                    _clickTower.isMove = true;
+                    _clickTower.MoveTower();
                 }
             }
         }
+        // 마우스 왼쪽 버튼을 뗐을 때
         if (Input.GetMouseButtonUp(0))
         {
-            // 마우스를 뗐을 때 타워를 움직이는 중이었다면 중단한다.
-            if(_clickTower != null && _clickTower.isMove)
+            // 타워를 움직이는 중이었다면 중단한다.
+            if (_clickTower != null)
             {
-                _clickTower.isMove = false;
+                _clickTower.StopTower();
 
-                // 카메라 위치에서 화면의 마우스 커서를 관통하는 광선(ray) 생성
+                // 카메라 위치에서 화면의 마우스 커서를 관통하는 광선(ray) 생성.
                 ray = mainCamera.ScreenPointToRay(Input.mousePosition);
+                // 광선에 부딪히는 모든 오브젝트를 배열에 담음.
                 hits = Physics.RaycastAll(ray, Mathf.Infinity);
 
                 for (int i = 0; i < hits.Length; i++)
@@ -59,29 +69,28 @@ public class ObjectDetector : MonoBehaviour
                     {
                         Tile tile = hits[i].transform.GetComponent<Tile>();
 
-                        // 마우스를 뗀 좌표에 위치한 타일이 클릭중인 타워가 되돌아갈 타일이라면
+                        // 마우스를 뗀 좌표에 위치한 타일이 클릭중인 타워가 원래 배치 돼있던 타일이라면
                         // 타워를 타일 위에 배치하거나 타워 합치기 작업을 수행할 필요가 없다.
-                        if (tile.transform.position == _tempPosition)
+                        if (_clickTower.onTile != null && tile.transform.position == _clickTower.onTile.transform.position)
                             break;
 
                         // 현재 비어있는 타일이라면 해당 타일 위로 타워를 배치.
                         if (tile.collocationTower == null)
                         {
                             _clickTower.onTile = tile;
-                            return;
+                            break;
                         }
                         // 다른 타워가 이미 배치된 타일이라면 타워 합치기 시도.
                         else
                         {
-                            // 타워 합치기에 성공했다면 함수를 종료한다.
+                            // 타워 합치기에 성공했다면 for문을 빠져나온다.
                             if (tile.collocationTower.MergeTower(_clickTower))
-                                return;
+                                break;
                         }
                     }
                 }
 
-                // 타워 합치기에 성공하거나 빈 타일위로 이동시키는 경우가 아니라면 타워를 원래 위치로 되돌린다.
-                _clickTower.transform.position = _tempPosition;
+                _clickTower = null;
             }
         }
     }

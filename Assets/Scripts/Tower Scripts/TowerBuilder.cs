@@ -7,15 +7,26 @@ public class TowerBuilder : MonoBehaviour
     [SerializeField]
     private GameObject[] _towerPrefabs;
     [SerializeField]
+    private GameObject[] _followTowerPrefabs;
+    [SerializeField]
     private Transform _towerSpawnPoint;
 
     private ObjectPool<Tower> _towerPool;
+    private FollowTower[] _followTowers;
 
     public ObjectPool<Tower> towerPool => _towerPool;
+    public FollowTower[] followTowers => _followTowers;
 
     private void Awake()
     {
         _towerPool = new ObjectPool<Tower>(_towerPrefabs, 10);
+        _followTowers = new FollowTower[_followTowerPrefabs.Length];
+
+        for (int i = 0; i < _followTowerPrefabs.Length; i++)
+        {
+            _followTowers[i] = Instantiate(_followTowerPrefabs[i]).GetComponent<FollowTower>();
+            _followTowers[i].gameObject.SetActive(false);
+        }
     }
 
     public void BuildTower(int towerIndex)
@@ -52,4 +63,7 @@ public class TowerBuilder : MonoBehaviour
  * 
  * Update : 2022/05/02 MON 18:12
  * 타워가 맵 중앙에 생성되도록 변경.
+ * 
+ * Update : 2022/05/22 SUN 17:30
+ * FollowTower 프리팹을 인스턴스하는 로직 추가.
  */

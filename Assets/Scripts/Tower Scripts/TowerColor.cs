@@ -11,6 +11,7 @@ public class TowerColor
     private Color[] _colorDatas;
     private ColorType _colorType;
 
+    public Color color => _colorDatas[(int)_colorType];
     public ColorType colorType => _colorType;
 
     public TowerColor(SpriteRenderer towerRenderer)
