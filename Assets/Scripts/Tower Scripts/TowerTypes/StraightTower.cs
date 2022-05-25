@@ -4,6 +4,10 @@ using UnityEngine;
 
 public class StraightTower : Tower
 {
+    [Header("Spawn Point Particle")]
+    [SerializeField]
+    private ParticleController _spawnPointParticle;
+
     [Header("Basic Slowing")]
     [SerializeField]
     private Slowing.Attribute[] _basicSlowingAttributes;
@@ -25,6 +29,23 @@ public class StraightTower : Tower
     private readonly string _towerName = "Straight Tower";
     public override string towerName => _towerName;
     public override int towerIndex => 4;
+    public override Tile onTile
+    {
+        get => base.onTile;
+        set
+        {
+            if (value == null)
+            {
+                base.onTile = null;
+                _spawnPointParticle.StopParticle();
+            }
+            else
+            {
+                base.onTile = value;
+                _spawnPointParticle.PlayParticle();
+            }
+        }
+    }
 
     protected override void Awake()
     {

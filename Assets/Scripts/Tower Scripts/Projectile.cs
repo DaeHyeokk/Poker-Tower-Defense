@@ -55,6 +55,7 @@ public class Projectile : MonoBehaviour
             || !_target.gameObject.activeInHierarchy 
             || collision.transform != _target.transform) return;
 
+        ParticlePlayer.instance.PlayCollisionProjectile(this.transform, (int)_fromTower.colorType);
 
         if(actionOnCollision != null)
             actionOnCollision();

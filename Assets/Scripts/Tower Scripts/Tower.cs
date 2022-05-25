@@ -48,7 +48,7 @@ public abstract class Tower : MonoBehaviour
     public int maxTargetCount => _towerData.weapons[level].maxTargetCount;
     public int attackCount => _attackCount;
 
-    public Tile onTile
+    public virtual Tile onTile
     {
         get => _onTile;
         set
@@ -138,11 +138,11 @@ public abstract class Tower : MonoBehaviour
 
     protected virtual void BasicInflict(Projectile projectile, Enemy target)
     {
+        projectile.ReturnPool();
+
         for (int i = 0; i < basicInflictorList.Count; i++)
             if (target.gameObject.activeInHierarchy)
                 basicInflictorList[i].Inflict(target.gameObject);
-
-        projectile.ReturnPool();
     }
 
     protected virtual void BasicInflict(Tower target)
@@ -153,18 +153,21 @@ public abstract class Tower : MonoBehaviour
 
     protected virtual void BasicInflict(Projectile projectile, Enemy target, float range)
     {
+        projectile.ReturnPool();
+        ParticlePlayer.instance.PlayRangeAttack(target.transform, range, (int)colorType);
+
         Collider2D[] collider2D = Physics2D.OverlapCircleAll(target.transform.position, range * 0.5f);
 
         for (int i = 0; i < collider2D.Length; i++)
             for (int j = 0; j < basicInflictorList.Count; j++)
                 if(collider2D[i].gameObject.activeInHierarchy)
                     basicInflictorList[j].Inflict(collider2D[i].gameObject);
-
-        projectile.ReturnPool();
     }
 
     protected virtual void BasicInflict(Tower target, float range)
     {
+        ParticlePlayer.instance.PlayRangeAttack(target.transform, range, (int)colorType);
+
         Collider2D[] collider2D = Physics2D.OverlapCircleAll(target.transform.position, range / 2);
 
         for (int i = 0; i < collider2D.Length; i++)
@@ -189,18 +192,22 @@ public abstract class Tower : MonoBehaviour
 
     protected virtual void SpecialInflict(Projectile projectile, Enemy target, float range)
     {
+        projectile.ReturnPool();
+
+        ParticlePlayer.instance.PlayRangeAttack(target.transform, range, (int)colorType);
+
         Collider2D[] collider2D = Physics2D.OverlapCircleAll(target.transform.position, range / 2);
 
         for (int i = 0; i < collider2D.Length; i++)
             for (int j = 0; j < specialInflictorList.Count; j++)
                 if (collider2D[i].gameObject.activeInHierarchy)
                     specialInflictorList[j].Inflict(collider2D[i].gameObject);
-
-        projectile.ReturnPool();
     }
 
     protected virtual void SpecialInflict(Tower target, float range)
     {
+        ParticlePlayer.instance.PlayRangeAttack(target.transform, range, (int)colorType);
+
         Collider2D[] collider2D = Physics2D.OverlapCircleAll(target.transform.position, range / 2);
 
         for (int i = 0; i < collider2D.Length; i++)
@@ -271,7 +278,7 @@ public abstract class Tower : MonoBehaviour
         followTower.StartFollowMousePosition();
 
         Color color = _towerRenderer.color;
-        color.a = 0.3f;
+        color.a = onTile != null ? 0.3f : 0f;
         _towerRenderer.color = color;
     }
 
@@ -292,7 +299,7 @@ public abstract class Tower : MonoBehaviour
 
         _towerLevel.Reset();
 
-        _towerBuilder.towerPool.ReturnObject(this, towerIndex);
+        _towerBuilder.towerPoolList[towerIndex].ReturnObject(this);
     }
 }
 

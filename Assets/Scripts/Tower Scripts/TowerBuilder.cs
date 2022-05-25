@@ -11,17 +11,19 @@ public class TowerBuilder : MonoBehaviour
     [SerializeField]
     private Transform _towerSpawnPoint;
 
-    private ObjectPool<Tower> _towerPool;
+    private List<ObjectPool<Tower>> _towerPoolList;
     private FollowTower[] _followTowers;
 
-    public ObjectPool<Tower> towerPool => _towerPool;
+    public List<ObjectPool<Tower>> towerPoolList => _towerPoolList;
     public FollowTower[] followTowers => _followTowers;
 
     private void Awake()
     {
-        _towerPool = new ObjectPool<Tower>(_towerPrefabs, 10);
-        _followTowers = new FollowTower[_followTowerPrefabs.Length];
+        _towerPoolList = new List<ObjectPool<Tower>>();
+        for(int i=0; i<_towerPrefabs.Length; i++)
+            _towerPoolList.Add(new ObjectPool<Tower>(_towerPrefabs[i], 5));
 
+        _followTowers = new FollowTower[_followTowerPrefabs.Length];
         for (int i = 0; i < _followTowerPrefabs.Length; i++)
         {
             _followTowers[i] = Instantiate(_followTowerPrefabs[i]).GetComponent<FollowTower>();
@@ -31,11 +33,13 @@ public class TowerBuilder : MonoBehaviour
 
     public void BuildTower(int towerIndex)
     {
-        Tower tower = _towerPool.GetObject(towerIndex);
+        Tower tower = _towerPoolList[towerIndex].GetObject();
 
         // 타워는 화면의 정중앙에서 생성 된다.
         tower.transform.position = _towerSpawnPoint.position;
         tower.Setup();
+
+        _towerSpawnPoint.position -= new Vector3(0f, 0f, 0.000001f);
     }
 }
 

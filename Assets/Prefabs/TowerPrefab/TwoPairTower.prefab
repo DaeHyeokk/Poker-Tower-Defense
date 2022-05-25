@@ -358,9 +358,9 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6629003555373864224}
-  - component: {fileID: 2097394538165178901}
   - component: {fileID: 5600055177276582298}
   - component: {fileID: 3651884166748795578}
+  - component: {fileID: -471605210312065160}
   m_Layer: 0
   m_Name: TwoPairTower
   m_TagString: Tower
@@ -385,19 +385,6 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!65 &2097394538165178901
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4920641071558795671}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Size: {x: 1, y: 1, z: 1}
-  m_Center: {x: 0, y: 0, z: 0}
 --- !u!114 &5600055177276582298
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -451,6 +438,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cb41a05f75581b94d989fa43a0e0b90c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!65 &-471605210312065160
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4920641071558795671}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 1, y: 1, z: 1}
+  m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &5517370568664404485
 GameObject:
   m_ObjectHideFlags: 0

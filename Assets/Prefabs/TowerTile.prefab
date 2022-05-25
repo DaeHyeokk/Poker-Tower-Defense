@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 3580989422626393029}
   - component: {fileID: 3036453801726409140}
   - component: {fileID: 7559788305493421272}
-  - component: {fileID: 3786512160804293640}
+  - component: {fileID: 5583108729297315189}
   m_Layer: 0
   m_Name: TowerTile
   m_TagString: Untagged
@@ -100,7 +100,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _emptySprite: {fileID: 2069808793, guid: dd58c82ee0c0f444fbbcc95e5b46cf82, type: 3}
   _nonEmptySprite: {fileID: 1925362067, guid: dd58c82ee0c0f444fbbcc95e5b46cf82, type: 3}
---- !u!65 &3786512160804293640
+--- !u!65 &5583108729297315189
 BoxCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}

@@ -4,6 +4,10 @@ using UnityEngine;
 
 public class MountainTower : Tower
 {
+    [Header("Spawn Point Particle")]
+    [SerializeField]
+    private ParticleController _spawnPointParticle;
+
     [Header("Basic Increase Received Damage Rate")]
     [SerializeField]
     private IncreaseReceivedDamageRate.Attribute[] _basicIRDRateAttributes;
@@ -17,6 +21,23 @@ public class MountainTower : Tower
     private readonly string _towerName = "Mountain Tower";
     public override string towerName => _towerName;
     public override int towerIndex => 5;
+    public override Tile onTile
+    {
+        get => base.onTile;
+        set
+        {
+            if (value == null)
+            {
+                base.onTile = null;
+                _spawnPointParticle.StopParticle();
+            }
+            else
+            {
+                base.onTile = value;
+                _spawnPointParticle.PlayParticle();
+            }
+        }
+    }
 
     protected override void Awake()
     {

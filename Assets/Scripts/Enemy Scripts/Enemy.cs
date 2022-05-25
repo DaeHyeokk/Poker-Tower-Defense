@@ -18,7 +18,6 @@ public abstract class Enemy : MonoBehaviour
     {
         _healthSlider = GetComponentInChildren<Slider>();
         _enemySprite = GetComponentInChildren<SpriteRenderer>();
-
         _takeDamageAnimationDelay = new WaitForSeconds(0.05f);
     }
 
@@ -32,7 +31,7 @@ public abstract class Enemy : MonoBehaviour
     public abstract void TakeSlowing(float slowingRate, float duration);
     protected virtual void Die()
     {
-        ParticleSpawner.instance.PlayParticle(transform.position, _enemySprite.transform.lossyScale);
+        ParticlePlayer.instance.PlayEnemyDie(this.transform);
     }
 
     private IEnumerator EnemyTakeDamageAnimationCoroutine()

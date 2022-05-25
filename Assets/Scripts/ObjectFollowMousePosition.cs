@@ -30,7 +30,7 @@ public class ObjectFollowMousePosition : MonoBehaviour
         {
             position.Set(Input.mousePosition.x, Input.mousePosition.y, 0);
             transform.position = _mainCamera.ScreenToWorldPoint(position);
-            transform.position = new Vector3(transform.position.x, transform.position.y, 0f);
+            transform.position = new Vector3(transform.position.x, transform.position.y, -1f);
             yield return null;
         }
     }

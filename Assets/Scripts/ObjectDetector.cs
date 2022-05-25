@@ -4,22 +4,21 @@ using UnityEngine;
 
 public class ObjectDetector : MonoBehaviour
 {
-    [SerializeField]
-    private GameObject[] _followTowerPrefabs;
-
-    private FollowTower[] _followTowers;
     private Tower _clickTower;
-    private Vector3 _tempPosition;
-    private Camera mainCamera;
-    private Ray ray;
-    private RaycastHit hit;
-    private RaycastHit[] hits;
+    private Camera _mainCamera;
+    private Ray _ray;
+    private RaycastHit _hit;
+    private RaycastHit[] _hits;
+
+    private Ray2D _ray2D;
+    private RaycastHit2D _hit2D;
+    private RaycastHit2D[] _hits2D;
 
     void Awake()
     {
         // 'MainCamera' 태그를 가지고 있는 오브젝트를 탐색 후 Camera 컴포넌트 정보 전달
         // GameObject.FindGameObjectWithTag("MainCamera").GetComponent<Camera>(); 와 동일
-        mainCamera = Camera.main;
+        _mainCamera = Camera.main;
 
         _clickTower = null;
     }
@@ -35,16 +34,15 @@ public class ObjectDetector : MonoBehaviour
             // 카메라 위치에서 화면의 마우스 커서를 관통하는 광선(ray) 생성
             // ray.origin : 광선의 시작 위치 (= 카메라 위치)
             // ray.direction : 광선의 진행 방향
-            ray = mainCamera.ScreenPointToRay(Input.mousePosition);
+            _ray = _mainCamera.ScreenPointToRay(Input.mousePosition);
 
-            // 2D 모니터를 통해 3D 월드의 오브젝트를 마우스로 선택하는 방법
-            // 광선에 부딪히는 오브젝트를 검출해서 hit에 저장
-            if (Physics.Raycast(ray, out hit, Mathf.Infinity))
+            // 광선에 부딪히는 오브젝트를 검출해서 hit2D에 저장
+            if(Physics.Raycast(_ray, out _hit, Mathf.Infinity))
             {
                 // 광선에 부딪힌 타겟이 타워라면 마우스를 떼기 전까지 계속해서 마우스포인터를 따라감
-                if (hit.transform.CompareTag("Tower"))
+                if (_hit.transform.CompareTag("Tower"))
                 {
-                    _clickTower = hit.transform.GetComponent<Tower>();
+                    _clickTower = _hit.transform.GetComponent<Tower>();
                     _clickTower.MoveTower();
                 }
             }
@@ -58,16 +56,15 @@ public class ObjectDetector : MonoBehaviour
                 _clickTower.StopTower();
 
                 // 카메라 위치에서 화면의 마우스 커서를 관통하는 광선(ray) 생성.
-                ray = mainCamera.ScreenPointToRay(Input.mousePosition);
-                // 광선에 부딪히는 모든 오브젝트를 배열에 담음.
-                hits = Physics.RaycastAll(ray, Mathf.Infinity);
+                _ray = _mainCamera.ScreenPointToRay(Input.mousePosition);
+                _hits = Physics.RaycastAll(_ray, Mathf.Infinity);
 
-                for (int i = 0; i < hits.Length; i++)
+                for (int i = 0; i < _hits.Length; i++)
                 {
                     // 광선에 부딪힌 타겟이 Tile일 때 수행.
-                    if (hits[i].transform.CompareTag("Tile"))
+                    if (_hits[i].transform.CompareTag("Tile"))
                     {
-                        Tile tile = hits[i].transform.GetComponent<Tile>();
+                        Tile tile = _hits[i].transform.GetComponent<Tile>();
 
                         // 마우스를 뗀 좌표에 위치한 타일이 클릭중인 타워가 원래 배치 돼있던 타일이라면
                         // 타워를 타일 위에 배치하거나 타워 합치기 작업을 수행할 필요가 없다.

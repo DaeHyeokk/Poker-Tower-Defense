@@ -262,9 +262,9 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8848647765361606702}
-  - component: {fileID: 8503414292072533862}
   - component: {fileID: 4147413022146433318}
   - component: {fileID: 8981761952174829387}
+  - component: {fileID: 1329703355996516032}
   m_Layer: 0
   m_Name: OnePairTower
   m_TagString: Tower
@@ -289,19 +289,6 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!65 &8503414292072533862
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2018105800427153331}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Size: {x: 1, y: 1, z: 1}
-  m_Center: {x: 0, y: 0, z: 0}
 --- !u!114 &4147413022146433318
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -342,7 +329,7 @@ MonoBehaviour:
   - rate: 40
     duration: 2
     chance: 80
-  _specialRange: 1
+  _specialRange: 0.4
 --- !u!114 &8981761952174829387
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -355,6 +342,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cb41a05f75581b94d989fa43a0e0b90c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!65 &1329703355996516032
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2018105800427153331}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 1, y: 1, z: 1}
+  m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &2970220276239022997
 GameObject:
   m_ObjectHideFlags: 0

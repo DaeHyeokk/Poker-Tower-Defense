@@ -6,22 +6,12 @@ using System;
 public class ObjectPool<T> where T : Component
 {
     private GameObject _prefab;
-    private GameObject[] _prefabs;
     private Stack<T> _objectStack;
-    private List<Stack<T>> _objectStackList;
+
     public ObjectPool(GameObject prefab, int initCount)
     {
         _prefab = prefab;
         _objectStack = new Stack<T>();
-        _objectStackList = null;
-        Initialize(initCount);
-    }
-
-    public ObjectPool(GameObject[] prefabs, int initCount)
-    {
-        _prefabs = prefabs;
-        _objectStack = null;
-        _objectStackList = new List<Stack<T>>();
         Initialize(initCount);
     }
 
@@ -30,22 +20,8 @@ public class ObjectPool<T> where T : Component
         int newObjectCount = initCount;
 
         if (_objectStack != null)
-        {
             for (int i = 0; i < newObjectCount; i++)
                 _objectStack.Push(CreateNewObject());
-        }
-        else
-        {
-            for(int i=0; i<_prefabs.Length; i++)
-            {
-                _objectStackList.Add(new Stack<T>());
-                if (i <= (int)PokerHand.TwoPair)
-                {
-                    for (int j = 0; j < newObjectCount; j++)
-                        _objectStackList[i].Push(CreateNewObject(i));
-                }
-            }
-        }
     }
 
     private T CreateNewObject()
@@ -56,19 +32,8 @@ public class ObjectPool<T> where T : Component
         return newObject;
     }
 
-    private T CreateNewObject(int index)
-    {
-        T newObject = UnityEngine.Object.Instantiate(_prefabs[index]).GetComponent<T>();
-        newObject.gameObject.SetActive(false);
-
-        return newObject;
-    }
-
     public T GetObject()
     {
-        if (_objectStack == null)
-            throw new Exception("ObjectPool<T>.GetObject() 메서드에 매개변수를 입력해야 합니다.");
-
         T retObject;
 
         if (_objectStack.Count > 0)
@@ -81,38 +46,10 @@ public class ObjectPool<T> where T : Component
         return retObject;
     }
 
-    public T GetObject(int index)
-    {
-        if (_objectStackList == null)
-            throw new Exception("ObjectPool<T>.GetObject() 메서드에 매개변수를 입력하지 마십시오.");
-
-        T retObject;
-
-        if (_objectStackList[index].Count > 0)
-            retObject = _objectStackList[index].Pop();
-        else
-            retObject = CreateNewObject(index);
-
-        retObject.gameObject.SetActive(true);
-
-        return retObject;
-    }
-
     public void ReturnObject(T getObject)
     {
-        if (_objectStack == null)
-            throw new Exception("ObjectPool<T>.ReturnObject() 메서드에 index 매개변수를 입력해야 합니다.");
-
         getObject.gameObject.SetActive(false);
         _objectStack.Push(getObject);
-    }
-
-    public void ReturnObject(T getObject, int index)
-    {
-        if (_objectStackList == null)
-            throw new Exception("ObjectPool<T>.ReturnObject() 메서드에 index 매개변수를 입력하지 마십시오.");
-        getObject.gameObject.SetActive(false);
-        _objectStackList[index].Push(getObject);
     }
 }
 
@@ -136,4 +73,7 @@ public class ObjectPool<T> where T : Component
  * 
  * Update : 2022/04/30 SAT 15:40
  * 해당 ObjectPool을 사용하며 일어날 수 있는 예외 상황에 대비하여 예외 처리 해주는 구문 추가.
+ * 
+ * Update : 2022/05/25 WED 08:00
+ * 여러개의 프리팹을 관리하는 로직 삭제.
  */
