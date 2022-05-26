@@ -5,11 +5,17 @@ using UnityEngine.UI;
 
 public abstract class FieldEnemy : Enemy
 {
+    [SerializeField]
+    private Particle _slowParticle;
+    [SerializeField]
+    private Particle _stunParticle;
+
     private Transform[] _wayPoints;  // 이동경로 좌표 배열
     private int _currentIndex;   // 현재 목표지점 인덱스
 
     private float _baseMoveSpeed; // Enemy의 이동 속도 (상태 이상에 사용되는 이동속도)
     private int _stunCount; // 스턴을 중첩해서 맞을 경우 가장 마지막에 풀리는 스턴을 알기 위한 변수
+    private int _slowCount; // 슬로우를 중첩해서 맞을 경우 가장 마지막에 풀리는 슬로우를 알기 위한 변수
     private float _increaseReceiveDamageRate; // Enemy가 공격 당할 때 받는 피해량
 
     private Movement2D _movement2D;  // 오브젝트 이동 제어
@@ -40,6 +46,7 @@ public abstract class FieldEnemy : Enemy
         _movement2D.moveSpeed = enemyData.moveSpeed;
         _baseMoveSpeed = enemyData.moveSpeed;
 
+        _slowCount = 0;
         _stunCount = 0;
         _increaseReceiveDamageRate = 0;
 
@@ -121,6 +128,10 @@ public abstract class FieldEnemy : Enemy
     }
     private IEnumerator StunCoroutine(float duration)
     {
+        // stunCount가 0이라면 스턴 파티클을 실행한다.
+        if (_stunCount == 0)
+            _stunParticle.PlayParticle();
+
         // stunCount 1 증가.
         _stunCount++;
         // 이동속도를 0으로 변경.
@@ -134,7 +145,10 @@ public abstract class FieldEnemy : Enemy
 
         // 만약 스턴에 걸리지 않은 상태라면 이동속도를 원래대로 되돌린다.
         if (_stunCount == 0)
+        {
+            _stunParticle.StopParticle();
             _movement2D.moveSpeed = _baseMoveSpeed;
+        }
     }
 
 
@@ -147,9 +161,15 @@ public abstract class FieldEnemy : Enemy
         // 감소하는 이동 속도를 저장해둔다.
         float slowSpeed = _baseMoveSpeed * slowingRate * 0.01f;
 
+        // slowCount가 0이라면 슬로우 파티클을 실행한다.
+        if (_slowCount == 0)
+            _slowParticle.PlayParticle();
+        // slowCount 1 증가.
+        _slowCount++;
+
         // 감소하는 이동 속도만큼 감소시킨다.
         _baseMoveSpeed -= slowSpeed;
-
+        
         // 스턴 상태일 때 Enemy의 실제 이동 속도를 바꾸면 스턴이 풀리게 된다.
         // 따라서 스턴 상태일 경우에는 이동 속도를 바꾸지 않는다.
         if (_stunCount == 0)
@@ -159,9 +179,16 @@ public abstract class FieldEnemy : Enemy
 
         // 감소시켰던 이동 속도를 되돌린다.
         _baseMoveSpeed += slowSpeed;
+
         // 위와 동일.
         if (_stunCount == 0)
             _movement2D.moveSpeed = _baseMoveSpeed;
+
+        // 증가시켰던 slowCount를 다시 감소시킨다.
+        _slowCount--;
+        // slowCount 가 0이라면 슬로우 파티클을 중지한다.
+        if (_slowCount == 0)
+            _slowParticle.StopParticle();
     }
 
     public override void TakeIncreaseReceivedDamage(float increaseReceivedDamageRate, float duration)

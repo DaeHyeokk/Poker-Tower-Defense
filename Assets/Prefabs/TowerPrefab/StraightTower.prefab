@@ -5087,6 +5087,7 @@ Transform:
   m_Children:
   - {fileID: 3571895342721572632}
   - {fileID: 8064413676831786106}
+  - {fileID: 1262810597831228864}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -5137,7 +5138,8 @@ MonoBehaviour:
   - rate: 500
     chance: 80
   _specialAttackRange: 0.5
-  _specialBuffRange: 0.8
+  _specialBuffRange: 0.6
+  _buffRangeParticle: {fileID: 5324230053819599866}
 --- !u!65 &5208156686070379611
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -19751,3 +19753,76 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_HorizontalFit: 2
   m_VerticalFit: 2
+--- !u!1001 &6818880324725748810
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 7744774966995312754}
+    m_Modifications:
+    - target: {fileID: 5703773792270649738, guid: aab8f6eadbd0c9c4eb68a73d8a70d82e, type: 3}
+      propertyPath: m_RootOrder
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 5703773792270649738, guid: aab8f6eadbd0c9c4eb68a73d8a70d82e, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5703773792270649738, guid: aab8f6eadbd0c9c4eb68a73d8a70d82e, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5703773792270649738, guid: aab8f6eadbd0c9c4eb68a73d8a70d82e, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5703773792270649738, guid: aab8f6eadbd0c9c4eb68a73d8a70d82e, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5703773792270649738, guid: aab8f6eadbd0c9c4eb68a73d8a70d82e, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5703773792270649738, guid: aab8f6eadbd0c9c4eb68a73d8a70d82e, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5703773792270649738, guid: aab8f6eadbd0c9c4eb68a73d8a70d82e, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5703773792270649738, guid: aab8f6eadbd0c9c4eb68a73d8a70d82e, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5703773792270649738, guid: aab8f6eadbd0c9c4eb68a73d8a70d82e, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5703773792270649738, guid: aab8f6eadbd0c9c4eb68a73d8a70d82e, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5703773792270947754, guid: aab8f6eadbd0c9c4eb68a73d8a70d82e, type: 3}
+      propertyPath: m_Name
+      value: IncreaseAttackRateBuffRangeParticle
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: aab8f6eadbd0c9c4eb68a73d8a70d82e, type: 3}
+--- !u!4 &1262810597831228864 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 5703773792270649738, guid: aab8f6eadbd0c9c4eb68a73d8a70d82e, type: 3}
+  m_PrefabInstance: {fileID: 6818880324725748810}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &5324230053819599866 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 1676166449876303792, guid: aab8f6eadbd0c9c4eb68a73d8a70d82e, type: 3}
+  m_PrefabInstance: {fileID: 6818880324725748810}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e5216e6be525d4944951365acec6ba58, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 

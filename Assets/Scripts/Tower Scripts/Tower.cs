@@ -206,8 +206,6 @@ public abstract class Tower : MonoBehaviour
 
     protected virtual void SpecialInflict(Tower target, float range)
     {
-        ParticlePlayer.instance.PlayRangeAttack(target.transform, range, (int)colorType);
-
         Collider2D[] collider2D = Physics2D.OverlapCircleAll(target.transform.position, range / 2);
 
         for (int i = 0; i < collider2D.Length; i++)

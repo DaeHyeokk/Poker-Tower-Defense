@@ -57,7 +57,7 @@ public class StraightFlushTower : Tower
         }
         else // (attackType == AttackType.Special)
         {
-            Projectile projectile = projectileSpawner.SpawnProjectile(this, spawnPoint, target, normalProjectileSprite);
+            Projectile projectile = projectileSpawner.SpawnProjectile(this, spawnPoint, target, specialProjectileSprite);
             projectile.actionOnCollision += () => SpecialInflict(projectile, target, _specialRange);
         }
     }

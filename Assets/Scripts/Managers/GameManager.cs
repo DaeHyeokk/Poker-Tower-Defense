@@ -27,7 +27,7 @@ public class GameManager : MonoBehaviour
     private int _life;
     private int _gold;
     private int _mineral;
-    private int _changeChance;
+    public int _changeChance;
     private bool _isGameover;
 
     private int[] _colorUpgradeIncrementCost;

@@ -43,7 +43,7 @@ public class FullHouseTower : Tower
         }
         else // (attackType == AttackType.Special)
         {
-            Projectile projectile = projectileSpawner.SpawnProjectile(this, spawnPoint, target, normalProjectileSprite);
+            Projectile projectile = projectileSpawner.SpawnProjectile(this, spawnPoint, target, specialProjectileSprite);
             projectile.actionOnCollision += () => BasicInflict(projectile, target);
 
             SpecialInflict(this);

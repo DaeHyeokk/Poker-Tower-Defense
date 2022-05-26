@@ -6,7 +6,7 @@ public class MountainTower : Tower
 {
     [Header("Spawn Point Particle")]
     [SerializeField]
-    private ParticleController _spawnPointParticle;
+    private Particle _spawnPointParticle;
 
     [Header("Basic Increase Received Damage Rate")]
     [SerializeField]
@@ -16,7 +16,9 @@ public class MountainTower : Tower
     [SerializeField]
     private IncreaseDamageRate.Attribute[] _specialIDRateAttributes;
     [SerializeField]
-    private float _specialRange;
+    private float _specialBuffRange;
+    [SerializeField]
+    private Particle _buffRangeParticle;
 
     private readonly string _towerName = "Mountain Tower";
     public override string towerName => _towerName;
@@ -52,6 +54,8 @@ public class MountainTower : Tower
 
         IncreaseDamageRate specialIDRate = new(this, _specialIDRateAttributes);
         specialInflictorList.Add(specialIDRate);
+
+        SetBuffRangeParticleScale();
     }
 
     protected override void ShotProjectile(Enemy target, AttackType attackType)
@@ -66,8 +70,15 @@ public class MountainTower : Tower
             Projectile projectile = projectileSpawner.SpawnProjectile(this, spawnPoint, target, normalProjectileSprite);
             projectile.actionOnCollision += () => BasicInflict(projectile, target);
 
-            SpecialInflict(this, _specialRange);
+            _buffRangeParticle.PlayParticle();
+
+            SpecialInflict(this, _specialBuffRange);
         }
+    }
+    private void SetBuffRangeParticleScale()
+    {
+        float attackRangeScale = _specialBuffRange * 2 / this.transform.lossyScale.x;
+        _buffRangeParticle.transform.localScale = new Vector3(attackRangeScale, attackRangeScale, 0);
     }
 }
 

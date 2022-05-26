@@ -6,7 +6,7 @@ public class StraightTower : Tower
 {
     [Header("Spawn Point Particle")]
     [SerializeField]
-    private ParticleController _spawnPointParticle;
+    private Particle _spawnPointParticle;
 
     [Header("Basic Slowing")]
     [SerializeField]
@@ -25,6 +25,8 @@ public class StraightTower : Tower
     private float _specialAttackRange;
     [SerializeField]
     private float _specialBuffRange;
+    [SerializeField]
+    private Particle _buffRangeParticle;
 
     private readonly string _towerName = "Straight Tower";
     public override string towerName => _towerName;
@@ -63,6 +65,8 @@ public class StraightTower : Tower
 
         IncreaseAttackRate specialIncreaseAttackRate = new(this, _specialIARateAttributes);
         specialInflictorList.Add(specialIncreaseAttackRate);
+
+        SetBuffRangeParticleScale();
     }
 
     protected override void ShotProjectile(Enemy target, AttackType attackType)
@@ -77,8 +81,15 @@ public class StraightTower : Tower
             Projectile projectile = projectileSpawner.SpawnProjectile(this, spawnPoint, target, normalProjectileSprite);
             projectile.actionOnCollision += () => SpecialInflict(projectile, target, _specialAttackRange);
 
+            _buffRangeParticle.PlayParticle();
             SpecialInflict(this, _specialBuffRange);
         }
+    }
+
+    private void SetBuffRangeParticleScale()
+    {
+        float attackRangeScale = _specialBuffRange * 2 / this.transform.lossyScale.x;
+        _buffRangeParticle.transform.localScale = new Vector3(attackRangeScale, attackRangeScale, 0);
     }
 }
 
