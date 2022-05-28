@@ -8,6 +8,10 @@ public class FullHouseTower : Tower
     [SerializeField]
     private CriticalStrike.Attribute[] _basicCritAttributes;
 
+    [Header("Special CriticalStrike")]
+    [SerializeField]
+    private CriticalStrike.Attribute[] _specialCritAttributes;
+
     [Header("Special IncreaseDamageRate")]
     [SerializeField]
     private IncreaseDamageRate.Attribute[] _specialIncreaseDamageRateAttributes;
@@ -16,22 +20,68 @@ public class FullHouseTower : Tower
     [SerializeField]
     private IncreaseAttackRate.Attribute[] _specialIncreaseAttackRateAttributes;
 
+    private bool _isSpecialBuff;
     private readonly string _towerName = "FullHouse Tower";
+
+    private float _specialBuffDuration => _specialIncreaseAttackRateAttributes[level].duration;
     public override string towerName => _towerName;
     public override int towerIndex => 7;
+
     protected override void Awake()
     {
         base.Awake();
         targetDetector.detectingMode = TargetDetector.DetectingMode.Single;
 
         CriticalStrike basicCriticalStrike = new(this, _basicCritAttributes);
-        basicInflictorList.Add(basicCriticalStrike);
+        basicEnemyInflictorList.Add(basicCriticalStrike);
+
+        CriticalStrike specialCriticalStrike = new(this, _specialCritAttributes);
+        specialEnemyInflictorList.Add(specialCriticalStrike);
 
         IncreaseDamageRate specialIncreaseDamageRate = new(this, _specialIncreaseDamageRateAttributes);
-        specialInflictorList.Add(specialIncreaseDamageRate);
+        specialTowerInflictorList.Add(specialIncreaseDamageRate);
 
         IncreaseAttackRate specialIncreaseAttackRate = new(this, _specialIncreaseAttackRateAttributes);
-        specialInflictorList.Add(specialIncreaseAttackRate);
+        specialTowerInflictorList.Add(specialIncreaseAttackRate);
+    }
+
+    public override void Setup()
+    {
+        base.Setup();
+        _isSpecialBuff = false;
+    }
+
+    protected override IEnumerator SearchAndAction()
+    {
+        while (true)
+        {
+            targetDetector.SearchTarget();
+
+            // 공격할 타겟이 없다면 공격하지 않는다.
+            if (targetDetector.targetList.Count == 0)
+                yield return null;
+            else
+            {
+                if(!_isSpecialBuff) attackCount++;
+
+                for (int i = 0; i < targetDetector.targetList.Count; i++)
+                {
+                    if (attackCount < specialAttackCount)
+                        ShotProjectile(targetDetector.targetList[i], AttackType.Basic);
+                    else
+                        ShotProjectile(targetDetector.targetList[i], AttackType.Special);
+                }
+
+                if (attackCount >= specialAttackCount)
+                {
+                    SpecialInflict(this);
+                    StartCoroutine(ToggleIsSpecialBuffCoroutine());
+                    attackCount = 0;
+                }
+
+                yield return new WaitForSeconds(attackRate);
+            }
+        }
     }
 
     protected override void ShotProjectile(Enemy target, AttackType attackType)
@@ -39,15 +89,22 @@ public class FullHouseTower : Tower
         if (attackType == AttackType.Basic)
         {
             Projectile projectile = projectileSpawner.SpawnProjectile(this, spawnPoint, target, normalProjectileSprite);
-            projectile.actionOnCollision += () => BasicInflict(projectile, target);
+            projectile.actionOnCollision += () => BasicInflict(target);
         }
         else // (attackType == AttackType.Special)
         {
             Projectile projectile = projectileSpawner.SpawnProjectile(this, spawnPoint, target, specialProjectileSprite);
-            projectile.actionOnCollision += () => BasicInflict(projectile, target);
-
-            SpecialInflict(this);
+            projectile.actionOnCollision += () => SpecialInflict(target);
         }
+    }
+
+    private IEnumerator ToggleIsSpecialBuffCoroutine()
+    {
+        _isSpecialBuff = true;
+
+        yield return new WaitForSeconds(_specialBuffDuration);
+
+        _isSpecialBuff = false;
     }
 }
 
@@ -62,4 +119,7 @@ public class FullHouseTower : Tower
  * 
  * Update : 2022/05/16 MON
  * 타워의 특수 공격 구현.
+ * 
+ * Update : 2022/05/27 FRI
+ * Special Inflict 효과로 공격속도 증가 버프를 받고 있을 때는 적을 공격해도 Attack Count가 증가하지 않도록 변경.
  */

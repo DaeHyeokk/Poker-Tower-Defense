@@ -59,24 +59,14 @@ public class Projectile : MonoBehaviour
 
         if(actionOnCollision != null)
             actionOnCollision();
+
+        ReturnPool();
     }
 
-    public void ReturnPool()
+    private void ReturnPool()
     {
         actionOnCollision = null;
         _projectileSpawner.projectilePool.ReturnObject(this);
-    }
-
-    public void DelayReturnPool(float delayTime)
-    {
-        StartCoroutine(DelayReturnPoolCoroutine(delayTime));
-    }
-
-    public IEnumerator DelayReturnPoolCoroutine(float delayTime)
-    {
-        yield return new WaitForSeconds(delayTime);
-
-        ReturnPool();
     }
 }
 

@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class IncreaseAttackRate : IInflictable
+public class IncreaseAttackRate : ITowerInflictable
 {
     private Tower _fromTower;
     private Attribute[] _attributes;
@@ -23,11 +23,10 @@ public class IncreaseAttackRate : IInflictable
         _attributes = attributes;
     }
 
-    public void Inflict(GameObject target)
+    public void Inflict(Tower target)
     {
-        Tower tower = target.GetComponent<Tower>();
+        if (target == null) return;
 
-        if (tower != null)
-            tower.TakeIncreaseAttackRate(rate, duration);
+        target.TakeIncreaseAttackRate(rate, duration);
     }
 }

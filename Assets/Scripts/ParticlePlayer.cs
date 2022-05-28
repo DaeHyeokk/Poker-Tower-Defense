@@ -60,6 +60,12 @@ public class ParticlePlayer : MonoBehaviour
 
         StartCoroutine(EnemyDieReturnPoolCoroutine(particle));
     }
+    private IEnumerator EnemyDieReturnPoolCoroutine(Particle particle)
+    {
+        yield return _delayTime;
+        _enemyDiePool.ReturnObject(particle);
+    }
+
 
     public void PlayCollisionProjectile(Transform projectileTransform, int index)
     {
@@ -70,6 +76,12 @@ public class ParticlePlayer : MonoBehaviour
 
         StartCoroutine(CollisionProjectileReturnPoolCoroutine(particle, index));
     }
+    private IEnumerator CollisionProjectileReturnPoolCoroutine(Particle particle, int index)
+    {
+        yield return _collisionProjectileDelayTime;
+        _collisionProjectilePoolList[index].ReturnObject(particle);
+    }
+
 
     public void PlayRangeAttack(Transform targetTransform, float range, int index)
     {
@@ -80,23 +92,10 @@ public class ParticlePlayer : MonoBehaviour
 
         StartCoroutine(RangeAttackReturnPoolCoroutine(particle, index));
     }
-
-    private IEnumerator EnemyDieReturnPoolCoroutine(Particle particle)
-    {
-        yield return _delayTime;
-        _enemyDiePool.ReturnObject(particle);
-    }
-
     private IEnumerator RangeAttackReturnPoolCoroutine(Particle particle, int index)
     {
         yield return _delayTime;
         _rangeAttackPoolList[index].ReturnObject(particle);
-    }
-
-    private IEnumerator CollisionProjectileReturnPoolCoroutine(Particle particle, int index)
-    {
-        yield return _collisionProjectileDelayTime;
-        _collisionProjectilePoolList[index].ReturnObject(particle);
     }
 
 }

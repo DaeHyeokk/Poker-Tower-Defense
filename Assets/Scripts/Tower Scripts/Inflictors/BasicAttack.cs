@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class BasicAttack : IInflictable
+public class BasicAttack : IEnemyInflictable
 {
     private Tower _fromTower;
 
@@ -12,12 +12,11 @@ public class BasicAttack : IInflictable
     {
         _fromTower = fromTower;
     }
-    
-    public void Inflict(GameObject target)
-    {
-        Enemy enemy = target.GetComponent<Enemy>();
 
-        if (enemy != null)
-            enemy.TakeDamage(damage);
+    public void Inflict(Enemy target)
+    {
+        if (target == null) return;
+
+        target.TakeDamage(damage);
     }
 }

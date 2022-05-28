@@ -30,21 +30,21 @@ MonoBehaviour:
     upgradeRIP: 0
   - maxTargetCount: 1
     damage: 40
-    rate: 1.7
+    rate: 1.4
     range: 1.3
     upgradeDIP: 10
     upgradeSIP: 0
     upgradeRIP: 0
   - maxTargetCount: 1
     damage: 60
-    rate: 2
+    rate: 1.2
     range: 1.4
     upgradeDIP: 20
     upgradeSIP: 0
     upgradeRIP: 0
   - maxTargetCount: 1
     damage: 100
-    rate: 2.3
+    rate: 1
     range: 1.5
     upgradeDIP: 40
     upgradeSIP: 0

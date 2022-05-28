@@ -2,10 +2,9 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Stun : IInflictable
+public class Stun : IEnemyInflictable
 {
     private Tower _fromTower;
-    private Enemy _target;
     private Attribute[] _attributes;
 
     [System.Serializable]
@@ -25,10 +24,11 @@ public class Stun : IInflictable
         _attributes = attributes;
     }
 
-    public void Inflict(GameObject target)
+    public void Inflict(Enemy target)
     {
-        if (target.TryGetComponent(out _target))
-            if (chance > Random.Range(0, 100))
-                _target.TakeStun(duration);
+        if (target == null) return;
+
+        if (chance > Random.Range(0, 100))
+            target.TakeStun(duration);
     }
 }

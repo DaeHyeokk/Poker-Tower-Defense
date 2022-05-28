@@ -12,6 +12,10 @@ public abstract class Tower : MonoBehaviour
     private TowerData _towerData;
     [SerializeField]
     private Transform _spawnPoint;
+    [SerializeField]
+    private Particle _increaseDamageEffect;
+    [SerializeField]
+    private Particle _increaseAttackRateEffect;
 
     private HorizontalLayoutGroup _levelLayout;
     private SpriteRenderer _towerRenderer;
@@ -21,14 +25,45 @@ public abstract class Tower : MonoBehaviour
     private ProjectileSpawner _projectileSpawner;
     private TowerBuilder _towerBuilder;
     private Tile _onTile;
-    private float _defaultAttackRate;
+    private float _maxAttackRate;
     private float _increaseAttackRate;
     private float _increaseDamageRate;
-    private int _attackCount;
-    private int _specialAttackCount;
 
-    protected List<IInflictable> basicInflictorList { get; set; }
-    protected List<IInflictable> specialInflictorList { get; set; }
+    private float increaseAttackRate
+    {
+        get => _increaseAttackRate;
+        set
+        {
+            if (_increaseAttackRate == 0 && value > 0)
+                _increaseAttackRateEffect.PlayParticle();
+            else if (_increaseAttackRate != 0 && value == 0)
+                _increaseAttackRateEffect.StopParticle();
+
+            _increaseAttackRate = value;
+            Debug.Log("IAR : " + increaseAttackRate);
+        }
+    }
+    private float increaseDamageRate
+    {
+        get => _increaseDamageRate;
+        set
+        {
+            if (_increaseDamageRate == 0 && value > 0)
+                _increaseDamageEffect.PlayParticle();
+            else if (_increaseDamageRate != 0 && value == 0)
+                _increaseDamageEffect.StopParticle();
+
+            _increaseDamageRate = value;
+        }
+    }
+
+    protected int attackCount { get; set; }
+    protected int specialAttackCount { get; private set; }
+
+    protected List<IEnemyInflictable> basicEnemyInflictorList { get; set; }
+    protected List<IEnemyInflictable> specialEnemyInflictorList { get; set; }
+    protected List<ITowerInflictable> basicTowerInflictorList { get; set; }
+    protected List<ITowerInflictable> specialTowerInflictorList { get; set; }
 
     protected ProjectileSpawner projectileSpawner => _projectileSpawner;
     protected Transform spawnPoint => _spawnPoint;
@@ -42,11 +77,17 @@ public abstract class Tower : MonoBehaviour
     public Color color => _towerColor.color;
     public int upgradeCount => GameManager.instance.colorUpgradeCounts[(int)colorType];
     public int level => _towerLevel.level;
-    public float damage => (_towerData.weapons[level].damage + (upgradeCount * _towerData.weapons[level].upgradeDIP)) * (1f + (_increaseDamageRate * 0.01f));
-    public float attackRate => _defaultAttackRate - (_towerData.weapons[level].rate + (_towerData.weapons[level].rate * (_increaseAttackRate * 0.01f)));
+    public float damage => (_towerData.weapons[level].damage + (upgradeCount * _towerData.weapons[level].upgradeDIP)) * (1f + (increaseDamageRate * 0.01f));
+    public float attackRate 
+    {
+        get
+        {
+            float value = _towerData.weapons[level].rate / (1 + increaseAttackRate * 0.01f);
+            return value > _maxAttackRate ? value : _maxAttackRate;
+        }
+    }
     public float range => _towerData.weapons[level].range;
     public int maxTargetCount => _towerData.weapons[level].maxTargetCount;
-    public int attackCount => _attackCount;
 
     public virtual Tile onTile
     {
@@ -55,6 +96,9 @@ public abstract class Tower : MonoBehaviour
         {
             if (value == null)
             {
+                if (_onTile == null)
+                    return;
+
                 _onTile.collocationTower = null;
                 _onTile = null;
             }
@@ -86,11 +130,12 @@ public abstract class Tower : MonoBehaviour
         _towerLevel = new TowerLevel(_levelLayout);
         _targetDetector = new TargetDetector(this, FindObjectOfType<EnemySpawner>());
 
-        basicInflictorList = new List<IInflictable>();
-        specialInflictorList = new List<IInflictable>();
-
-        _defaultAttackRate = 3f;
-        _specialAttackCount = 10;
+        basicEnemyInflictorList = new();
+        specialEnemyInflictorList = new();
+        basicTowerInflictorList = new();
+        specialTowerInflictorList = new();
+        _maxAttackRate = 0.1f;
+        specialAttackCount = 10;
 
         _onTile = null;
     }
@@ -99,9 +144,9 @@ public abstract class Tower : MonoBehaviour
     {
         _towerColor.ChangeColor();
 
-        _attackCount = 0;
-        _increaseAttackRate = 0;
-        _increaseDamageRate = 0;
+        attackCount = 0;
+        increaseAttackRate = 0;
+        increaseDamageRate = 0;
 
         StartCoroutine(SearchAndAction());
     }
@@ -110,6 +155,10 @@ public abstract class Tower : MonoBehaviour
     {
         while (true)
         {
+            // 타일 위에 배치된 상태가 아니라면 적을 탐색하지 않는다.
+            if (onTile == null) 
+                yield return null;
+
             _targetDetector.SearchTarget();
 
             // 공격할 타겟이 없다면 공격하지 않는다.
@@ -117,17 +166,17 @@ public abstract class Tower : MonoBehaviour
                 yield return null;
             else
             {
-                _attackCount++;
+                attackCount++;
 
                 for (int i = 0; i < _targetDetector.targetList.Count; i++)
                 {
-                    if(_attackCount < _specialAttackCount)
+                    if(attackCount < specialAttackCount)
                         ShotProjectile(_targetDetector.targetList[i], AttackType.Basic);
                     else
                         ShotProjectile(_targetDetector.targetList[i], AttackType.Special);
                 }
 
-                if (_attackCount >= _specialAttackCount) _attackCount = 0;
+                if (attackCount >= specialAttackCount) attackCount = 0;
 
                 yield return new WaitForSeconds(attackRate);
             }
@@ -136,81 +185,74 @@ public abstract class Tower : MonoBehaviour
 
     protected abstract void ShotProjectile(Enemy target, AttackType attackType);
 
-    protected virtual void BasicInflict(Projectile projectile, Enemy target)
+    protected virtual void BasicInflict(Enemy target)
     {
-        projectile.ReturnPool();
-
-        for (int i = 0; i < basicInflictorList.Count; i++)
+        for (int i = 0; i < basicEnemyInflictorList.Count; i++)
             if (target.gameObject.activeInHierarchy)
-                basicInflictorList[i].Inflict(target.gameObject);
+                basicEnemyInflictorList[i].Inflict(target);
     }
-
     protected virtual void BasicInflict(Tower target)
     {
-        for (int i = 0; i < basicInflictorList.Count; i++)
-            basicInflictorList[i].Inflict(target.gameObject);
+        for (int i = 0; i < basicTowerInflictorList.Count; i++)
+            basicTowerInflictorList[i].Inflict(target);
     }
 
-    protected virtual void BasicInflict(Projectile projectile, Enemy target, float range)
+    protected virtual void BasicInflict(Enemy target, float range)
     {
-        projectile.ReturnPool();
         ParticlePlayer.instance.PlayRangeAttack(target.transform, range, (int)colorType);
 
         Collider2D[] collider2D = Physics2D.OverlapCircleAll(target.transform.position, range * 0.5f);
 
         for (int i = 0; i < collider2D.Length; i++)
-            for (int j = 0; j < basicInflictorList.Count; j++)
+            for (int j = 0; j < basicEnemyInflictorList.Count; j++)
                 if(collider2D[i].gameObject.activeInHierarchy)
-                    basicInflictorList[j].Inflict(collider2D[i].gameObject);
+                    basicEnemyInflictorList[j].Inflict(collider2D[i].GetComponent<Enemy>());
     }
 
     protected virtual void BasicInflict(Tower target, float range)
     {
         ParticlePlayer.instance.PlayRangeAttack(target.transform, range, (int)colorType);
 
-        Collider2D[] collider2D = Physics2D.OverlapCircleAll(target.transform.position, range / 2);
+        Collider[] collider = Physics.OverlapSphere(target.transform.position, range / 2);
 
-        for (int i = 0; i < collider2D.Length; i++)
-            for (int j = 0; j < basicInflictorList.Count; j++)
-                basicInflictorList[j].Inflict(collider2D[i].gameObject);
+        for (int i = 0; i < collider.Length; i++)
+            for (int j = 0; j < basicEnemyInflictorList.Count; j++)
+                basicTowerInflictorList[j].Inflict(collider[i].GetComponent<Tower>());
     }
 
-    protected virtual void SpecialInflict(Projectile projectile, Enemy target)
+    protected virtual void SpecialInflict(Enemy target)
     {
-        for (int i = 0; i < specialInflictorList.Count; i++)
+        for (int i = 0; i < specialEnemyInflictorList.Count; i++)
             if (target.gameObject.activeInHierarchy)
-                specialInflictorList[i].Inflict(target.gameObject);
-
-        projectile.ReturnPool();
+                specialEnemyInflictorList[i].Inflict(target);
     }
 
     protected virtual void SpecialInflict(Tower target)
     {
-        for (int i = 0; i < specialInflictorList.Count; i++)
-            specialInflictorList[i].Inflict(target.gameObject);
+        for (int i = 0; i < specialTowerInflictorList.Count; i++)
+            specialTowerInflictorList[i].Inflict(target);
+        Debug.Log("attackRate: " + attackRate);
     }
 
-    protected virtual void SpecialInflict(Projectile projectile, Enemy target, float range)
+    protected virtual void SpecialInflict(Enemy target, float range)
     {
-        projectile.ReturnPool();
-
         ParticlePlayer.instance.PlayRangeAttack(target.transform, range, (int)colorType);
 
         Collider2D[] collider2D = Physics2D.OverlapCircleAll(target.transform.position, range / 2);
 
         for (int i = 0; i < collider2D.Length; i++)
-            for (int j = 0; j < specialInflictorList.Count; j++)
+            for (int j = 0; j < specialEnemyInflictorList.Count; j++)
                 if (collider2D[i].gameObject.activeInHierarchy)
-                    specialInflictorList[j].Inflict(collider2D[i].gameObject);
+                    specialEnemyInflictorList[j].Inflict(collider2D[i].GetComponent<Enemy>());
     }
 
     protected virtual void SpecialInflict(Tower target, float range)
     {
-        Collider2D[] collider2D = Physics2D.OverlapCircleAll(target.transform.position, range / 2);
+        Collider[] collider = Physics.OverlapSphere(target.transform.position, range / 2);
 
-        for (int i = 0; i < collider2D.Length; i++)
-            for (int j = 0; j < specialInflictorList.Count; j++)
-                specialInflictorList[j].Inflict(collider2D[i].gameObject);
+        for (int i = 0; i < collider.Length; i++)
+            for (int j = 0; j < specialEnemyInflictorList.Count; j++)
+                specialTowerInflictorList[j].Inflict(collider[i].GetComponent<Tower>());
     }
 
     public void TakeIncreaseAttackRate(float increaseAttackRate, float duration)
@@ -220,11 +262,11 @@ public abstract class Tower : MonoBehaviour
 
     private IEnumerator IncreaseAttackRateCoroutine(float increaseAttackRate, float duration)
     {
-        _increaseAttackRate += increaseAttackRate;
+        this.increaseAttackRate += increaseAttackRate;
 
         yield return new WaitForSeconds(duration);
 
-        _increaseAttackRate -= increaseAttackRate;
+        this.increaseAttackRate -= increaseAttackRate;
     }
 
     public void TakeIncreaseDamageRate(float increaseDamageRate, float duration)
@@ -234,11 +276,11 @@ public abstract class Tower : MonoBehaviour
 
     private IEnumerator IncreaseDamageRateCoroutine(float increaseDamageRate, float duration)
     {
-        _increaseDamageRate += increaseDamageRate;
+        this.increaseDamageRate += increaseDamageRate;
 
         yield return new WaitForSeconds(duration);
 
-        _increaseDamageRate -= increaseDamageRate;
+        this.increaseDamageRate -= increaseDamageRate;
     }
 
     private bool IsCompareTower(Tower compareTower)
@@ -296,6 +338,7 @@ public abstract class Tower : MonoBehaviour
             onTile = null;
 
         _towerLevel.Reset();
+        _targetDetector.ResetTarget();
 
         _towerBuilder.towerPoolList[towerIndex].ReturnObject(this);
     }

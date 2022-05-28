@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class IncreaseReceivedDamageRate : IInflictable
+public class IncreaseReceivedDamageRate : IEnemyInflictable
 {
     private Tower _fromTower;
     private Attribute[] _attributes;
@@ -28,12 +28,11 @@ public class IncreaseReceivedDamageRate : IInflictable
     }
 
 
-    public void Inflict(GameObject target)
+    public void Inflict(Enemy target)
     {
-        Enemy enemy = target.GetComponent<Enemy>();
+        if (target == null) return;
 
-        if (enemy != null)
-            if (chance > Random.Range(0, 100))
-                enemy.TakeIncreaseReceivedDamage(rate, duration);
+        if (chance > Random.Range(0, 100))
+            target.TakeIncreaseReceivedDamage(rate, duration);
     }
 }

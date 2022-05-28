@@ -161,3 +161,8 @@ Date: 2022/05/22 SUN
 Date: 2022/05/26 THU
 ☑ Enemy가 받는 상태이상의 시각효과를 위한 파티클 생성 및 적용.
 ☑ Tower가 버프 스킬을 사용할 때의 시각효과를 위한 파티클 생성 및 적용.
+
+Date: 2022/05/28 SAT
+☑ Tower가 받는 버프의 시각효과를 위한 파티클 생성 및 적용
+☑ 기존 IInflictable 인터페이스를 IEnemyInflictable, ITowerInflictable로 변경.
+☑ 타워의 공격속도 계산 공식 변경.

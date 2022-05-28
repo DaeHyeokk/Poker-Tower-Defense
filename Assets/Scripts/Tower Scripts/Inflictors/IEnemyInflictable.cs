@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public interface IInflictable
+public interface IEnemyInflictable
 {
-    public void Inflict(GameObject target);
+    public void Inflict(Enemy target);
 }

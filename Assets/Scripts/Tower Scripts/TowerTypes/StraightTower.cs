@@ -29,6 +29,7 @@ public class StraightTower : Tower
     private Particle _buffRangeParticle;
 
     private readonly string _towerName = "Straight Tower";
+
     public override string towerName => _towerName;
     public override int towerIndex => 4;
     public override Tile onTile
@@ -55,18 +56,56 @@ public class StraightTower : Tower
         targetDetector.detectingMode = TargetDetector.DetectingMode.Multiple;
 
         BasicAttack basicAttack = new(this);
-        basicInflictorList.Add(basicAttack);
+        basicEnemyInflictorList.Add(basicAttack);
 
         Slowing basicSlowing = new(this, _basicSlowingAttributes);
-        basicInflictorList.Add(basicSlowing);
+        basicEnemyInflictorList.Add(basicSlowing);
 
         CriticalStrike specialCriticalStrike = new(this, _specialCritAttributes);
-        specialInflictorList.Add(specialCriticalStrike);
+        specialEnemyInflictorList.Add(specialCriticalStrike);
 
         IncreaseAttackRate specialIncreaseAttackRate = new(this, _specialIARateAttributes);
-        specialInflictorList.Add(specialIncreaseAttackRate);
+        specialTowerInflictorList.Add(specialIncreaseAttackRate);
 
         SetBuffRangeParticleScale();
+    }
+
+    protected override IEnumerator SearchAndAction()
+    {
+        while (true)
+        {
+            // 타일 위에 배치된 상태가 아니라면 적을 탐색하지 않는다.
+            if (onTile == null)
+                yield return null;
+
+            targetDetector.SearchTarget();
+
+            // 공격할 타겟이 없다면 공격하지 않는다.
+            if (targetDetector.targetList.Count == 0)
+                yield return null;
+            else
+            {
+                attackCount++;
+
+                for (int i = 0; i < targetDetector.targetList.Count; i++)
+                {
+                    if (attackCount < specialAttackCount)
+                        ShotProjectile(targetDetector.targetList[i], AttackType.Basic);
+                    else
+                        ShotProjectile(targetDetector.targetList[i], AttackType.Special);
+                }
+
+                if (attackCount >= specialAttackCount)
+                {
+                    _buffRangeParticle.PlayParticle();
+                    SpecialInflict(this, _specialBuffRange);
+
+                    attackCount = 0;
+                }
+
+                yield return new WaitForSeconds(attackRate);
+            }
+        }
     }
 
     protected override void ShotProjectile(Enemy target, AttackType attackType)
@@ -74,15 +113,12 @@ public class StraightTower : Tower
         if (attackType == AttackType.Basic)
         {
             Projectile projectile = projectileSpawner.SpawnProjectile(this, spawnPoint, target, normalProjectileSprite);
-            projectile.actionOnCollision += () => BasicInflict(projectile, target);
+            projectile.actionOnCollision += () => BasicInflict(target);
         }
         else // (attackType == AttackType.Special)
         {
-            Projectile projectile = projectileSpawner.SpawnProjectile(this, spawnPoint, target, normalProjectileSprite);
-            projectile.actionOnCollision += () => SpecialInflict(projectile, target, _specialAttackRange);
-
-            _buffRangeParticle.PlayParticle();
-            SpecialInflict(this, _specialBuffRange);
+            Projectile projectile = projectileSpawner.SpawnProjectile(this, spawnPoint, target, specialProjectileSprite);
+            projectile.actionOnCollision += () => SpecialInflict(target, _specialAttackRange);
         }
     }
 

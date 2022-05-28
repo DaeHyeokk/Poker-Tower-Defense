@@ -26,13 +26,13 @@ public class TopTower : Tower
         targetDetector.detectingMode = TargetDetector.DetectingMode.Single;
 
         CriticalStrike basicCriticalStrike = new(this, _basicCritAttributes);
-        basicInflictorList.Add(basicCriticalStrike);
+        basicEnemyInflictorList.Add(basicCriticalStrike);
 
         CriticalStrike specialCriticalStrike = new(this, _specialCritAttributes);
-        specialInflictorList.Add(specialCriticalStrike);
+        specialEnemyInflictorList.Add(specialCriticalStrike);
 
         Slowing specialSlowing = new(this, _specialSlowingAttributes);
-        specialInflictorList.Add(specialSlowing);
+        specialEnemyInflictorList.Add(specialSlowing);
     }
 
     protected override void ShotProjectile(Enemy target, AttackType attackType)
@@ -40,12 +40,12 @@ public class TopTower : Tower
         if (attackType == AttackType.Basic)
         {
             Projectile projectile = projectileSpawner.SpawnProjectile(this, spawnPoint, target, normalProjectileSprite);
-            projectile.actionOnCollision += () => BasicInflict(projectile, target);
+            projectile.actionOnCollision += () => BasicInflict(target);
         }
         else // (attackType == AttackType.Special)
         {
             Projectile projectile = projectileSpawner.SpawnProjectile(this, spawnPoint, target, specialProjectileSprite);
-            projectile.actionOnCollision += () => SpecialInflict(projectile, target);
+            projectile.actionOnCollision += () => SpecialInflict(target);
         }
     }
 }

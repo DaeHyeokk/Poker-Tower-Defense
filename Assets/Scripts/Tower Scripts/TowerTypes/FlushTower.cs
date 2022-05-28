@@ -30,16 +30,16 @@ public class FlushTower : Tower
         targetDetector.detectingMode = TargetDetector.DetectingMode.Single;
 
         BasicAttack basicAttack = new(this);
-        basicInflictorList.Add(basicAttack);
+        basicEnemyInflictorList.Add(basicAttack);
 
         Stun basicStun = new(this, _basicStunAttributes);
-        basicInflictorList.Add(basicStun);
-
-        Stun specialStun = new(this, _specialStunAttributes);
-        specialInflictorList.Add(specialStun);
+        basicEnemyInflictorList.Add(basicStun);
 
         CriticalStrike specialCriticalStrike = new(this, _specialCritAttributes);
-        specialInflictorList.Add(specialCriticalStrike);
+        specialEnemyInflictorList.Add(specialCriticalStrike);
+
+        Stun specialStun = new(this, _specialStunAttributes);
+        specialEnemyInflictorList.Add(specialStun);
     }
 
     protected override void ShotProjectile(Enemy target, AttackType attackType)
@@ -47,12 +47,12 @@ public class FlushTower : Tower
         if (attackType == AttackType.Basic)
         {
             Projectile projectile = projectileSpawner.SpawnProjectile(this, spawnPoint, target, normalProjectileSprite);
-            projectile.actionOnCollision += () => BasicInflict(projectile, target);
+            projectile.actionOnCollision += () => BasicInflict(target);
         }
         else // (attackType == AttackType.Special)
         {
             Projectile projectile = projectileSpawner.SpawnProjectile(this, spawnPoint, target, specialProjectileSprite);
-            projectile.actionOnCollision += () => SpecialInflict(projectile, target, _specialRange);
+            projectile.actionOnCollision += () => SpecialInflict(target, _specialRange);
         }
     }
 }

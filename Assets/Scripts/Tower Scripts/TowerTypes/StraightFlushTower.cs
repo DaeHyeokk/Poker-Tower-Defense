@@ -36,16 +36,16 @@ public class StraightFlushTower : Tower
         targetDetector.detectingMode = TargetDetector.DetectingMode.Single;
 
         CriticalStrike basicCriticalStrike = new(this, _basicCritAttributes);
-        basicInflictorList.Add(basicCriticalStrike);
+        basicEnemyInflictorList.Add(basicCriticalStrike);
 
         Stun basicStun = new(this, _basicStunAttributes);
-        basicInflictorList.Add(basicStun);
+        basicEnemyInflictorList.Add(basicStun);
 
         CriticalStrike specialCriticalStrike = new(this, _specialCritAttributes);
-        specialInflictorList.Add(specialCriticalStrike);
+        specialEnemyInflictorList.Add(specialCriticalStrike);
 
         Stun specialStun = new(this, _specialStunAttributes);
-        specialInflictorList.Add(specialStun);
+        specialEnemyInflictorList.Add(specialStun);
     }
 
     protected override void ShotProjectile(Enemy target, AttackType attackType)
@@ -53,12 +53,12 @@ public class StraightFlushTower : Tower
         if (attackType == AttackType.Basic)
         {
             Projectile projectile = projectileSpawner.SpawnProjectile(this, spawnPoint, target, normalProjectileSprite);
-            projectile.actionOnCollision += () => BasicInflict(projectile, target, _basicRange);
+            projectile.actionOnCollision += () => BasicInflict(target, _basicRange);
         }
         else // (attackType == AttackType.Special)
         {
             Projectile projectile = projectileSpawner.SpawnProjectile(this, spawnPoint, target, specialProjectileSprite);
-            projectile.actionOnCollision += () => SpecialInflict(projectile, target, _specialRange);
+            projectile.actionOnCollision += () => SpecialInflict(target, _specialRange);
         }
     }
 }

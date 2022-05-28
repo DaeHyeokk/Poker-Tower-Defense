@@ -25,5 +25,5 @@ public class Movement2D : MonoBehaviour
  * 움직일 수 있는 오브젝트에 부착하여 오브젝트의 이동을 수행한다. 
  * 
  * Update : 2022/04/22 FRI 02:20
- * 라운드별 몬스터마다 이동속도를 다르게 설정하기 위한 setMoveSpeed() 메서드 추가
+ * 라운드별 몬스터마다 이동속도를 다르게 설정하기 위해 moveSpeed 프로퍼티 추가
  */

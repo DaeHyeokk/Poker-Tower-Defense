@@ -4,9 +4,11 @@ using UnityEngine;
 
 public class MountainTower : Tower
 {
-    [Header("Spawn Point Particle")]
+    [Header("Particle")]
     [SerializeField]
     private Particle _spawnPointParticle;
+    [SerializeField]
+    private Particle _buffRangeParticle;
 
     [Header("Basic Increase Received Damage Rate")]
     [SerializeField]
@@ -15,10 +17,10 @@ public class MountainTower : Tower
     [Header("Special Increase Damage Rate")]
     [SerializeField]
     private IncreaseDamageRate.Attribute[] _specialIDRateAttributes;
+
+    [Header("Inflict Range")]
     [SerializeField]
     private float _specialBuffRange;
-    [SerializeField]
-    private Particle _buffRangeParticle;
 
     private readonly string _towerName = "Mountain Tower";
     public override string towerName => _towerName;
@@ -47,15 +49,53 @@ public class MountainTower : Tower
         targetDetector.detectingMode = TargetDetector.DetectingMode.Multiple;
 
         BasicAttack basicAttack = new(this);
-        basicInflictorList.Add(basicAttack);
+        basicEnemyInflictorList.Add(basicAttack);
+        specialEnemyInflictorList.Add(basicAttack);
 
         IncreaseReceivedDamageRate basicIRDRate = new(this, _basicIRDRateAttributes);
-        basicInflictorList.Add(basicIRDRate);
+        basicEnemyInflictorList.Add(basicIRDRate);
 
         IncreaseDamageRate specialIDRate = new(this, _specialIDRateAttributes);
-        specialInflictorList.Add(specialIDRate);
+        specialTowerInflictorList.Add(specialIDRate);
 
         SetBuffRangeParticleScale();
+    }
+    protected override IEnumerator SearchAndAction()
+    {
+        while (true)
+        {
+            // 타일 위에 배치된 상태가 아니라면 적을 탐색하지 않는다.
+            if (onTile == null)
+                yield return null;
+
+            targetDetector.SearchTarget();
+
+            // 공격할 타겟이 없다면 공격하지 않는다.
+            if (targetDetector.targetList.Count == 0)
+                yield return null;
+            else
+            {
+                attackCount++;
+
+                for (int i = 0; i < targetDetector.targetList.Count; i++)
+                {
+                    if (attackCount < specialAttackCount)
+                        ShotProjectile(targetDetector.targetList[i], AttackType.Basic);
+                    else
+                        ShotProjectile(targetDetector.targetList[i], AttackType.Special);
+                }
+
+                if (attackCount >= specialAttackCount)
+                {
+                    _buffRangeParticle.PlayParticle();
+                    SpecialInflict(this, _specialBuffRange);
+
+                    attackCount = 0;
+                }
+
+                yield return new WaitForSeconds(attackRate);
+            }
+        }
     }
 
     protected override void ShotProjectile(Enemy target, AttackType attackType)
@@ -63,12 +103,12 @@ public class MountainTower : Tower
         if (attackType == AttackType.Basic)
         {
             Projectile projectile = projectileSpawner.SpawnProjectile(this, spawnPoint, target, normalProjectileSprite);
-            projectile.actionOnCollision += () => BasicInflict(projectile, target);
+            projectile.actionOnCollision += () => BasicInflict(target);
         }
         else // (attackType == AttackType.Special)
         {
             Projectile projectile = projectileSpawner.SpawnProjectile(this, spawnPoint, target, normalProjectileSprite);
-            projectile.actionOnCollision += () => BasicInflict(projectile, target);
+            projectile.actionOnCollision += () => SpecialInflict(target);
 
             _buffRangeParticle.PlayParticle();
 

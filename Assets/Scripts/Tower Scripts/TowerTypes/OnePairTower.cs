@@ -11,6 +11,8 @@ public class OnePairTower : Tower
     [Header("Special Slowing")]
     [SerializeField]
     private Slowing.Attribute[] _specialSlowingAttributes;
+
+    [Header("Inflict Range")]
     [SerializeField]
     private float _specialRange;
 
@@ -24,14 +26,14 @@ public class OnePairTower : Tower
         targetDetector.detectingMode = TargetDetector.DetectingMode.Single;
 
         BasicAttack basicAttack = new(this);
-        basicInflictorList.Add(basicAttack);
-        specialInflictorList.Add(basicAttack);
+        basicEnemyInflictorList.Add(basicAttack);
+        specialEnemyInflictorList.Add(basicAttack);
 
         Slowing basicSlowing = new(this, _basicSlowingAttributes);
-        basicInflictorList.Add(basicSlowing);
+        basicEnemyInflictorList.Add(basicSlowing);
 
         Slowing specialSlowing = new(this, _specialSlowingAttributes);
-        specialInflictorList.Add(specialSlowing);
+        specialEnemyInflictorList.Add(specialSlowing);
     }
 
     protected override void ShotProjectile(Enemy target, AttackType attackType)
@@ -39,12 +41,12 @@ public class OnePairTower : Tower
         if (attackType == AttackType.Basic)
         {
             Projectile projectile = projectileSpawner.SpawnProjectile(this, spawnPoint, target, normalProjectileSprite);
-            projectile.actionOnCollision += () => BasicInflict(projectile, target);
+            projectile.actionOnCollision += () => BasicInflict(target);
         }
         else // (attackType == AttackType.Special)
         {
             Projectile projectile = projectileSpawner.SpawnProjectile(this, spawnPoint, target, specialProjectileSprite);
-            projectile.actionOnCollision += () => SpecialInflict(projectile, target, _specialRange);
+            projectile.actionOnCollision += () => SpecialInflict(target, _specialRange);
         }
     }
 }

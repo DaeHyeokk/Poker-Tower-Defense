@@ -36,16 +36,16 @@ public class FourKindTower : Tower
         targetDetector.detectingMode = TargetDetector.DetectingMode.Single;
 
         CriticalStrike basicCriticalStrike = new(this, _basicCriticalStrikeAttributes);
-        basicInflictorList.Add(basicCriticalStrike);
+        basicEnemyInflictorList.Add(basicCriticalStrike);
 
         Slowing basicSlowing = new(this, _basicSlowingAttributes);
-        basicInflictorList.Add(basicSlowing);
+        basicEnemyInflictorList.Add(basicSlowing);
 
         CriticalStrike specialCriticalStrike = new(this, _specialCriticalStrikeAttributes);
-        specialInflictorList.Add(specialCriticalStrike);
+        specialEnemyInflictorList.Add(specialCriticalStrike);
 
         Slowing specialSlowing = new(this, _specialSlowingAttributes);
-        specialInflictorList.Add(specialSlowing);
+        specialEnemyInflictorList.Add(specialSlowing);
     }
 
     protected override void ShotProjectile(Enemy target, AttackType attackType)
@@ -53,12 +53,12 @@ public class FourKindTower : Tower
         if (attackType == AttackType.Basic)
         {
             Projectile projectile = projectileSpawner.SpawnProjectile(this, spawnPoint, target, normalProjectileSprite);
-            projectile.actionOnCollision += () => BasicInflict(projectile, target, _basicRange);
+            projectile.actionOnCollision += () => BasicInflict(target, _basicRange);
         }
         else // (attackType == AttackType.Special)
         {
             Projectile projectile = projectileSpawner.SpawnProjectile(this, spawnPoint, target, specialProjectileSprite);
-            projectile.actionOnCollision += () => SpecialInflict(projectile, target, _specialRange);
+            projectile.actionOnCollision += () => SpecialInflict(target, _specialRange);
         }
     }
 }

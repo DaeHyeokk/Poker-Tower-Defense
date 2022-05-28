@@ -8,15 +8,22 @@ public class TripleTower : Tower
     [SerializeField]
     private CriticalStrike.Attribute[] _basicCritAttributes;
 
+    [Header("Special Critical Strike")]
+    [SerializeField]
+    private CriticalStrike.Attribute[] _specialCritAttributes;
+
     [Header("Special Increase Damage Rate")]
     [SerializeField]
-    private IncreaseDamageRate.Attribute[] _specialIDRateAttributes;
+    private IncreaseDamageRate.Attribute[] _specialIncreaseDamageRateAttributes;
 
     [Header("Special Increase Attack Rate")]
     [SerializeField]
-    private IncreaseAttackRate.Attribute[] _specialIARateAttributes;
+    private IncreaseAttackRate.Attribute[] _specialIncreaseAttackRateAttributes;
 
+    private bool _isSpecialBuff;
     private readonly string _towerName = "Triple Tower";
+
+    private float _specialBuffDuration => _specialIncreaseAttackRateAttributes[level].duration;
     public override string towerName => _towerName;
     public override int towerIndex => 3;
 
@@ -26,13 +33,58 @@ public class TripleTower : Tower
         targetDetector.detectingMode = TargetDetector.DetectingMode.Single;
 
         CriticalStrike basicCriticalStrike = new(this, _basicCritAttributes);
-        basicInflictorList.Add(basicCriticalStrike);
+        basicEnemyInflictorList.Add(basicCriticalStrike);
 
-        IncreaseDamageRate specialIDRate = new(this, _specialIDRateAttributes);
-        specialInflictorList.Add(specialIDRate);
+        CriticalStrike specialCriticalStrike = new(this, _specialCritAttributes);
+        specialEnemyInflictorList.Add(specialCriticalStrike);
 
-        IncreaseAttackRate specialIARate = new(this, _specialIARateAttributes);
-        specialInflictorList.Add(specialIARate);
+        IncreaseDamageRate specialIDRate = new(this, _specialIncreaseDamageRateAttributes);
+        specialTowerInflictorList.Add(specialIDRate);
+
+        IncreaseAttackRate specialIARate = new(this, _specialIncreaseAttackRateAttributes);
+        specialTowerInflictorList.Add(specialIARate);
+    }
+
+    public override void Setup()
+    {
+        base.Setup();
+        _isSpecialBuff = false;
+    }
+
+    protected override IEnumerator SearchAndAction()
+    {
+        while (true)
+        {
+            // 타일 위에 배치된 상태가 아니라면 적을 탐색하지 않는다.
+            if (onTile == null)
+                yield return null;
+
+            targetDetector.SearchTarget();
+
+            // 공격할 타겟이 없다면 공격하지 않는다.
+            if (targetDetector.targetList.Count == 0)
+                yield return null;
+            else
+            {
+                if(!_isSpecialBuff) attackCount++;
+
+                for (int i = 0; i < targetDetector.targetList.Count; i++)
+                {
+                    if (attackCount < specialAttackCount)
+                        ShotProjectile(targetDetector.targetList[i], AttackType.Basic);
+                    else
+                        ShotProjectile(targetDetector.targetList[i], AttackType.Special);
+                }
+
+                if (attackCount >= specialAttackCount)
+                {
+                    SpecialInflict(this);
+                    attackCount = 0;
+                }
+
+                yield return new WaitForSeconds(attackRate);
+            }
+        }
     }
 
     protected override void ShotProjectile(Enemy target, AttackType attackType)
@@ -40,14 +92,12 @@ public class TripleTower : Tower
         if (attackType == AttackType.Basic)
         {
             Projectile projectile = projectileSpawner.SpawnProjectile(this, spawnPoint, target, normalProjectileSprite);
-            projectile.actionOnCollision += () => BasicInflict(projectile, target);
+            projectile.actionOnCollision += () => BasicInflict(target);
         }
         else // (attackType == AttackType.Special)
         {
             Projectile projectile = projectileSpawner.SpawnProjectile(this, spawnPoint, target, specialProjectileSprite);
-            projectile.actionOnCollision += () => BasicInflict(projectile, target);
-
-            SpecialInflict(this);
+            projectile.actionOnCollision += () => SpecialInflict(target);
         }
     }
 }

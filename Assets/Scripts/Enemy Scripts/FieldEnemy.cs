@@ -6,9 +6,9 @@ using UnityEngine.UI;
 public abstract class FieldEnemy : Enemy
 {
     [SerializeField]
-    private Particle _slowParticle;
+    private Particle _slowEffect;
     [SerializeField]
-    private Particle _stunParticle;
+    private Particle _stunEffect;
 
     private Transform[] _wayPoints;  // 이동경로 좌표 배열
     private int _currentIndex;   // 현재 목표지점 인덱스
@@ -19,6 +19,60 @@ public abstract class FieldEnemy : Enemy
     private float _increaseReceiveDamageRate; // Enemy가 공격 당할 때 받는 피해량
 
     private Movement2D _movement2D;  // 오브젝트 이동 제어
+
+    private float moveSpeed
+    {
+        set
+        {
+            _movement2D.moveSpeed = value;
+        }
+    }
+
+    private int stunCount
+    {
+        get => _stunCount;
+        set
+        {
+            // stunCount가 0이라면 스턴 파티클을 실행하고 moveSpeed를 0으로 바꾼다.
+            if (_stunCount == 0 && value > 0)
+            {
+                _stunEffect.PlayParticle();
+                moveSpeed = 0f;
+            }
+            // stunCount가 0이 되면 스턴 파티클을 중지하고 moveSpeed를 되돌린다.
+            else if (_stunCount != 0 && value == 0)
+            {
+                _stunEffect.StopParticle();
+                moveSpeed = _baseMoveSpeed;
+            }
+
+            _stunCount = value;
+        }
+    }
+
+    private int slowCount
+    {
+        get => _slowCount;
+        set
+        {
+            // slowCount가 0이라면 슬로우 파티클을 실행한다.
+            if (_slowCount == 0 && value > 0)
+                _slowEffect.PlayParticle();
+            // slowCount가 0이 되면 슬로우 파티클을 중지한다.
+            else if (_slowCount != 0 && value == 0)
+                _slowEffect.StopParticle();
+
+            _slowCount = value;
+        }
+    }
+
+    private float increaseReceiveDamageRate
+    {
+        set
+        {
+            
+        }
+    }
 
     protected EnemySpawner enemySpawner { get; set; }
 
@@ -43,8 +97,8 @@ public abstract class FieldEnemy : Enemy
         enemySprite.color = Color.white;
 
         // 생성할 Enemy의 이동속도 설정
-        _movement2D.moveSpeed = enemyData.moveSpeed;
         _baseMoveSpeed = enemyData.moveSpeed;
+        moveSpeed = _baseMoveSpeed;
 
         _slowCount = 0;
         _stunCount = 0;
@@ -87,9 +141,7 @@ public abstract class FieldEnemy : Enemy
             if (isNextMove)
                 lastDistance = Mathf.Infinity;
             else
-            {
                 lastDistance = nowDistance;
-            }
 
             // 1프레임 대기
             yield return null;
@@ -128,27 +180,14 @@ public abstract class FieldEnemy : Enemy
     }
     private IEnumerator StunCoroutine(float duration)
     {
-        // stunCount가 0이라면 스턴 파티클을 실행한다.
-        if (_stunCount == 0)
-            _stunParticle.PlayParticle();
-
         // stunCount 1 증가.
-        _stunCount++;
-        // 이동속도를 0으로 변경.
-        _movement2D.moveSpeed = 0f;
+        stunCount++;
 
         // stunTime 만큼 지연
         yield return new WaitForSeconds(duration);
 
         // 스턴 시간이 종료 되었으므로 stunCount 1 감소.
-        _stunCount--;
-
-        // 만약 스턴에 걸리지 않은 상태라면 이동속도를 원래대로 되돌린다.
-        if (_stunCount == 0)
-        {
-            _stunParticle.StopParticle();
-            _movement2D.moveSpeed = _baseMoveSpeed;
-        }
+        stunCount--;
     }
 
 
@@ -161,11 +200,8 @@ public abstract class FieldEnemy : Enemy
         // 감소하는 이동 속도를 저장해둔다.
         float slowSpeed = _baseMoveSpeed * slowingRate * 0.01f;
 
-        // slowCount가 0이라면 슬로우 파티클을 실행한다.
-        if (_slowCount == 0)
-            _slowParticle.PlayParticle();
         // slowCount 1 증가.
-        _slowCount++;
+        slowCount++;
 
         // 감소하는 이동 속도만큼 감소시킨다.
         _baseMoveSpeed -= slowSpeed;
@@ -185,10 +221,7 @@ public abstract class FieldEnemy : Enemy
             _movement2D.moveSpeed = _baseMoveSpeed;
 
         // 증가시켰던 slowCount를 다시 감소시킨다.
-        _slowCount--;
-        // slowCount 가 0이라면 슬로우 파티클을 중지한다.
-        if (_slowCount == 0)
-            _slowParticle.StopParticle();
+        slowCount--;
     }
 
     public override void TakeIncreaseReceivedDamage(float increaseReceivedDamageRate, float duration)
