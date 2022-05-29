@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public enum PokerHand { Top, OnePair, TwoPair, Triple, Straight, Mountain, Flush, FullHouse, FourKind, StraightFlush }
+public enum PokerHand { 탑, 원페어, 투페어, 트리플, 스트레이트, 마운틴, 플러쉬, 풀하우스, 포카인드, 스트레이트플러쉬 }
 public class CardDrawer
 {
     // 뽑은 카드의 족보값(?)을 저장하는 변수.
@@ -78,7 +78,7 @@ public class CardDrawer
     {
         bool isOnePair = false, isTriple = false;
         int cardCount;
-        _drawHand = PokerHand.Top;
+        _drawHand = PokerHand.탑;
 
         // 원페어, 투페어, 트리플, 포카드, 스트레이트 여부를 체크한다.
         int straightCount = 0;
@@ -98,7 +98,7 @@ public class CardDrawer
 
             // 연속되는 5개의 숫자가 있을 경우 스트레이트 조건 성립.
             if (straightCount == 5)
-                UpdateHand(PokerHand.Straight);
+                UpdateHand(PokerHand.스트레이트);
 
             switch (cardCount)
             {
@@ -106,16 +106,16 @@ public class CardDrawer
                 case 2:
                     if (isTriple)
                     {
-                        UpdateHand(PokerHand.FullHouse);
+                        UpdateHand(PokerHand.풀하우스);
                     }
                     else if (isOnePair)
                     {
-                        UpdateHand(PokerHand.TwoPair);
+                        UpdateHand(PokerHand.투페어);
                     }
                     else
                     {
                         isOnePair = true;
-                        UpdateHand(PokerHand.OnePair);
+                        UpdateHand(PokerHand.원페어);
                     }
                     break;
 
@@ -123,18 +123,18 @@ public class CardDrawer
                 case 3:
                     if (isOnePair)
                     {
-                        UpdateHand(PokerHand.FullHouse);
+                        UpdateHand(PokerHand.풀하우스);
                     }
                     else
                     {
                         isTriple = true;
-                        UpdateHand(PokerHand.Triple);
+                        UpdateHand(PokerHand.트리플);
                     }
                     break;
 
                 // 포카드일 경우 실행
                 case 4:
-                    UpdateHand(PokerHand.FourKind);
+                    UpdateHand(PokerHand.포카인드);
                     break;
 
             }
@@ -147,7 +147,7 @@ public class CardDrawer
         {
             for (int pattern = 0; pattern < Card.MAX_PATTERN; pattern++)
                 if ((((long)1 << (pattern * Card.MAX_NUMBER)) & _drawCardsMasking) != 0)
-                    UpdateHand(PokerHand.Mountain);
+                    UpdateHand(PokerHand.마운틴);
         }
 
         // 플러쉬와 스트레이트 플러쉬 여부를 체크한다.
@@ -180,9 +180,9 @@ public class CardDrawer
 
                 // 만약 스트레이트 카운트도 5 이상이라면 스트레이트 플러쉬이다.
                 if (straightCount >= 5)
-                    UpdateHand(PokerHand.StraightFlush);
+                    UpdateHand(PokerHand.스트레이트플러쉬);
                 else
-                    UpdateHand(PokerHand.Flush);
+                    UpdateHand(PokerHand.플러쉬);
             }
         }
     }

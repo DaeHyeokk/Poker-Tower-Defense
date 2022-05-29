@@ -35,7 +35,11 @@ public class CardGambler : MonoBehaviour
         if (_isGambling) return;
 
         // Gamble을 진행하기 위한 100골드를 보유하고 있지 않다면 수행하지 않는다.
-        if (GameManager.instance.gold < 100) return;
+        if (GameManager.instance.gold < 100)
+        {
+            UIManager.instance.ShowSystemMessage("골드가 부족합니다.");
+            return;
+        }
 
         // 플레이어의 골드에서 100골드를 차감한다.
         GameManager.instance.gold -= 100;
@@ -68,9 +72,13 @@ public class CardGambler : MonoBehaviour
     }
 
     public void ChangeCard(int changeIndex)
-    {       
+    {
         // 플레이어의 ChangeChance 횟수가 0 이하라면 수행하지 않는다.
-        if (GameManager.instance.changeChance <= 0) return;
+        if (GameManager.instance.changeChance <= 0)
+        {
+            UIManager.instance.ShowSystemMessage("카드 교환권이 부족합니다.");
+            return;
+        }
 
         // 플레이어의 ChangeChance 횟수를 1 차감한다.
         GameManager.instance.changeChance--;

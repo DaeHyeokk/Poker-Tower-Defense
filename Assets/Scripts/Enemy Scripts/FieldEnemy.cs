@@ -6,6 +6,8 @@ using UnityEngine.UI;
 public abstract class FieldEnemy : Enemy
 {
     [SerializeField]
+    private SpriteRenderer _increaseReceiveDamageSprite;
+    [SerializeField]
     private Particle _slowEffect;
     [SerializeField]
     private Particle _stunEffect;
@@ -68,9 +70,17 @@ public abstract class FieldEnemy : Enemy
 
     private float increaseReceiveDamageRate
     {
+        get => _increaseReceiveDamageRate;
         set
         {
-            
+            // increaseReceiveDamageRate 값이 0이고 value값이 0보다 크다면 디버프 스프라이트를 활성화 한다.
+            if (_increaseReceiveDamageRate == 0 && value > 0)
+                _increaseReceiveDamageSprite.gameObject.SetActive(true);
+            // increaseReceiveDamageRate 값이 0이 아니고 value값이 0이라면 디버프 스프라이트를 비활성화 한다.
+            else if (_increaseReceiveDamageRate > 0 && value == 0)
+                _increaseReceiveDamageSprite.gameObject.SetActive(false);
+
+            _increaseReceiveDamageRate = value;
         }
     }
 
@@ -100,9 +110,9 @@ public abstract class FieldEnemy : Enemy
         _baseMoveSpeed = enemyData.moveSpeed;
         moveSpeed = _baseMoveSpeed;
 
-        _slowCount = 0;
-        _stunCount = 0;
-        _increaseReceiveDamageRate = 0;
+        slowCount = 0;
+        stunCount = 0;
+        increaseReceiveDamageRate = 0;
 
         this.transform.rotation = Quaternion.Euler(0, 0, 0);
         // 웨이포인트 배열의 첫번째 원소부터 탐색하기 위해 currentIndex 값을 0으로 바꿈
@@ -231,11 +241,11 @@ public abstract class FieldEnemy : Enemy
 
     private IEnumerator IncreaseReceivedDamageCoroutine(float increaseReceivedDamageRate, float duration)
     {
-        _increaseReceiveDamageRate += increaseReceivedDamageRate;
+        this.increaseReceiveDamageRate += increaseReceivedDamageRate;
 
         yield return new WaitForSeconds(duration);
 
-        _increaseReceiveDamageRate -= increaseReceivedDamageRate;
+        this.increaseReceiveDamageRate -= increaseReceivedDamageRate;
     }
 
     protected abstract void OnMissing();

@@ -95,9 +95,7 @@ public class EnemySpawner : MonoBehaviour
     {
         // 게임오버 상태일때는 적을 생성하지 않음
         if(GameManager.instance != null && GameManager.instance.isGameover )
-        {
             return;
-        }
 
         // 현재 몬스터를 생성 중이 아니고, 적의 숫자가 0마리라면 다음 웨이브 몬스터를 생성
         if (!_isSpawn && _roundEnemyList.Count <= 0)

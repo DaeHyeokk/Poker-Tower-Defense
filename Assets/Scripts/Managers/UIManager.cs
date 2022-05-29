@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
+using System;
 
 public class UIManager : MonoBehaviour
 {
@@ -20,6 +21,12 @@ public class UIManager : MonoBehaviour
             return _instance;
         }
     }
+
+    [Header("System message")]
+    [SerializeField]
+    private GameObject _systemMessagePrefab;
+    private ObjectPool<Canvas> _systemMessagePool;
+    private WaitForSeconds _systemMessageReturnDelay;
 
     [Header("Show Game Goods Infomation")]
     [SerializeField]
@@ -79,6 +86,26 @@ public class UIManager : MonoBehaviour
             Destroy(gameObject);    // 자신을 파괴
             return;
         }
+
+        _systemMessagePool = new(_systemMessagePrefab, 5);
+        _systemMessageReturnDelay = new WaitForSeconds(1f);
+    }
+
+    public void ShowSystemMessage(string message)
+    {
+        Canvas canvas = _systemMessagePool.GetObject();
+        TextMeshProUGUI messageText = canvas.GetComponentInChildren<TextMeshProUGUI>();
+
+        if (messageText == null)
+            throw new Exception("Null Reference Exception!! System Message Prefab을 확인하세요.");
+
+        messageText.text = message;
+        StartCoroutine(ReturnPoolSystemMessage(canvas));
+    }
+    private IEnumerator ReturnPoolSystemMessage(Canvas canvas)
+    {
+        yield return _systemMessageReturnDelay;
+        _systemMessagePool.ReturnObject(canvas);
     }
 
     public void SetCardChangeAmountText(int amount) => _cardChangeAmountText.text = amount.ToString();

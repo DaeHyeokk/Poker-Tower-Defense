@@ -40,7 +40,6 @@ public abstract class Tower : MonoBehaviour
                 _increaseAttackRateEffect.StopParticle();
 
             _increaseAttackRate = value;
-            Debug.Log("IAR : " + increaseAttackRate);
         }
     }
     private float increaseDamageRate

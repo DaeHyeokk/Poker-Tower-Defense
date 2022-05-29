@@ -166,3 +166,7 @@ Date: 2022/05/28 SAT
 ☑ Tower가 받는 버프의 시각효과를 위한 파티클 생성 및 적용
 ☑ 기존 IInflictable 인터페이스를 IEnemyInflictable, ITowerInflictable로 변경.
 ☑ 타워의 공격속도 계산 공식 변경.
+
+Date: 2022/05/29 SUN
+☑ 화면 중앙에 나타나서 서서히 위로 올라가며 사라지는 System Message Text 추가.
+☑ System Message Text를 효율적으로 관리하기 위한 Object Pool 추가.

@@ -109,10 +109,6 @@ public class MountainTower : Tower
         {
             Projectile projectile = projectileSpawner.SpawnProjectile(this, spawnPoint, target, normalProjectileSprite);
             projectile.actionOnCollision += () => SpecialInflict(target);
-
-            _buffRangeParticle.PlayParticle();
-
-            SpecialInflict(this, _specialBuffRange);
         }
     }
     private void SetBuffRangeParticleScale()

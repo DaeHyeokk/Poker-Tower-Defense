@@ -48,7 +48,7 @@ public class GameManager : MonoBehaviour
 
             UIManager.instance.SetLiftAmountText(_life);
 
-            if (_life == 0) { }
+            if (_life == 0)
                 EndGame();
         }
     }
@@ -93,7 +93,7 @@ public class GameManager : MonoBehaviour
 
         round = 0;
         life = 100;
-        gold = 3800;
+        gold = 400;
         mineral = 400;
         changeChance = 3;
         _isGameover = false;
@@ -125,7 +125,10 @@ public class GameManager : MonoBehaviour
     public void UpgradeColor(int index)
     {
         if (_colorUpgradeCosts[index] > mineral)
+        {
+            UIManager.instance.ShowSystemMessage("미네랄이 부족합니다.");
             return;
+        }
 
         mineral -= _colorUpgradeCosts[index];
 
