@@ -230,7 +230,6 @@ public abstract class Tower : MonoBehaviour
     {
         for (int i = 0; i < specialTowerInflictorList.Count; i++)
             specialTowerInflictorList[i].Inflict(target);
-        Debug.Log("attackRate: " + attackRate);
     }
 
     protected virtual void SpecialInflict(Enemy target, float range)
