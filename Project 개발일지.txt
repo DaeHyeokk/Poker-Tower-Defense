@@ -170,3 +170,7 @@ Date: 2022/05/28 SAT
 Date: 2022/05/29 SUN
 ☑ 화면 중앙에 나타나서 서서히 위로 올라가며 사라지는 System Message Text 추가.
 ☑ System Message Text를 효율적으로 관리하기 위한 Object Pool 추가.
+
+Date: 2022/05/30 MON
+☑ 몬스터가 데미지를 입었을 때 몬스터 위에 받은 데미지를 보여주는 Damage Taken Text 추가.
+☑ Damage Taken Text를 효율적으로 관리하기 위한 Object Pool 추가.

@@ -51,16 +51,10 @@ public class TripleTower : Tower
         _isSpecialBuff = false;
     }
 
-    protected override IEnumerator SearchAndAction()
+    protected override IEnumerator AttackTarget()
     {
         while (true)
         {
-            // 타일 위에 배치된 상태가 아니라면 적을 탐색하지 않는다.
-            if (onTile == null)
-                yield return null;
-
-            targetDetector.SearchTarget();
-
             // 공격할 타겟이 없다면 공격하지 않는다.
             if (targetDetector.targetList.Count == 0)
                 yield return null;
@@ -82,7 +76,7 @@ public class TripleTower : Tower
                     attackCount = 0;
                 }
 
-                yield return new WaitForSeconds(attackRate);
+                yield return attackDelay;
             }
         }
     }

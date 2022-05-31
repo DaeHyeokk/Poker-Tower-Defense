@@ -17,6 +17,6 @@ public class BasicAttack : IEnemyInflictable
     {
         if (target == null) return;
 
-        target.TakeDamage(damage);
+        target.TakeDamage(damage, DamageTakenType.Normal);
     }
 }

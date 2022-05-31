@@ -4,11 +4,9 @@ using UnityEngine;
 
 public class MountainTower : Tower
 {
-    [Header("Particle")]
+    [Header("Spawn Point Particle")]
     [SerializeField]
     private Particle _spawnPointParticle;
-    [SerializeField]
-    private Particle _buffRangeParticle;
 
     [Header("Basic Increase Received Damage Rate")]
     [SerializeField]
@@ -20,9 +18,13 @@ public class MountainTower : Tower
 
     [Header("Inflict Range")]
     [SerializeField]
-    private float _specialBuffRange;
+    private float[] _specialBuffRanges;
+    [SerializeField]
+    private Particle _buffRangeParticle;
 
     private readonly string _towerName = "Mountain Tower";
+
+    private float specialBuffRange => _specialBuffRanges[level];
     public override string towerName => _towerName;
     public override int towerIndex => 5;
     public override Tile onTile
@@ -60,16 +62,17 @@ public class MountainTower : Tower
 
         SetBuffRangeParticleScale();
     }
-    protected override IEnumerator SearchAndAction()
+
+    public override void Setup()
+    {
+        base.Setup();
+        SetBuffRangeParticleScale();
+    }
+
+    protected override IEnumerator AttackTarget()
     {
         while (true)
         {
-            // 타일 위에 배치된 상태가 아니라면 적을 탐색하지 않는다.
-            if (onTile == null)
-                yield return null;
-
-            targetDetector.SearchTarget();
-
             // 공격할 타겟이 없다면 공격하지 않는다.
             if (targetDetector.targetList.Count == 0)
                 yield return null;
@@ -88,12 +91,12 @@ public class MountainTower : Tower
                 if (attackCount >= specialAttackCount)
                 {
                     _buffRangeParticle.PlayParticle();
-                    SpecialInflict(this, _specialBuffRange);
+                    SpecialInflict(this, specialBuffRange);
 
                     attackCount = 0;
                 }
 
-                yield return new WaitForSeconds(attackRate);
+                yield return attackDelay;
             }
         }
     }
@@ -111,9 +114,21 @@ public class MountainTower : Tower
             projectile.actionOnCollision += () => SpecialInflict(target);
         }
     }
+
+    public override bool MergeTower(Tower mergeTower)
+    {
+        if (base.MergeTower(mergeTower))
+        {
+            SetBuffRangeParticleScale();
+            return true;
+        }
+
+        return false;
+    }
+
     private void SetBuffRangeParticleScale()
     {
-        float attackRangeScale = _specialBuffRange * 2 / this.transform.lossyScale.x;
+        float attackRangeScale = specialBuffRange * 2 / this.transform.lossyScale.x;
         _buffRangeParticle.transform.localScale = new Vector3(attackRangeScale, attackRangeScale, 0);
     }
 }

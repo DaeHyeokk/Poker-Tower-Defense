@@ -9,7 +9,9 @@ public class TextFadeEffect : MonoBehaviour
     private float _fadeTime;
     private TextMeshProUGUI _text;
     private Color _color;
-    
+
+    public float fadeTime => _fadeTime;
+
     void Awake()
     {
         _text = GetComponent<TextMeshProUGUI>();

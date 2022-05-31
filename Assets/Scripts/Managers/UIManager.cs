@@ -14,7 +14,7 @@ public class UIManager : MonoBehaviour
         {
             if (_instance == null)
             {
-                // 씬에서 ObjectPool 오브젝트를 찾아 할당
+                // 씬에서 UIManager 오브젝트를 찾아 할당
                 _instance = FindObjectOfType<UIManager>();
             }
 
@@ -22,11 +22,13 @@ public class UIManager : MonoBehaviour
         }
     }
 
-    [Header("System message")]
+    [Header("Fade Text UI")]
     [SerializeField]
     private GameObject _systemMessagePrefab;
-    private ObjectPool<Canvas> _systemMessagePool;
-    private WaitForSeconds _systemMessageReturnDelay;
+    private ObjectPool<SystemMessage> _systemMessagePool;
+    [SerializeField]
+    private GameObject _damageTakenTextPrefab;
+    private ObjectPool<DamageTakenText> _damageTakenTextPool;
 
     [Header("Show Game Goods Infomation")]
     [SerializeField]
@@ -79,6 +81,9 @@ public class UIManager : MonoBehaviour
     [SerializeField]
     private TextMeshProUGUI[] _colorUpgradeCountTexts;
 
+    public ObjectPool<SystemMessage> systemMessagePool => _systemMessagePool;
+    public ObjectPool<DamageTakenText> damageTakenTextPool => _damageTakenTextPool;
+
     private void Awake()
     {
         if (instance != this)
@@ -88,24 +93,24 @@ public class UIManager : MonoBehaviour
         }
 
         _systemMessagePool = new(_systemMessagePrefab, 5);
-        _systemMessageReturnDelay = new WaitForSeconds(1f);
+        _damageTakenTextPool = new(_damageTakenTextPrefab, 10);
     }
 
     public void ShowSystemMessage(string message)
     {
-        Canvas canvas = _systemMessagePool.GetObject();
-        TextMeshProUGUI messageText = canvas.GetComponentInChildren<TextMeshProUGUI>();
+        SystemMessage systemMessage = _systemMessagePool.GetObject();
 
-        if (messageText == null)
-            throw new Exception("Null Reference Exception!! System Message Prefab을 확인하세요.");
-
-        messageText.text = message;
-        StartCoroutine(ReturnPoolSystemMessage(canvas));
+        systemMessage.transform.position = Vector3.zero;
+        systemMessage.messageText.text = message;
     }
-    private IEnumerator ReturnPoolSystemMessage(Canvas canvas)
+
+    public void ShowDamageTakenText(float damage, Transform target, DamageTakenType damageTakenType)
     {
-        yield return _systemMessageReturnDelay;
-        _systemMessagePool.ReturnObject(canvas);
+        DamageTakenText damageTakenText = _damageTakenTextPool.GetObject();
+
+        damageTakenText.transform.position = target.position;
+        damageTakenText.damageTakenText.text = damage.ToString();
+        damageTakenText.damageTakenType = damageTakenType;
     }
 
     public void SetCardChangeAmountText(int amount) => _cardChangeAmountText.text = amount.ToString();

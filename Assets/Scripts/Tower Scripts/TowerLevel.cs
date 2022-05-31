@@ -24,7 +24,7 @@ public class TowerLevel
 
     public void Reset()
     {
-        // 활성화 시킨 level image를 모두 비활성화 시키고 _levelCount 값을 0으로 바꾼다.
+        // 활성화 시킨 level image를 모두 비활성화 시키고 _level 값을 0으로 바꾼다.
         while(_level > 0)
         {
             _levelImages[_level - 1].gameObject.SetActive(false);

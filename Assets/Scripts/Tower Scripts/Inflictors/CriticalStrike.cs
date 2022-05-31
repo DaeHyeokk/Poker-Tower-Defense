@@ -30,8 +30,8 @@ public class CriticalStrike : IEnemyInflictable
         if (target == null) return;
 
         if (chance > Random.Range(0, 100))
-            target.TakeDamage(damage * rate * 0.01f);
+            target.TakeDamage(damage * rate * 0.01f, DamageTakenType.Critical);
         else
-            target.TakeDamage(damage);
+            target.TakeDamage(damage, DamageTakenType.Normal);
     }
 }

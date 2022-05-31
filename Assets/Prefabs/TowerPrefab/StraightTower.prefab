@@ -5082,7 +5082,7 @@ Transform:
   m_GameObject: {fileID: 5369906809452343783}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 0.34, y: 0.34, z: 0.34}
+  m_LocalScale: {x: 0.37, y: 0.37, z: 0.37}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 3571895342721572632}
@@ -5142,7 +5142,11 @@ MonoBehaviour:
   - rate: 500
     chance: 80
   _specialAttackRange: 0.5
-  _specialBuffRange: 0.6
+  _specialBuffRanges:
+  - 0.55
+  - 0.75
+  - 0.75
+  - 0.75
   _buffRangeParticle: {fileID: 5324230053819599866}
 --- !u!65 &5208156686070379611
 BoxCollider:

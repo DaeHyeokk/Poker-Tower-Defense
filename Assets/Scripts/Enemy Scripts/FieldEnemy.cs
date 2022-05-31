@@ -171,14 +171,17 @@ public abstract class FieldEnemy : Enemy
         _movement2D.MoveTo(direction);
     }
 
-    public override void TakeDamage(float damage)
+    public override void TakeDamage(float damage, DamageTakenType damageTakenType)
     {
-        base.TakeDamage(damage);
+        base.TakeDamage(damage, damageTakenType);
 
         damage *= 1f + (_increaseReceiveDamageRate * 0.01f);
-        
+        damage = Mathf.Round(damage);
+
         health -= damage;
         healthSlider.value -= damage;
+
+        UIManager.instance.ShowDamageTakenText(damage, this.transform, damageTakenType);
 
         if (health <= 0)
             Die();

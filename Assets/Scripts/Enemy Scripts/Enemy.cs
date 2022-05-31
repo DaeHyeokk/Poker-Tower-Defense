@@ -21,7 +21,7 @@ public abstract class Enemy : MonoBehaviour
         _takeDamageAnimationDelay = new WaitForSeconds(0.05f);
     }
 
-    public virtual void TakeDamage(float damage)
+    public virtual void TakeDamage(float damage, DamageTakenType damageTakenType)
     {
         StartCoroutine(EnemyTakeDamageAnimationCoroutine());
     }

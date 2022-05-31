@@ -51,12 +51,10 @@ public class FullHouseTower : Tower
         _isSpecialBuff = false;
     }
 
-    protected override IEnumerator SearchAndAction()
+    protected override IEnumerator AttackTarget()
     {
         while (true)
         {
-            targetDetector.SearchTarget();
-
             // 공격할 타겟이 없다면 공격하지 않는다.
             if (targetDetector.targetList.Count == 0)
                 yield return null;
@@ -79,7 +77,7 @@ public class FullHouseTower : Tower
                     attackCount = 0;
                 }
 
-                yield return new WaitForSeconds(attackRate);
+                yield return attackDelay;
             }
         }
     }

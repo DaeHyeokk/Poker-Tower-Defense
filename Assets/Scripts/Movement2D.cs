@@ -4,13 +4,21 @@ using UnityEngine;
 
 public class Movement2D : MonoBehaviour
 {
-    private Vector3 _moveDirection = Vector3.zero;
-    public float moveSpeed { get; set; }
-    public Vector3 moveDirection => _moveDirection;
+    [SerializeField]
+    private Vector3 _moveDirection;
+    [SerializeField]
+    private float _moveSpeed;
+
+    public float moveSpeed
+    {
+        get => _moveSpeed;
+        set => _moveSpeed = value;
+    }
 
     private void Update()
     {
         transform.position += _moveDirection * moveSpeed * Time.deltaTime;
+       // transform.Translate(_moveDirection * _moveSpeed * Time.deltaTime);
     }
 
     public void MoveTo(Vector3 direction)

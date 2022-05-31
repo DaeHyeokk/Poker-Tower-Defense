@@ -25,6 +25,7 @@ public abstract class Tower : MonoBehaviour
     private ProjectileSpawner _projectileSpawner;
     private TowerBuilder _towerBuilder;
     private Tile _onTile;
+    private WaitForSeconds _attackDelay;
     private float _maxAttackRate;
     private float _increaseAttackRate;
     private float _increaseDamageRate;
@@ -40,6 +41,9 @@ public abstract class Tower : MonoBehaviour
                 _increaseAttackRateEffect.StopParticle();
 
             _increaseAttackRate = value;
+
+            // 공격 속도 값이 변화했기 때문에 코루틴 함수의 딜레이에 사용되는 waitForSeconds 변수 업데이트.
+            _attackDelay = new(attackRate);
         }
     }
     private float increaseDamageRate
@@ -87,7 +91,7 @@ public abstract class Tower : MonoBehaviour
     }
     public float range => _towerData.weapons[level].range;
     public int maxTargetCount => _towerData.weapons[level].maxTargetCount;
-
+    public WaitForSeconds attackDelay => _attackDelay;
     public virtual Tile onTile
     {
         get => _onTile;
@@ -147,18 +151,28 @@ public abstract class Tower : MonoBehaviour
         increaseAttackRate = 0;
         increaseDamageRate = 0;
 
-        StartCoroutine(SearchAndAction());
+        StartCoroutine(SearchTarget());
+        StartCoroutine(AttackTarget());
     }
 
-    protected virtual IEnumerator SearchAndAction()
+    private IEnumerator SearchTarget()
     {
-        while (true)
+        while(true)
         {
             // 타일 위에 배치된 상태가 아니라면 적을 탐색하지 않는다.
-            if (onTile == null) 
+            if (onTile == null)
                 yield return null;
 
             _targetDetector.SearchTarget();
+            yield return null;
+        }
+    }
+
+    protected virtual IEnumerator AttackTarget()
+    {
+        while (true)
+        {
+            //_targetDetector.SearchTarget();
 
             // 공격할 타겟이 없다면 공격하지 않는다.
             if (_targetDetector.targetList.Count == 0)
@@ -177,7 +191,7 @@ public abstract class Tower : MonoBehaviour
 
                 if (attackCount >= specialAttackCount) attackCount = 0;
 
-                yield return new WaitForSeconds(attackRate);
+                yield return attackDelay;
             }
         }
     }
@@ -292,12 +306,15 @@ public abstract class Tower : MonoBehaviour
         return false;
     }
 
-    public bool MergeTower(Tower mergeTower)
+    public virtual bool MergeTower(Tower mergeTower)
     {
         if (IsCompareTower(mergeTower))
         {
             if (_towerLevel.LevelUp())
             {
+                // 공격 속도 값이 변화했기 때문에 코루틴 함수의 딜레이에 사용되는 waitForSeconds 변수 업데이트.
+                _attackDelay = new(attackRate);
+                // 타워 레벨업 시 타워의 컬러를 랜덤으로 변경한다.
                 _towerColor.ChangeColor();
                 mergeTower.ReturnPool();
                 return true;
@@ -334,6 +351,8 @@ public abstract class Tower : MonoBehaviour
     {
         if (onTile != null)
             onTile = null;
+
+        _towerRenderer.transform.rotation = Quaternion.Euler(0f, 0f, 0f);
 
         _towerLevel.Reset();
         _targetDetector.ResetTarget();

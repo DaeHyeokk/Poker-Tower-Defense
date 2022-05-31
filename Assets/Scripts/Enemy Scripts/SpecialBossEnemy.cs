@@ -22,9 +22,9 @@ public class SpecialBossEnemy : Enemy
         healthSlider.value = 0;
     }
 
-    public override void TakeDamage(float damage)
+    public override void TakeDamage(float damage, DamageTakenType damageTakenType)
     {
-        base.TakeDamage(damage);
+        base.TakeDamage(damage, damageTakenType);
 
         // Special Boss는 공격력에 상관없이 1의 데미지를 받음.
         health--;
@@ -59,10 +59,10 @@ public class SpecialBossEnemy : Enemy
         // 플레이어에게 카드 변경권 5장을 지급한다.
         GameManager.instance.changeChance += 5;
 
-        Invoke("ResetPlanet", 0.4f);
+        Invoke("RespawnPlanet", 0.4f);
     }
 
-    private void ResetPlanet()
+    private void RespawnPlanet()
     {
         health = maxHealth;
         _healthText.text = maxHealth.ToString();
@@ -71,5 +71,4 @@ public class SpecialBossEnemy : Enemy
         enemySprite.color = Color.white;
         this.gameObject.SetActive(true);
     }
-
 }
