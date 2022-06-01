@@ -20,7 +20,7 @@ public class FlushTower : Tower
     [SerializeField]
     private float _specialRange;
 
-    private readonly string _towerName = "Flush Tower";
+    private readonly string _towerName = "플러쉬 타워";
     public override string towerName => _towerName;
     public override int towerIndex => 6;
 

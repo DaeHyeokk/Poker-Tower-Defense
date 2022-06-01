@@ -5,8 +5,6 @@ using System;
 
 public class Projectile : MonoBehaviour
 {
-    public enum ProjectileType { Normal, Special }
-
     private ProjectileSpawner _projectileSpawner;
     private SpriteRenderer _spriteRenderer;
     private Movement2D _movement2D;

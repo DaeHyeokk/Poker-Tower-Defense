@@ -7,15 +7,15 @@ public class TowerBuilder : MonoBehaviour
     [SerializeField]
     private GameObject[] _towerPrefabs;
     [SerializeField]
-    private GameObject[] _followTowerPrefabs;
+    private GameObject _followTowerPrefab;
     [SerializeField]
     private Transform _towerSpawnPoint;
 
     private List<ObjectPool<Tower>> _towerPoolList;
-    private FollowTower[] _followTowers;
+    private FollowTower _followTower;
 
     public List<ObjectPool<Tower>> towerPoolList => _towerPoolList;
-    public FollowTower[] followTowers => _followTowers;
+    public FollowTower followTower => _followTower;
 
     private void Awake()
     {
@@ -23,12 +23,8 @@ public class TowerBuilder : MonoBehaviour
         for(int i=0; i<_towerPrefabs.Length; i++)
             _towerPoolList.Add(new ObjectPool<Tower>(_towerPrefabs[i], 5));
 
-        _followTowers = new FollowTower[_followTowerPrefabs.Length];
-        for (int i = 0; i < _followTowerPrefabs.Length; i++)
-        {
-            _followTowers[i] = Instantiate(_followTowerPrefabs[i]).GetComponent<FollowTower>();
-            _followTowers[i].gameObject.SetActive(false);
-        }
+        _followTower = Instantiate(_followTowerPrefab).GetComponent<FollowTower>();
+        _followTower.gameObject.SetActive(false);
     }
 
     public void BuildTower(int towerIndex)

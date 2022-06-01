@@ -5,7 +5,9 @@ using UnityEngine.UI;
 
 public class FollowTower : MonoBehaviour
 {
+    [SerializeField]
     private SpriteRenderer _towerRenderer;
+    [SerializeField]
     private SpriteRenderer _attackRangeRenderer;
     private Image[] _levelImages;
 
@@ -13,20 +15,17 @@ public class FollowTower : MonoBehaviour
 
     private void Awake()
     {
-        SpriteRenderer[] spriteRenderers = GetComponentsInChildren<SpriteRenderer>();
-        _towerRenderer = spriteRenderers[0];
-        _attackRangeRenderer = spriteRenderers[1];
-
         _levelImages = GetComponentsInChildren<Image>(true);
         _movement = GetComponent<ObjectFollowMousePosition>();
     }
 
     public void Setup(Tower fromTower)
     {
+        SetTowerRenderer(fromTower);
         SetAttackRangeRendererScale(fromTower.range);
-        SetTowerRendererColor(fromTower.color);
         SetTowerLevelImage(fromTower.level);
     }
+
     public void StartFollowMousePosition()
     {
         _movement.StartFollowMousePosition();
@@ -43,9 +42,10 @@ public class FollowTower : MonoBehaviour
         _attackRangeRenderer.transform.localScale = new Vector3(attackRangeScale, attackRangeScale, 0);
     }
 
-    private void SetTowerRendererColor(Color color)
+    private void SetTowerRenderer(Tower tower)
     {
-        _towerRenderer.color = color;
+        _towerRenderer.sprite = tower.towerRenderer.sprite;
+        _towerRenderer.color = tower.towerRenderer.color;
     }
 
     private void SetTowerLevelImage(int level)

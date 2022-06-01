@@ -326,7 +326,8 @@ public abstract class Tower : MonoBehaviour
 
     public void MoveTower()
     {
-        FollowTower followTower = _towerBuilder.followTowers[towerIndex];
+        //FollowTower followTower = _towerBuilder.followTowers[towerIndex];
+        FollowTower followTower = _towerBuilder.followTower;
 
         followTower.Setup(this);
         followTower.gameObject.SetActive(true);
@@ -339,7 +340,7 @@ public abstract class Tower : MonoBehaviour
 
     public void StopTower()
     {
-        FollowTower followTower = _towerBuilder.followTowers[towerIndex];
+        FollowTower followTower = _towerBuilder.followTower;
 
         followTower.StopFollowMousePosition();
         followTower.gameObject.SetActive(false);
