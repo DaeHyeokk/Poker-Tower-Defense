@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
 
-public class TextFadeEffect : MonoBehaviour
+public class TextFadeAnimation : MonoBehaviour
 {
     [SerializeField]
     private float _fadeTime;

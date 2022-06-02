@@ -16,7 +16,10 @@ public class TopTower : Tower
     [SerializeField]
     private Slowing.Attribute[] _specialSlowingAttributes;
 
-    private readonly string _towername = "Top Tower";
+    private readonly string _towername = "Å¾ Å¸¿ö";
+
+    protected override int defaultSalesGold => 20;
+
     public override string towerName => _towername;
     public override int towerIndex => 0;
 

@@ -36,6 +36,7 @@ public class EnemySpawner : MonoBehaviour
     [SerializeField]
     private Transform _specialBossSpawnPoint;
 
+    private MissionBossUIController _missionBossUIController;
 
     private ObjectPool<RoundEnemy> _roundEnemyPool;
     private RoundBossEnemy _roundBossEnemy;
@@ -58,6 +59,8 @@ public class EnemySpawner : MonoBehaviour
 
     private void Awake()
     {
+        _missionBossUIController = GetComponent<MissionBossUIController>();
+
         _roundEnemyPool = new ObjectPool<RoundEnemy>(_roundEnemyPrefab, 20);
         _roundEnemyList = new List<FieldEnemy>();
         _missionBossEnemyList = new List<MissionBossEnemy>();
@@ -88,7 +91,7 @@ public class EnemySpawner : MonoBehaviour
     private void MissionBossCooltimeSetup()
     {
         for (int i = 0; i < 3; i++)
-            UIManager.instance.SetMissionBossCooltimeSlider(i, _missionBossRespawnCooltimes[i]);
+            _missionBossUIController.SetMissionBossCooltimeSlider(i, _missionBossRespawnCooltimes[i]);
     }
 
     private void Update()
@@ -155,32 +158,7 @@ public class EnemySpawner : MonoBehaviour
         _missionBossEnemies[bossLevel].Setup(_wayPoints, _missionBossEnemyDatas[bossLevel]);
         _missionBossEnemyList.Add(_missionBossEnemies[bossLevel]);
 
-        StartCoroutine(MissionBossCoolTimeCoroutine(bossLevel));
-    }
-
-    private IEnumerator MissionBossCoolTimeCoroutine(int bossLevel)
-    {
-        // 미션 보스를 소환하는 버튼의 상호작용 기능 해제
-        UIManager.instance.DisableMissionButton(bossLevel);
-
-        float remainCooltime = _missionBossRespawnCooltimes[bossLevel];
-
-        UIManager.instance.SetMissionBossCooltimeText(bossLevel, remainCooltime);
-        UIManager.instance.ResetMissionBossCooltimeSliderValue(bossLevel);
-        UIManager.instance.ShowMissionBossCooltimeSlider(bossLevel);
-
-        while (remainCooltime > 0)
-        {
-            yield return _waitUpdateTime;
-            remainCooltime -= 1f;
-            UIManager.instance.SetMissionBossCooltimeText(bossLevel, remainCooltime);
-            UIManager.instance.DecreaseMissionBossCooltimeSliderValue(bossLevel, 1);
-        }
-
-        UIManager.instance.HideMissionBossCooltimeSlider(bossLevel);
-
-        // 미션 보스를 소환하는 버튼의 상호작용 기능 활성화
-        UIManager.instance.EnableMissionButton(bossLevel);
+        _missionBossUIController.StartMissionBossCooltime(bossLevel, _missionBossRespawnCooltimes[bossLevel]);
     }
 }
 

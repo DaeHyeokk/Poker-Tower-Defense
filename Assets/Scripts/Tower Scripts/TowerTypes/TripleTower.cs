@@ -21,9 +21,12 @@ public class TripleTower : Tower
     private IncreaseAttackRate.Attribute[] _specialIncreaseAttackRateAttributes;
 
     private bool _isSpecialBuff;
-    private readonly string _towerName = "Triple Tower";
+    private readonly string _towerName = "트리플 타워";
 
     private float _specialBuffDuration => _specialIncreaseAttackRateAttributes[level].duration;
+
+    protected override int defaultSalesGold => 110;
+
     public override string towerName => _towerName;
     public override int towerIndex => 3;
 

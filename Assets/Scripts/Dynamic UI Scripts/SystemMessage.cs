@@ -8,7 +8,7 @@ public class SystemMessage : MonoBehaviour
     [SerializeField]
     private TextMeshProUGUI _messageText;
     [SerializeField]
-    private TextFadeEffect _textFadeEffect;
+    private TextFadeAnimation _textFadeAnimation;
 
     private WaitForSeconds _fadeDelay;
     
@@ -16,7 +16,7 @@ public class SystemMessage : MonoBehaviour
 
     private void Awake()
     {
-        _fadeDelay = new WaitForSeconds(_textFadeEffect.fadeTime);
+        _fadeDelay = new WaitForSeconds(_textFadeAnimation.fadeTime);
     }
     
     private void OnEnable()

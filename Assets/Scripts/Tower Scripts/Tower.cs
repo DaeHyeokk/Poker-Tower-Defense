@@ -73,12 +73,12 @@ public abstract class Tower : MonoBehaviour
 
     public TargetDetector targetDetector => _targetDetector;
     public SpriteRenderer towerRenderer => _towerRenderer;
+    public TowerColor towerColor => _towerColor;
+    public TowerLevel towwerLevel => _towerLevel;
     public Sprite normalProjectileSprite => _towerData.normalProjectileSprites[(int)_towerColor.colorType];
     public Sprite specialProjectileSprite => _towerData.specialProjectileSprites[(int)_towerColor.colorType];
 
-    public TowerColor.ColorType colorType => _towerColor.colorType;
-    public Color color => _towerColor.color;
-    public int upgradeCount => GameManager.instance.colorUpgradeCounts[(int)colorType];
+    public int upgradeCount => GameManager.instance.colorUpgradeCounts[(int)towerColor.colorType];
     public int level => _towerLevel.level;
     public float damage => (_towerData.weapons[level].damage + (upgradeCount * _towerData.weapons[level].upgradeDIP)) * (1f + (increaseDamageRate * 0.01f));
     public float attackRate 
@@ -117,6 +117,10 @@ public abstract class Tower : MonoBehaviour
             }
         }
     }
+
+    public int salesGold => defaultSalesGold * (int)Mathf.Pow(2, level);
+
+    protected abstract int defaultSalesGold { get; }
 
     public abstract String towerName { get; }
     public abstract int towerIndex { get; }
@@ -172,8 +176,6 @@ public abstract class Tower : MonoBehaviour
     {
         while (true)
         {
-            //_targetDetector.SearchTarget();
-
             // 공격할 타겟이 없다면 공격하지 않는다.
             if (_targetDetector.targetList.Count == 0)
                 yield return null;
@@ -212,7 +214,7 @@ public abstract class Tower : MonoBehaviour
 
     protected virtual void BasicInflict(Enemy target, float range)
     {
-        ParticlePlayer.instance.PlayRangeAttack(target.transform, range, (int)colorType);
+        ParticlePlayer.instance.PlayRangeAttack(target.transform, range, (int)_towerColor.colorType);
 
         Collider2D[] collider2D = Physics2D.OverlapCircleAll(target.transform.position, range * 0.5f);
 
@@ -224,7 +226,7 @@ public abstract class Tower : MonoBehaviour
 
     protected virtual void BasicInflict(Tower target, float range)
     {
-        ParticlePlayer.instance.PlayRangeAttack(target.transform, range, (int)colorType);
+        ParticlePlayer.instance.PlayRangeAttack(target.transform, range, (int)_towerColor.colorType);
 
         Collider[] collider = Physics.OverlapSphere(target.transform.position, range / 2);
 
@@ -248,7 +250,7 @@ public abstract class Tower : MonoBehaviour
 
     protected virtual void SpecialInflict(Enemy target, float range)
     {
-        ParticlePlayer.instance.PlayRangeAttack(target.transform, range, (int)colorType);
+        ParticlePlayer.instance.PlayRangeAttack(target.transform, range, (int)_towerColor.colorType);
 
         Collider2D[] collider2D = Physics2D.OverlapCircleAll(target.transform.position, range / 2);
 
@@ -299,7 +301,7 @@ public abstract class Tower : MonoBehaviour
     {
         // 타워의 종류, 색깔, 레벨이 모두 같다면 true 아니면 false 반환.
         if ((this.towerIndex == compareTower.towerIndex)
-            && (this.colorType == compareTower.colorType)
+            && (this._towerColor.colorType == compareTower._towerColor.colorType)
             && (this.level == compareTower.level))
             return true;
 
@@ -326,7 +328,6 @@ public abstract class Tower : MonoBehaviour
 
     public void MoveTower()
     {
-        //FollowTower followTower = _towerBuilder.followTowers[towerIndex];
         FollowTower followTower = _towerBuilder.followTower;
 
         followTower.Setup(this);
@@ -336,6 +337,8 @@ public abstract class Tower : MonoBehaviour
         Color color = _towerRenderer.color;
         color.a = onTile != null ? 0.3f : 0f;
         _towerRenderer.color = color;
+
+        UIManager.instance.ShowTowerInfo(this);
     }
 
     public void StopTower()
@@ -346,9 +349,11 @@ public abstract class Tower : MonoBehaviour
         followTower.gameObject.SetActive(false);
 
         _towerRenderer.color = _towerColor.color;
+
+        UIManager.instance.HideTowerInfo();
     }
 
-    private void ReturnPool()
+    public void ReturnPool()
     {
         if (onTile != null)
             onTile = null;

@@ -21,6 +21,7 @@ public class GameManager : MonoBehaviour
 
     [SerializeField]
     private int _pokerCount;
+    GameDataUIController _gameDataUIController;
 
     private int _round;
     private int _finalRound;
@@ -46,7 +47,7 @@ public class GameManager : MonoBehaviour
             if (_life < 0) 
                 _life = 0;
 
-            UIManager.instance.SetLiftAmountText(_life);
+            _gameDataUIController.SetLiftAmountText(_life);
 
             if (_life == 0)
                 EndGame();
@@ -59,7 +60,7 @@ public class GameManager : MonoBehaviour
         set
         {
             _gold = value;
-            UIManager.instance.SetGoldAmountText(_gold);
+            _gameDataUIController.SetGoldAmountText(_gold);
         }
     }
 
@@ -69,7 +70,7 @@ public class GameManager : MonoBehaviour
         set
         {
             _mineral = value;
-            UIManager.instance.SetMineralAmountText(_mineral);
+            _gameDataUIController.SetMineralAmountText(_mineral);
         }
     }
 
@@ -79,7 +80,7 @@ public class GameManager : MonoBehaviour
         set
         {
             _changeChance = value;
-            UIManager.instance.SetCardChangeAmountText(_changeChance);
+            _gameDataUIController.SetCardChangeAmountText(_changeChance);
         }
     }
 
@@ -90,6 +91,8 @@ public class GameManager : MonoBehaviour
     {
         if (instance != this)
             Destroy(gameObject);
+
+        _gameDataUIController = GetComponent<GameDataUIController>();
 
         round = 0;
         life = 100;
@@ -141,13 +144,13 @@ public class GameManager : MonoBehaviour
     private void SetColorUpgradeCount(int index, int value)
     {
         _colorUpgradeCounts[index] = value;
-        UIManager.instance.SetColorUpgradeCountText(index, _colorUpgradeCounts[index]);
+        _gameDataUIController.SetColorUpgradeCountText(index, _colorUpgradeCounts[index]);
     }
 
     private void SetColorUpgradeCost(int index, int value)
     {
         _colorUpgradeCosts[index] = value;
-        UIManager.instance.SetColorUpgradeCostText(index, _colorUpgradeCosts[index]);
+        _gameDataUIController.SetColorUpgradeCostText(index, _colorUpgradeCosts[index]);
     }
 
     private void EndGame()

@@ -4,6 +4,21 @@ using UnityEngine;
 
 public class TowerBuilder : MonoBehaviour
 {
+    private static TowerBuilder _instance;
+    public static TowerBuilder instance
+    {
+        get
+        {
+            if (_instance == null)
+            {
+                // 씬에서 UIManager 오브젝트를 찾아 할당
+                _instance = FindObjectOfType<TowerBuilder>();
+            }
+
+            return _instance;
+        }
+    }
+
     [SerializeField]
     private GameObject[] _towerPrefabs;
     [SerializeField]
@@ -19,6 +34,9 @@ public class TowerBuilder : MonoBehaviour
 
     private void Awake()
     {
+        if (instance != this)
+            Destroy(gameObject);
+
         _towerPoolList = new List<ObjectPool<Tower>>();
         for(int i=0; i<_towerPrefabs.Length; i++)
             _towerPoolList.Add(new ObjectPool<Tower>(_towerPrefabs[i], 5));

@@ -11,8 +11,8 @@ public class CardGambler : MonoBehaviour
     [SerializeField]
     private int[] _mineralGambleAmounts;
 
+    private GambleUIController _gambleUIController;
     private CardDrawer _cardDrawer;
-    private CardUIController _cardUIController;
 
     // 무엇을 위해(타워짓기, 미네랄뽑기) 카드를 뽑는지를 나타내는 변수
     private GambleType _gambleType;
@@ -23,8 +23,8 @@ public class CardGambler : MonoBehaviour
 
     private void Awake()
     {
+        _gambleUIController = GetComponent<GambleUIController>();
         _cardDrawer = new CardDrawer();
-        _cardUIController = new CardUIController();
 
         _isGambling = false;
     }
@@ -59,9 +59,9 @@ public class CardGambler : MonoBehaviour
         _isGambling = true;
 
         // 플레이어 화면에 오픈된 카드를 모두 뒤집는다.
-        _cardUIController.AllReverseCardBackUI();
+        _gambleUIController.AllReverseCardBackUI();
         // 뽑기 버튼을 화면에서 숨긴다.
-        _cardUIController.HideDrawButtonUI();
+        _gambleUIController.HideDrawButtonUI();
 
         // 카드를 뽑는다.
         _cardDrawer.DrawCardAll();
@@ -84,7 +84,7 @@ public class CardGambler : MonoBehaviour
         GameManager.instance.changeChance--;
 
         // 플레이어 화면에 오픈된 카드 중 바꿀 카드를 뒤집는다.
-        _cardUIController.ReverseCardBackUI(changeIndex);
+        _gambleUIController.ReverseCardBackUI(changeIndex);
 
         // 카드를 바꾼다.
         _cardDrawer.ChangeCard(changeIndex);
@@ -100,7 +100,7 @@ public class CardGambler : MonoBehaviour
 
         for (int index = 0; index < _cardDrawer.drawCards.Length; index++)
         {
-            _cardUIController.ReverseCardFrountUI(index, _cardDrawer.drawCards[index]);
+            _gambleUIController.ReverseCardFrountUI(index, _cardDrawer.drawCards[index]);
             //yield return new WaitForSeconds(0.1f);
         }
 
@@ -110,26 +110,26 @@ public class CardGambler : MonoBehaviour
     {
         yield return new WaitForSeconds(0.1f);
 
-        _cardUIController.ReverseCardFrountUI(index, _cardDrawer.drawCards[index]);
+        _gambleUIController.ReverseCardFrountUI(index, _cardDrawer.drawCards[index]);
 
         ShowResultUI();
     }
     private void ShowResultUI()
     {
-        _cardUIController.SetHandUI(_cardDrawer.drawHand);
+        _gambleUIController.SetHandUI(_cardDrawer.drawHand);
 
         if (_gambleType == GambleType.Tower)
-            _cardUIController.SetTowerPreviewUI((int)_cardDrawer.drawHand);
+            _gambleUIController.SetTowerPreviewUI((int)_cardDrawer.drawHand);
         else
-            _cardUIController.SetMineralPreviewUI(_mineralGambleAmounts[(int)_cardDrawer.drawHand]);
+            _gambleUIController.SetMineralPreviewUI(_mineralGambleAmounts[(int)_cardDrawer.drawHand]);
 
-        _cardUIController.ShowGetButtonUI();
+        _gambleUIController.ShowGetButtonUI();
     }
 
     public void GetResult()
     {
         if (gambleType == GambleType.Tower)
-            _towerBuilder.BuildTower((int)_cardDrawer.drawHand);
+            TowerBuilder.instance.BuildTower((int)_cardDrawer.drawHand);
         else
             GameManager.instance.mineral += _mineralGambleAmounts[(int)_cardDrawer.drawHand];
 
@@ -142,12 +142,12 @@ public class CardGambler : MonoBehaviour
         _cardDrawer.ResetDrawer();
 
         // 카드를 모두 뒤집는다.
-        _cardUIController.AllReverseCardBackUI();
+        _gambleUIController.AllReverseCardBackUI();
         // 타워를 Get 하는 버튼을 화면에서 숨긴다.
-        _cardUIController.HideGetButtonUI();
+        _gambleUIController.HideGetButtonUI();
         // 만들어진 족보를 나타내는 텍스트를 화면에서 숨긴다.
-        _cardUIController.HideHandTextUI();
+        _gambleUIController.HideHandTextUI();
         // 카드 Draw 버튼을 화면에 나타낸다.
-        _cardUIController.ShowDrawButtonUI();
+        _gambleUIController.ShowDrawButtonUI();
     }
 }

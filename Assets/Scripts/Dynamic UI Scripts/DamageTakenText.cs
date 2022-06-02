@@ -10,7 +10,7 @@ public class DamageTakenText : MonoBehaviour
     [SerializeField]
     private TextMeshProUGUI _damageTakenText;
     [SerializeField]
-    private TextFadeEffect _textFadeEffect;
+    private TextFadeAnimation _textFadeAnimation;
     [SerializeField]
     private float _normalDamageFontSize;
     [SerializeField]
@@ -20,7 +20,7 @@ public class DamageTakenText : MonoBehaviour
     [SerializeField]
     private Color _critDamageColor;
 
-    private WaitForSeconds _fadeTime;
+    private WaitForSeconds _fadeDelay;
 
     public TextMeshProUGUI damageTakenText => _damageTakenText;
     public DamageTakenType damageTakenType
@@ -42,7 +42,7 @@ public class DamageTakenText : MonoBehaviour
 
     private void Awake()
     {
-        _fadeTime = new(_textFadeEffect.fadeTime);
+        _fadeDelay = new(_textFadeAnimation.fadeTime);
     }
 
     private void OnEnable()
@@ -52,7 +52,7 @@ public class DamageTakenText : MonoBehaviour
 
     private IEnumerator ReturnPoolCoroutine()
     {
-        yield return _fadeTime;
+        yield return _fadeDelay;
         UIManager.instance.damageTakenTextPool.ReturnObject(this);
     }
 }

@@ -22,9 +22,12 @@ public class MountainTower : Tower
     [SerializeField]
     private Particle _buffRangeParticle;
 
-    private readonly string _towerName = "Mountain Tower";
+    private readonly string _towerName = "마운틴 타워";
 
     private float specialBuffRange => _specialBuffRanges[level];
+
+    protected override int defaultSalesGold => 660;
+
     public override string towerName => _towerName;
     public override int towerIndex => 5;
     public override Tile onTile

@@ -21,6 +21,9 @@ public class FlushTower : Tower
     private float _specialRange;
 
     private readonly string _towerName = "플러쉬 타워";
+
+    protected override int defaultSalesGold => 380;
+
     public override string towerName => _towerName;
     public override int towerIndex => 6;
 

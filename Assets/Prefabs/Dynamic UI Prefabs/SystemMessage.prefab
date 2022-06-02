@@ -130,7 +130,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _messageText: {fileID: 4802527028668993371}
-  _textFadeEffect: {fileID: 4802527028668993370}
+  _textFadeAnimation: {fileID: 4802527028668993370}
 --- !u!1 &4802527028668993372
 GameObject:
   m_ObjectHideFlags: 0

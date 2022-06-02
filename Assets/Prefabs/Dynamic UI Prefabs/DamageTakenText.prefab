@@ -85,7 +85,7 @@ MonoBehaviour:
   m_FallbackScreenDPI: 96
   m_DefaultSpriteDPI: 96
   m_DynamicPixelsPerUnit: 1
-  m_PresetInfoIsWorld: 1
+  m_PresetInfoIsWorld: 0
 --- !u!114 &6295824775307201343
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -130,7 +130,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _damageTakenText: {fileID: 6295824775771354341}
-  _textFadeEffect: {fileID: 6295824775771354343}
+  _textFadeAnimation: {fileID: 6295824775771354343}
   _normalDamageFontSize: 0.2
   _normalDamageColor: {r: 1, g: 1, b: 1, a: 1}
   _critDamageFontSize: 0.25

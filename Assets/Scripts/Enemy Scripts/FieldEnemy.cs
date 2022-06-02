@@ -176,7 +176,6 @@ public abstract class FieldEnemy : Enemy
         base.TakeDamage(damage, damageTakenType);
 
         damage *= 1f + (_increaseReceiveDamageRate * 0.01f);
-        damage = Mathf.Round(damage);
 
         health -= damage;
         healthSlider.value -= damage;

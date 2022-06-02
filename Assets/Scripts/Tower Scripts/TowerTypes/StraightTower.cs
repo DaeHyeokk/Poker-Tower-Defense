@@ -28,9 +28,12 @@ public class StraightTower : Tower
     [SerializeField]
     private Particle _buffRangeParticle;
 
-    private readonly string _towerName = "Straight Tower";
+    private readonly string _towerName = "스트레이트 타워";
 
     private float specialBuffRange => _specialBuffRanges[level];
+
+    protected override int defaultSalesGold => 180;
+
     public override string towerName => _towerName;
     public override int towerIndex => 4;
     public override Tile onTile

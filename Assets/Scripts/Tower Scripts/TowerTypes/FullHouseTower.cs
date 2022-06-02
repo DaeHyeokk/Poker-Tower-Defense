@@ -21,9 +21,12 @@ public class FullHouseTower : Tower
     private IncreaseAttackRate.Attribute[] _specialIncreaseAttackRateAttributes;
 
     private bool _isSpecialBuff;
-    private readonly string _towerName = "FullHouse Tower";
+    private readonly string _towerName = "풀하우스 타워";
 
     private float _specialBuffDuration => _specialIncreaseAttackRateAttributes[level].duration;
+
+    protected override int defaultSalesGold => 510;
+
     public override string towerName => _towerName;
     public override int towerIndex => 7;
 

@@ -60,5 +60,5 @@ public class TowerLevel
  * Tower의 레벨 관련 기능을 담당하는 스크립트.
  * 
  * Update : 2022/05/05 THU 23:15
- * 컴포넌트에서 클래스로 변경. (?)
+ * Monovihaviour 상속 제거.
  */

@@ -16,7 +16,10 @@ public class TwoPairTower : Tower
     [SerializeField]
     private CriticalStrike.Attribute[] _specialCritAttributes;
 
-    private readonly string _towerName = "TwoPair Tower";
+    private readonly string _towerName = "투페어 타워";
+
+    protected override int defaultSalesGold => 60;
+
     public override string towerName => _towerName;
     public override int towerIndex => 2;
 
