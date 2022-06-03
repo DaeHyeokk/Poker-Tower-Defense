@@ -7,11 +7,10 @@ public class CardGambler : MonoBehaviour
     public enum GambleType { Tower, Mineral }
 
     [SerializeField]
-    private TowerBuilder _towerBuilder;
+    private GambleUIController _gambleUIController;
     [SerializeField]
     private int[] _mineralGambleAmounts;
 
-    private GambleUIController _gambleUIController;
     private CardDrawer _cardDrawer;
 
     // 무엇을 위해(타워짓기, 미네랄뽑기) 카드를 뽑는지를 나타내는 변수
@@ -23,7 +22,6 @@ public class CardGambler : MonoBehaviour
 
     private void Awake()
     {
-        _gambleUIController = GetComponent<GambleUIController>();
         _cardDrawer = new CardDrawer();
 
         _isGambling = false;
@@ -61,14 +59,14 @@ public class CardGambler : MonoBehaviour
         // 플레이어 화면에 오픈된 카드를 모두 뒤집는다.
         _gambleUIController.AllReverseCardBackUI();
         // 뽑기 버튼을 화면에서 숨긴다.
-        _gambleUIController.HideDrawButtonUI();
+        _gambleUIController.HideGambleButtonUI();
 
         // 카드를 뽑는다.
         _cardDrawer.DrawCardAll();
 
         // 플레이어 화면에 새로 뽑은 카드를 보여준다.
         //StartCoroutine(AllReverseCardFrontUICoroutine());
-        AllReverseCardFrontUICoroutine();
+        AllReverseCardFrontUI();
     }
 
     public void ChangeCard(int changeIndex)
@@ -94,14 +92,11 @@ public class CardGambler : MonoBehaviour
         
     }
 
-    private void AllReverseCardFrontUICoroutine()
+    private void AllReverseCardFrontUI()
     {
-       // yield return new WaitForSeconds(0.1f);
-
         for (int index = 0; index < _cardDrawer.drawCards.Length; index++)
         {
             _gambleUIController.ReverseCardFrountUI(index, _cardDrawer.drawCards[index]);
-            //yield return new WaitForSeconds(0.1f);
         }
 
         ShowResultUI();
@@ -147,7 +142,7 @@ public class CardGambler : MonoBehaviour
         _gambleUIController.HideGetButtonUI();
         // 만들어진 족보를 나타내는 텍스트를 화면에서 숨긴다.
         _gambleUIController.HideHandTextUI();
-        // 카드 Draw 버튼을 화면에 나타낸다.
-        _gambleUIController.ShowDrawButtonUI();
+        // Gamble 버튼을 화면에 나타낸다.
+        _gambleUIController.ShowGambleButtonUI();
     }
 }

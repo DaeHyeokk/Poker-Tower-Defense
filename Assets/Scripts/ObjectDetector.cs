@@ -1,6 +1,8 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
+using UnityEngine.EventSystems;
 
 public class ObjectDetector : MonoBehaviour
 {
@@ -9,6 +11,14 @@ public class ObjectDetector : MonoBehaviour
     private Ray _ray;
     private RaycastHit _hit;
     private RaycastHit[] _hits;
+
+    [SerializeField]
+    private Canvas _towerInfoCanvas;
+    private TowerColorChanger _towerColorChanger;
+    private TowerSales _towerSales;
+    private GraphicRaycaster _graphicRay;
+    private PointerEventData _pointerEventData;
+    private List<RaycastResult> _resultList;
 
     private Ray2D _ray2D;
     private RaycastHit2D _hit2D;
@@ -19,7 +29,9 @@ public class ObjectDetector : MonoBehaviour
         // 'MainCamera' 태그를 가지고 있는 오브젝트를 탐색 후 Camera 컴포넌트 정보 전달
         // GameObject.FindGameObjectWithTag("MainCamera").GetComponent<Camera>(); 와 동일
         _mainCamera = Camera.main;
-
+        _graphicRay = _towerInfoCanvas.GetComponent<GraphicRaycaster>();
+        _pointerEventData = new(null);
+        //_resultList = new List<RaycastResult>();
         _clickTower = null;
     }
 
@@ -53,17 +65,18 @@ public class ObjectDetector : MonoBehaviour
             // 타워를 움직이는 중이었다면 중단한다.
             if (_clickTower != null)
             {
-                _clickTower.StopTower();
-
                 // 카메라 위치에서 화면의 마우스 커서를 관통하는 광선(ray) 생성.
                 _ray = _mainCamera.ScreenPointToRay(Input.mousePosition);
                 _hits = Physics.RaycastAll(_ray, Mathf.Infinity);
+
+                bool isHitTile = false;
 
                 for (int i = 0; i < _hits.Length; i++)
                 {
                     // 광선에 부딪힌 타겟이 Tile일 때 수행.
                     if (_hits[i].transform.CompareTag("Tile"))
                     {
+                        isHitTile = true;
                         Tile tile = _hits[i].transform.GetComponent<Tile>();
 
                         // 마우스를 뗀 좌표에 위치한 타일이 클릭중인 타워가 원래 배치 돼있던 타일이라면
@@ -87,6 +100,29 @@ public class ObjectDetector : MonoBehaviour
                     }
                 }
 
+                if (!isHitTile)
+                {
+                    _pointerEventData.position = Input.mousePosition;
+
+                    _resultList = new List<RaycastResult>();
+                    _graphicRay.Raycast(_pointerEventData, _resultList);
+
+                    for (int i = 0; i < _resultList.Count; i++)
+                    {
+                        if (_resultList[i].gameObject.TryGetComponent<TowerColorChanger>(out _towerColorChanger))
+                        {
+                            _towerColorChanger.ChangeColor();
+                            break;
+                        }
+                        if (_resultList[i].gameObject.TryGetComponent<TowerSales>(out _towerSales))
+                        {
+                            _towerSales.SalesTower();
+                            break;
+                        }
+                    }
+                }
+
+                _clickTower.StopTower();
                 _clickTower = null;
             }
         }

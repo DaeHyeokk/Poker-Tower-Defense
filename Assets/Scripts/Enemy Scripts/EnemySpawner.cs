@@ -1,7 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.UI;
 
 public class EnemySpawner : MonoBehaviour
 {
@@ -29,14 +28,14 @@ public class EnemySpawner : MonoBehaviour
     private GameObject[] _missionBossEnemyPrefab;
     [SerializeField]
     private float[] _missionBossRespawnCooltimes;
+    [SerializeField]
+    private MissionBossUIController _missionBossUIController;
 
     [Header("Special Boss")]
     [SerializeField]
     private GameObject _SpecialBossEnemyPrefab;
     [SerializeField]
     private Transform _specialBossSpawnPoint;
-
-    private MissionBossUIController _missionBossUIController;
 
     private ObjectPool<RoundEnemy> _roundEnemyPool;
     private RoundBossEnemy _roundBossEnemy;
@@ -59,8 +58,6 @@ public class EnemySpawner : MonoBehaviour
 
     private void Awake()
     {
-        _missionBossUIController = GetComponent<MissionBossUIController>();
-
         _roundEnemyPool = new ObjectPool<RoundEnemy>(_roundEnemyPrefab, 20);
         _roundEnemyList = new List<FieldEnemy>();
         _missionBossEnemyList = new List<MissionBossEnemy>();

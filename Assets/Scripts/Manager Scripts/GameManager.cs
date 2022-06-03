@@ -21,7 +21,10 @@ public class GameManager : MonoBehaviour
 
     [SerializeField]
     private int _pokerCount;
+    [SerializeField]
     GameDataUIController _gameDataUIController;
+    [SerializeField]
+    ColorUpgradeUIController _colorUpgradeUIController;
 
     private int _round;
     private int _finalRound;
@@ -87,12 +90,11 @@ public class GameManager : MonoBehaviour
     public int[] colorUpgradeCounts => _colorUpgradeCounts;
     public int pokerCount => _pokerCount;
     public bool isGameover => _isGameover;
+
     private void Awake()
     {
         if (instance != this)
             Destroy(gameObject);
-
-        _gameDataUIController = GetComponent<GameDataUIController>();
 
         round = 0;
         life = 100;
@@ -144,13 +146,13 @@ public class GameManager : MonoBehaviour
     private void SetColorUpgradeCount(int index, int value)
     {
         _colorUpgradeCounts[index] = value;
-        _gameDataUIController.SetColorUpgradeCountText(index, _colorUpgradeCounts[index]);
+        _colorUpgradeUIController.SetColorUpgradeCountText(index, _colorUpgradeCounts[index]);
     }
 
     private void SetColorUpgradeCost(int index, int value)
     {
         _colorUpgradeCosts[index] = value;
-        _gameDataUIController.SetColorUpgradeCostText(index, _colorUpgradeCosts[index]);
+        _colorUpgradeUIController.SetColorUpgradeCostText(index, _colorUpgradeCosts[index]);
     }
 
     private void EndGame()

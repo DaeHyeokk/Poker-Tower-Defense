@@ -9,23 +9,24 @@ public class TowerColorChanger : MonoBehaviour
     private TextMeshProUGUI _colorChangeCostText;
 
     private Tower _tower;
-    private int _changeCost;
+    private int[] _changeCosts = new int[4] { 50, 100, 200, 400 };
 
     public void Setup(Tower tower)
     {
         _tower = tower;
-        _changeCost = 50 * (int)Mathf.Pow(2, tower.level);
-        _colorChangeCostText.text = _changeCost.ToString() + 'G';
+        _colorChangeCostText.text = _changeCosts[tower.level].ToString() + 'G';
     }
 
     public void ChangeColor()
     {
-        if(GameManager.instance.gold > _changeCost)
+        if(GameManager.instance.gold < _changeCosts[_tower.level])
         {
             UIManager.instance.ShowSystemMessage("골드가 부족합니다");
             return;
         }
 
+        GameManager.instance.gold -= _changeCosts[_tower.level];
         _tower.towerColor.ChangeColor();
+        UIManager.instance.ShowSystemMessage("색 변경 완료!");
     }
 }

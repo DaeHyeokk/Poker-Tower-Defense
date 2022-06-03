@@ -19,6 +19,8 @@ public class TowerSales : MonoBehaviour
 
         if (tower.level >= 3)
             _randomTowerRewardText.gameObject.SetActive(true);
+        else
+            _randomTowerRewardText.gameObject.SetActive(false);
     } 
 
     public void SalesTower()
@@ -28,12 +30,12 @@ public class TowerSales : MonoBehaviour
         if (_randomTowerRewardText.gameObject.activeInHierarchy)
             TowerBuilder.instance.BuildTower(Random.Range(0, 10));
 
+        UIManager.instance.ShowSystemMessage("판매 완료!");
         _tower.ReturnPool();
     }
 
     private void OnDisable()
     {
-        if (_randomTowerRewardText.gameObject.activeInHierarchy)
-            _randomTowerRewardText.gameObject.SetActive(false);
+
     }
 }

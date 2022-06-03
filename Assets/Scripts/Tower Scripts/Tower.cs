@@ -29,6 +29,7 @@ public abstract class Tower : MonoBehaviour
     private float _maxAttackRate;
     private float _increaseAttackRate;
     private float _increaseDamageRate;
+    private int _salesGold;
 
     private float increaseAttackRate
     {
@@ -118,7 +119,7 @@ public abstract class Tower : MonoBehaviour
         }
     }
 
-    public int salesGold => defaultSalesGold * (int)Mathf.Pow(2, level);
+    public int salesGold => _salesGold;
 
     protected abstract int defaultSalesGold { get; }
 
@@ -150,6 +151,8 @@ public abstract class Tower : MonoBehaviour
     public virtual void Setup()
     {
         _towerColor.ChangeColor();
+
+        _salesGold = defaultSalesGold * (int)Mathf.Pow(2, level);
 
         attackCount = 0;
         increaseAttackRate = 0;
@@ -316,6 +319,8 @@ public abstract class Tower : MonoBehaviour
             {
                 // 공격 속도 값이 변화했기 때문에 코루틴 함수의 딜레이에 사용되는 waitForSeconds 변수 업데이트.
                 _attackDelay = new(attackRate);
+                // 판매 가격 증가.
+                _salesGold = defaultSalesGold * (int)Mathf.Pow(2, level);
                 // 타워 레벨업 시 타워의 컬러를 랜덤으로 변경한다.
                 _towerColor.ChangeColor();
                 mergeTower.ReturnPool();

@@ -21,13 +21,19 @@ public class UIManager : MonoBehaviour
         }
     }
 
-    [Header("Tower Infomation UI")]
+    [Header("Main UI Canvas")]
     [SerializeField]
-    private TowerInfomation _towerInfo;
+    private GameDataUIController _gameDataUIController;
     [SerializeField]
-    private GameObject _cardGambleCanvas;
+    private TowerInfomation _towerInfomation;
     [SerializeField]
-    private GameObject _gambleButtonCanvas;
+    private GambleUIController _gambleUIController;
+    [SerializeField]
+    private GambleButtonUIController _gambleButtonUIController;
+    [SerializeField]
+    private MissionBossUIController _missionBossUIController;
+    [SerializeField]
+    private ColorUpgradeUIController _colorUpgradeUIController;
 
     [Header("Fade Text UI")]
     [SerializeField]
@@ -36,6 +42,14 @@ public class UIManager : MonoBehaviour
     [SerializeField]
     private GameObject _damageTakenTextPrefab;
     private ObjectPool<DamageTakenText> _damageTakenTextPool;
+
+
+    public GameDataUIController gameDataUIController => _gameDataUIController;
+    public TowerInfomation towerInfomation => _towerInfomation;
+    public GambleUIController gambleUIController => _gambleUIController;
+    public GambleButtonUIController gambleButtonUIController => _gambleButtonUIController;
+    public MissionBossUIController missionBossUIController => _missionBossUIController;
+    public ColorUpgradeUIController colorUpgradeUIController => _colorUpgradeUIController;
 
     public ObjectPool<SystemMessage> systemMessagePool => _systemMessagePool;
     public ObjectPool<DamageTakenText> damageTakenTextPool => _damageTakenTextPool;
@@ -71,18 +85,16 @@ public class UIManager : MonoBehaviour
 
     public void ShowTowerInfo(Tower tower)
     {
-        _towerInfo.Setup(tower);
+        _towerInfomation.Setup(tower);
 
-        _cardGambleCanvas.SetActive(false);
-        _gambleButtonCanvas.SetActive(false);
-        _towerInfo.gameObject.SetActive(true);
+        _gambleUIController.gameObject.SetActive(false);
+        _towerInfomation.gameObject.SetActive(true);
     }
 
     public void HideTowerInfo()
     {
-        _towerInfo.gameObject.SetActive(false);
-        _cardGambleCanvas.SetActive(true);
-        _gambleButtonCanvas.SetActive(true);
+        _towerInfomation.gameObject.SetActive(false);
+        _gambleUIController.gameObject.SetActive(true);
     }
 }
 
