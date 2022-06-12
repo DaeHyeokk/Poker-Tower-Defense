@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class GameManager : MonoBehaviour
 {
@@ -31,7 +32,11 @@ public class GameManager : MonoBehaviour
     private int _life;
     private int _gold;
     private int _mineral;
-    public int _changeChance;
+    private int _changeChance;
+    private float _gameSpeed;
+    private float _backupGameSpeed;
+    private float _maxGameSpeed;
+    private bool _isPausing;
     private bool _isGameover;
 
     private int[] _colorUpgradeIncrementCost;
@@ -87,8 +92,23 @@ public class GameManager : MonoBehaviour
         }
     }
 
+    public float gameSpeed
+    {
+        get => _gameSpeed;
+        set
+        {
+            _gameSpeed = value;
+
+            if (_gameSpeed > _maxGameSpeed)
+                _gameSpeed = 1f;
+
+            Time.timeScale = _gameSpeed;
+        }
+    }
+
     public int[] colorUpgradeCounts => _colorUpgradeCounts;
     public int pokerCount => _pokerCount;
+    public bool isPausing => _isPausing;
     public bool isGameover => _isGameover;
 
     private void Awake()
@@ -96,11 +116,14 @@ public class GameManager : MonoBehaviour
         if (instance != this)
             Destroy(gameObject);
 
+        _maxGameSpeed = 3f;
+        gameSpeed = 1f;
         round = 0;
         life = 100;
         gold = 400;
         mineral = 400;
         changeChance = 3;
+        _isPausing = false;
         _isGameover = false;
         _finalRound = 40;
 
@@ -155,12 +178,41 @@ public class GameManager : MonoBehaviour
         _colorUpgradeUIController.SetColorUpgradeCostText(index, _colorUpgradeCosts[index]);
     }
 
+    public void SpeedUpGame()
+    {
+        gameSpeed++;
+        Time.timeScale = gameSpeed;
+        _gameDataUIController.SetGameSpeedText(_gameSpeed);
+    }
+
+    public void PauseGame()
+    {
+        _isPausing = true;
+        _backupGameSpeed = gameSpeed;
+        gameSpeed = 0f;
+        UIManager.instance.ShowGameMenu();
+    }
+
+    public void ResumeGame()
+    {
+        _isPausing = false;
+        gameSpeed = _backupGameSpeed;
+        UIManager.instance.HideGameMenu();
+    }
+
+    public void RetryGame()
+    {
+        SceneManager.LoadScene("SingleModeScene");
+    }
+
     private void EndGame()
     {
         _isGameover = true;
     }
 
     public bool IsFinalRound() { return _round == _finalRound; }
+
+
 }
 
 /*

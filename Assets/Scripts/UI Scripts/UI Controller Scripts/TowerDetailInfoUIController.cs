@@ -10,6 +10,12 @@ public class TowerDetailInfoUIController : MonoBehaviour
     [SerializeField]
     private Image _towerImage;
     [SerializeField]
+    private Image _lockButtonImage;
+    [SerializeField]
+    private Sprite _lockSprite;
+    [SerializeField]
+    private Sprite _unlockSprite;
+    [SerializeField]
     private TextMeshProUGUI _nameText;
     [SerializeField]
     private TextMeshProUGUI _damageText;
@@ -33,6 +39,7 @@ public class TowerDetailInfoUIController : MonoBehaviour
     private float _upgradeDIP;
     private float _upgradeRIP;
     private float _remainHideDelay;
+    private bool _isLocking;
 
     private void Awake()
     {
@@ -50,7 +57,7 @@ public class TowerDetailInfoUIController : MonoBehaviour
         _upgradeDIP = tower.upgradeDIP;
         _upgradeRIP = tower.upgradeRIP;
         _remainHideDelay = _hideDelay;
-
+       
         // 소수점 첫번째 자리에서 반올림
         _damageText.text = Mathf.Round(_damage).ToString();
         // 소수점 두번째 자리에서 반올림
@@ -90,11 +97,30 @@ public class TowerDetailInfoUIController : MonoBehaviour
         while(_remainHideDelay > 0)
         {
             yield return _oneSecond;
-            _remainHideDelay--;
+            if (!_isLocking) _remainHideDelay--;
         }
 
-        this.gameObject.SetActive(false);
+        HideObject();
     }
 
     public void ResetHideDelay() => _remainHideDelay = _hideDelay;
+
+    public void HideObject()
+    {
+        this.gameObject.SetActive(false);
+    }
+
+    public void ToggleLockButton()
+    {
+        if(_isLocking)
+        {
+            _isLocking = false;
+            _lockButtonImage.sprite = _unlockSprite;
+        }
+        else
+        {
+            _isLocking = true;
+            _lockButtonImage.sprite = _lockSprite;
+        }
+    }
 }

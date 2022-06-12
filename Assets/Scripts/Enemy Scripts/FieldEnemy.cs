@@ -133,19 +133,14 @@ public abstract class FieldEnemy : Enemy
         {
             isNextMove = false;
             nowDistance = Vector3.Distance(this.transform.position, _wayPoints[_currentIndex].position);
+
             // 현재 enemy의 위치와 목표 지점의 위치 사이의 거리가 0.05f보다 가깝다면 다음 목표 지점을 탐색한다
-            if (Vector3.Distance(transform.position, _wayPoints[_currentIndex].position) < 0.05f)
+            // 만약 현재 목표와의 거리가 이전 목표와의 거리보다 크다면 목표물로부터 멀어지고 있다는 것을 알 수 있다.
+            // 경로를 벗어났기 때문에 다음 목표 지점을 탐색한다.
+            if (Vector3.Distance(transform.position, _wayPoints[_currentIndex].position) < 0.05f || nowDistance > lastDistance)
             {
                 NextMoveTo();
                 isNextMove = true;
-            }
-
-            // 만약 현재 목표와의 거리가 이전 목표와의 거리보다 크다면 목표물로부터 멀어지고 있다는 것을 알 수 있다.
-            // 경로를 벗어났기 때문에 enemy의 위치를 목표 위치로 다시 잡아준다.
-            if (nowDistance > lastDistance)
-            {
-                lastDistance = Mathf.Infinity;
-                transform.position = _wayPoints[_currentIndex].position;
             }
 
             if (isNextMove)

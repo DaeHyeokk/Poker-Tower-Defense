@@ -13,11 +13,17 @@ public class ObjectDetector : MonoBehaviour
     private RaycastHit[] _hits;
 
     [SerializeField]
-    private Canvas _towerInfoCanvas;
+    private TowerInfomation _towerInfo;
+    [SerializeField]
     private TowerColorChanger _towerColorChanger;
+    [SerializeField]
     private TowerSales _towerSales;
+    [SerializeField]
     private TowerDetailInfo _towerDetailInfo;
-    private GraphicRaycaster _graphicRay;
+    [SerializeField]
+    private TowerDetailInfoUIController _towerDetailInfoUIController;
+    private GraphicRaycaster _towerInfoGraphicRay;
+    private GraphicRaycaster _towerDetailInfoUIGraphicRay;
     private PointerEventData _pointerEventData;
     private List<RaycastResult> _resultList;
 
@@ -30,7 +36,8 @@ public class ObjectDetector : MonoBehaviour
         // 'MainCamera' 태그를 가지고 있는 오브젝트를 탐색 후 Camera 컴포넌트 정보 전달
         // GameObject.FindGameObjectWithTag("MainCamera").GetComponent<Camera>(); 와 동일
         _mainCamera = Camera.main;
-        _graphicRay = _towerInfoCanvas.GetComponent<GraphicRaycaster>();
+        _towerInfoGraphicRay = _towerInfo.GetComponent<GraphicRaycaster>();
+        _towerDetailInfoUIGraphicRay = _towerDetailInfoUIController.GetComponent<GraphicRaycaster>();
         _pointerEventData = new(null);
         _resultList = new List<RaycastResult>();
         _clickTower = null;
@@ -38,25 +45,51 @@ public class ObjectDetector : MonoBehaviour
 
     private void Update()
     {
+        // 게임이 일시중지 상태라면 플레이어의 터치 입력을 받지 않는다.
+        if (GameManager.instance.isPausing)
+            return;
+
         // 마우스 왼쪽 버튼을 눌렀을 때
         if (Input.GetMouseButtonDown(0))
         {
             // 이미 타워를 움직이고 있는 상태라면 건너뛴다.
             if (_clickTower != null) return;
 
-            // 카메라 위치에서 화면의 마우스 커서를 관통하는 광선(ray) 생성
-            // ray.origin : 광선의 시작 위치 (= 카메라 위치)
-            // ray.direction : 광선의 진행 방향
-            _ray = _mainCamera.ScreenPointToRay(Input.mousePosition);
-
-            // 광선에 부딪히는 오브젝트를 검출해서 hit2D에 저장
-            if(Physics.Raycast(_ray, out _hit, Mathf.Infinity))
+            // 타워 상세정보 UI가 화면에 활성화 되어 있는 상태일 때 실행
+            if (_towerDetailInfoUIController.gameObject.activeInHierarchy)
             {
-                // 광선에 부딪힌 타겟이 타워라면 마우스를 떼기 전까지 계속해서 마우스포인터를 따라감
-                if (_hit.transform.CompareTag("Tower"))
+                _pointerEventData.position = Input.mousePosition;
+
+                if (_resultList.Count != 0) _resultList.Clear();
+
+                _towerDetailInfoUIGraphicRay.Raycast(_pointerEventData, _resultList);
+
+                for (int i = 0; i < _resultList.Count; i++)
                 {
-                    _clickTower = _hit.transform.GetComponent<Tower>();
-                    _clickTower.MoveTower();
+                    // 타워 상세정보 UI를 터치하는 경우 자동으로 비활성화 되는 타이머를 초기화 시킨다.
+                    if (_resultList[i].gameObject.CompareTag("TowerDetailInfoUI"))
+                    {
+                        _towerDetailInfoUIController.ResetHideDelay();
+                        break;
+                    }
+                }
+            }
+            else
+            {
+                // 카메라 위치에서 화면의 마우스 커서를 관통하는 광선(ray) 생성
+                // ray.origin : 광선의 시작 위치 (= 카메라 위치)
+                // ray.direction : 광선의 진행 방향
+                _ray = _mainCamera.ScreenPointToRay(Input.mousePosition);
+
+                // 광선에 부딪히는 오브젝트를 검출해서 hit에 저장
+                if (Physics.Raycast(_ray, out _hit, Mathf.Infinity))
+                {
+                    // 광선에 부딪힌 타겟이 타워라면 마우스를 떼기 전까지 계속해서 마우스포인터를 따라감
+                    if (_hit.transform.CompareTag("Tower"))
+                    {
+                        _clickTower = _hit.transform.GetComponent<Tower>();
+                        _clickTower.MoveTower();
+                    }
                 }
             }
         }
@@ -108,21 +141,21 @@ public class ObjectDetector : MonoBehaviour
 
                     if(_resultList.Count != 0) _resultList.Clear();
 
-                    _graphicRay.Raycast(_pointerEventData, _resultList);
+                    _towerInfoGraphicRay.Raycast(_pointerEventData, _resultList);
 
                     for (int i = 0; i < _resultList.Count; i++)
                     {
-                        if (_resultList[i].gameObject.TryGetComponent<TowerColorChanger>(out _towerColorChanger))
+                        if (_resultList[i].gameObject.CompareTag("TowerColorChanger"))
                         {
                             _towerColorChanger.ChangeColor();
                             break;
                         }
-                        if (_resultList[i].gameObject.TryGetComponent<TowerSales>(out _towerSales))
+                        if (_resultList[i].gameObject.CompareTag("TowerSales"))
                         {
                             _towerSales.SalesTower();
                             break;
                         }
-                        if(_resultList[i].gameObject.TryGetComponent<TowerDetailInfo>(out _towerDetailInfo))
+                        if(_resultList[i].gameObject.CompareTag("TowerDetailInfo"))
                         {
                             _towerDetailInfo.ShowTowerDetailInfo();
                             break;

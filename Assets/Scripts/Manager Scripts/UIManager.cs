@@ -29,11 +29,11 @@ public class UIManager : MonoBehaviour
     [SerializeField]
     private GambleUIController _gambleUIController;
     [SerializeField]
-    private GambleButtonUIController _gambleButtonUIController;
-    [SerializeField]
     private MissionBossUIController _missionBossUIController;
     [SerializeField]
     private ColorUpgradeUIController _colorUpgradeUIController;
+    [SerializeField]
+    private GameMenuUIController _gameMenuUIController;
 
     [Header("Fade Text UI")]
     [SerializeField]
@@ -47,7 +47,6 @@ public class UIManager : MonoBehaviour
     public GameDataUIController gameDataUIController => _gameDataUIController;
     public TowerInfomation towerInfomation => _towerInfomation;
     public GambleUIController gambleUIController => _gambleUIController;
-    public GambleButtonUIController gambleButtonUIController => _gambleButtonUIController;
     public MissionBossUIController missionBossUIController => _missionBossUIController;
     public ColorUpgradeUIController colorUpgradeUIController => _colorUpgradeUIController;
 
@@ -57,10 +56,7 @@ public class UIManager : MonoBehaviour
     private void Awake()
     {
         if (instance != this)
-        {
             Destroy(gameObject);    // ÀÚ½ÅÀ» ÆÄ±«
-            return;
-        }
 
         _systemMessagePool = new(_systemMessagePrefab, 5);
         _damageTakenTextPool = new(_damageTakenTextPrefab, 10);
@@ -95,6 +91,15 @@ public class UIManager : MonoBehaviour
     {
         _towerInfomation.gameObject.SetActive(false);
         _gambleUIController.gameObject.SetActive(true);
+    }
+
+    public void ShowGameMenu()
+    {
+        _gameMenuUIController.gameObject.SetActive(true);
+    }
+    public void HideGameMenu()
+    {
+        _gameMenuUIController.gameObject.SetActive(false);
     }
 }
 

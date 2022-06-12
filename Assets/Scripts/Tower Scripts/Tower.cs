@@ -143,6 +143,8 @@ public abstract class Tower : MonoBehaviour
         baseTowerInflictorList = new();
         specialTowerInflictorList = new();
 
+
+
         detailBaseAttackInfo = new();
         detailSpecialAttackInfo = new();
 

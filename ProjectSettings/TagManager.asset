@@ -8,7 +8,10 @@ TagManager:
   - Tile
   - Tower
   - Enemy
-  - DropUI
+  - TowerSales
+  - TowerDetailInfo
+  - TowerDetailInfoUI
+  - TowerColorChanger
   layers:
   - Default
   - TransparentFX
