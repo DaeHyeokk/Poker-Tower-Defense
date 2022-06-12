@@ -10,15 +10,14 @@ public class TowerInfomation : MonoBehaviour
     private TowerSales _towerSales;
     [SerializeField]
     private TowerColorChanger _towerColorChanger;
-    
-    private Tower _tower;
-
-    public Tower tower => _tower;
+    [SerializeField]
+    private TowerDetailInfo _towerDetailInfo;
 
     public void Setup(Tower tower)
     {
         _towerAbilityUIController.Setup(tower);
         _towerSales.Setup(tower);
         _towerColorChanger.Setup(tower);
+        _towerDetailInfo.Setup(tower);
     }
 }

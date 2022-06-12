@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
-using System;
+using System.Text;
 
 public abstract class Tower : MonoBehaviour
 {
@@ -29,7 +29,6 @@ public abstract class Tower : MonoBehaviour
     private float _maxAttackRate;
     private float _increaseAttackRate;
     private float _increaseDamageRate;
-    private int _salesGold;
 
     private float increaseAttackRate
     {
@@ -64,9 +63,9 @@ public abstract class Tower : MonoBehaviour
     protected int attackCount { get; set; }
     protected int specialAttackCount { get; private set; }
 
-    protected List<IEnemyInflictable> basicEnemyInflictorList { get; set; }
+    protected List<IEnemyInflictable> baseEnemyInflictorList { get; set; }
     protected List<IEnemyInflictable> specialEnemyInflictorList { get; set; }
-    protected List<ITowerInflictable> basicTowerInflictorList { get; set; }
+    protected List<ITowerInflictable> baseTowerInflictorList { get; set; }
     protected List<ITowerInflictable> specialTowerInflictorList { get; set; }
 
     protected ProjectileSpawner projectileSpawner => _projectileSpawner;
@@ -75,23 +74,28 @@ public abstract class Tower : MonoBehaviour
     public TargetDetector targetDetector => _targetDetector;
     public SpriteRenderer towerRenderer => _towerRenderer;
     public TowerColor towerColor => _towerColor;
-    public TowerLevel towwerLevel => _towerLevel;
     public Sprite normalProjectileSprite => _towerData.normalProjectileSprites[(int)_towerColor.colorType];
     public Sprite specialProjectileSprite => _towerData.specialProjectileSprites[(int)_towerColor.colorType];
-
+    public StringBuilder detailBaseAttackInfo { get; set; }
+    public StringBuilder detailSpecialAttackInfo { get; set; }
     public int upgradeCount => GameManager.instance.colorUpgradeCounts[(int)towerColor.colorType];
     public int level => _towerLevel.level;
-    public float damage => (_towerData.weapons[level].damage + (upgradeCount * _towerData.weapons[level].upgradeDIP)) * (1f + (increaseDamageRate * 0.01f));
+    public float baseDamage => _towerData.weapons[level].damage;
+    public float upgradeDIP => _towerData.weapons[level].upgradeDIP;
+    public float damage => (baseDamage + (upgradeDIP * upgradeCount)) * (1f + (increaseDamageRate * 0.01f));
+    public float baseAttackRate => _towerData.weapons[level].rate;
+    public float upgradeRIP => _towerData.weapons[level].upgradeRIP;
     public float attackRate 
     {
         get
         {
-            float value = _towerData.weapons[level].rate / (1 + increaseAttackRate * 0.01f);
+            float value = (baseAttackRate - (upgradeRIP * upgradeCount)) / (1 + increaseAttackRate * 0.01f);
             return value > _maxAttackRate ? value : _maxAttackRate;
         }
     }
     public float range => _towerData.weapons[level].range;
     public int maxTargetCount => _towerData.weapons[level].maxTargetCount;
+    public int salesGold => _towerData.weapons[level].salesGold;
     public WaitForSeconds attackDelay => _attackDelay;
     public virtual Tile onTile
     {
@@ -119,11 +123,7 @@ public abstract class Tower : MonoBehaviour
         }
     }
 
-    public int salesGold => _salesGold;
-
-    protected abstract int defaultSalesGold { get; }
-
-    public abstract String towerName { get; }
+    public abstract string towerName { get; }
     public abstract int towerIndex { get; }
 
 
@@ -138,10 +138,14 @@ public abstract class Tower : MonoBehaviour
         _towerLevel = new TowerLevel(_levelLayout);
         _targetDetector = new TargetDetector(this, FindObjectOfType<EnemySpawner>());
 
-        basicEnemyInflictorList = new();
+        baseEnemyInflictorList = new();
         specialEnemyInflictorList = new();
-        basicTowerInflictorList = new();
+        baseTowerInflictorList = new();
         specialTowerInflictorList = new();
+
+        detailBaseAttackInfo = new();
+        detailSpecialAttackInfo = new();
+
         _maxAttackRate = 0.1f;
         specialAttackCount = 10;
 
@@ -152,16 +156,17 @@ public abstract class Tower : MonoBehaviour
     {
         _towerColor.ChangeColor();
 
-        _salesGold = defaultSalesGold * (int)Mathf.Pow(2, level);
-
         attackCount = 0;
         increaseAttackRate = 0;
         increaseDamageRate = 0;
+
+        UpdateDetailInfo();
 
         StartCoroutine(SearchTarget());
         StartCoroutine(AttackTarget());
     }
 
+    
     private IEnumerator SearchTarget()
     {
         while(true)
@@ -203,39 +208,39 @@ public abstract class Tower : MonoBehaviour
 
     protected abstract void ShotProjectile(Enemy target, AttackType attackType);
 
-    protected virtual void BasicInflict(Enemy target)
+    protected virtual void BaseInflict(Enemy target)
     {
-        for (int i = 0; i < basicEnemyInflictorList.Count; i++)
+        for (int i = 0; i < baseEnemyInflictorList.Count; i++)
             if (target.gameObject.activeInHierarchy)
-                basicEnemyInflictorList[i].Inflict(target);
+                baseEnemyInflictorList[i].Inflict(target);
     }
-    protected virtual void BasicInflict(Tower target)
+    protected virtual void BaseInflict(Tower target)
     {
-        for (int i = 0; i < basicTowerInflictorList.Count; i++)
-            basicTowerInflictorList[i].Inflict(target);
+        for (int i = 0; i < baseTowerInflictorList.Count; i++)
+            baseTowerInflictorList[i].Inflict(target);
     }
 
-    protected virtual void BasicInflict(Enemy target, float range)
+    protected virtual void BaseInflict(Enemy target, float range)
     {
         ParticlePlayer.instance.PlayRangeAttack(target.transform, range, (int)_towerColor.colorType);
 
         Collider2D[] collider2D = Physics2D.OverlapCircleAll(target.transform.position, range * 0.5f);
 
         for (int i = 0; i < collider2D.Length; i++)
-            for (int j = 0; j < basicEnemyInflictorList.Count; j++)
+            for (int j = 0; j < baseEnemyInflictorList.Count; j++)
                 if(collider2D[i].gameObject.activeInHierarchy)
-                    basicEnemyInflictorList[j].Inflict(collider2D[i].GetComponent<Enemy>());
+                    baseEnemyInflictorList[j].Inflict(collider2D[i].GetComponent<Enemy>());
     }
 
-    protected virtual void BasicInflict(Tower target, float range)
+    protected virtual void BaseInflict(Tower target, float range)
     {
         ParticlePlayer.instance.PlayRangeAttack(target.transform, range, (int)_towerColor.colorType);
 
         Collider[] collider = Physics.OverlapSphere(target.transform.position, range / 2);
 
         for (int i = 0; i < collider.Length; i++)
-            for (int j = 0; j < basicEnemyInflictorList.Count; j++)
-                basicTowerInflictorList[j].Inflict(collider[i].GetComponent<Tower>());
+            for (int j = 0; j < baseEnemyInflictorList.Count; j++)
+                baseTowerInflictorList[j].Inflict(collider[i].GetComponent<Tower>());
     }
 
     protected virtual void SpecialInflict(Enemy target)
@@ -319,16 +324,61 @@ public abstract class Tower : MonoBehaviour
             {
                 // 공격 속도 값이 변화했기 때문에 코루틴 함수의 딜레이에 사용되는 waitForSeconds 변수 업데이트.
                 _attackDelay = new(attackRate);
-                // 판매 가격 증가.
-                _salesGold = defaultSalesGold * (int)Mathf.Pow(2, level);
+
                 // 타워 레벨업 시 타워의 컬러를 랜덤으로 변경한다.
                 _towerColor.ChangeColor();
+                // 타워 레벨업 시 타워의 상세 정보 StringBuilder를 업데이트 한다.
+                UpdateDetailInfo();
                 mergeTower.ReturnPool();
                 return true;
             }
         }
 
         return false;
+    }
+
+    protected virtual void UpdateDetailInfo()
+    {
+        UpdateDetailInflictorInfo();
+
+        detailBaseAttackInfo.Clear();
+        for (int i = 0; i < baseEnemyInflictorList.Count; i++)
+        {
+            detailBaseAttackInfo.Append(baseEnemyInflictorList[i].inflictorInfo.ToString());
+            detailBaseAttackInfo.Append('\n');
+        }
+        for (int i = 0; i < baseTowerInflictorList.Count; i++)
+        {
+            detailBaseAttackInfo.Append(baseTowerInflictorList[i].inflictorInfo.ToString());
+            detailBaseAttackInfo.Append('\n');
+        }
+
+        detailSpecialAttackInfo.Clear();
+        for (int i = 0; i < specialEnemyInflictorList.Count; i++)
+        {
+            detailSpecialAttackInfo.Append(specialEnemyInflictorList[i].inflictorInfo.ToString());
+            detailSpecialAttackInfo.Append('\n');
+        }
+        for (int i = 0; i < specialTowerInflictorList.Count; i++)
+        {
+            detailSpecialAttackInfo.Append(specialTowerInflictorList[i].inflictorInfo.ToString());
+            detailSpecialAttackInfo.Append('\n');
+        }
+    }
+
+    protected void UpdateDetailInflictorInfo()
+    {
+        for (int i = 0; i < baseEnemyInflictorList.Count; i++)
+            baseEnemyInflictorList[i].UpdateInflictorInfo();
+
+        for (int i = 0; i < baseTowerInflictorList.Count; i++)
+            baseTowerInflictorList[i].UpdateInflictorInfo();
+
+        for (int i = 0; i < specialEnemyInflictorList.Count; i++)
+            specialEnemyInflictorList[i].UpdateInflictorInfo();
+
+        for (int i = 0; i < specialTowerInflictorList.Count; i++)
+            specialTowerInflictorList[i].UpdateInflictorInfo();
     }
 
     public void MoveTower()

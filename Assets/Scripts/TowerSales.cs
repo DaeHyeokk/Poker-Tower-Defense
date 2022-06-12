@@ -33,9 +33,4 @@ public class TowerSales : MonoBehaviour
         UIManager.instance.ShowSystemMessage("판매 완료!");
         _tower.ReturnPool();
     }
-
-    private void OnDisable()
-    {
-
-    }
 }

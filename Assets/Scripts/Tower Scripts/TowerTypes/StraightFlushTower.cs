@@ -28,8 +28,6 @@ public class StraightFlushTower : Tower
 
     private readonly string _towerName = "스티플 타워";
 
-    protected override int defaultSalesGold => 830;
-
     public override string towerName => _towerName;
     public override int towerIndex => 9;
 
@@ -39,10 +37,10 @@ public class StraightFlushTower : Tower
         targetDetector.detectingMode = TargetDetector.DetectingMode.Single;
 
         CriticalStrike basicCriticalStrike = new(this, _basicCritAttributes);
-        basicEnemyInflictorList.Add(basicCriticalStrike);
+        baseEnemyInflictorList.Add(basicCriticalStrike);
 
         Stun basicStun = new(this, _basicStunAttributes);
-        basicEnemyInflictorList.Add(basicStun);
+        baseEnemyInflictorList.Add(basicStun);
 
         CriticalStrike specialCriticalStrike = new(this, _specialCritAttributes);
         specialEnemyInflictorList.Add(specialCriticalStrike);
@@ -51,12 +49,20 @@ public class StraightFlushTower : Tower
         specialEnemyInflictorList.Add(specialStun);
     }
 
+    protected override void UpdateDetailInfo()
+    {
+        base.UpdateDetailInfo();
+
+        detailBaseAttackInfo.Insert(0, "[범위 공격]\n");
+        detailSpecialAttackInfo.Insert(0, "[범위 공격]\n");
+    }
+
     protected override void ShotProjectile(Enemy target, AttackType attackType)
     {
         if (attackType == AttackType.Basic)
         {
             Projectile projectile = projectileSpawner.SpawnProjectile(this, spawnPoint, target, normalProjectileSprite);
-            projectile.actionOnCollision += () => BasicInflict(target, _basicRange);
+            projectile.actionOnCollision += () => BaseInflict(target, _basicRange);
         }
         else // (attackType == AttackType.Special)
         {

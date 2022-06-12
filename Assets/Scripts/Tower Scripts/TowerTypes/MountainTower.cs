@@ -22,11 +22,13 @@ public class MountainTower : Tower
     [SerializeField]
     private Particle _buffRangeParticle;
 
+    private BasicAttack _basicAttack;
+    private IncreaseReceivedDamageRate _baseIRDRate;
+    private IncreaseDamageRate _specialIDRate;
+
     private readonly string _towerName = "마운틴 타워";
 
     private float specialBuffRange => _specialBuffRanges[level];
-
-    protected override int defaultSalesGold => 660;
 
     public override string towerName => _towerName;
     public override int towerIndex => 5;
@@ -53,15 +55,15 @@ public class MountainTower : Tower
         base.Awake();
         targetDetector.detectingMode = TargetDetector.DetectingMode.Multiple;
 
-        BasicAttack basicAttack = new(this);
-        basicEnemyInflictorList.Add(basicAttack);
-        specialEnemyInflictorList.Add(basicAttack);
+        _basicAttack = new(this);
+        baseEnemyInflictorList.Add(_basicAttack);
+        specialEnemyInflictorList.Add(_basicAttack);
 
-        IncreaseReceivedDamageRate basicIRDRate = new(this, _basicIRDRateAttributes);
-        basicEnemyInflictorList.Add(basicIRDRate);
+        _baseIRDRate = new(this, _basicIRDRateAttributes);
+        baseEnemyInflictorList.Add(_baseIRDRate);
 
-        IncreaseDamageRate specialIDRate = new(this, _specialIDRateAttributes);
-        specialTowerInflictorList.Add(specialIDRate);
+        _specialIDRate = new(this, _specialIDRateAttributes);
+        specialTowerInflictorList.Add(_specialIDRate);
 
         SetBuffRangeParticleScale();
     }
@@ -70,6 +72,28 @@ public class MountainTower : Tower
     {
         base.Setup();
         SetBuffRangeParticleScale();
+    }
+
+    protected override void UpdateDetailInfo()
+    {
+        UpdateDetailInflictorInfo();
+
+        detailBaseAttackInfo.Clear();
+        detailBaseAttackInfo.Append(maxTargetCount.ToString());
+        detailBaseAttackInfo.Append("명의 적을 공격");
+        detailBaseAttackInfo.Append('\n');
+        detailBaseAttackInfo.Append(_basicAttack.inflictorInfo.ToString());
+        detailBaseAttackInfo.Append('\n');
+        detailBaseAttackInfo.Append(_baseIRDRate.inflictorInfo.ToString());
+
+        detailSpecialAttackInfo.Clear();
+        detailSpecialAttackInfo.Append(maxTargetCount.ToString());
+        detailSpecialAttackInfo.Append("명의 적을 공격");
+        detailSpecialAttackInfo.Append('\n');
+        detailSpecialAttackInfo.Append(_basicAttack.inflictorInfo.ToString());
+        detailSpecialAttackInfo.Append('\n');
+        detailSpecialAttackInfo.Append("자신과 주변 타워 ");
+        detailSpecialAttackInfo.Append(_specialIDRate.inflictorInfo.ToString());
     }
 
     protected override IEnumerator AttackTarget()
@@ -109,7 +133,7 @@ public class MountainTower : Tower
         if (attackType == AttackType.Basic)
         {
             Projectile projectile = projectileSpawner.SpawnProjectile(this, spawnPoint, target, normalProjectileSprite);
-            projectile.actionOnCollision += () => BasicInflict(target);
+            projectile.actionOnCollision += () => BaseInflict(target);
         }
         else // (attackType == AttackType.Special)
         {

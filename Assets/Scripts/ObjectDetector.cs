@@ -16,6 +16,7 @@ public class ObjectDetector : MonoBehaviour
     private Canvas _towerInfoCanvas;
     private TowerColorChanger _towerColorChanger;
     private TowerSales _towerSales;
+    private TowerDetailInfo _towerDetailInfo;
     private GraphicRaycaster _graphicRay;
     private PointerEventData _pointerEventData;
     private List<RaycastResult> _resultList;
@@ -31,7 +32,7 @@ public class ObjectDetector : MonoBehaviour
         _mainCamera = Camera.main;
         _graphicRay = _towerInfoCanvas.GetComponent<GraphicRaycaster>();
         _pointerEventData = new(null);
-        //_resultList = new List<RaycastResult>();
+        _resultList = new List<RaycastResult>();
         _clickTower = null;
     }
 
@@ -100,11 +101,13 @@ public class ObjectDetector : MonoBehaviour
                     }
                 }
 
+                // 광선이 Tile 에 부딪히지 않았을 때 실행
                 if (!isHitTile)
                 {
                     _pointerEventData.position = Input.mousePosition;
 
-                    _resultList = new List<RaycastResult>();
+                    if(_resultList.Count != 0) _resultList.Clear();
+
                     _graphicRay.Raycast(_pointerEventData, _resultList);
 
                     for (int i = 0; i < _resultList.Count; i++)
@@ -117,6 +120,11 @@ public class ObjectDetector : MonoBehaviour
                         if (_resultList[i].gameObject.TryGetComponent<TowerSales>(out _towerSales))
                         {
                             _towerSales.SalesTower();
+                            break;
+                        }
+                        if(_resultList[i].gameObject.TryGetComponent<TowerDetailInfo>(out _towerDetailInfo))
+                        {
+                            _towerDetailInfo.ShowTowerDetailInfo();
                             break;
                         }
                     }

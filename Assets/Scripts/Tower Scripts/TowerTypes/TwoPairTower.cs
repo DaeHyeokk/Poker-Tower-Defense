@@ -18,7 +18,6 @@ public class TwoPairTower : Tower
 
     private readonly string _towerName = "투페어 타워";
 
-    protected override int defaultSalesGold => 60;
 
     public override string towerName => _towerName;
     public override int towerIndex => 2;
@@ -29,10 +28,10 @@ public class TwoPairTower : Tower
         targetDetector.detectingMode = TargetDetector.DetectingMode.Single;
 
         BasicAttack basicAttack = new(this);
-        basicEnemyInflictorList.Add(basicAttack);
+        baseEnemyInflictorList.Add(basicAttack);
 
         Stun basicStun = new(this, _basicStunAttributes);
-        basicEnemyInflictorList.Add(basicStun);
+        baseEnemyInflictorList.Add(basicStun);
 
         CriticalStrike specialCriticalStrike = new(this, _specialCritAttributes);
         specialEnemyInflictorList.Add(specialCriticalStrike);
@@ -46,7 +45,7 @@ public class TwoPairTower : Tower
         if (attackType == AttackType.Basic)
         {
             Projectile projectile = projectileSpawner.SpawnProjectile(this, spawnPoint, target, normalProjectileSprite);
-            projectile.actionOnCollision += () => BasicInflict(target);
+            projectile.actionOnCollision += () => BaseInflict(target);
         }
         else // (attackType == AttackType.Special)
         {

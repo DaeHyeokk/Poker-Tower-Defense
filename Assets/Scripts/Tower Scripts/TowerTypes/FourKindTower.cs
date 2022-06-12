@@ -27,7 +27,6 @@ public class FourKindTower : Tower
     private float _specialRange;
 
     private readonly string _towerName = "포카인드 타워";
-    protected override int defaultSalesGold => 660;
 
     public override string towerName => _towerName;
     public override int towerIndex => 8;
@@ -38,10 +37,10 @@ public class FourKindTower : Tower
         targetDetector.detectingMode = TargetDetector.DetectingMode.Single;
 
         CriticalStrike basicCriticalStrike = new(this, _basicCriticalStrikeAttributes);
-        basicEnemyInflictorList.Add(basicCriticalStrike);
+        baseEnemyInflictorList.Add(basicCriticalStrike);
 
         Slowing basicSlowing = new(this, _basicSlowingAttributes);
-        basicEnemyInflictorList.Add(basicSlowing);
+        baseEnemyInflictorList.Add(basicSlowing);
 
         CriticalStrike specialCriticalStrike = new(this, _specialCriticalStrikeAttributes);
         specialEnemyInflictorList.Add(specialCriticalStrike);
@@ -50,12 +49,20 @@ public class FourKindTower : Tower
         specialEnemyInflictorList.Add(specialSlowing);
     }
 
+    protected override void UpdateDetailInfo()
+    {
+        base.UpdateDetailInfo();
+
+        detailBaseAttackInfo.Insert(0, "[범위 공격]\n");
+        detailSpecialAttackInfo.Insert(0, "[범위 공격]\n");
+    }
+
     protected override void ShotProjectile(Enemy target, AttackType attackType)
     {
         if (attackType == AttackType.Basic)
         {
             Projectile projectile = projectileSpawner.SpawnProjectile(this, spawnPoint, target, normalProjectileSprite);
-            projectile.actionOnCollision += () => BasicInflict(target, _basicRange);
+            projectile.actionOnCollision += () => BaseInflict(target, _basicRange);
         }
         else // (attackType == AttackType.Special)
         {

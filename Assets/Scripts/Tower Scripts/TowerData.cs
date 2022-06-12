@@ -7,12 +7,12 @@ public class TowerData : ScriptableObject
 {
     public Sprite[] normalProjectileSprites;
     public Sprite[] specialProjectileSprites;
-
     public Weapon[] weapons;
 
     [System.Serializable]
     public struct Weapon
     {
+        public int salesGold; // 판매 가격
         public int maxTargetCount;
 
         public float damage;
@@ -20,8 +20,8 @@ public class TowerData : ScriptableObject
         public float range;
 
         public float upgradeDIP;    // DIP : 업그레이드 시 데미지 증가량
-        public float upgradeSIP;    // SIP : 업그레이드 시 공격속도 증가량
-        public float upgradeRIP;    // RIP : 업그레이드 시 사거리 증가량
+        public float upgradeRIP;    // SIP : 업그레이드 시 공격속도 증가량
+
     }
 }
 
@@ -38,4 +38,7 @@ public class TowerData : ScriptableObject
  * 
  * Update : 2022/04/28 THU 23:40
  * 타워 오브젝트의 오브젝트 풀링을 구현하면서 TowerWeapon Prefab 필드를 제거함.
+ * 
+ * Update : 2022/06/11 SAT 22:18
+ * salesGold 필드 추가.
  */

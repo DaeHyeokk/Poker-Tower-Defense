@@ -25,8 +25,6 @@ public class FullHouseTower : Tower
 
     private float _specialBuffDuration => _specialIncreaseAttackRateAttributes[level].duration;
 
-    protected override int defaultSalesGold => 510;
-
     public override string towerName => _towerName;
     public override int towerIndex => 7;
 
@@ -36,7 +34,7 @@ public class FullHouseTower : Tower
         targetDetector.detectingMode = TargetDetector.DetectingMode.Single;
 
         CriticalStrike basicCriticalStrike = new(this, _basicCritAttributes);
-        basicEnemyInflictorList.Add(basicCriticalStrike);
+        baseEnemyInflictorList.Add(basicCriticalStrike);
 
         CriticalStrike specialCriticalStrike = new(this, _specialCritAttributes);
         specialEnemyInflictorList.Add(specialCriticalStrike);
@@ -90,7 +88,7 @@ public class FullHouseTower : Tower
         if (attackType == AttackType.Basic)
         {
             Projectile projectile = projectileSpawner.SpawnProjectile(this, spawnPoint, target, normalProjectileSprite);
-            projectile.actionOnCollision += () => BasicInflict(target);
+            projectile.actionOnCollision += () => BaseInflict(target);
         }
         else // (attackType == AttackType.Special)
         {

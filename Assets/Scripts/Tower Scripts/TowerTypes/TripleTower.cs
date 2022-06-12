@@ -23,10 +23,6 @@ public class TripleTower : Tower
     private bool _isSpecialBuff;
     private readonly string _towerName = "트리플 타워";
 
-    private float _specialBuffDuration => _specialIncreaseAttackRateAttributes[level].duration;
-
-    protected override int defaultSalesGold => 110;
-
     public override string towerName => _towerName;
     public override int towerIndex => 3;
 
@@ -36,7 +32,7 @@ public class TripleTower : Tower
         targetDetector.detectingMode = TargetDetector.DetectingMode.Single;
 
         CriticalStrike basicCriticalStrike = new(this, _basicCritAttributes);
-        basicEnemyInflictorList.Add(basicCriticalStrike);
+        baseEnemyInflictorList.Add(basicCriticalStrike);
 
         CriticalStrike specialCriticalStrike = new(this, _specialCritAttributes);
         specialEnemyInflictorList.Add(specialCriticalStrike);
@@ -89,7 +85,7 @@ public class TripleTower : Tower
         if (attackType == AttackType.Basic)
         {
             Projectile projectile = projectileSpawner.SpawnProjectile(this, spawnPoint, target, normalProjectileSprite);
-            projectile.actionOnCollision += () => BasicInflict(target);
+            projectile.actionOnCollision += () => BaseInflict(target);
         }
         else // (attackType == AttackType.Special)
         {

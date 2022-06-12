@@ -240,6 +240,12 @@ MonoBehaviour:
   _spawnPoint: {fileID: 5024908255804999548}
   _increaseDamageEffect: {fileID: 1816563780977881584}
   _increaseAttackRateEffect: {fileID: 2385456734959562649}
+  _detailBaseAttackInfo: "\uC77C\uC815 \uD655\uB960\uB85C \uD06C\uB9AC\uD2F0\uCEEC
+    \uB370\uBBF8\uC9C0\\n\uC77C\uC815 \uD655\uB960\uB85C \uC801\uC758 \uC774\uB3D9\uC18D\uB3C4
+    \uAC10\uC18C"
+  _detailSpecialAttackInfo: "\uBC94\uC704 \uACF5\uACA9\\n\uC77C\uC815 \uD655\uB960\uB85C
+    \uD06C\uB9AC\uD2F0\uCEEC \uB370\uBBF8\uC9C0\\n\uC77C\uC815 \uD655\uB960\uB85C
+    \uC801\uC758 \uC774\uB3D9\uC18D\uB3C4 \uAC10\uC18C"
   _basicCriticalStrikeAttributes:
   - rate: 200
     chance: 50

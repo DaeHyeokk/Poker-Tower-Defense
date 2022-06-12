@@ -26,12 +26,12 @@ public class TowerAbilityUIController : MonoBehaviour
         _towerImage.sprite = tower.towerRenderer.sprite;
         _towerImage.color = tower.towerColor.color;
         _nameText.text = tower.towerName;
-        // 소수점 첫째 자리에서 반올림
         _damage = tower.damage;
-        // 소수점 둘째 자리에서 반올림
         _attackRate = tower.attackRate;
 
+        // 소수점 첫째 자리에서 반올림
         _damageText.text = Mathf.Round(_damage).ToString();
+        // 소수점 둘째 자리에서 반올림
         _attackRateText.text = Math.Round(_attackRate, 2).ToString();
     }
 

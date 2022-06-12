@@ -18,8 +18,6 @@ public class TopTower : Tower
 
     private readonly string _towername = "Å¾ Å¸¿ö";
 
-    protected override int defaultSalesGold => 20;
-
     public override string towerName => _towername;
     public override int towerIndex => 0;
 
@@ -29,7 +27,7 @@ public class TopTower : Tower
         targetDetector.detectingMode = TargetDetector.DetectingMode.Single;
 
         CriticalStrike basicCriticalStrike = new(this, _basicCritAttributes);
-        basicEnemyInflictorList.Add(basicCriticalStrike);
+        baseEnemyInflictorList.Add(basicCriticalStrike);
 
         CriticalStrike specialCriticalStrike = new(this, _specialCritAttributes);
         specialEnemyInflictorList.Add(specialCriticalStrike);
@@ -43,7 +41,7 @@ public class TopTower : Tower
         if (attackType == AttackType.Basic)
         {
             Projectile projectile = projectileSpawner.SpawnProjectile(this, spawnPoint, target, normalProjectileSprite);
-            projectile.actionOnCollision += () => BasicInflict(target);
+            projectile.actionOnCollision += () => BaseInflict(target);
         }
         else // (attackType == AttackType.Special)
         {

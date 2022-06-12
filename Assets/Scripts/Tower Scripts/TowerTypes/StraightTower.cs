@@ -28,11 +28,14 @@ public class StraightTower : Tower
     [SerializeField]
     private Particle _buffRangeParticle;
 
+    private BasicAttack _basicAttack;
+    private Slowing _basicSlowing;
+    private CriticalStrike _specialCriticalStrike;
+    private IncreaseAttackRate _specialIncreaseAttackRate;
+
     private readonly string _towerName = "스트레이트 타워";
 
     private float specialBuffRange => _specialBuffRanges[level];
-
-    protected override int defaultSalesGold => 180;
 
     public override string towerName => _towerName;
     public override int towerIndex => 4;
@@ -59,17 +62,17 @@ public class StraightTower : Tower
         base.Awake();
         targetDetector.detectingMode = TargetDetector.DetectingMode.Multiple;
 
-        BasicAttack basicAttack = new(this);
-        basicEnemyInflictorList.Add(basicAttack);
+        _basicAttack = new(this);
+        baseEnemyInflictorList.Add(_basicAttack);
 
-        Slowing basicSlowing = new(this, _basicSlowingAttributes);
-        basicEnemyInflictorList.Add(basicSlowing);
+        _basicSlowing = new(this, _basicSlowingAttributes);
+        baseEnemyInflictorList.Add(_basicSlowing);
 
-        CriticalStrike specialCriticalStrike = new(this, _specialCritAttributes);
-        specialEnemyInflictorList.Add(specialCriticalStrike);
+        _specialCriticalStrike = new(this, _specialCritAttributes);
+        specialEnemyInflictorList.Add(_specialCriticalStrike);
 
-        IncreaseAttackRate specialIncreaseAttackRate = new(this, _specialIARateAttributes);
-        specialTowerInflictorList.Add(specialIncreaseAttackRate);
+        _specialIncreaseAttackRate = new(this, _specialIARateAttributes);
+        specialTowerInflictorList.Add(_specialIncreaseAttackRate);
 
         SetBuffRangeParticleScale();
     }
@@ -78,6 +81,29 @@ public class StraightTower : Tower
     {
         base.Setup();
         SetBuffRangeParticleScale();
+    }
+    protected override void UpdateDetailInfo()
+    {
+        UpdateDetailInflictorInfo();
+
+        detailBaseAttackInfo.Clear();
+        detailBaseAttackInfo.Append(maxTargetCount.ToString());
+        detailBaseAttackInfo.Append("명의 적을 공격");
+        detailBaseAttackInfo.Append('\n');
+        detailBaseAttackInfo.Append(_basicAttack.inflictorInfo.ToString());
+        detailBaseAttackInfo.Append('\n');
+        detailBaseAttackInfo.Append(_basicSlowing.inflictorInfo.ToString());
+
+        detailSpecialAttackInfo.Clear();
+        detailSpecialAttackInfo.Append("[범위 공격]");
+        detailSpecialAttackInfo.Append('\n');
+        detailSpecialAttackInfo.Append(maxTargetCount.ToString());
+        detailSpecialAttackInfo.Append("명의 적을 공격");
+        detailSpecialAttackInfo.Append('\n');
+        detailSpecialAttackInfo.Append(_specialCriticalStrike.inflictorInfo.ToString());
+        detailSpecialAttackInfo.Append('\n');
+        detailSpecialAttackInfo.Append("자신과 주변 타워 ");
+        detailSpecialAttackInfo.Append(_specialIncreaseAttackRate.inflictorInfo.ToString());
     }
 
     protected override IEnumerator AttackTarget()
@@ -117,7 +143,7 @@ public class StraightTower : Tower
         if (attackType == AttackType.Basic)
         {
             Projectile projectile = projectileSpawner.SpawnProjectile(this, spawnPoint, target, normalProjectileSprite);
-            projectile.actionOnCollision += () => BasicInflict(target);
+            projectile.actionOnCollision += () => BaseInflict(target);
         }
         else // (attackType == AttackType.Special)
         {

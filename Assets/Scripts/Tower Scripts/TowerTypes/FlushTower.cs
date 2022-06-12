@@ -22,8 +22,6 @@ public class FlushTower : Tower
 
     private readonly string _towerName = "플러쉬 타워";
 
-    protected override int defaultSalesGold => 380;
-
     public override string towerName => _towerName;
     public override int towerIndex => 6;
 
@@ -33,10 +31,10 @@ public class FlushTower : Tower
         targetDetector.detectingMode = TargetDetector.DetectingMode.Single;
 
         BasicAttack basicAttack = new(this);
-        basicEnemyInflictorList.Add(basicAttack);
+        baseEnemyInflictorList.Add(basicAttack);
 
         Stun basicStun = new(this, _basicStunAttributes);
-        basicEnemyInflictorList.Add(basicStun);
+        baseEnemyInflictorList.Add(basicStun);
 
         CriticalStrike specialCriticalStrike = new(this, _specialCritAttributes);
         specialEnemyInflictorList.Add(specialCriticalStrike);
@@ -45,12 +43,19 @@ public class FlushTower : Tower
         specialEnemyInflictorList.Add(specialStun);
     }
 
+    protected override void UpdateDetailInfo()
+    {
+        base.UpdateDetailInfo();
+
+        detailSpecialAttackInfo.Insert(0, "[범위 공격]\n");
+    }
+
     protected override void ShotProjectile(Enemy target, AttackType attackType)
     {
         if (attackType == AttackType.Basic)
         {
             Projectile projectile = projectileSpawner.SpawnProjectile(this, spawnPoint, target, normalProjectileSprite);
-            projectile.actionOnCollision += () => BasicInflict(target);
+            projectile.actionOnCollision += () => BaseInflict(target);
         }
         else // (attackType == AttackType.Special)
         {

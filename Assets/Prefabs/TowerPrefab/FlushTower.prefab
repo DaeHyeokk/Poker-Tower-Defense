@@ -313,6 +313,10 @@ MonoBehaviour:
   _spawnPoint: {fileID: 6189546571691864872}
   _increaseDamageEffect: {fileID: 430954142561917222}
   _increaseAttackRateEffect: {fileID: 8131155966352738137}
+  _detailBaseAttackInfo: "\uC804\uCCB4 \uACF5\uACA9\uB825\uB9CC\uD07C\uC758 \uB370\uBBF8\uC9C0\\n\uC77C\uC815
+    \uD655\uB960\uB85C \uC801 \uAE30\uC808"
+  _detailSpecialAttackInfo: "\uC77C\uC815 \uD655\uB960\uB85C \uD06C\uB9AC\uD2F0\uCEEC
+    \uB370\uBBF8\uC9C0\\n100% \uD655\uB960\uB85C \uC801 \uAE30\uC808"
   _basicStunAttributes:
   - duration: 1
     chance: 30

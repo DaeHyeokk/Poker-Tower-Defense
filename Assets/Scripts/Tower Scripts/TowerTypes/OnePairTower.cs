@@ -18,8 +18,6 @@ public class OnePairTower : Tower
 
     public readonly string _towerName = "원페어 타워";
 
-    protected override int defaultSalesGold => 30;
-
     public override string towerName => _towerName;
     public override int towerIndex => 1;
 
@@ -29,14 +27,21 @@ public class OnePairTower : Tower
         targetDetector.detectingMode = TargetDetector.DetectingMode.Single;
 
         BasicAttack basicAttack = new(this);
-        basicEnemyInflictorList.Add(basicAttack);
+        baseEnemyInflictorList.Add(basicAttack);
         specialEnemyInflictorList.Add(basicAttack);
 
         Slowing basicSlowing = new(this, _basicSlowingAttributes);
-        basicEnemyInflictorList.Add(basicSlowing);
+        baseEnemyInflictorList.Add(basicSlowing);
 
         Slowing specialSlowing = new(this, _specialSlowingAttributes);
         specialEnemyInflictorList.Add(specialSlowing);
+    }
+
+    protected override void UpdateDetailInfo()
+    {
+        base.UpdateDetailInfo();
+
+        detailSpecialAttackInfo.Insert(0, "[범위 공격]\n");
     }
 
     protected override void ShotProjectile(Enemy target, AttackType attackType)
@@ -44,7 +49,7 @@ public class OnePairTower : Tower
         if (attackType == AttackType.Basic)
         {
             Projectile projectile = projectileSpawner.SpawnProjectile(this, spawnPoint, target, normalProjectileSprite);
-            projectile.actionOnCollision += () => BasicInflict(target);
+            projectile.actionOnCollision += () => BaseInflict(target);
         }
         else // (attackType == AttackType.Special)
         {
