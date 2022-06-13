@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 59030664702954900}
   - component: {fileID: 2415271441476894846}
   m_Layer: 0
-  m_Name: SpceGroundTiles
+  m_Name: SpaceGroundTiles
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

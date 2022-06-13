@@ -14,7 +14,7 @@ public class RoundBossEnemy : FieldBossEnemy
         GameManager.instance.life -= 20;
 
         // 마지막 라운드 보스는 못잡을 경우 남은 라이프에 상관없이 바로 패배한다.
-        if (GameManager.instance.IsFinalRound())
+        if (GameManager.instance.IsFinalWave())
             GameManager.instance.life -= 100;
 
         ReturnObject();

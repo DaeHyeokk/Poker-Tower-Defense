@@ -104,6 +104,7 @@ public abstract class FieldEnemy : Enemy
         health = maxHealth;
         healthSlider.maxValue = maxHealth;
         healthSlider.value = maxHealth;
+        enemySprite.sprite = enemyData.sprite;
         enemySprite.color = Color.white;
 
         // 생성할 Enemy의 이동속도 설정

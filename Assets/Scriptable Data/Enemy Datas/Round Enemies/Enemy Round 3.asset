@@ -12,5 +12,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8e61bb01788e6b742b78dd0066b02575, type: 3}
   m_Name: Enemy Round 3
   m_EditorClassIdentifier: 
-  health: 1500
+  sprite: {fileID: 21300000, guid: bda209fcfb9a240479d4380b9d50a5ca, type: 3}
+  health: 150
   moveSpeed: 1.2

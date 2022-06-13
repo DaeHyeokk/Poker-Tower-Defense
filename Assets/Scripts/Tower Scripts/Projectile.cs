@@ -8,7 +8,6 @@ public class Projectile : MonoBehaviour
     private ProjectileSpawner _projectileSpawner;
     private SpriteRenderer _spriteRenderer;
     private Movement2D _movement2D;
-    private Rotater2D _rotater2D;
     private Enemy _target;
     private Tower _fromTower;
 
@@ -19,7 +18,6 @@ public class Projectile : MonoBehaviour
         _projectileSpawner = FindObjectOfType<ProjectileSpawner>();
         _spriteRenderer = GetComponent<SpriteRenderer>();
         _movement2D = GetComponent<Movement2D>();
-        _rotater2D = GetComponent<Rotater2D>();
 
         _movement2D.moveSpeed = 6f;
     }
@@ -38,13 +36,9 @@ public class Projectile : MonoBehaviour
         {
             Vector3 direction = (_target.transform.position - this.transform.position).normalized;
             _movement2D.MoveTo(direction);
-            _rotater2D.ProjectileRotate(_fromTower.towerRenderer.transform.rotation);
         }
         else
-        {
             ReturnPool();
-        }
-
     }
 
     private void OnTriggerEnter2D(Collider2D collision)

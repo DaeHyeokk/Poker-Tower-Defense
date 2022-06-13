@@ -27,8 +27,8 @@ public class GameManager : MonoBehaviour
     [SerializeField]
     ColorUpgradeUIController _colorUpgradeUIController;
 
-    private int _round;
-    private int _finalRound;
+    private int _wave;
+    private int _finalWave;
     private int _life;
     private int _gold;
     private int _mineral;
@@ -43,7 +43,21 @@ public class GameManager : MonoBehaviour
     private int[] _colorUpgradeCounts;
     private int[] _colorUpgradeCosts;
 
-    public int round { get; set; }
+    public int wave
+    {
+        get => _wave;
+        set
+        {
+            if(value > _finalWave)
+            {
+                ClearGame();
+                return;
+            }
+
+            _wave = value;
+            _gameDataUIController.SetWaveText(_wave);
+        }
+    }
 
     public int life
     {
@@ -118,14 +132,14 @@ public class GameManager : MonoBehaviour
 
         _maxGameSpeed = 3f;
         gameSpeed = 1f;
-        round = 0;
+        wave = 0;
         life = 100;
         gold = 400;
         mineral = 400;
-        changeChance = 3;
+        changeChance = 4000;
         _isPausing = false;
         _isGameover = false;
-        _finalRound = 40;
+        _finalWave = 40;
 
         _colorUpgradeIncrementCost = new int[3];
         _colorUpgradeCounts = new int[3];
@@ -144,9 +158,9 @@ public class GameManager : MonoBehaviour
         Screen.sleepTimeout = SleepTimeout.NeverSleep;
     }
 
-    public void IncreaseRound()
+    public void IncreaseWave()
     {
-        round++;
+        wave++;
         gold += 200;
     }
 
@@ -200,7 +214,7 @@ public class GameManager : MonoBehaviour
         UIManager.instance.HideGameMenu();
     }
 
-    public void RetryGame()
+    public void RestartGame()
     {
         SceneManager.LoadScene("SingleModeScene");
     }
@@ -210,7 +224,12 @@ public class GameManager : MonoBehaviour
         _isGameover = true;
     }
 
-    public bool IsFinalRound() { return _round == _finalRound; }
+    private void ClearGame()
+    {
+
+    }
+
+    public bool IsFinalWave() { return wave == _finalWave; }
 
 
 }
@@ -227,4 +246,7 @@ public class GameManager : MonoBehaviour
  * 
  * Update : 2022/05/12 THU 23:30
  * Color Upgrade 로직 추가.
+ * 
+ * Update : 2022/06/12 SUN 20:25
+ * Game Pause, Game Speedup 로직 추가.
  */

@@ -12,6 +12,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8e61bb01788e6b742b78dd0066b02575, type: 3}
   m_Name: Lv1MissionBoss
   m_EditorClassIdentifier: 
-  planetSprite: {fileID: 21300000, guid: ce961f40e9b066d499f00c53deeea018, type: 3}
+  sprite: {fileID: 21300000, guid: ce961f40e9b066d499f00c53deeea018, type: 3}
   health: 4000
   moveSpeed: 1

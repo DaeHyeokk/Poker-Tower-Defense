@@ -25,7 +25,7 @@ public class TowerColor
         _colorDatas[2] = new Color(0, 0, 180);  // Blue
     }
 
-    public void ChangeColor()
+    public void ChangeRandomColor()
     {
         // 랜덤으로 ColorType 설정
         ColorType type = (ColorType)Random.Range((int)ColorType.Red, (int)ColorType.Blue + 1);

@@ -57,7 +57,7 @@ public class TowerDetailInfoUIController : MonoBehaviour
         _upgradeDIP = tower.upgradeDIP;
         _upgradeRIP = tower.upgradeRIP;
         _remainHideDelay = _hideDelay;
-       
+        
         // 소수점 첫번째 자리에서 반올림
         _damageText.text = Mathf.Round(_damage).ToString();
         // 소수점 두번째 자리에서 반올림

@@ -14,12 +14,15 @@ public class GameDataUIController : MonoBehaviour
     [SerializeField]
     private TextMeshProUGUI _mineralAmountText;
     [SerializeField]
+    private TextMeshProUGUI _waveText;
+    [SerializeField]
     private TextMeshProUGUI _gameSpeedText;
 
     public void SetCardChangeAmountText(int amount) => _cardChangeAmountText.text = amount.ToString();
     public void SetGoldAmountText(int amount) => _goldAmountText.text = amount.ToString();
     public void SetLiftAmountText(int amount) => _lifeAmountText.text = amount.ToString();
     public void SetMineralAmountText(int amount) => _mineralAmountText.text = amount.ToString();
+    public void SetWaveText(int wave) => _waveText.text = wave.ToString();
     public void SetGameSpeedText(float speed) => _gameSpeedText.text = 'x' + speed.ToString();
 }
 

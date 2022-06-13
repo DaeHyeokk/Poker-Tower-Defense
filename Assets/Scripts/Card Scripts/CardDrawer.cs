@@ -153,6 +153,7 @@ public class CardDrawer
         // 플러쉬와 스트레이트 플러쉬 여부를 체크한다.
         for (int pattern = 0; pattern < Card.MAX_PATTERN; pattern++)
         {
+            bool isStraight = false;
             straightCount = 0;
             cardCount = 0;
 
@@ -164,6 +165,9 @@ public class CardDrawer
                     // 플러쉬와 스트레이트 카운트를 증가시킨다.
                     cardCount++;
                     straightCount++;
+
+                    if(straightCount >= 5)
+                        isStraight = true;
                 }
                 // 카드가 존재하지 않는다면 스트레이트 카운트를 0으로 초기화 한다.
                 else
@@ -173,13 +177,13 @@ public class CardDrawer
             // Ace,2,3,4 ... K 까지 탐색한 결과 카드카운트가 5 이상이라면 플러쉬이다.
             if (cardCount >= 5)
             {
-                // 만약 스트레이트 카운트가 4라면 마운틴의 가능성이 있으므로 Ace를 확인한다.
+                // 만약 스트레이트 카운트가 4 라면 마운틴의 가능성이 있으므로 Ace를 확인한다.
                 if (straightCount == 4)
                     if ((((long)1 << (pattern * Card.MAX_NUMBER)) & _drawCardsMasking) != 0)
                         straightCount++;
 
                 // 만약 스트레이트 카운트도 5 이상이라면 스트레이트 플러쉬이다.
-                if (straightCount >= 5)
+                if (isStraight || straightCount >= 5)
                     UpdateHand(PokerHand.스트레이트플러쉬);
                 else
                     UpdateHand(PokerHand.플러쉬);

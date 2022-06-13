@@ -143,8 +143,6 @@ public abstract class Tower : MonoBehaviour
         baseTowerInflictorList = new();
         specialTowerInflictorList = new();
 
-
-
         detailBaseAttackInfo = new();
         detailSpecialAttackInfo = new();
 
@@ -156,7 +154,7 @@ public abstract class Tower : MonoBehaviour
 
     public virtual void Setup()
     {
-        _towerColor.ChangeColor();
+        _towerColor.ChangeRandomColor();
 
         attackCount = 0;
         increaseAttackRate = 0;
@@ -219,7 +217,8 @@ public abstract class Tower : MonoBehaviour
     protected virtual void BaseInflict(Tower target)
     {
         for (int i = 0; i < baseTowerInflictorList.Count; i++)
-            baseTowerInflictorList[i].Inflict(target);
+            if (target.gameObject.activeInHierarchy)
+                baseTowerInflictorList[i].Inflict(target);
     }
 
     protected virtual void BaseInflict(Enemy target, float range)
@@ -242,7 +241,8 @@ public abstract class Tower : MonoBehaviour
 
         for (int i = 0; i < collider.Length; i++)
             for (int j = 0; j < baseEnemyInflictorList.Count; j++)
-                baseTowerInflictorList[j].Inflict(collider[i].GetComponent<Tower>());
+                if (collider[i].gameObject.activeInHierarchy)
+                    baseTowerInflictorList[j].Inflict(collider[i].GetComponent<Tower>());
     }
 
     protected virtual void SpecialInflict(Enemy target)
@@ -255,7 +255,8 @@ public abstract class Tower : MonoBehaviour
     protected virtual void SpecialInflict(Tower target)
     {
         for (int i = 0; i < specialTowerInflictorList.Count; i++)
-            specialTowerInflictorList[i].Inflict(target);
+            if (target.gameObject.activeInHierarchy)
+                specialTowerInflictorList[i].Inflict(target);
     }
 
     protected virtual void SpecialInflict(Enemy target, float range)
@@ -276,7 +277,8 @@ public abstract class Tower : MonoBehaviour
 
         for (int i = 0; i < collider.Length; i++)
             for (int j = 0; j < specialEnemyInflictorList.Count; j++)
-                specialTowerInflictorList[j].Inflict(collider[i].GetComponent<Tower>());
+                if (collider[i].gameObject.activeInHierarchy)
+                    specialTowerInflictorList[j].Inflict(collider[i].GetComponent<Tower>());
     }
 
     public void TakeIncreaseAttackRate(float increaseAttackRate, float duration)
@@ -328,7 +330,7 @@ public abstract class Tower : MonoBehaviour
                 _attackDelay = new(attackRate);
 
                 // 타워 레벨업 시 타워의 컬러를 랜덤으로 변경한다.
-                _towerColor.ChangeColor();
+                _towerColor.ChangeRandomColor();
                 // 타워 레벨업 시 타워의 상세 정보 StringBuilder를 업데이트 한다.
                 UpdateDetailInfo();
                 mergeTower.ReturnPool();
