@@ -16,7 +16,7 @@ public class SystemMessage : MonoBehaviour
 
     private void Awake()
     {
-        _fadeDelay = new WaitForSeconds(_textFadeAnimation.fadeTime);
+        _fadeDelay = new(_textFadeAnimation.fadeTime);
     }
     
     private void OnEnable()

@@ -15,37 +15,28 @@ public abstract class FieldEnemy : Enemy
     private Transform[] _wayPoints;  // 이동경로 좌표 배열
     private int _currentIndex;   // 현재 목표지점 인덱스
 
-    private float _baseMoveSpeed; // Enemy의 이동 속도 (상태 이상에 사용되는 이동속도)
     private int _stunCount; // 스턴을 중첩해서 맞을 경우 가장 마지막에 풀리는 스턴을 알기 위한 변수
     private int _slowCount; // 슬로우를 중첩해서 맞을 경우 가장 마지막에 풀리는 슬로우를 알기 위한 변수
     private float _increaseReceiveDamageRate; // Enemy가 공격 당할 때 받는 피해량
 
     private Movement2D _movement2D;  // 오브젝트 이동 제어
 
-    private float moveSpeed
-    {
-        set
-        {
-            _movement2D.moveSpeed = value;
-        }
-    }
-
     private int stunCount
     {
         get => _stunCount;
         set
         {
-            // stunCount가 0이라면 스턴 파티클을 실행하고 moveSpeed를 0으로 바꾼다.
+            // stunCount가 0이라면 스턴 파티클을 실행하고 이동을 멈춘다.
             if (_stunCount == 0 && value > 0)
             {
                 _stunEffect.PlayParticle();
-                moveSpeed = 0f;
+                _movement2D.Stop();
             }
-            // stunCount가 0이 되면 스턴 파티클을 중지하고 moveSpeed를 되돌린다.
+            // stunCount가 0이 되면 스턴 파티클을 중지하고 이동을 재개한다.
             else if (_stunCount != 0 && value == 0)
             {
                 _stunEffect.StopParticle();
-                moveSpeed = _baseMoveSpeed;
+                _movement2D.Move();
             }
 
             _stunCount = value;
@@ -84,14 +75,11 @@ public abstract class FieldEnemy : Enemy
         }
     }
 
-    protected EnemySpawner enemySpawner { get; set; }
-
     protected override void Awake()
     {
         base.Awake();
 
         _movement2D = GetComponent<Movement2D>();
-        enemySpawner = FindObjectOfType<EnemySpawner>();
     }
 
     public virtual void Setup(Transform[] wayPoints, EnemyData enemyData)
@@ -108,8 +96,7 @@ public abstract class FieldEnemy : Enemy
         enemySprite.color = Color.white;
 
         // 생성할 Enemy의 이동속도 설정
-        _baseMoveSpeed = enemyData.moveSpeed;
-        moveSpeed = _baseMoveSpeed;
+        _movement2D.moveSpeed = enemyData.moveSpeed;
 
         slowCount = 0;
         stunCount = 0;
@@ -121,10 +108,10 @@ public abstract class FieldEnemy : Enemy
         // Enemy 등장 위치를 첫번째 wayPoint 좌표로 설정
         transform.position = this._wayPoints[_currentIndex].position;
         // 적 이동/목표 지점 설정 코루틴 함수 시작
-        StartCoroutine(OnMoveCroutine());
+        StartCoroutine(OnMoveCoroutine());
     }
 
-    private IEnumerator OnMoveCroutine()
+    private IEnumerator OnMoveCoroutine()
     {
         NextMoveTo();
 
@@ -206,27 +193,18 @@ public abstract class FieldEnemy : Enemy
     private IEnumerator SlowingCoroutine(float slowingRate, float duration)
     {
         // 감소하는 이동 속도를 저장해둔다.
-        float slowSpeed = _baseMoveSpeed * slowingRate * 0.01f;
+        float slowSpeed = _movement2D.moveSpeed * slowingRate * 0.01f;
 
         // slowCount 1 증가.
         slowCount++;
 
         // 감소하는 이동 속도만큼 감소시킨다.
-        _baseMoveSpeed -= slowSpeed;
-        
-        // 스턴 상태일 때 Enemy의 실제 이동 속도를 바꾸면 스턴이 풀리게 된다.
-        // 따라서 스턴 상태일 경우에는 이동 속도를 바꾸지 않는다.
-        if (_stunCount == 0)
-            _movement2D.moveSpeed = _baseMoveSpeed;
+        _movement2D.moveSpeed -= slowSpeed;
 
         yield return new WaitForSeconds(duration);
 
         // 감소시켰던 이동 속도를 되돌린다.
-        _baseMoveSpeed += slowSpeed;
-
-        // 위와 동일.
-        if (_stunCount == 0)
-            _movement2D.moveSpeed = _baseMoveSpeed;
+        _movement2D.moveSpeed += slowSpeed;
 
         // 증가시켰던 slowCount를 다시 감소시킨다.
         slowCount--;
@@ -246,7 +224,6 @@ public abstract class FieldEnemy : Enemy
         this.increaseReceiveDamageRate -= increaseReceivedDamageRate;
     }
 
-    protected abstract void OnMissing();
     protected abstract void ReturnObject();
 }
 

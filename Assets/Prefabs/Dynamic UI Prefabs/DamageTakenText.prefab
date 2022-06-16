@@ -14,6 +14,7 @@ GameObject:
   - component: {fileID: 6295824775307201343}
   - component: {fileID: 6295824775307201331}
   - component: {fileID: 5992163405501991828}
+  - component: {fileID: 306553780866840651}
   m_Layer: 5
   m_Name: DamageTakenText
   m_TagString: Untagged
@@ -130,11 +131,25 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _damageTakenText: {fileID: 6295824775771354341}
-  _textFadeAnimation: {fileID: 6295824775771354343}
+  _textFadeAnimation: {fileID: 306553780866840651}
   _normalDamageFontSize: 0.2
   _normalDamageColor: {r: 1, g: 1, b: 1, a: 1}
   _critDamageFontSize: 0.25
   _critDamageColor: {r: 1, g: 0, b: 0, a: 1}
+--- !u!114 &306553780866840651
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6295824775307201342}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8d9a90786ce26dc49ae1bcabc38c6cd9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _fadeTime: 1.3
+  _text: {fileID: 6295824775771354341}
 --- !u!1 &6295824775771354337
 GameObject:
   m_ObjectHideFlags: 0
@@ -146,7 +161,6 @@ GameObject:
   - component: {fileID: 6295824775771354342}
   - component: {fileID: 6295824775771354362}
   - component: {fileID: 6295824775771354341}
-  - component: {fileID: 6295824775771354343}
   m_Layer: 5
   m_Name: DamageTakenText
   m_TagString: Untagged
@@ -271,16 +285,3 @@ MonoBehaviour:
   m_hasFontAssetChanged: 0
   m_baseMaterial: {fileID: 0}
   m_maskOffset: {x: 0, y: 0, z: 0, w: 0}
---- !u!114 &6295824775771354343
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6295824775771354337}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8d9a90786ce26dc49ae1bcabc38c6cd9, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _fadeTime: 1.3

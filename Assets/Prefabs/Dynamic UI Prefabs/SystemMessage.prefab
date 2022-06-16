@@ -14,6 +14,7 @@ GameObject:
   - component: {fileID: 4802527028484332568}
   - component: {fileID: 6140161809713612422}
   - component: {fileID: 8511787304003824597}
+  - component: {fileID: 2443968701782113433}
   m_Layer: 5
   m_Name: SystemMessage
   m_TagString: Untagged
@@ -130,7 +131,21 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _messageText: {fileID: 4802527028668993371}
-  _textFadeAnimation: {fileID: 4802527028668993370}
+  _textFadeAnimation: {fileID: 2443968701782113433}
+--- !u!114 &2443968701782113433
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4802527028484332571}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8d9a90786ce26dc49ae1bcabc38c6cd9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _fadeTime: 1
+  _text: {fileID: 4802527028668993371}
 --- !u!1 &4802527028668993372
 GameObject:
   m_ObjectHideFlags: 0
@@ -142,7 +157,6 @@ GameObject:
   - component: {fileID: 4802527028668993373}
   - component: {fileID: 4802527028668993368}
   - component: {fileID: 4802527028668993371}
-  - component: {fileID: 4802527028668993370}
   m_Layer: 5
   m_Name: SystemMessageText
   m_TagString: Untagged
@@ -267,16 +281,3 @@ MonoBehaviour:
   m_hasFontAssetChanged: 0
   m_baseMaterial: {fileID: 0}
   m_maskOffset: {x: 0, y: 0, z: 0, w: 0}
---- !u!114 &4802527028668993370
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4802527028668993372}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8d9a90786ce26dc49ae1bcabc38c6cd9, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _fadeTime: 1

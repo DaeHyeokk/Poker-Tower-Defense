@@ -4,6 +4,21 @@ using UnityEngine;
 
 public class EnemySpawner : MonoBehaviour
 {
+    private static EnemySpawner _instance;
+    public static EnemySpawner instance
+    {
+        get
+        {
+            if (_instance == null)
+            {
+                _instance = FindObjectOfType<EnemySpawner>();
+                return _instance;
+            }
+
+            return _instance;
+        }
+    }
+
     [SerializeField]
     private float _spawnTime;            // 적 생성 주기
     [SerializeField]
@@ -30,38 +45,33 @@ public class EnemySpawner : MonoBehaviour
     [Header("Special Boss")]
     [SerializeField]
     private SpecialBossEnemy _specialBossEnemy;
-    [SerializeField]
-    private Transform _specialBossSpawnPoint;
 
     private ObjectPool<RoundEnemy> _roundEnemyPool;
     private RoundBossEnemy _roundBossEnemy;
-    private List<FieldEnemy> _roundEnemyList;
+    private List<FieldEnemy> _roundEnemyList = new List<FieldEnemy>();
 
-    private MissionBossEnemy[] _missionBossEnemies;
-    private List<MissionBossEnemy> _missionBossEnemyList;
+    private MissionBossEnemy[] _missionBossEnemies = new MissionBossEnemy[3];
+    private List<MissionBossEnemy> _missionBossEnemyList = new List<MissionBossEnemy>();
 
-    private bool _isSpawn;
     private WaitForSeconds _waitSpawnTime;
-    private WaitForSeconds _waitUpdateTime;
 
     public ObjectPool<RoundEnemy> roundEnemyPool => _roundEnemyPool;
     public List<FieldEnemy> roundEnemyList => _roundEnemyList;
     public List<MissionBossEnemy> missionBossEnemyList => _missionBossEnemyList;
+    public RoundBossEnemy roundBossEnemy => _roundBossEnemy;
     public SpecialBossEnemy specialBossEnemy => _specialBossEnemy;
-    public bool isSpawn => _isSpawn;
 
     private void Awake()
     {
+        if (instance != this)
+            Destroy(gameObject);
+
         _roundEnemyPool = new ObjectPool<RoundEnemy>(_roundEnemyPrefab, 20);
-        _roundEnemyList = new List<FieldEnemy>();
-        _missionBossEnemyList = new List<MissionBossEnemy>();
 
         InstantiateBossEnemy();
         MissionBossCooltimeSetup();
 
-        _isSpawn = false;
         _waitSpawnTime = new WaitForSeconds(_spawnTime);
-        _waitUpdateTime = new WaitForSeconds(1f);
     }
 
     private void InstantiateBossEnemy()
@@ -69,7 +79,6 @@ public class EnemySpawner : MonoBehaviour
         _roundBossEnemy = Instantiate(_roundBossEnemyPrefab).GetComponent<RoundBossEnemy>();
         _roundBossEnemy.gameObject.SetActive(false);
 
-        _missionBossEnemies = new MissionBossEnemy[3];
         for (int i = 0; i < 3; i++)
         {
             _missionBossEnemies[i] = Instantiate(_missionBossEnemyPrefabs[i]).GetComponent<MissionBossEnemy>();
@@ -83,67 +92,52 @@ public class EnemySpawner : MonoBehaviour
             _missionBossUIController.SetMissionBossCooltimeSlider(i, _missionBossRespawnCooltimes[i]);
     }
 
-    private void Update()
+
+
+    public void SpawnEnemy(int wave)
     {
-        // 게임오버 상태일때는 적을 생성하지 않음
-        if(GameManager.instance != null && GameManager.instance.isGameover )
+        StartCoroutine(SpawnEnemyCoroutine(wave));
+    }
+
+    private IEnumerator SpawnEnemyCoroutine(int wave)
+    {
+        int spawnEnemy = 0;
+
+        while (spawnEnemy++ < 40)
+        {
+            FieldEnemy _enemy = _roundEnemyPool.GetObject();
+            // Enemy Setup() 메서드의 매개변수로 웨이포인트 정보와 enemyData 정보를 전달.
+            _enemy.Setup(_wayPoints, _roundEnemyDatas[wave - 1]);
+            // _roundEnemyList 리스트에 추가함 -> 필드 위에 남아있는 Enemy를 참조하기 위함.
+            _roundEnemyList.Add(_enemy);
+
+            // _spawnTime 시간 동안 대기.
+            yield return _waitSpawnTime;
+        }
+    }
+
+    public void SpawnRoundBoss(int wave)
+    {
+        // 보스가 필드에 이미 소환된 상태면 소환하지 않는다.
+        // 혹시모를 중복 소환 버그, 치팅 방지
+        if (_roundBossEnemy.gameObject.activeInHierarchy)
             return;
 
-        // 현재 몬스터를 생성 중이 아니고, 적의 숫자가 0마리라면 다음 웨이브 몬스터를 생성
-        if (!_isSpawn && _roundEnemyList.Count <= 0 && GameManager.instance.wave < 40)
-            SpawnEnemy();
-
-    }
-
-    public void SpawnEnemy()
-    {
-        GameManager.instance.IncreaseWave();
-        StartCoroutine(SpawnEnemyCoroutine());
-    }
-
-    private IEnumerator SpawnEnemyCoroutine()
-    {
-        _isSpawn = true;
-
-        int spawnEnemy = 0;
-        int wave = GameManager.instance.wave;
-
-        if (wave % 10 != 0)
-        {
-            while (spawnEnemy++ < 40)
-            {
-                FieldEnemy _enemy = _roundEnemyPool.GetObject();
-                // Enemy Setup() 메서드의 매개변수로 웨이포인트 정보와 enemyData 정보를 전달
-                _enemy.Setup(_wayPoints, _roundEnemyDatas[wave - 1]);
-                // _roundEnemyList 리스트에 추가함 -> 필드 위에 남아있는 Enemy의 개수를 알기 위함
-                _roundEnemyList.Add(_enemy);
-
-                // _spawnTime 시간 동안 대기
-                yield return _waitSpawnTime;
-            }
-        }
-        // 10의 배수 라운드는 보스 라운드임.
-        else
-        {
-            _roundBossEnemy.gameObject.SetActive(true);
-            _roundBossEnemy.Setup(_wayPoints, _roundEnemyDatas[wave - 1]);
-            _roundEnemyList.Add(_roundBossEnemy);
-        }
-
-        _isSpawn = false;
+        _roundBossEnemy.gameObject.SetActive(true);
+        _roundBossEnemy.Setup(_wayPoints, _roundEnemyDatas[wave - 1]);
+        _roundEnemyList.Add(_roundBossEnemy);
     }
 
     public void SpawnMissionBoss(int bossLevel)
     {
         // 현재 소환하려는 보스가 필드에 이미 소환된 상태면 소환하지 않는다.
-        // 혹시모를 중복 소환 버그 방지
+        // 혹시모를 중복 소환 버그, 치팅 방지
         if (_missionBossEnemies[bossLevel].gameObject.activeInHierarchy)
             return;
 
         _missionBossEnemies[bossLevel].gameObject.SetActive(true);
         _missionBossEnemies[bossLevel].Setup(_wayPoints, _missionBossEnemyDatas[bossLevel]);
         _missionBossEnemyList.Add(_missionBossEnemies[bossLevel]);
-
         _missionBossUIController.StartMissionBossCooltime(bossLevel, _missionBossRespawnCooltimes[bossLevel]);
     }
 }
@@ -171,4 +165,8 @@ public class EnemySpawner : MonoBehaviour
  * 
  * Update : 2022/05/01 SUN 15:18
  * 게임상에서 Destroy 됐다고 인식하도록 하는 로직을 Action onDisable 델리게이트에 구독시키는 방식으로 변경.
+ * 
+ * Update : 2022/06/10 FRI 20:05
+ * onDisable 델리게이트 삭제.
+ * 게임상에서 Destroy 됐다고 인식하는 로직을 GameObject.activeInHierarchy 프로퍼티를 통해 현재 활성화 된 상태인지 확인하는 방식으로 변경.
  */

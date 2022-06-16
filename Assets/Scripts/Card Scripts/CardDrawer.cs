@@ -121,7 +121,7 @@ public class CardDrawer
 
                 // 트리플일 경우 실행
                 case 3:
-                    if (isOnePair)
+                    if (isOnePair || isTriple)
                     {
                         UpdateHand(PokerHand.풀하우스);
                     }
@@ -227,4 +227,7 @@ public class CardDrawer
  *     컴퓨터가 가장 빨리 수행한다는 비트 연산을 이용하면 시간복잡도를 더 줄일 수 있을것이라 판단하였음.
  *     
  *     그 결과 실제로 체감이 될 정도로 수행속도가 빨라지게 되었음 !!
+ *     
+ * Update : 2022/06/15 WED
+ * 스트레이트 플러쉬와 풀하우스를 제대로 판별하지 못하는 버그 수정.
  */

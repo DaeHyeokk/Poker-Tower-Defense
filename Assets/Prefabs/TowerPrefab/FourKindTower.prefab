@@ -196,8 +196,8 @@ GameObject:
   m_Component:
   - component: {fileID: 1623706851273835329}
   - component: {fileID: 4295641024387230433}
-  - component: {fileID: 2618469889052294019}
   - component: {fileID: -6758310859523100175}
+  - component: {fileID: 8943078981133130676}
   m_Layer: 0
   m_Name: FourKindTower
   m_TagString: Tower
@@ -286,18 +286,6 @@ MonoBehaviour:
     chance: 90
   _basicRange: 0.2
   _specialRange: 0.7
---- !u!114 &2618469889052294019
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2790401590470640239}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: cb41a05f75581b94d989fa43a0e0b90c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!65 &-6758310859523100175
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -311,6 +299,19 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 1, y: 1, z: 1}
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &8943078981133130676
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2790401590470640239}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c3dc03c54fc65224a9407f410fe53f64, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _targetSprite: {fileID: 730490953544694428}
 --- !u!1 &3413944999739292573
 GameObject:
   m_ObjectHideFlags: 0

@@ -3,7 +3,9 @@ using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
 
-public abstract class FieldBossEnemy : FieldEnemy
+public class DynamicText : MonoBehaviour
 {
-    public abstract void OnMissing();
+    [SerializeField]
+    private TextMeshPro _text;
+
 }

@@ -492,7 +492,6 @@ GameObject:
   - component: {fileID: 8062379368528844629}
   - component: {fileID: 2041561464012545551}
   - component: {fileID: 8006479256770470292}
-  - component: {fileID: 102643775260421622}
   - component: {fileID: 6923852707696025005}
   - component: {fileID: 8350416564650783264}
   m_Layer: 0
@@ -511,7 +510,7 @@ Transform:
   m_GameObject: {fileID: 8062379368528844627}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 0.26, y: 0.26, z: 0.26}
+  m_LocalScale: {x: 0.28, y: 0.28, z: 0.28}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 8062379369243451592}
@@ -537,9 +536,9 @@ MonoBehaviour:
   _increaseReceiveDamageSprite: {fileID: 3622560223533545615}
   _slowEffect: {fileID: 1275035358121461290}
   _stunEffect: {fileID: 6975457146586578529}
+  _bossLevel: 3
   _limitTime: 60
   _limitTimeText: {fileID: 103101691756550027}
-  _bossLevel: 3
 --- !u!114 &8006479256770470292
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -554,19 +553,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _moveDirection: {x: 0, y: 0, z: 0}
   _moveSpeed: 0
---- !u!114 &102643775260421622
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8062379368528844627}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c3dc03c54fc65224a9407f410fe53f64, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _targetSprite: {fileID: 4824518791374353399}
 --- !u!58 &6923852707696025005
 CircleCollider2D:
   m_ObjectHideFlags: 0

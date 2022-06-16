@@ -17,6 +17,7 @@ public abstract class Tower : MonoBehaviour
     [SerializeField]
     private Particle _increaseAttackRateEffect;
 
+    private Rotater2D _rotater2D;
     private HorizontalLayoutGroup _levelLayout;
     private SpriteRenderer _towerRenderer;
     private TowerColor _towerColor;
@@ -70,6 +71,7 @@ public abstract class Tower : MonoBehaviour
 
     protected ProjectileSpawner projectileSpawner => _projectileSpawner;
     protected Transform spawnPoint => _spawnPoint;
+    protected Rotater2D rotater2D => _rotater2D;
 
     public TargetDetector targetDetector => _targetDetector;
     public SpriteRenderer towerRenderer => _towerRenderer;
@@ -129,6 +131,7 @@ public abstract class Tower : MonoBehaviour
 
     protected virtual void Awake()
     {
+        _rotater2D = GetComponent<Rotater2D>();
         _towerRenderer = GetComponentInChildren<SpriteRenderer>();
         _levelLayout = GetComponentInChildren<HorizontalLayoutGroup>();
         _projectileSpawner = FindObjectOfType<ProjectileSpawner>();
@@ -136,7 +139,7 @@ public abstract class Tower : MonoBehaviour
 
         _towerColor = new TowerColor(_towerRenderer);
         _towerLevel = new TowerLevel(_levelLayout);
-        _targetDetector = new TargetDetector(this, FindObjectOfType<EnemySpawner>());
+        _targetDetector = new TargetDetector(this);
 
         baseEnemyInflictorList = new();
         specialEnemyInflictorList = new();
@@ -150,6 +153,12 @@ public abstract class Tower : MonoBehaviour
         specialAttackCount = 10;
 
         _onTile = null;
+    }
+
+    protected virtual void Update()
+    {
+        if (_targetDetector.targetList.Count > 0)
+            _rotater2D.LookAtTarget(_targetDetector.targetList[0].transform);
     }
 
     public virtual void Setup()
@@ -176,6 +185,7 @@ public abstract class Tower : MonoBehaviour
                 yield return null;
 
             _targetDetector.SearchTarget();
+
             yield return null;
         }
     }

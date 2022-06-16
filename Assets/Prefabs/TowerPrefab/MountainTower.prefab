@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 187023686416135209}
   - component: {fileID: 1572265191422302815}
   - component: {fileID: -249641797176020320}
+  - component: {fileID: -6183467745080476604}
   m_Layer: 0
   m_Name: MountainTower
   m_TagString: Tower
@@ -96,6 +97,19 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 1, y: 1, z: 1}
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &-6183467745080476604
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 681219511803657423}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c3dc03c54fc65224a9407f410fe53f64, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _targetSprite: {fileID: 564360511789365883}
 --- !u!1 &1496965417288158294
 GameObject:
   m_ObjectHideFlags: 0

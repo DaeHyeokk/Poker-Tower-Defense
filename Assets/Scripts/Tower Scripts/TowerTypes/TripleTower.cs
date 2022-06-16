@@ -23,6 +23,8 @@ public class TripleTower : Tower
     private bool _isSpecialBuff;
     private readonly string _towerName = "트리플 타워";
 
+    private float _specialBuffDuration => _specialIncreaseAttackRateAttributes[level].duration;
+
     public override string towerName => _towerName;
     public override int towerIndex => 3;
 
@@ -71,6 +73,7 @@ public class TripleTower : Tower
 
                 if (attackCount >= specialAttackCount)
                 {
+                    StartCoroutine(ToggleIsSpecialBuffCoroutine());
                     SpecialInflict(this);
                     attackCount = 0;
                 }
@@ -92,6 +95,15 @@ public class TripleTower : Tower
             Projectile projectile = projectileSpawner.SpawnProjectile(this, spawnPoint, target, specialProjectileSprite);
             projectile.actionOnCollision += () => SpecialInflict(target);
         }
+    }
+
+    private IEnumerator ToggleIsSpecialBuffCoroutine()
+    {
+        _isSpecialBuff = true;
+
+        yield return new WaitForSeconds(_specialBuffDuration);
+
+        _isSpecialBuff = false;
     }
 }
 

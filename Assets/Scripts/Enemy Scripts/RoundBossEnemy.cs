@@ -4,18 +4,10 @@ using UnityEngine;
 
 public class RoundBossEnemy : FieldBossEnemy
 {
-    protected override void Awake()
+    public override void OnMissing()
     {
-        base.Awake();
-    }
-
-    protected override void OnMissing()
-    {
-        GameManager.instance.life -= 20;
-
-        // 마지막 라운드 보스는 못잡을 경우 남은 라이프에 상관없이 바로 패배한다.
-        if (GameManager.instance.IsFinalWave())
-            GameManager.instance.life -= 100;
+        // 라운드 보스는 못잡을 경우 게임에서 패배한다.
+        GameManager.instance.DefeatGame();
 
         ReturnObject();
     }
@@ -26,12 +18,13 @@ public class RoundBossEnemy : FieldBossEnemy
         // 100골드, 카드 변환권 주기
         GameManager.instance.gold += 100;
         GameManager.instance.changeChance += 2;
+
         ReturnObject();
     }
 
     protected override void ReturnObject()
     {
-        enemySpawner.roundEnemyList.Remove(this);
+        EnemySpawner.instance.roundEnemyList.Remove(this);
         this.gameObject.SetActive(false);
     }
 }

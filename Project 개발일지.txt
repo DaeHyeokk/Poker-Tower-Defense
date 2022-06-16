@@ -202,3 +202,7 @@ Data: 2022/06/12 SUN
 Data: 2022/06/13 MON
 ☑ Wave UI 구현.
 ☑ CardDrawer 클래스의 족보 판별 로직이 스트레이트 플러쉬를 판별하지 못하는 오류 수정.
+
+Data: 2022/06/16 THU
+☑ Wave System 구현.
+☑ EnemySpawner를 싱글톤 객체로 변경.

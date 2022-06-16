@@ -68,6 +68,12 @@ public class MountainTower : Tower
         SetBuffRangeParticleScale();
     }
 
+    protected override void Update()
+    {
+        if (onTile != null)
+            rotater2D.NaturalRotate();
+    }
+
     public override void Setup()
     {
         base.Setup();

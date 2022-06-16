@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 3998853461251805531}
   - component: {fileID: -1715480435257099608}
   - component: {fileID: -8744695665589658937}
+  - component: {fileID: 2779423414845984445}
   - component: {fileID: 2293130500460410250}
   m_Layer: 0
   m_Name: Projectile
@@ -113,6 +114,19 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _moveDirection: {x: 0, y: 0, z: 0}
   _moveSpeed: 5
+--- !u!114 &2779423414845984445
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1377828739939112424}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c3dc03c54fc65224a9407f410fe53f64, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _targetSprite: {fileID: 3998853461251805531}
 --- !u!58 &2293130500460410250
 CircleCollider2D:
   m_ObjectHideFlags: 0

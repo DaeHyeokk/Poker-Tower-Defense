@@ -23,8 +23,6 @@ public class UIManager : MonoBehaviour
 
     [Header("Main UI Canvas")]
     [SerializeField]
-    private GameDataUIController _gameDataUIController;
-    [SerializeField]
     private TowerInfomation _towerInfomation;
     [SerializeField]
     private GambleUIController _gambleUIController;
@@ -44,7 +42,6 @@ public class UIManager : MonoBehaviour
     private ObjectPool<DamageTakenText> _damageTakenTextPool;
 
 
-    public GameDataUIController gameDataUIController => _gameDataUIController;
     public TowerInfomation towerInfomation => _towerInfomation;
     public GambleUIController gambleUIController => _gambleUIController;
     public MissionBossUIController missionBossUIController => _missionBossUIController;

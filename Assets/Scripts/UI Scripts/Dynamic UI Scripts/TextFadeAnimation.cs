@@ -7,15 +7,11 @@ public class TextFadeAnimation : MonoBehaviour
 {
     [SerializeField]
     private float _fadeTime;
+    [SerializeField]
     private TextMeshProUGUI _text;
     private Color _color;
 
     public float fadeTime => _fadeTime;
-
-    void Awake()
-    {
-        _text = GetComponent<TextMeshProUGUI>();
-    }
 
     private void OnEnable()
     {

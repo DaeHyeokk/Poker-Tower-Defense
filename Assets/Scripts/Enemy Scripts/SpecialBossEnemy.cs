@@ -6,6 +6,8 @@ using TMPro;
 public class SpecialBossEnemy : Enemy
 {
     [SerializeField]
+    private Rotater2D _rotater2D;
+    [SerializeField]
     private TextMeshProUGUI _healthText;
     [SerializeField]
     private float _specialBossHealth;
@@ -20,6 +22,11 @@ public class SpecialBossEnemy : Enemy
 
         healthSlider.maxValue = maxHealth;
         healthSlider.value = 0;
+    }
+
+    private void Update()
+    {
+        _rotater2D.NaturalRotate();
     }
 
     public override void TakeDamage(float damage, DamageTakenType damageTakenType)

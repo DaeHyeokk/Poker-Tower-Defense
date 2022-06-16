@@ -5066,6 +5066,7 @@ GameObject:
   - component: {fileID: 7744774966995312754}
   - component: {fileID: 5665523679219279786}
   - component: {fileID: 5208156686070379611}
+  - component: {fileID: 320972480721734614}
   m_Layer: 0
   m_Name: StraightTower
   m_TagString: Tower
@@ -5161,6 +5162,19 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 1, y: 1, z: 1}
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &320972480721734614
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5369906809452343783}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c3dc03c54fc65224a9407f410fe53f64, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _targetSprite: {fileID: 5741471294975024026}
 --- !u!1 &6438366117462977500
 GameObject:
   m_ObjectHideFlags: 0

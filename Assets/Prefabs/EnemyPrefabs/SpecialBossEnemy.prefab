@@ -331,7 +331,7 @@ GameObject:
   - component: {fileID: 8062379368528844629}
   - component: {fileID: 4624995105575712863}
   - component: {fileID: 8006479256770470292}
-  - component: {fileID: 7621619727115962765}
+  - component: {fileID: 3755348483712011449}
   - component: {fileID: 6923852707696025005}
   - component: {fileID: 8350416564650783264}
   m_Layer: 0
@@ -371,6 +371,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5ff231fc3fde8c94d8816312454d1fb3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _rotater2D: {fileID: 3755348483712011449}
   _healthText: {fileID: 103101691756550027}
   _specialBossHealth: 50
 --- !u!114 &8006479256770470292
@@ -387,7 +388,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _moveDirection: {x: 0, y: 0, z: 0}
   _moveSpeed: 0
---- !u!114 &7621619727115962765
+--- !u!114 &3755348483712011449
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -396,7 +397,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 8062379368528844627}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f1113f92b95fcc74a9b06825d6f3cc27, type: 3}
+  m_Script: {fileID: 11500000, guid: c3dc03c54fc65224a9407f410fe53f64, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   _targetSprite: {fileID: 4824518791374353399}

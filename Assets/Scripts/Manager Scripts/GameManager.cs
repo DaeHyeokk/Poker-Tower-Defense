@@ -23,13 +23,10 @@ public class GameManager : MonoBehaviour
     [SerializeField]
     private int _pokerCount;
     [SerializeField]
-    GameDataUIController _gameDataUIController;
+    private GameDataUIController _gameDataUIController;
     [SerializeField]
-    ColorUpgradeUIController _colorUpgradeUIController;
+    private ColorUpgradeUIController _colorUpgradeUIController;
 
-    private int _wave;
-    private int _finalWave;
-    private int _life;
     private int _gold;
     private int _mineral;
     private int _changeChance;
@@ -42,39 +39,6 @@ public class GameManager : MonoBehaviour
     private int[] _colorUpgradeIncrementCost;
     private int[] _colorUpgradeCounts;
     private int[] _colorUpgradeCosts;
-
-    public int wave
-    {
-        get => _wave;
-        set
-        {
-            if(value > _finalWave)
-            {
-                ClearGame();
-                return;
-            }
-
-            _wave = value;
-            _gameDataUIController.SetWaveText(_wave);
-        }
-    }
-
-    public int life
-    {
-        get => _life;
-        set
-        {
-            _life = value;
-
-            if (_life < 0) 
-                _life = 0;
-
-            _gameDataUIController.SetLiftAmountText(_life);
-
-            if (_life == 0)
-                EndGame();
-        }
-    }
 
     public int gold
     {
@@ -132,14 +96,11 @@ public class GameManager : MonoBehaviour
 
         _maxGameSpeed = 3f;
         gameSpeed = 1f;
-        wave = 0;
-        life = 100;
-        gold = 400;
-        mineral = 400;
+        gold = 600;
+        mineral = 100;
         changeChance = 4000;
         _isPausing = false;
         _isGameover = false;
-        _finalWave = 40;
 
         _colorUpgradeIncrementCost = new int[3];
         _colorUpgradeCounts = new int[3];
@@ -156,12 +117,6 @@ public class GameManager : MonoBehaviour
     private void ScreenSleepSetup()
     {
         Screen.sleepTimeout = SleepTimeout.NeverSleep;
-    }
-
-    public void IncreaseWave()
-    {
-        wave++;
-        gold += 200;
     }
 
     public void UpgradeColor(int index)
@@ -219,17 +174,15 @@ public class GameManager : MonoBehaviour
         SceneManager.LoadScene("SingleModeScene");
     }
 
-    private void EndGame()
+    public void DefeatGame()
     {
         _isGameover = true;
     }
 
-    private void ClearGame()
+    public void ClearGame()
     {
 
     }
-
-    public bool IsFinalWave() { return wave == _finalWave; }
 
 
 }
