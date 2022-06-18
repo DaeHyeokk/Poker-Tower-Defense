@@ -18,20 +18,14 @@ public class SystemMessage : FadeText
     private IEnumerator AnimationStartDelayCoroutine()
     {
         _movement2D.Stop();
-        base.textFadeAnimation.FadeStop();
         
         yield return _animationStartDelay;
 
         _movement2D.Move();
-        base.textFadeAnimation.FadeStart();
-
-        StartCoroutine(base.FadeWaitCoroutine());
+        base.textFadeAnimation.FadeOutText();
     }
 
-    protected override void ReturnPool()
-    {
-        UIManager.instance.systemMessagePool.ReturnObject(this);
-    }
+    protected override void ReturnPool() => UIManager.instance.systemMessagePool.ReturnObject(this);
 }
 
 /*

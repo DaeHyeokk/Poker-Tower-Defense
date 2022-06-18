@@ -22,10 +22,9 @@ public class UIManager : MonoBehaviour
         }
     }
 
-    [SerializeField]
-    private ImageFadeAnimation _screenCoverFader;
-
     [Header("Main UI Canvas")]
+    [SerializeField]
+    private ScreenCover _screenCover;
     [SerializeField]
     private TowerInfomation _towerInfomation;
     [SerializeField]
@@ -48,6 +47,7 @@ public class UIManager : MonoBehaviour
     private GameObject _enemyDieRewardTextPrefab;
     private ObjectPool<EnemyDieRewardText> _enemyDieRewardTextPool;
 
+    public ScreenCover screenCover => _screenCover;
     public TowerInfomation towerInfomation => _towerInfomation;
     public GambleUIController gambleUIController => _gambleUIController;
     public MissionBossUIController missionBossUIController => _missionBossUIController;
@@ -62,43 +62,9 @@ public class UIManager : MonoBehaviour
         if (instance != this)
             Destroy(gameObject);    // 자신을 파괴
 
-        FadeInScreen(Color.black, 1f);
-
         _systemMessagePool = new(_systemMessagePrefab, 5);
         _damageTakenTextPool = new(_damageTakenTextPrefab, 10);
         _enemyDieRewardTextPool = new(_enemyDieRewardTextPrefab, 10);
-    }
-
-    public void FadeInScreen(Color color, float fadeTime)
-    {
-        _screenCoverFader.image.color = color;
-        _screenCoverFader.fadeTime = fadeTime;
-        _screenCoverFader.FadeOutImage();
-    }
-
-    public void FadeOutScreen(Color color, float fadeTime)
-    {
-        _screenCoverFader.image.color = color;
-        _screenCoverFader.fadeTime = fadeTime;
-        _screenCoverFader.FadeInImage();
-    }
-
-    public void BlinkScreen(Color color, float fadeTime)
-    {
-        // 이미지가 깜빡이는 상태라면 건너뛴다.
-        if (_screenCoverFader.isBlinking) return;
-
-        _screenCoverFader.image.color = color;
-        _screenCoverFader.fadeTime = fadeTime;
-        _screenCoverFader.BlinkImage();
-    }
-
-    public void StopBlinkScreen()
-    {
-        // 이미지가 깜빡이지 않는 상태라면 건너뛴다.
-        if (!_screenCoverFader.isBlinking) return;
-
-        _screenCoverFader.StopBlinkImage();
     }
 
     public void ShowSystemMessage(string message)
@@ -126,7 +92,7 @@ public class UIManager : MonoBehaviour
     {
         EnemyDieRewardText enemyDieGoldText = _enemyDieRewardTextPool.GetObject();
 
-        enemyDieGoldText.transform.position = target.position;
+        enemyDieGoldText.transform.position = target.position + new Vector3(0.1f, 0f, 0f);
         enemyDieGoldText.textMeshPro.text = reward.ToString();
 
         enemyDieGoldText.StartAnimation();

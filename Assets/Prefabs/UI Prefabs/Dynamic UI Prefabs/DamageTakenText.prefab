@@ -10,12 +10,12 @@ GameObject:
   m_Component:
   - component: {fileID: 6295824775307201330}
   - component: {fileID: 6295824775307201331}
+  - component: {fileID: 5992163405501991828}
   - component: {fileID: 306553780866840651}
-  - component: {fileID: 1075602490827070119}
-  - component: {fileID: 3088974946443583933}
-  - component: {fileID: 1871136372535504876}
+  - component: {fileID: 6664996395323854646}
+  - component: {fileID: 4791661860645922614}
   m_Layer: 5
-  m_Name: EnemyDieRewardText
+  m_Name: DamageTakenText
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -39,7 +39,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 2, y: 1}
+  m_SizeDelta: {x: 1, y: 0.3}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &6295824775307201331
 MonoBehaviour:
@@ -54,7 +54,29 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _moveDirection: {x: 0, y: 1, z: 0}
-  _moveSpeed: 0.25
+  _moveSpeed: 1.6
+--- !u!114 &5992163405501991828
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6295824775307201342}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b07911e9ebd2a0a42b1347af50c82020, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _textMeshPro: {fileID: 4791661860645922614}
+  _textFadeAnimation: {fileID: 306553780866840651}
+  _movement2D: {fileID: 6295824775307201331}
+  _normalDamageFontSize: 1.6
+  _normalhighlightFontSize: 2.6
+  _normalDamageColor: {r: 1, g: 1, b: 1, a: 1}
+  _critDamageFontSize: 2
+  _crithighlightFontSize: 3.3
+  _critDamageColor: {r: 1, g: 0, b: 0, a: 1}
+  _highlightSpeed: 12
 --- !u!114 &306553780866840651
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -67,23 +89,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8d9a90786ce26dc49ae1bcabc38c6cd9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _fadeTime: 1.7
-  _text: {fileID: 1871136372535504876}
---- !u!114 &1075602490827070119
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6295824775307201342}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: cc8b26c542a306544aca2e65fbf3924f, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _textMeshPro: {fileID: 1871136372535504876}
-  _textFadeAnimation: {fileID: 306553780866840651}
---- !u!23 &3088974946443583933
+  _fadeTime: 0.5
+  _text: {fileID: 4791661860645922614}
+--- !u!23 &6664996395323854646
 MeshRenderer:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -125,7 +133,7 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 10
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!114 &1871136372535504876
+--- !u!114 &4791661860645922614
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -145,7 +153,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: "+5G\n\uCE74\uB4DC\uAD50\uD658\uAD8C+3"
+  m_text: 00000
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: c27648327498a3c4c9e2017ef243d285, type: 2}
   m_sharedMaterial: {fileID: 2071185503278793172, guid: c27648327498a3c4c9e2017ef243d285, type: 2}
@@ -154,8 +162,8 @@ MonoBehaviour:
   m_fontMaterials: []
   m_fontColor32:
     serializedVersion: 2
-    rgba: 4278251775
-  m_fontColor: {r: 1, g: 0.9398438, b: 0, a: 1}
+    rgba: 4294967295
+  m_fontColor: {r: 1, g: 1, b: 1, a: 1}
   m_enableVertexGradient: 0
   m_colorMode: 3
   m_fontColorGradient:
@@ -172,13 +180,13 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 1.5
-  m_fontSizeBase: 1.5
+  m_fontSize: 2
+  m_fontSizeBase: 2
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
   m_fontSizeMax: 72
-  m_fontStyle: 2
+  m_fontStyle: 0
   m_HorizontalAlignment: 2
   m_VerticalAlignment: 512
   m_textAlignment: 65535
@@ -215,5 +223,5 @@ MonoBehaviour:
   _SortingLayerID: 0
   _SortingOrder: 0
   m_hasFontAssetChanged: 0
-  m_renderer: {fileID: 3088974946443583933}
+  m_renderer: {fileID: 6664996395323854646}
   m_maskType: 0

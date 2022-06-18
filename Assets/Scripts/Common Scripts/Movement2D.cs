@@ -4,6 +4,10 @@ using UnityEngine;
 
 public class Movement2D : MonoBehaviour
 {
+    public enum DeltaTimeMode { GameTime, RealTime }
+
+    [SerializeField]
+    private DeltaTimeMode _deltaTimeMode;
     [SerializeField]
     private Vector3 _moveDirection;
     [SerializeField]

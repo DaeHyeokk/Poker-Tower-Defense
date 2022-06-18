@@ -54,7 +54,6 @@ public class DamageTakenText : FadeText
     private IEnumerator HighlightEffectCoroutine()
     {
         _movement2D.Stop();
-        base.textFadeAnimation.FadeStop();
 
         float backupFontSize = base.textMeshPro.fontSize;
 
@@ -81,8 +80,7 @@ public class DamageTakenText : FadeText
         yield return _animationStartDelay;
 
         _movement2D.Move();
-        base.textFadeAnimation.FadeStart();
-        StartCoroutine(FadeWaitCoroutine());
+        base.textFadeAnimation.FadeOutText();
     }
 
     protected override void ReturnPool() => UIManager.instance.damageTakenTextPool.ReturnObject(this);

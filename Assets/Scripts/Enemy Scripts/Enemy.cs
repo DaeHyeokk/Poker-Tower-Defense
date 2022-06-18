@@ -66,7 +66,7 @@ public abstract class Enemy : MonoBehaviour
         if(_rewardChangeChance > 0)
         {
             _rewardText.Append('\n');
-            _rewardText.Append("카드교환권 ");
+            _rewardText.Append("카드교환권");
             _rewardText.Append('+');
             _rewardText.Append(_rewardChangeChance.ToString());
         }

@@ -10,21 +10,13 @@ public abstract class FadeText : MonoBehaviour
     [SerializeField]
     private TextFadeAnimation _textFadeAnimation;
 
-    private WaitForSeconds _fadeDelay;
 
     public TextMeshPro textMeshPro => _textMeshPro;
     public TextFadeAnimation textFadeAnimation => _textFadeAnimation;
-    public WaitForSeconds fadeDelay => _fadeDelay;
 
     private void Awake()
     {
-        _fadeDelay = new(_textFadeAnimation.fadeTime);
-    }
-
-    protected IEnumerator FadeWaitCoroutine()
-    {
-        yield return fadeDelay;
-        ReturnPool();
+        _textFadeAnimation.onCompletionFadeOut += ReturnPool;
     }
 
     public abstract void StartAnimation();

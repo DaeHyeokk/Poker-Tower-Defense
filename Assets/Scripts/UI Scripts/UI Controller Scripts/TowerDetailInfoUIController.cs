@@ -32,7 +32,8 @@ public class TowerDetailInfoUIController : MonoBehaviour
     [SerializeField]
     private float _hideDelay;
 
-    private WaitForSeconds _oneSecond;
+    private PopupUIAnimation _popupUIAnimation;
+    private WaitForSecondsRealtime _realOneSecond;
     private Tower _tower;
     private float _damage;
     private float _attackRate;
@@ -43,7 +44,11 @@ public class TowerDetailInfoUIController : MonoBehaviour
 
     private void Awake()
     {
-        _oneSecond = new(1f);
+        _popupUIAnimation = GetComponent<PopupUIAnimation>();
+        // 팝업 애니메이션 중 점점 작아지는 메소드가 완료된 후 수행할 작업 구독. (오브젝트 비활성화)
+        _popupUIAnimation.onCompletionSmaller += () => this.gameObject.SetActive(false);
+
+        _realOneSecond = new(1f);
     }
 
     public void Setup(Tower tower)
@@ -73,6 +78,7 @@ public class TowerDetailInfoUIController : MonoBehaviour
 
     private void OnEnable()
     {
+        _popupUIAnimation.StartBiggerAnimation();
         StartCoroutine(AutoHideUICoroutine());
     }
 
@@ -96,7 +102,7 @@ public class TowerDetailInfoUIController : MonoBehaviour
     {
         while(_remainHideDelay > 0)
         {
-            yield return _oneSecond;
+            yield return _realOneSecond;
             if (!_isLocking) _remainHideDelay--;
         }
 
@@ -107,7 +113,7 @@ public class TowerDetailInfoUIController : MonoBehaviour
 
     public void HideObject()
     {
-        this.gameObject.SetActive(false);
+        _popupUIAnimation.StartSmallerAnimation();
     }
 
     public void ToggleLockButton()

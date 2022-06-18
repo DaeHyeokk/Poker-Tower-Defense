@@ -211,3 +211,7 @@ Data: 2022/06/17 FRI
 ☑ SystemMessage, DamageTakenText, EnemyDieRewordText 의 상위클래스 FadeText 구현.
 ☑ DamageTaken Text를 화면에 좀더 리얼하게 표현하기 위해 Text의 Font Size가 잠깐 커졌다 작아진 뒤 사라지도록 변경.
 ☑ Enemy가 죽을 때 플레이어에게 들어오는 재화를 화면에 표시하기 위한 EnemyDieRewordText 구현.
+
+Data: 2022/06/18 SAT
+☑ 게임의 TimeScale이 변경 되어도 영향을 받지 않는 오브젝트들을 구현하기 위해 열거형 타입의 DeltaTimeMode 값에 따라 deltaTime과 unscaledDeltaTime을 사용하도록 변경.
+☑ 팝업 UI가 활성화 될 때 크기가 점점 커지면서 나타나고, 비활성화 될 때 크기가 점점 작아지면서 사라지도록 연출 하기 위한 PopupUIAnimation 스크립트 구현.

@@ -7,7 +7,7 @@ public class EnemyDieRewardText : FadeText
 {
     public override void StartAnimation()
     {
-        StartCoroutine(FadeWaitCoroutine());
+        base.textFadeAnimation.FadeOutText();
     }
 
     protected override void ReturnPool() => UIManager.instance.enemyDieRewardTextPool.ReturnObject(this);

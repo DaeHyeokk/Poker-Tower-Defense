@@ -80,7 +80,6 @@ public class GameManager : MonoBehaviour
     }
 
     public int pokerCount => _pokerCount;
-    public float maxGameSpeed => _maxGameSpeed;
     public bool isPausing => _isPausing;
     public bool isGameover => _isGameover;
 
@@ -98,7 +97,9 @@ public class GameManager : MonoBehaviour
         _isGameover = false;
 
         ScreenSleepSetup();
+        UIManager.instance.screenCover.FadeInScreen(Color.black, 2f);
     }
+
     private void ScreenSleepSetup()
     {
         Screen.sleepTimeout = SleepTimeout.NeverSleep;
