@@ -49,26 +49,6 @@ public class MissionBossEnemy : FieldBossEnemy
         ReturnObject();
     }
 
-    protected override void Die()
-    {
-        base.Die();
-
-        switch (_bossLevel)
-        {
-            case 1:
-                GameManager.instance.gold += 100;
-                break;
-            case 2:
-                GameManager.instance.gold += 200;
-                break;
-            case 3:
-                GameManager.instance.gold += 500;
-                break;
-        }
-
-        ReturnObject();
-    }
-
     protected override void ReturnObject()
     {
         EnemySpawner.instance.missionBossEnemyList.Remove(this);

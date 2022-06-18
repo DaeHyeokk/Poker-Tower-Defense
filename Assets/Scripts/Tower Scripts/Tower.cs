@@ -25,6 +25,7 @@ public abstract class Tower : MonoBehaviour
     private TargetDetector _targetDetector;
     private ProjectileSpawner _projectileSpawner;
     private TowerBuilder _towerBuilder;
+    private ColorUpgrade _colorUpgrade;
     private Tile _onTile;
     private WaitForSeconds _attackDelay;
     private float _maxAttackRate;
@@ -80,7 +81,7 @@ public abstract class Tower : MonoBehaviour
     public Sprite specialProjectileSprite => _towerData.specialProjectileSprites[(int)_towerColor.colorType];
     public StringBuilder detailBaseAttackInfo { get; set; }
     public StringBuilder detailSpecialAttackInfo { get; set; }
-    public int upgradeCount => GameManager.instance.colorUpgradeCounts[(int)towerColor.colorType];
+    public int upgradeCount => _colorUpgrade.colorUpgradeCounts[(int)towerColor.colorType];
     public int level => _towerLevel.level;
     public float baseDamage => _towerData.weapons[level].damage;
     public float upgradeDIP => _towerData.weapons[level].upgradeDIP;
@@ -136,6 +137,8 @@ public abstract class Tower : MonoBehaviour
         _levelLayout = GetComponentInChildren<HorizontalLayoutGroup>();
         _projectileSpawner = FindObjectOfType<ProjectileSpawner>();
         _towerBuilder = FindObjectOfType<TowerBuilder>();
+        _colorUpgrade = FindObjectOfType<ColorUpgrade>();
+
 
         _towerColor = new TowerColor(_towerRenderer);
         _towerLevel = new TowerLevel(_levelLayout);

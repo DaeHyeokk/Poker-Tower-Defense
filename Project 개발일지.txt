@@ -206,3 +206,8 @@ Data: 2022/06/13 MON
 Data: 2022/06/16 THU
 ☑ Wave System 구현.
 ☑ EnemySpawner를 싱글톤 객체로 변경.
+
+Data: 2022/06/17 FRI
+☑ SystemMessage, DamageTakenText, EnemyDieRewordText 의 상위클래스 FadeText 구현.
+☑ DamageTaken Text를 화면에 좀더 리얼하게 표현하기 위해 Text의 Font Size가 잠깐 커졌다 작아진 뒤 사라지도록 변경.
+☑ Enemy가 죽을 때 플레이어에게 들어오는 재화를 화면에 표시하기 위한 EnemyDieRewordText 구현.

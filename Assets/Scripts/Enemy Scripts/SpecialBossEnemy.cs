@@ -63,8 +63,6 @@ public class SpecialBossEnemy : Enemy
     {
         base.Die();
         this.gameObject.SetActive(false);
-        // 플레이어에게 카드 변경권 5장을 지급한다.
-        GameManager.instance.changeChance += 5;
 
         Invoke("RespawnPlanet", 0.4f);
     }

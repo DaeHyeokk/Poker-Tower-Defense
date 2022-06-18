@@ -12,16 +12,6 @@ public class RoundBossEnemy : FieldBossEnemy
         ReturnObject();
     }
 
-    protected override void Die()
-    {
-        base.Die();
-        // 100골드, 카드 변환권 주기
-        GameManager.instance.gold += 100;
-        GameManager.instance.changeChance += 2;
-
-        ReturnObject();
-    }
-
     protected override void ReturnObject()
     {
         EnemySpawner.instance.roundEnemyList.Remove(this);

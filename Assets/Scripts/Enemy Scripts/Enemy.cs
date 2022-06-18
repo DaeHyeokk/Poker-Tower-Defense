@@ -1,24 +1,36 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Text;
 using UnityEngine;
 using UnityEngine.UI;
 
 public abstract class Enemy : MonoBehaviour
 {
+    // Enemy를 잡을 경우 플레이어에게 지급되는 골드
+    [SerializeField]
+    private int _rewardGold;
+    // Enemy를 잡을 경우 플레이어에게 지급되는 카드교환권
+    [SerializeField]
+    private int _rewardChangeChance;
+
     private Slider _healthSlider;
     private SpriteRenderer _enemySprite;
     private WaitForSeconds _takeDamageAnimationDelay;
+    private StringBuilder _rewardText;
 
     protected Slider healthSlider => _healthSlider;
     protected SpriteRenderer enemySprite => _enemySprite;
     protected float maxHealth { get; set; }  // Enemy의 최대 체력
     protected float health { get; set; }     // Enemy의 현재 체력
-
+  
     protected virtual void Awake()
     {
         _healthSlider = GetComponentInChildren<Slider>();
         _enemySprite = GetComponentInChildren<SpriteRenderer>();
         _takeDamageAnimationDelay = new WaitForSeconds(0.05f);
+        _rewardText = new();
+
+        SetRewardText();
     }
 
     public virtual void TakeDamage(float damage, DamageTakenType damageTakenType)
@@ -29,9 +41,35 @@ public abstract class Enemy : MonoBehaviour
     public abstract void TakeIncreaseReceivedDamage(float increaseReceivedDamageRate, float duration);
     public abstract void TakeStun(float duration);
     public abstract void TakeSlowing(float slowingRate, float duration);
+
     protected virtual void Die()
     {
         ParticlePlayer.instance.PlayEnemyDie(this.transform);
+        GiveReward();
+    }
+
+    private void GiveReward()
+    {
+        GameManager.instance.gold += _rewardGold;
+        if (_rewardChangeChance > 0)
+            GameManager.instance.changeChance += _rewardChangeChance;
+
+        UIManager.instance.ShowEnemyDieRewardText(_rewardText, this.transform);
+    }
+
+    private void SetRewardText()
+    {
+        _rewardText.Append('+');
+        _rewardText.Append(_rewardGold.ToString());
+        _rewardText.Append('G');
+
+        if(_rewardChangeChance > 0)
+        {
+            _rewardText.Append('\n');
+            _rewardText.Append("카드교환권 ");
+            _rewardText.Append('+');
+            _rewardText.Append(_rewardChangeChance.ToString());
+        }
     }
 
     private IEnumerator EnemyTakeDamageAnimationCoroutine()

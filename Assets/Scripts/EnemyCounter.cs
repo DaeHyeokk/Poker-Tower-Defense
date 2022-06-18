@@ -18,6 +18,11 @@ public class EnemyCounter : MonoBehaviour
 
             _roundEnemyCount = value;
             _enemyCounterUIController.SetEnemyCountText(value);
+
+            if (value > 60)
+                UIManager.instance.BlinkScreen(Color.red, 4f);
+            else
+                UIManager.instance.StopBlinkScreen();
         }
     }
 

@@ -224,6 +224,12 @@ public abstract class FieldEnemy : Enemy
         this.increaseReceiveDamageRate -= increaseReceivedDamageRate;
     }
 
+    protected override void Die()
+    {
+        base.Die();
+        ReturnObject();
+    }
+
     protected abstract void ReturnObject();
 }
 

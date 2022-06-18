@@ -24,8 +24,6 @@ public class GameManager : MonoBehaviour
     private int _pokerCount;
     [SerializeField]
     private GameDataUIController _gameDataUIController;
-    [SerializeField]
-    private ColorUpgradeUIController _colorUpgradeUIController;
 
     private int _gold;
     private int _mineral;
@@ -36,9 +34,6 @@ public class GameManager : MonoBehaviour
     private bool _isPausing;
     private bool _isGameover;
 
-    private int[] _colorUpgradeIncrementCost;
-    private int[] _colorUpgradeCounts;
-    private int[] _colorUpgradeCosts;
 
     public int gold
     {
@@ -84,8 +79,8 @@ public class GameManager : MonoBehaviour
         }
     }
 
-    public int[] colorUpgradeCounts => _colorUpgradeCounts;
     public int pokerCount => _pokerCount;
+    public float maxGameSpeed => _maxGameSpeed;
     public bool isPausing => _isPausing;
     public bool isGameover => _isGameover;
 
@@ -93,7 +88,7 @@ public class GameManager : MonoBehaviour
     {
         if (instance != this)
             Destroy(gameObject);
-
+        
         _maxGameSpeed = 3f;
         gameSpeed = 1f;
         gold = 600;
@@ -102,49 +97,11 @@ public class GameManager : MonoBehaviour
         _isPausing = false;
         _isGameover = false;
 
-        _colorUpgradeIncrementCost = new int[3];
-        _colorUpgradeCounts = new int[3];
-        _colorUpgradeCosts = new int[3];
-        for(int i=0; i<3; i++)
-        {
-            _colorUpgradeIncrementCost[i] = 1;
-            SetColorUpgradeCount(i, 0);
-            SetColorUpgradeCost(i, 5);
-        }
-
         ScreenSleepSetup();
     }
     private void ScreenSleepSetup()
     {
         Screen.sleepTimeout = SleepTimeout.NeverSleep;
-    }
-
-    public void UpgradeColor(int index)
-    {
-        if (_colorUpgradeCosts[index] > mineral)
-        {
-            UIManager.instance.ShowSystemMessage("미네랄이 부족합니다.");
-            return;
-        }
-
-        mineral -= _colorUpgradeCosts[index];
-
-        SetColorUpgradeCount(index, _colorUpgradeCounts[index]+1);
-        SetColorUpgradeCost(index, _colorUpgradeCosts[index]+1);
-        
-        _colorUpgradeIncrementCost[index]++;
-    }
-
-    private void SetColorUpgradeCount(int index, int value)
-    {
-        _colorUpgradeCounts[index] = value;
-        _colorUpgradeUIController.SetColorUpgradeCountText(index, _colorUpgradeCounts[index]);
-    }
-
-    private void SetColorUpgradeCost(int index, int value)
-    {
-        _colorUpgradeCosts[index] = value;
-        _colorUpgradeUIController.SetColorUpgradeCostText(index, _colorUpgradeCosts[index]);
     }
 
     public void SpeedUpGame()

@@ -218,6 +218,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fd949890890da94418bc030380ee9831, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _rewardGold: 100
+  _rewardChangeChance: 2
   _increaseReceiveDamageSprite: {fileID: 850196265547816066}
   _slowEffect: {fileID: 7417208525217431426}
   _stunEffect: {fileID: 1090811235946300176}

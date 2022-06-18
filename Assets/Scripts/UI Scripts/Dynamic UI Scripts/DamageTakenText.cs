@@ -5,54 +5,91 @@ using TMPro;
 
 public enum DamageTakenType { Normal, Critical }
 
-public class DamageTakenText : MonoBehaviour
+public class DamageTakenText : FadeText
 {
     [SerializeField]
-    private TextMeshProUGUI _damageTakenText;
-    [SerializeField]
-    private TextFadeAnimation _textFadeAnimation;
+    private Movement2D _movement2D;
     [SerializeField]
     private float _normalDamageFontSize;
+    [SerializeField]
+    private float _normalhighlightFontSize;
     [SerializeField]
     private Color _normalDamageColor;
     [SerializeField]
     private float _critDamageFontSize;
     [SerializeField]
+    private float _crithighlightFontSize;
+    [SerializeField]
     private Color _critDamageColor;
+    [SerializeField]
+    private float _highlightSpeed;
 
-    private WaitForSeconds _fadeDelay;
+    private float _highlightFontSize;
+    private WaitForSeconds _animationStartDelay = new(0.2f);
 
-    public TextMeshProUGUI damageTakenText => _damageTakenText;
     public DamageTakenType damageTakenType
     {
         set
         {
             if (value == DamageTakenType.Normal)
             {
-                _damageTakenText.fontSize = _normalDamageFontSize;
-                _damageTakenText.color = _normalDamageColor;
+                base.textMeshPro.fontSize = _normalDamageFontSize;
+                base.textMeshPro.color = _normalDamageColor;
+                _highlightFontSize = _normalhighlightFontSize;
             }
             else
             {
-                _damageTakenText.fontSize = _critDamageFontSize;
-                _damageTakenText.color = _critDamageColor;
+                base.textMeshPro.fontSize = _critDamageFontSize;
+                base.textMeshPro.color = _critDamageColor;
+                _highlightFontSize = _crithighlightFontSize;
             }
         }
     }
 
-    private void Awake()
+    public override void StartAnimation()
     {
-        _fadeDelay = new(_textFadeAnimation.fadeTime);
+        StartCoroutine(HighlightEffectCoroutine());
     }
 
-    private void OnEnable()
+    private IEnumerator HighlightEffectCoroutine()
     {
-        StartCoroutine(ReturnPoolCoroutine());
+        _movement2D.Stop();
+        base.textFadeAnimation.FadeStop();
+
+        float backupFontSize = base.textMeshPro.fontSize;
+
+        while(base.textMeshPro.fontSize < _highlightFontSize)
+        {
+            base.textMeshPro.fontSize += _highlightSpeed * Time.deltaTime;
+
+            if (base.textMeshPro.fontSize > _highlightFontSize)
+                base.textMeshPro.fontSize = _highlightFontSize;
+
+            yield return null;
+        }
+
+        while(base.textMeshPro.fontSize > backupFontSize)
+        {
+            base.textMeshPro.fontSize -= _highlightSpeed * Time.deltaTime;
+
+            if (base.textMeshPro.fontSize < backupFontSize)
+                base.textMeshPro.fontSize = backupFontSize;
+
+            yield return null;
+        }
+
+        yield return _animationStartDelay;
+
+        _movement2D.Move();
+        base.textFadeAnimation.FadeStart();
+        StartCoroutine(FadeWaitCoroutine());
     }
 
-    private IEnumerator ReturnPoolCoroutine()
-    {
-        yield return _fadeDelay;
-        UIManager.instance.damageTakenTextPool.ReturnObject(this);
-    }
+    protected override void ReturnPool() => UIManager.instance.damageTakenTextPool.ReturnObject(this);
 }
+
+/*
+ * File : DamageTakenText.cs
+ * First Update : 2022/06/17 FRI 00:10
+ * 인게임에서 적이 받는 데미지를 화면에 나타내기 위한 스크립트.
+ */

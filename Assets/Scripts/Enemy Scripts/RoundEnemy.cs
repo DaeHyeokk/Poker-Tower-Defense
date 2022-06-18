@@ -1,17 +1,5 @@
 public class RoundEnemy : FieldEnemy
 {
-    protected override void Awake()
-    {
-        base.Awake();
-    }
-
-    protected override void Die()
-    {
-        base.Die();
-        GameManager.instance.gold += 5;
-        ReturnObject();
-    }
-
     protected override void ReturnObject()
     {
         EnemySpawner.instance.roundEnemyList.Remove(this);

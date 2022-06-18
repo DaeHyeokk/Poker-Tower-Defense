@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Text;
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
@@ -21,6 +22,9 @@ public class UIManager : MonoBehaviour
         }
     }
 
+    [SerializeField]
+    private ImageFadeAnimation _screenCoverFader;
+
     [Header("Main UI Canvas")]
     [SerializeField]
     private TowerInfomation _towerInfomation;
@@ -40,7 +44,9 @@ public class UIManager : MonoBehaviour
     [SerializeField]
     private GameObject _damageTakenTextPrefab;
     private ObjectPool<DamageTakenText> _damageTakenTextPool;
-
+    [SerializeField]
+    private GameObject _enemyDieRewardTextPrefab;
+    private ObjectPool<EnemyDieRewardText> _enemyDieRewardTextPool;
 
     public TowerInfomation towerInfomation => _towerInfomation;
     public GambleUIController gambleUIController => _gambleUIController;
@@ -49,14 +55,50 @@ public class UIManager : MonoBehaviour
 
     public ObjectPool<SystemMessage> systemMessagePool => _systemMessagePool;
     public ObjectPool<DamageTakenText> damageTakenTextPool => _damageTakenTextPool;
+    public ObjectPool<EnemyDieRewardText> enemyDieRewardTextPool => _enemyDieRewardTextPool;
 
     private void Awake()
     {
         if (instance != this)
             Destroy(gameObject);    // 자신을 파괴
 
+        FadeInScreen(Color.black, 1f);
+
         _systemMessagePool = new(_systemMessagePrefab, 5);
         _damageTakenTextPool = new(_damageTakenTextPrefab, 10);
+        _enemyDieRewardTextPool = new(_enemyDieRewardTextPrefab, 10);
+    }
+
+    public void FadeInScreen(Color color, float fadeTime)
+    {
+        _screenCoverFader.image.color = color;
+        _screenCoverFader.fadeTime = fadeTime;
+        _screenCoverFader.FadeOutImage();
+    }
+
+    public void FadeOutScreen(Color color, float fadeTime)
+    {
+        _screenCoverFader.image.color = color;
+        _screenCoverFader.fadeTime = fadeTime;
+        _screenCoverFader.FadeInImage();
+    }
+
+    public void BlinkScreen(Color color, float fadeTime)
+    {
+        // 이미지가 깜빡이는 상태라면 건너뛴다.
+        if (_screenCoverFader.isBlinking) return;
+
+        _screenCoverFader.image.color = color;
+        _screenCoverFader.fadeTime = fadeTime;
+        _screenCoverFader.BlinkImage();
+    }
+
+    public void StopBlinkScreen()
+    {
+        // 이미지가 깜빡이지 않는 상태라면 건너뛴다.
+        if (!_screenCoverFader.isBlinking) return;
+
+        _screenCoverFader.StopBlinkImage();
     }
 
     public void ShowSystemMessage(string message)
@@ -64,16 +106,31 @@ public class UIManager : MonoBehaviour
         SystemMessage systemMessage = _systemMessagePool.GetObject();
 
         systemMessage.transform.position = Vector3.zero;
-        systemMessage.messageText.text = message;
+        systemMessage.textMeshPro.text = message;
+
+        systemMessage.StartAnimation();
     }
 
     public void ShowDamageTakenText(float damage, Transform target, DamageTakenType damageTakenType)
     {
         DamageTakenText damageTakenText = _damageTakenTextPool.GetObject();
 
-        damageTakenText.transform.position = target.position;
-        damageTakenText.damageTakenText.text = Mathf.Round(damage).ToString();
+        damageTakenText.transform.position = target.position + new Vector3(0f, 0.2f, 0f);
+        damageTakenText.textMeshPro.text = Mathf.Round(damage).ToString();
         damageTakenText.damageTakenType = damageTakenType;
+
+        damageTakenText.StartAnimation();
+    }
+
+    public void ShowEnemyDieRewardText(StringBuilder reward, Transform target)
+    {
+        EnemyDieRewardText enemyDieGoldText = _enemyDieRewardTextPool.GetObject();
+
+        enemyDieGoldText.transform.position = target.position;
+        enemyDieGoldText.textMeshPro.text = reward.ToString();
+
+        enemyDieGoldText.StartAnimation();
+
     }
 
     public void ShowTowerInfo(Tower tower)
