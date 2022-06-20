@@ -5,6 +5,8 @@ using UnityEngine;
 public class EnemyCounter : MonoBehaviour
 {
     [SerializeField]
+    private EnemySpawner _enemySpawner;
+    [SerializeField]
     private EnemyCounterUIController _enemyCounterUIController;
     private int _roundEnemyCount;
 
@@ -23,6 +25,6 @@ public class EnemyCounter : MonoBehaviour
 
     private void Update()
     {
-        roundEnemyCount = EnemySpawner.instance.roundEnemyList.Count;
+        roundEnemyCount = _enemySpawner.roundEnemyList.Count;
     }
 }

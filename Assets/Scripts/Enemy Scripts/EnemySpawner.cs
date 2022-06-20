@@ -4,21 +4,6 @@ using UnityEngine;
 
 public class EnemySpawner : MonoBehaviour
 {
-    private static EnemySpawner _instance;
-    public static EnemySpawner instance
-    {
-        get
-        {
-            if (_instance == null)
-            {
-                _instance = FindObjectOfType<EnemySpawner>();
-                return _instance;
-            }
-
-            return _instance;
-        }
-    }
-
     [SerializeField]
     private float _spawnTime;            // 적 생성 주기
     [SerializeField]
@@ -63,10 +48,7 @@ public class EnemySpawner : MonoBehaviour
 
     private void Awake()
     {
-        if (instance != this)
-            Destroy(gameObject);
-
-        _roundEnemyPool = new ObjectPool<RoundEnemy>(_roundEnemyPrefab, 20);
+        _roundEnemyPool = new ObjectPool<RoundEnemy>(_roundEnemyPrefab, 80);
 
         InstantiateBossEnemy();
         MissionBossCooltimeSetup();
@@ -77,11 +59,15 @@ public class EnemySpawner : MonoBehaviour
     private void InstantiateBossEnemy()
     {
         _roundBossEnemy = Instantiate(_roundBossEnemyPrefab).GetComponent<RoundBossEnemy>();
+        _roundBossEnemy.enemySpawner = this;
+        _roundBossEnemy.wayPoints = _wayPoints;
         _roundBossEnemy.gameObject.SetActive(false);
 
         for (int i = 0; i < 3; i++)
         {
             _missionBossEnemies[i] = Instantiate(_missionBossEnemyPrefabs[i]).GetComponent<MissionBossEnemy>();
+            _missionBossEnemies[i].enemySpawner = this;
+            _missionBossEnemies[i].wayPoints = _wayPoints;
             _missionBossEnemies[i].gameObject.SetActive(false);
         }
     }
@@ -106,9 +92,16 @@ public class EnemySpawner : MonoBehaviour
         while (spawnEnemy++ < 40)
         {
             FieldEnemy _enemy = _roundEnemyPool.GetObject();
+            // enemy가 이동경로 좌표 배열을 할당 받지 않았다면 수행.
+            if (_enemy.wayPoints == null)
+                _enemy.wayPoints = _wayPoints;
+            // enemy가 EnemySpawner 참조값을 할당 받지 않았다면 수행.
+            if (_enemy.enemySpawner == null)
+                _enemy.enemySpawner = this;
+
             // Enemy Setup() 메서드의 매개변수로 웨이포인트 정보와 enemyData 정보를 전달.
-            _enemy.Setup(_wayPoints, _roundEnemyDatas[wave - 1]);
-            // _roundEnemyList 리스트에 추가함 -> 필드 위에 남아있는 Enemy를 참조하기 위함.
+            _enemy.Setup(_roundEnemyDatas[wave - 1]);
+            // _roundEnemyList 리스트에 추가함 -> 필드 위에 생성되어 있는 Enemy를 참조하기 위함.
             _roundEnemyList.Add(_enemy);
 
             // _spawnTime 시간 동안 대기.
@@ -124,7 +117,7 @@ public class EnemySpawner : MonoBehaviour
             return;
 
         _roundBossEnemy.gameObject.SetActive(true);
-        _roundBossEnemy.Setup(_wayPoints, _roundEnemyDatas[wave - 1]);
+        _roundBossEnemy.Setup(_roundEnemyDatas[wave - 1]);
         _roundEnemyList.Add(_roundBossEnemy);
     }
 
@@ -136,7 +129,7 @@ public class EnemySpawner : MonoBehaviour
             return;
 
         _missionBossEnemies[bossLevel].gameObject.SetActive(true);
-        _missionBossEnemies[bossLevel].Setup(_wayPoints, _missionBossEnemyDatas[bossLevel]);
+        _missionBossEnemies[bossLevel].Setup(_missionBossEnemyDatas[bossLevel]);
         _missionBossEnemyList.Add(_missionBossEnemies[bossLevel]);
         _missionBossUIController.StartMissionBossCooltime(bossLevel, _missionBossRespawnCooltimes[bossLevel]);
     }

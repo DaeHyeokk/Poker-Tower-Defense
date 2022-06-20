@@ -28,7 +28,7 @@ RectTransform:
   m_GameObject: {fileID: 4691216192422664510}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1.6666666, y: 1.6666666, z: 1}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 115693309556757830}
@@ -38,7 +38,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 1, y: 1}
+  m_SizeDelta: {x: 2, y: 2}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!223 &7972074505711627505
 Canvas:
@@ -194,12 +194,12 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 0.85
+  m_fontSize: 1.3
   m_fontSizeBase: 0.6
   m_fontWeight: 400
   m_enableAutoSizing: 1
   m_fontSizeMin: 0.2
-  m_fontSizeMax: 1
+  m_fontSizeMax: 1.3
   m_fontStyle: 0
   m_HorizontalAlignment: 2
   m_VerticalAlignment: 512
@@ -262,7 +262,7 @@ Transform:
   m_GameObject: {fileID: 6493414231574311678}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 0.6, y: 0.6, z: 1}
+  m_LocalScale: {x: 0.6, y: 0.6, z: 0.6}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 5577602044046390585}
@@ -492,8 +492,8 @@ GameObject:
   - component: {fileID: 8062379368528844629}
   - component: {fileID: 2041561464012545551}
   - component: {fileID: 8006479256770470292}
-  - component: {fileID: 6923852707696025005}
-  - component: {fileID: 8350416564650783264}
+  - component: {fileID: 6685847060426271425}
+  - component: {fileID: 3412535011627002439}
   m_Layer: 0
   m_Name: Lv1MissionBossEnemy
   m_TagString: Enemy
@@ -510,7 +510,7 @@ Transform:
   m_GameObject: {fileID: 8062379368528844627}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 0.24, y: 0.24, z: 0.24}
+  m_LocalScale: {x: 0.23, y: 0.23, z: 0.23}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 8062379369243451592}
@@ -553,9 +553,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fd4eb539c46c1ad4f990711c45fb91b9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _deltaTimeMode: 0
   _moveDirection: {x: 0, y: 0, z: 0}
   _moveSpeed: 0
---- !u!58 &6923852707696025005
+--- !u!58 &6685847060426271425
 CircleCollider2D:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -570,8 +571,8 @@ CircleCollider2D:
   m_UsedByComposite: 0
   m_Offset: {x: 0, y: 0}
   serializedVersion: 2
-  m_Radius: 0.4
---- !u!50 &8350416564650783264
+  m_Radius: 0.6
+--- !u!50 &3412535011627002439
 Rigidbody2D:
   serializedVersion: 4
   m_ObjectHideFlags: 0

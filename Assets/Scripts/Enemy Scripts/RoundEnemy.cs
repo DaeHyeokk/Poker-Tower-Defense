@@ -2,8 +2,8 @@ public class RoundEnemy : FieldEnemy
 {
     protected override void ReturnObject()
     {
-        EnemySpawner.instance.roundEnemyList.Remove(this);
-        EnemySpawner.instance.roundEnemyPool.ReturnObject(this);
+        enemySpawner.roundEnemyList.Remove(this);
+        enemySpawner.roundEnemyPool.ReturnObject(this);
     }
 }
 

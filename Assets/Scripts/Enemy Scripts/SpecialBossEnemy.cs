@@ -57,14 +57,14 @@ public class SpecialBossEnemy : Enemy
     {
         return;
     }
-    //////////////////////////////////////////////////////////////
+    ///////////////////////////////////////////////////////////////////
 
     protected override void Die()
     {
         base.Die();
         this.gameObject.SetActive(false);
 
-        Invoke("RespawnPlanet", 0.4f);
+        Invoke("RespawnPlanet", 0.5f);
     }
 
     private void RespawnPlanet()

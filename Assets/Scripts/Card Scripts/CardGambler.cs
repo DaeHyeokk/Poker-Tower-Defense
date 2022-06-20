@@ -13,7 +13,6 @@ public class CardGambler : MonoBehaviour
     private int[] _mineralGambleAmounts;
 
     private CardDrawer _cardDrawer;
-    private WaitForSeconds _waitPointOne = new(0.1f);
     private int _changeIndex;
 
     // 무엇을 위해(타워짓기, 미네랄뽑기) 카드를 뽑는지를 나타내는 변수

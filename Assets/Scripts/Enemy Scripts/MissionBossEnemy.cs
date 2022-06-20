@@ -14,9 +14,9 @@ public class MissionBossEnemy : FieldBossEnemy
 
     private WaitForSeconds _waitOneSecond = new(1f);
 
-    public override void Setup(Transform[] wayPoints, EnemyData enemyData)
+    public override void Setup(EnemyData enemyData)
     {
-        base.Setup(wayPoints, enemyData);
+        base.Setup(enemyData);
         StartCoroutine(LimitTimerCoroutine());
     }
 
@@ -51,7 +51,7 @@ public class MissionBossEnemy : FieldBossEnemy
 
     protected override void ReturnObject()
     {
-        EnemySpawner.instance.missionBossEnemyList.Remove(this);
+        enemySpawner.missionBossEnemyList.Remove(this);
         this.gameObject.SetActive(false);
     }
 }

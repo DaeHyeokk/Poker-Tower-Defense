@@ -26,7 +26,7 @@ Transform:
   m_GameObject: {fileID: 1350144983459452486}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 0.6, y: 0.6, z: 1}
+  m_LocalScale: {x: 0.6, y: 0.6, z: 0.6}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 2829038141020189677}
@@ -171,8 +171,8 @@ GameObject:
   - component: {fileID: 2829038141020189677}
   - component: {fileID: 1618764219061026179}
   - component: {fileID: 2863491204728079660}
-  - component: {fileID: 2934067914074667285}
-  - component: {fileID: 4270314033608890008}
+  - component: {fileID: 5764725980874802488}
+  - component: {fileID: 7547752094694874544}
   m_Layer: 0
   m_Name: RoundEnemy
   m_TagString: Enemy
@@ -229,9 +229,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fd4eb539c46c1ad4f990711c45fb91b9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _deltaTimeMode: 0
   _moveDirection: {x: 0, y: 0, z: 0}
   _moveSpeed: 0
---- !u!58 &2934067914074667285
+--- !u!58 &5764725980874802488
 CircleCollider2D:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -246,8 +247,8 @@ CircleCollider2D:
   m_UsedByComposite: 0
   m_Offset: {x: 0, y: 0}
   serializedVersion: 2
-  m_Radius: 0.4
---- !u!50 &4270314033608890008
+  m_Radius: 0.5
+--- !u!50 &7547752094694874544
 Rigidbody2D:
   serializedVersion: 4
   m_ObjectHideFlags: 0

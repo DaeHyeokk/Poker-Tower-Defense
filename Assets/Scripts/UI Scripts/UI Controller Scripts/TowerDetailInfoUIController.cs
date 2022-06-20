@@ -67,13 +67,13 @@ public class TowerDetailInfoUIController : MonoBehaviour
         _hideTimerSlider.value = _hideDelay;
 
         // 소수점 첫번째 자리에서 반올림
-        _damageText.text = Mathf.Round(_damage).ToString();
+        _damageText.text = _damage.ToString();
         // 소수점 두번째 자리에서 반올림
-        _attackRateText.text = Math.Round(_attackRate, 2).ToString();
+        _attackRateText.text = _attackRate.ToString();
         // 소수점 첫번째 자리에서 반올림
-        _upgradeDIPText.text = Mathf.Round(_upgradeDIP).ToString();
+        _upgradeDIPText.text = _upgradeDIP.ToString();
         // 소수점 네번째 자리에서 반올림
-        _upgradeRIPText.text = Math.Round(_upgradeRIP, 4).ToString();
+        _upgradeRIPText.text = _upgradeRIP.ToString();
 
         _baseAttackDetailText.text = tower.detailBaseAttackInfo.ToString();
         _specialAttackDetailText.text = tower.detailSpecialAttackInfo.ToString();

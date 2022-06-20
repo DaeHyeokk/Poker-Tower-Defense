@@ -148,7 +148,7 @@ public abstract class Tower : MonoBehaviour
 
         _towerColor = new TowerColor(_towerRenderer);
         _towerLevel = new TowerLevel(_levelLayout);
-        _targetDetector = new TargetDetector(this);
+        _targetDetector = new TargetDetector(this, FindObjectOfType<EnemySpawner>());
 
         baseEnemyInflictorList = new();
         specialEnemyInflictorList = new();
@@ -175,7 +175,8 @@ public abstract class Tower : MonoBehaviour
     protected virtual void RotateTower()
     {
         if (_targetDetector.targetList.Count > 0)
-            _rotater2D.LookAtTarget(_targetDetector.targetList[0].transform);
+            //if(_targetDetector.targetList[0] != null)
+            _rotater2D.NaturalLookAtTarget(_targetDetector.targetList[0].transform);
     }
 
     public virtual void Setup()
@@ -212,6 +213,7 @@ public abstract class Tower : MonoBehaviour
         {
             // 공격할 타겟이 없다면 공격하지 않는다.
             if (_targetDetector.targetList.Count == 0)
+            //if (_targetDetector.targetList[0] == null)
                 yield return null;
             else
             {

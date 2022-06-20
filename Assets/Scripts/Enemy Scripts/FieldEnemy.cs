@@ -12,7 +12,6 @@ public abstract class FieldEnemy : Enemy
     [SerializeField]
     private Particle _stunEffect;
 
-    private Transform[] _wayPoints;  // 이동경로 좌표 배열
     private int _currentIndex;   // 현재 목표지점 인덱스
 
     private int _stunCount; // 스턴을 중첩해서 맞을 경우 가장 마지막에 풀리는 스턴을 알기 위한 변수
@@ -20,6 +19,9 @@ public abstract class FieldEnemy : Enemy
     private float _increaseReceiveDamageRate; // Enemy가 공격 당할 때 받는 피해량
 
     private Movement2D _movement2D;  // 오브젝트 이동 제어
+
+    public EnemySpawner enemySpawner { get; set; }
+    public Transform[] wayPoints { get; set; }
 
     private int stunCount
     {
@@ -82,11 +84,8 @@ public abstract class FieldEnemy : Enemy
         _movement2D = GetComponent<Movement2D>();
     }
 
-    public virtual void Setup(Transform[] wayPoints, EnemyData enemyData)
+    public virtual void Setup(EnemyData enemyData)
     {
-        if(_wayPoints == null)
-            _wayPoints = wayPoints;
-
         // 생성할 Enemy의 체력, 색깔 설정
         maxHealth = enemyData.health;
         health = maxHealth;
@@ -106,7 +105,7 @@ public abstract class FieldEnemy : Enemy
         // 웨이포인트 배열의 첫번째 원소부터 탐색하기 위해 currentIndex 값을 0으로 바꿈
         _currentIndex = 0;
         // Enemy 등장 위치를 첫번째 wayPoint 좌표로 설정
-        transform.position = this._wayPoints[_currentIndex].position;
+        transform.position = wayPoints[_currentIndex].position;
         // 적 이동/목표 지점 설정 코루틴 함수 시작
         StartCoroutine(OnMoveCoroutine());
     }
@@ -120,12 +119,12 @@ public abstract class FieldEnemy : Enemy
         while (true)
         {
             isNextMove = false;
-            nowDistance = Vector3.Distance(this.transform.position, _wayPoints[_currentIndex].position);
+            nowDistance = Vector3.Distance(this.transform.position, wayPoints[_currentIndex].position);
 
             // 현재 enemy의 위치와 목표 지점의 위치 사이의 거리가 0.05f보다 가깝다면 다음 목표 지점을 탐색한다
             // 만약 현재 목표와의 거리가 이전 목표와의 거리보다 크다면 목표물로부터 멀어지고 있다는 것을 알 수 있다.
             // 경로를 벗어났기 때문에 다음 목표 지점을 탐색한다.
-            if (Vector3.Distance(transform.position, _wayPoints[_currentIndex].position) < 0.05f || nowDistance > lastDistance)
+            if (Vector3.Distance(transform.position, wayPoints[_currentIndex].position) < 0.05f || nowDistance > lastDistance)
             {
                 NextMoveTo();
                 isNextMove = true;
@@ -144,13 +143,13 @@ public abstract class FieldEnemy : Enemy
     private void NextMoveTo()
     {
         // Enemy의 위치를 정확하게 목표 위치로 설정
-        transform.position = _wayPoints[_currentIndex].position;
+        transform.position = wayPoints[_currentIndex].position;
         _currentIndex++;
 
-        if (_currentIndex >= _wayPoints.Length)
+        if (_currentIndex >= wayPoints.Length)
             _currentIndex = 0;
 
-        Vector3 direction = (_wayPoints[_currentIndex].position - transform.position).normalized;
+        Vector3 direction = (wayPoints[_currentIndex].position - transform.position).normalized;
         _movement2D.MoveTo(direction);
     }
 

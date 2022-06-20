@@ -22,12 +22,12 @@ public class EnemyCounterUIController : MonoBehaviour
         if (count <= 60)
         {
             _enemyCountText.color = _maxEnemyCountText.color = _slashText.color = Color.white;
-            UIManager.instance.screenCover.StopBlinkScreen();
+           // UIManager.instance.screenCover.StopBlinkScreen();
         }
         else
         {
             _enemyCountText.color = _maxEnemyCountText.color = _slashText.color = Color.red;
-            UIManager.instance.screenCover.BlinkScreen(Color.red, 3f);
+          //  UIManager.instance.screenCover.BlinkScreen(Color.red, 3f);
         }
 
         _enemyCountText.text = count.ToString();

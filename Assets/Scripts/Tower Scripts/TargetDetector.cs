@@ -7,6 +7,7 @@ public class TargetDetector
     public enum DetectingMode { Single, Multiple }
 
     private Tower _tower;
+    private EnemySpawner _enemySpawner;
     private List<Enemy> _targetList;
     private Enemy _tempTarget;
     private float _distance;
@@ -15,11 +16,12 @@ public class TargetDetector
     public DetectingMode detectingMode { set => _detectingMode = value; }
     public List<Enemy> targetList => _targetList;
 
-    public TargetDetector(Tower tower)
+    public TargetDetector(Tower tower, EnemySpawner enemySpawner)
     {
         _tower = tower;
-        _targetList = new List<Enemy>(_tower.maxTargetCount);
+        _targetList = new List<Enemy>();
         _distance = 0;
+        _enemySpawner = enemySpawner;
     }
 
     public void SearchTarget()
@@ -28,53 +30,67 @@ public class TargetDetector
         if (_detectingMode == DetectingMode.Single)
         {
             // 사거리 내에 스폐셜보스가 있다면 가장 우선 타격한다.
-            _distance = Vector3.Distance(_tower.transform.position, EnemySpawner.instance.specialBossEnemy.transform.position);
+            _distance = Vector3.Distance(_tower.transform.position, _enemySpawner.specialBossEnemy.transform.position);
             if (_distance <= _tower.range)
             {
                 _targetList.Clear();
-                _targetList.Add(EnemySpawner.instance.specialBossEnemy);
+                _targetList.Add(_enemySpawner.specialBossEnemy);
+                //_targetList[0] = _enemySpawner.specialBossEnemy;
                 return;
             }
 
             // 타워는 보스를 우선 타격하기 때문에 보스 몬스터를 먼저 탐색한다.
-            for (int i = 0; i < EnemySpawner.instance.missionBossEnemyList.Count; i++)
+            for (int i = 0; i < _enemySpawner.missionBossEnemyList.Count; i++)
             {
-                _distance = Vector3.Distance(_tower.transform.position, EnemySpawner.instance.missionBossEnemyList[i].transform.position);
+                _distance = Vector3.Distance(_tower.transform.position, _enemySpawner.missionBossEnemyList[i].transform.position);
                 if (_distance <= _tower.range)
                 {
                     _targetList.Clear();
-                    _targetList.Add(EnemySpawner.instance.missionBossEnemyList[i]);
+                    _targetList.Add(_enemySpawner.missionBossEnemyList[i]);
+                    //_targetList[0] = _enemySpawner.missionBossEnemyList[i];
                     return;
                 }
             }
 
+            //if(_targetList[0] != null)
             if (_targetList.Count != 0)
             {
                 _distance = Vector3.Distance(_tower.transform.position, _targetList[0].transform.position);
                 if (_distance > _tower.range || !_targetList[0].gameObject.activeSelf)
-                    _targetList.Clear();
+                    _targetList.Clear(); //_targetList[0] = null;
                 else
                     return;
             }
 
             float _closestDistSqr = Mathf.Infinity;
 
-            for (int i = 0; i < EnemySpawner.instance.roundEnemyList.Count; i++)
+            for (int i = 0; i < _enemySpawner.roundEnemyList.Count; i++)
             {
-                _distance = Vector3.Distance(_tower.transform.position, EnemySpawner.instance.roundEnemyList[i].transform.position);
+                _distance = Vector3.Distance(_tower.transform.position, _enemySpawner.roundEnemyList[i].transform.position);
+                
                 if (_distance <= _tower.range && _distance <= _closestDistSqr)
                 {
                     _closestDistSqr = _distance;
-                    _tempTarget = EnemySpawner.instance.roundEnemyList[i];
+                    _tempTarget = _enemySpawner.roundEnemyList[i];
                 }
+                
+                /*
+                if(_distance <= _tower.range)
+                {
+                    targetList[0] = _enemySpawner.roundEnemyList[i];
+                    return;
+                    // break;
+                }
+                */
             }
 
+            
             if (_tempTarget != null)
             {
-                targetList.Clear();
                 targetList.Add(_tempTarget);
                 _tempTarget = null;
             }
+            
         }
         // 다중 타겟 타워일 경우 수행
         else // (_detectingMode == DetectingMode.Multiple)
@@ -82,27 +98,27 @@ public class TargetDetector
             _targetList.Clear();
 
             // 사거리 내에 스폐셜보스가 있다면 가장 우선 타격한다.
-            _distance = Vector3.Distance(_tower.transform.position, EnemySpawner.instance.specialBossEnemy.transform.position);
+            _distance = Vector3.Distance(_tower.transform.position, _enemySpawner.specialBossEnemy.transform.position);
             if (_distance <= _tower.range)
-                _targetList.Add(EnemySpawner.instance.specialBossEnemy);
+                _targetList.Add(_enemySpawner.specialBossEnemy);
 
             // 타워는 보스를 우선 타격하기 때문에 보스 몬스터를 먼저 탐색한다.
-            for (int i = 0; i < EnemySpawner.instance.missionBossEnemyList.Count; i++)
+            for (int i = 0; i < _enemySpawner.missionBossEnemyList.Count; i++)
             {
-                _distance = Vector3.Distance(_tower.transform.position, EnemySpawner.instance.missionBossEnemyList[i].transform.position);
+                _distance = Vector3.Distance(_tower.transform.position, _enemySpawner.missionBossEnemyList[i].transform.position);
                 if (_distance <= _tower.range)
-                    _targetList.Add(EnemySpawner.instance.missionBossEnemyList[i]);
+                    _targetList.Add(_enemySpawner.missionBossEnemyList[i]);
 
                 if (_targetList.Count >= _tower.maxTargetCount)
                     break;
             }
 
-            for (int i = 0; i < EnemySpawner.instance.roundEnemyList.Count; i++)
+            for (int i = 0; i < _enemySpawner.roundEnemyList.Count; i++)
             {
-                _distance = Vector3.Distance(_tower.transform.position, EnemySpawner.instance.roundEnemyList[i].transform.position);
+                _distance = Vector3.Distance(_tower.transform.position, _enemySpawner.roundEnemyList[i].transform.position);
                 if (_distance <= _tower.range)
                 {
-                    _targetList.Add(EnemySpawner.instance.roundEnemyList[i]);
+                    _targetList.Add(_enemySpawner.roundEnemyList[i]);
                 }
 
                 if (_targetList.Count >= _tower.maxTargetCount)

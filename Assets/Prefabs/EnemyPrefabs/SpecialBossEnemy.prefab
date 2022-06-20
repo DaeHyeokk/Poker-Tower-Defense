@@ -262,7 +262,7 @@ Transform:
   m_GameObject: {fileID: 6493414231574311678}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 0.6, y: 0.6, z: 1}
+  m_LocalScale: {x: 0.6, y: 0.6, z: 0.6}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 8062379368528844629}
@@ -331,8 +331,8 @@ GameObject:
   - component: {fileID: 8062379368528844629}
   - component: {fileID: 4624995105575712863}
   - component: {fileID: 3755348483712011449}
-  - component: {fileID: 6923852707696025005}
-  - component: {fileID: 8350416564650783264}
+  - component: {fileID: 6077637529227769836}
+  - component: {fileID: 2658263134379632563}
   m_Layer: 0
   m_Name: SpecialBossEnemy
   m_TagString: Enemy
@@ -349,7 +349,7 @@ Transform:
   m_GameObject: {fileID: 8062379368528844627}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 0.63, y: 0.63, z: 0.63}
+  m_LocalScale: {x: 0.65, y: 0.65, z: 0.65}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 2935291223874784643}
@@ -388,7 +388,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _targetSprite: {fileID: 4824518791374353399}
---- !u!58 &6923852707696025005
+--- !u!58 &6077637529227769836
 CircleCollider2D:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -403,8 +403,8 @@ CircleCollider2D:
   m_UsedByComposite: 0
   m_Offset: {x: 0, y: 0}
   serializedVersion: 2
-  m_Radius: 0.5
---- !u!50 &8350416564650783264
+  m_Radius: 0.6
+--- !u!50 &2658263134379632563
 Rigidbody2D:
   serializedVersion: 4
   m_ObjectHideFlags: 0
@@ -655,7 +655,7 @@ RectTransform:
   m_GameObject: {fileID: 8062379369243451591}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 0.59999996, y: 0.59999996, z: 1}
+  m_LocalScale: {x: 0.6, y: 0.6, z: 0.6}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 8062379368777932192}

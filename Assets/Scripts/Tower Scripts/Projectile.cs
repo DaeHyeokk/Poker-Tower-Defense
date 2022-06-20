@@ -29,6 +29,7 @@ public class Projectile : MonoBehaviour
         _fromTower = fromTower;
         _target = target;
         _spriteRenderer.sprite = projectileSprite;
+        _rotater2D.LookAtTarget(_target.transform);
     }
 
     private void Update()
