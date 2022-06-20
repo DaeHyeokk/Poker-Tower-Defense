@@ -214,4 +214,10 @@ Data: 2022/06/17 FRI
 
 Data: 2022/06/18 SAT
 ☑ 게임의 TimeScale이 변경 되어도 영향을 받지 않는 오브젝트들을 구현하기 위해 열거형 타입의 DeltaTimeMode 값에 따라 deltaTime과 unscaledDeltaTime을 사용하도록 변경.
-☑ 팝업 UI가 활성화 될 때 크기가 점점 커지면서 나타나고, 비활성화 될 때 크기가 점점 작아지면서 사라지도록 연출 하기 위한 PopupUIAnimation 스크립트 구현.
+☑ 팝업 UI가 활성화 될 때 크기가 점점 커지면서 나타나고, 비활성화 될 때 크기가 점점 작아지면서 사라지도록 연출 하기 위한 PopupUIAnimation 스크립트 구현. 
+
+Data: 2022/06/19 SUN
+☑ 조커 카드 기능을 구현하기 위해 기존의 Card Change Button을 Function Button으로 변경.
+☑ 하나의 버튼으로 카드 바꾸기와 조커 카드 기능을 수행할 수 있도록 하기위한 Function Toggle 버튼 및 기능 구현.
+☑ 기존의 Card Gambler 스크립트와 Gamble UI Controller 스크립트의 코드 짜임새가 비효율적이라 판단하여 리팩토링을 진행하였음.
+☑ 오브젝트의 활성화 여부를 체크하기 위해 GameObject.activeInHierarchy 프로퍼티를 참조하던 방식에서 GameObject.activeSelf 프로퍼티를 참조하는 방식으로 변경.

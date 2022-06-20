@@ -28,6 +28,7 @@ public abstract class Tower : MonoBehaviour
     private ColorUpgrade _colorUpgrade;
     private Tile _onTile;
     private WaitForSeconds _attackDelay;
+    private float _attackRate;
     private float _maxAttackRate;
     private float _increaseAttackRate;
     private float _increaseDamageRate;
@@ -43,9 +44,6 @@ public abstract class Tower : MonoBehaviour
                 _increaseAttackRateEffect.StopParticle();
 
             _increaseAttackRate = value;
-
-            // 공격 속도 값이 변화했기 때문에 코루틴 함수의 딜레이에 사용되는 waitForSeconds 변수 업데이트.
-            _attackDelay = new(attackRate);
         }
     }
     private float increaseDamageRate
@@ -90,10 +88,19 @@ public abstract class Tower : MonoBehaviour
     public float upgradeRIP => _towerData.weapons[level].upgradeRIP;
     public float attackRate 
     {
-        get
+        get => _attackRate;
+        set
         {
-            float value = (baseAttackRate - (upgradeRIP * upgradeCount)) / (1 + increaseAttackRate * 0.01f);
-            return value > _maxAttackRate ? value : _maxAttackRate;
+            // value 값이 최대 공격속도보다 빠르다면 value값을 최대 공격속도로 변경한다.
+            if (value < _maxAttackRate)
+                value = _maxAttackRate;
+
+            if (_attackRate == value) return;
+            else
+                _attackRate = value;
+
+            // 공격속도 값이 변화했기 때문에 AttackTarget() 코루틴 함수의 딜레이에 사용되는 waitForSeconds 변수 업데이트.
+            _attackDelay = new(_attackRate);
         }
     }
     public float range => _towerData.weapons[level].range;
@@ -129,7 +136,6 @@ public abstract class Tower : MonoBehaviour
     public abstract string towerName { get; }
     public abstract int towerIndex { get; }
 
-
     protected virtual void Awake()
     {
         _rotater2D = GetComponent<Rotater2D>();
@@ -158,7 +164,15 @@ public abstract class Tower : MonoBehaviour
         _onTile = null;
     }
 
-    protected virtual void Update()
+    private void Update()
+    {
+        UpdateAttackRate();
+        RotateTower();
+    }
+
+    private void UpdateAttackRate() => attackRate = (baseAttackRate - (upgradeRIP * upgradeCount)) / (1 + increaseAttackRate * 0.01f);
+
+    protected virtual void RotateTower()
     {
         if (_targetDetector.targetList.Count > 0)
             _rotater2D.LookAtTarget(_targetDetector.targetList[0].transform);
@@ -166,12 +180,11 @@ public abstract class Tower : MonoBehaviour
 
     public virtual void Setup()
     {
-        _towerColor.ChangeRandomColor();
-
         attackCount = 0;
         increaseAttackRate = 0;
         increaseDamageRate = 0;
 
+        _towerColor.ChangeRandomColor();
         UpdateDetailInfo();
 
         StartCoroutine(SearchTarget());
@@ -224,13 +237,13 @@ public abstract class Tower : MonoBehaviour
     protected virtual void BaseInflict(Enemy target)
     {
         for (int i = 0; i < baseEnemyInflictorList.Count; i++)
-            if (target.gameObject.activeInHierarchy)
+            if (target.gameObject.activeSelf)
                 baseEnemyInflictorList[i].Inflict(target);
     }
     protected virtual void BaseInflict(Tower target)
     {
         for (int i = 0; i < baseTowerInflictorList.Count; i++)
-            if (target.gameObject.activeInHierarchy)
+            if (target.gameObject.activeSelf)
                 baseTowerInflictorList[i].Inflict(target);
     }
 
@@ -242,7 +255,7 @@ public abstract class Tower : MonoBehaviour
 
         for (int i = 0; i < collider2D.Length; i++)
             for (int j = 0; j < baseEnemyInflictorList.Count; j++)
-                if(collider2D[i].gameObject.activeInHierarchy)
+                if(collider2D[i].gameObject.activeSelf)
                     baseEnemyInflictorList[j].Inflict(collider2D[i].GetComponent<Enemy>());
     }
 
@@ -254,21 +267,21 @@ public abstract class Tower : MonoBehaviour
 
         for (int i = 0; i < collider.Length; i++)
             for (int j = 0; j < baseEnemyInflictorList.Count; j++)
-                if (collider[i].gameObject.activeInHierarchy)
+                if (collider[i].gameObject.activeSelf)
                     baseTowerInflictorList[j].Inflict(collider[i].GetComponent<Tower>());
     }
 
     protected virtual void SpecialInflict(Enemy target)
     {
         for (int i = 0; i < specialEnemyInflictorList.Count; i++)
-            if (target.gameObject.activeInHierarchy)
+            if (target.gameObject.activeSelf)
                 specialEnemyInflictorList[i].Inflict(target);
     }
 
     protected virtual void SpecialInflict(Tower target)
     {
         for (int i = 0; i < specialTowerInflictorList.Count; i++)
-            if (target.gameObject.activeInHierarchy)
+            if (target.gameObject.activeSelf)
                 specialTowerInflictorList[i].Inflict(target);
     }
 
@@ -280,7 +293,7 @@ public abstract class Tower : MonoBehaviour
 
         for (int i = 0; i < collider2D.Length; i++)
             for (int j = 0; j < specialEnemyInflictorList.Count; j++)
-                if (collider2D[i].gameObject.activeInHierarchy)
+                if (collider2D[i].gameObject.activeSelf)
                     specialEnemyInflictorList[j].Inflict(collider2D[i].GetComponent<Enemy>());
     }
 
@@ -290,7 +303,7 @@ public abstract class Tower : MonoBehaviour
 
         for (int i = 0; i < collider.Length; i++)
             for (int j = 0; j < specialEnemyInflictorList.Count; j++)
-                if (collider[i].gameObject.activeInHierarchy)
+                if (collider[i].gameObject.activeSelf)
                     specialTowerInflictorList[j].Inflict(collider[i].GetComponent<Tower>());
     }
 
@@ -332,16 +345,13 @@ public abstract class Tower : MonoBehaviour
 
         return false;
     }
-
+    
     public virtual bool MergeTower(Tower mergeTower)
     {
         if (IsCompareTower(mergeTower))
         {
             if (_towerLevel.LevelUp())
             {
-                // 공격 속도 값이 변화했기 때문에 코루틴 함수의 딜레이에 사용되는 waitForSeconds 변수 업데이트.
-                _attackDelay = new(attackRate);
-
                 // 타워 레벨업 시 타워의 컬러를 랜덤으로 변경한다.
                 _towerColor.ChangeRandomColor();
                 // 타워 레벨업 시 타워의 상세 정보 StringBuilder를 업데이트 한다.

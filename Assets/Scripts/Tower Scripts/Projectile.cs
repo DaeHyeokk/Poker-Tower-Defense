@@ -34,7 +34,7 @@ public class Projectile : MonoBehaviour
     private void Update()
     {
         // _target 오브젝트가 씬에 활성화된 상태라면 _target을 계속 추적한다.
-        if (_target.gameObject.activeInHierarchy)
+        if (_target.gameObject.activeSelf)
         {
             Vector3 direction = (_target.transform.position - this.transform.position).normalized;
             _movement2D.MoveTo(direction);
@@ -47,7 +47,7 @@ public class Projectile : MonoBehaviour
     private void OnTriggerEnter2D(Collider2D collision)
     {
         if (!collision.CompareTag("Enemy") 
-            || !_target.gameObject.activeInHierarchy 
+            || !_target.gameObject.activeSelf 
             || collision.transform != _target.transform) return;
 
         ParticlePlayer.instance.PlayCollisionProjectile(this.transform, (int)_fromTower.towerColor.colorType);

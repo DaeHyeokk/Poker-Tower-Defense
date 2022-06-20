@@ -27,7 +27,7 @@ public class TowerSales : MonoBehaviour
     {
         GameManager.instance.gold += _tower.salesGold;
 
-        if (_randomTowerRewardText.gameObject.activeInHierarchy)
+        if (_randomTowerRewardText.gameObject.activeSelf)
             TowerBuilder.instance.BuildTower(Random.Range(0, 10));
 
         UIManager.instance.ShowSystemMessage("판매 완료!");

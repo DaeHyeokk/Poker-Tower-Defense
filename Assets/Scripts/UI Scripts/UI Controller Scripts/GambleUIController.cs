@@ -7,11 +7,21 @@ using TMPro;
 public class GambleUIController : MonoBehaviour
 {
     [SerializeField]
-    private GameObject _cardDrawCanvas;
+    private CardGambler _cardGambler;
     [SerializeField]
     private Image[] _cardImages;
     [SerializeField]
-    private Button[] _changeButtons;
+    private Button[] _functionButtons;
+    [SerializeField]
+    private Image[] _functionButtonImages;
+    [SerializeField]
+    private Button _functionToggleButton;
+    [SerializeField]
+    private Image _functionToggleImage;
+    [SerializeField]
+    private Sprite _cardChangeSprite;
+    [SerializeField]
+    private Sprite _jokerCardSprite;
     [SerializeField]
     private TextMeshProUGUI _handText;
     [SerializeField]
@@ -34,26 +44,68 @@ public class GambleUIController : MonoBehaviour
     [SerializeField]
     private TextMeshProUGUI _mineralGetText;
 
-    public void ReverseCardFrountUI(int index, Card card)
+    public int drawCardCount { get; set; }
+
+    public void ReverseCardFrountUI(int index)
     {
-        _cardImages[index].sprite = _cardSprites[card.index];
-        _changeButtons[index].gameObject.SetActive(true);
+        _cardImages[index].sprite = _cardSprites[_cardGambler.drawCards[index].index];
+        ShowFunctionButton(index);
     }
 
-    public void AllReverseCardBackUI()
+    public void AllReverseCardFrontUI()
     {
-        for (int index = 0; index < GameManager.instance.pokerCount; index++)
-        {
-            ReverseCardBackUI(index);
-            HideChangeButton(index);
-        }
+        for (int index = 0; index < _cardGambler.drawCardCount; index++)
+            ReverseCardFrountUI(index);
     }
 
     public void ReverseCardBackUI(int index) => _cardImages[index].sprite = _cardBackSprite;
 
-    public void ShowChangeButton(int index) => _changeButtons[index].gameObject.SetActive(true);
+    public void AllReverseCardBackUI()
+    {
+        for (int index = 0; index < drawCardCount; index++)
+        {
+            ReverseCardBackUI(index);
+            HideFunctionButton(index);
+        }
+    }
 
-    public void HideChangeButton(int index) => _changeButtons[index].gameObject.SetActive(false);
+    public void ShowResultUI()
+    {
+        SetHandUI(_cardGambler.drawHand);
+
+        if (_cardGambler.gambleType == CardGambler.GambleType.Tower)
+            SetTowerPreviewUI((int)_cardGambler.drawHand);
+        else
+            SetMineralPreviewUI(_cardGambler.mineralGambleAmounts[(int)_cardGambler.drawHand]);
+
+        ShowGetButtonUI();
+    }
+
+    public void ShowFunctionButton(int index) => _functionButtons[index].gameObject.SetActive(true);
+    public void HideFunctionButton(int index) => _functionButtons[index].gameObject.SetActive(false);
+
+    public void ShowFunctionToggleButton() => _functionToggleButton.gameObject.SetActive(true);
+    public void HideFunctionToggleButton() => _functionToggleButton.gameObject.SetActive(false);
+
+    public void ToggleFunctionImage()
+    {
+        if (_cardGambler.buttonFunctionType == CardGambler.ButtonFunctionType.CardChange)
+            _functionToggleImage.sprite = _jokerCardSprite;
+        else
+            _functionToggleImage.sprite = _cardChangeSprite;
+
+        ToggleFunctionButtonImage();
+    }
+    private void ToggleFunctionButtonImage()
+    {
+        for (int i = 0; i < _functionButtons.Length; i++)
+        {
+            if (_cardGambler.buttonFunctionType == CardGambler.ButtonFunctionType.CardChange)
+                _functionButtonImages[i].sprite = _cardChangeSprite;
+            else
+                _functionButtonImages[i].sprite = _jokerCardSprite;
+        }
+    }
 
     public void SetHandUI(PokerHand drawHand)
     {
@@ -61,18 +113,16 @@ public class GambleUIController : MonoBehaviour
         _handText.gameObject.SetActive(true);
     }
 
-    public void HideHandTextUI() => _handText.gameObject.SetActive(false);
+    public void ShowGambleButtonUI()
+    {
+        _towerGambleButton.gameObject.SetActive(true);
+        _mineralGambleButton.gameObject.SetActive(true);
+    }
 
     public void HideGambleButtonUI()
     {
         _towerGambleButton.gameObject.SetActive(false);
         _mineralGambleButton.gameObject.SetActive(false);
-    }
-
-    public void ShowGambleButtonUI()
-    {
-        _towerGambleButton.gameObject.SetActive(true);
-        _mineralGambleButton.gameObject.SetActive(true);
     }
 
     public void EnableGambleButtonUI()
@@ -87,6 +137,7 @@ public class GambleUIController : MonoBehaviour
         _towerGambleButton.interactable = false;
         _mineralGambleButton.interactable = false;
     }
+
     public void SetTowerPreviewUI(int towerIndex)
     {
         _towerPreviewImage.sprite = _towerSprites[towerIndex];
@@ -98,6 +149,8 @@ public class GambleUIController : MonoBehaviour
         _mineralGetText.text = '+' + mineralAmount.ToString() + 'M';
         _mineralGetText.gameObject.SetActive(true);
     }
+
+    public void ShowGetButtonUI() => _getButton.gameObject.SetActive(true);
     public void HideGetButtonUI()
     {
         _getButton.gameObject.SetActive(false);
@@ -105,7 +158,19 @@ public class GambleUIController : MonoBehaviour
         _mineralGetText.gameObject.SetActive(false);
     }
 
-    public void ShowGetButtonUI() => _getButton.gameObject.SetActive(true);
+    public void ResetGambleUI()
+    {
+        // 만들어진 족보를 나타내는 텍스트를 화면에서 숨긴다.
+        _handText.gameObject.SetActive(false);
+
+        // 카드를 모두 뒤집는다.
+        AllReverseCardBackUI();
+        HideFunctionToggleButton();
+        // 타워를 Get 하는 버튼을 화면에서 숨긴다.
+        HideGetButtonUI();
+        // Gamble 버튼을 화면에 나타낸다.
+        ShowGambleButtonUI();
+    }
 }
 
 

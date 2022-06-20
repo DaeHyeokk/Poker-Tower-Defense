@@ -51,7 +51,7 @@ public class TargetDetector
             if (_targetList.Count != 0)
             {
                 _distance = Vector3.Distance(_tower.transform.position, _targetList[0].transform.position);
-                if (_distance > _tower.range || !_targetList[0].gameObject.activeInHierarchy)
+                if (_distance > _tower.range || !_targetList[0].gameObject.activeSelf)
                     _targetList.Clear();
                 else
                     return;

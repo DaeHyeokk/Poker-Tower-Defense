@@ -28,6 +28,7 @@ public class GameManager : MonoBehaviour
     private int _gold;
     private int _mineral;
     private int _changeChance;
+    private int _jokerCard;
     private float _gameSpeed;
     private float _backupGameSpeed;
     private float _maxGameSpeed;
@@ -65,6 +66,16 @@ public class GameManager : MonoBehaviour
         }
     }
 
+    public int jokerCard
+    {
+        get => _jokerCard;
+        set
+        {
+            _jokerCard = value;
+            _gameDataUIController.SetJokerCardAmountText(_jokerCard);
+        }
+    }
+
     public float gameSpeed
     {
         get => _gameSpeed;
@@ -92,7 +103,8 @@ public class GameManager : MonoBehaviour
         gameSpeed = 1f;
         gold = 600;
         mineral = 100;
-        changeChance = 4000;
+        changeChance = 40;
+        jokerCard = 5;
         _isPausing = false;
         _isGameover = false;
 

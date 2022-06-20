@@ -68,7 +68,7 @@ public class MountainTower : Tower
         SetBuffRangeParticleScale();
     }
 
-    protected override void Update()
+    protected override void RotateTower()
     {
         if (onTile != null)
             rotater2D.NaturalRotate();
@@ -91,7 +91,7 @@ public class MountainTower : Tower
         detailBaseAttackInfo.Append(_basicAttack.inflictorInfo.ToString());
         detailBaseAttackInfo.Append('\n');
         detailBaseAttackInfo.Append(_baseIRDRate.inflictorInfo.ToString());
-
+        
         detailSpecialAttackInfo.Clear();
         detailSpecialAttackInfo.Append(maxTargetCount.ToString());
         detailSpecialAttackInfo.Append("명의 적을 공격");

@@ -120,7 +120,7 @@ public class EnemySpawner : MonoBehaviour
     {
         // 보스가 필드에 이미 소환된 상태면 소환하지 않는다.
         // 혹시모를 중복 소환 버그, 치팅 방지
-        if (_roundBossEnemy.gameObject.activeInHierarchy)
+        if (_roundBossEnemy.gameObject.activeSelf)
             return;
 
         _roundBossEnemy.gameObject.SetActive(true);
@@ -132,7 +132,7 @@ public class EnemySpawner : MonoBehaviour
     {
         // 현재 소환하려는 보스가 필드에 이미 소환된 상태면 소환하지 않는다.
         // 혹시모를 중복 소환 버그, 치팅 방지
-        if (_missionBossEnemies[bossLevel].gameObject.activeInHierarchy)
+        if (_missionBossEnemies[bossLevel].gameObject.activeSelf)
             return;
 
         _missionBossEnemies[bossLevel].gameObject.SetActive(true);
@@ -168,5 +168,5 @@ public class EnemySpawner : MonoBehaviour
  * 
  * Update : 2022/06/10 FRI 20:05
  * onDisable 델리게이트 삭제.
- * 게임상에서 Destroy 됐다고 인식하는 로직을 GameObject.activeInHierarchy 프로퍼티를 통해 현재 활성화 된 상태인지 확인하는 방식으로 변경.
+ * 게임상에서 Destroy 됐다고 인식하는 로직을 GameObject.activeSelf 프로퍼티를 통해 현재 활성화 된 상태인지 확인하는 방식으로 변경.
  */

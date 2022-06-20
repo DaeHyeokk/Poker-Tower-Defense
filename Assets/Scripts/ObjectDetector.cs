@@ -22,8 +22,11 @@ public class ObjectDetector : MonoBehaviour
     private TowerDetailInfo _towerDetailInfo;
     [SerializeField]
     private TowerDetailInfoUIController _towerDetailInfoUIController;
+    [SerializeField]
     private GraphicRaycaster _towerInfoGraphicRay;
-    private GraphicRaycaster _towerDetailInfoUIGraphicRay;
+    [SerializeField]
+    private GraphicRaycaster _towerDetailInfoGraphicRay;
+
     private PointerEventData _pointerEventData;
     private List<RaycastResult> _resultList;
 
@@ -36,8 +39,6 @@ public class ObjectDetector : MonoBehaviour
         // 'MainCamera' 태그를 가지고 있는 오브젝트를 탐색 후 Camera 컴포넌트 정보 전달
         // GameObject.FindGameObjectWithTag("MainCamera").GetComponent<Camera>(); 와 동일
         _mainCamera = Camera.main;
-        _towerInfoGraphicRay = _towerInfo.GetComponent<GraphicRaycaster>();
-        _towerDetailInfoUIGraphicRay = _towerDetailInfoUIController.GetComponent<GraphicRaycaster>();
         _pointerEventData = new(null);
         _resultList = new List<RaycastResult>();
         _clickTower = null;
@@ -53,44 +54,30 @@ public class ObjectDetector : MonoBehaviour
         if (Input.GetMouseButtonDown(0))
         {
             // 이미 타워를 움직이고 있는 상태라면 건너뛴다.
-            if (_clickTower != null) return;
-
-            // 타워 상세정보 UI가 화면에 활성화 되어 있는 상태일 때 실행
-            if (_towerDetailInfoUIController.gameObject.activeInHierarchy)
+            if (_clickTower != null)
             {
-                _pointerEventData.position = Input.mousePosition;
-
-                if (_resultList.Count != 0) _resultList.Clear();
-
-                _towerDetailInfoUIGraphicRay.Raycast(_pointerEventData, _resultList);
-
-                for (int i = 0; i < _resultList.Count; i++)
-                {
-                    // 타워 상세정보 UI를 터치하는 경우 자동으로 비활성화 되는 타이머를 초기화 시킨다.
-                    if (_resultList[i].gameObject.CompareTag("TowerDetailInfoUI"))
-                    {
-                        _towerDetailInfoUIController.ResetHideDelay();
-                        break;
-                    }
-                }
+                UIManager.instance.ShowSystemMessage("이미 타워 움직이는중 터치 씹힘");
+                return;
             }
-            else
-            {
-                // 카메라 위치에서 화면의 마우스 커서를 관통하는 광선(ray) 생성
-                // ray.origin : 광선의 시작 위치 (= 카메라 위치)
-                // ray.direction : 광선의 진행 방향
-                _ray = _mainCamera.ScreenPointToRay(Input.mousePosition);
+            // 타워 상세정보 UI가 화면에 활성화 되어 있는 상태라면 오브젝트 클릭을 입력받지 않는다.
+            if (_towerDetailInfoUIController.gameObject.activeSelf)
+                return;
 
-                // 광선에 부딪히는 오브젝트를 검출해서 hit에 저장
-                if (Physics.Raycast(_ray, out _hit, Mathf.Infinity))
+            // 카메라 위치에서 화면의 마우스 커서를 관통하는 광선(ray) 생성
+            // ray.origin : 광선의 시작 위치 (= 카메라 위치)
+            // ray.direction : 광선의 진행 방향
+            _ray = _mainCamera.ScreenPointToRay(Input.mousePosition);
+
+            // 광선에 부딪히는 오브젝트를 검출해서 hit에 저장
+            if (Physics.Raycast(_ray, out _hit, Mathf.Infinity))
+            {
+                // 광선에 부딪힌 타겟이 타워라면 마우스를 떼기 전까지 계속해서 마우스포인터를 따라감
+                if (_hit.transform.CompareTag("Tower"))
                 {
-                    // 광선에 부딪힌 타겟이 타워라면 마우스를 떼기 전까지 계속해서 마우스포인터를 따라감
-                    if (_hit.transform.CompareTag("Tower"))
-                    {
-                        _clickTower = _hit.transform.GetComponent<Tower>();
-                        _clickTower.MoveTower();
-                    }
+                    _clickTower = _hit.transform.GetComponent<Tower>();
+                    _clickTower.MoveTower();
                 }
+
             }
         }
         // 마우스 왼쪽 버튼을 뗐을 때
@@ -140,11 +127,12 @@ public class ObjectDetector : MonoBehaviour
                     _pointerEventData.position = Input.mousePosition;
 
                     if(_resultList.Count != 0) _resultList.Clear();
-
+                    // Tower Info Canvas 안에 배치된 UI와 충돌하는 광선을 발사한다.
                     _towerInfoGraphicRay.Raycast(_pointerEventData, _resultList);
 
                     for (int i = 0; i < _resultList.Count; i++)
                     {
+                        Debug.Log(_resultList[i].gameObject.tag);
                         if (_resultList[i].gameObject.CompareTag("TowerColorChanger"))
                         {
                             _towerColorChanger.ChangeColor();
@@ -165,6 +153,25 @@ public class ObjectDetector : MonoBehaviour
 
                 _clickTower.StopTower();
                 _clickTower = null;
+            }
+            // 타워 상세정보 UI가 화면에 활성화 되어 있는 상태일 때 실행
+            else if (_towerDetailInfoUIController.gameObject.activeSelf)
+            {
+                _pointerEventData.position = Input.mousePosition;
+
+                if (_resultList.Count != 0) _resultList.Clear();
+                // Tower Detail Info Canvas 안에 배치된 UI와 충돌하는 광선을 발사한다.
+                _towerDetailInfoGraphicRay.Raycast(_pointerEventData, _resultList);
+
+                for (int i = 0; i < _resultList.Count; i++)
+                {
+                    // 타워 상세정보 UI를 터치하는 경우 자동으로 비활성화 되는 타이머를 초기화 시킨다.
+                    if (_resultList[i].gameObject.CompareTag("TowerDetailInfoUI"))
+                    {
+                        _towerDetailInfoUIController.ResetHideDelay();
+                        break;
+                    }
+                }
             }
         }
     }

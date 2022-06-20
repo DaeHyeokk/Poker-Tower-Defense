@@ -37,9 +37,7 @@ public class TowerLevel
     {
         // Tower가 최대 등급에 도달했을 경우 작업을 수행하지 않는다
         if (_level >= 3)
-        {
             return false;
-        }
 
         _level++;
         UpdateLevelImage();

@@ -83,7 +83,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8d9a90786ce26dc49ae1bcabc38c6cd9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _deltaTimeMode: 0
+  _deltaTimeMode: 1
   _fadeTime: 0.7
   _text: {fileID: 5329889208907698866}
 --- !u!23 &3597401282052192200

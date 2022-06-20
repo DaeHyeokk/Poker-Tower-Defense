@@ -24,7 +24,11 @@ public class Movement2D : MonoBehaviour
     private void Update()
     {
         if (_isStop) return;
-        transform.position += _moveDirection * moveSpeed * Time.deltaTime;
+
+        if (_deltaTimeMode == DeltaTimeMode.GameTime)
+            transform.position += _moveDirection * moveSpeed * Time.deltaTime;
+        else
+            transform.position += _moveDirection * moveSpeed * Time.unscaledDeltaTime;
     }
 
     public void MoveTo(Vector3 direction)

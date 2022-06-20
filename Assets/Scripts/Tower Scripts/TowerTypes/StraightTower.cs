@@ -77,7 +77,7 @@ public class StraightTower : Tower
         SetBuffRangeParticleScale();
     }
 
-    protected override void Update()
+    protected override void RotateTower()
     {
         if (onTile != null)
             rotater2D.NaturalRotate();

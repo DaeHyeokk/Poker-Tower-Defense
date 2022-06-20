@@ -39,7 +39,7 @@ public class MissionBossEnemy : FieldBossEnemy
             _limitTimeText.text = missingCount.ToString();
         }
 
-        if (this.gameObject.activeInHierarchy)
+        if (this.gameObject.activeSelf)
             OnMissing();
     }
 

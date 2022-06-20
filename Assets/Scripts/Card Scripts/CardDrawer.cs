@@ -41,7 +41,7 @@ public class CardDrawer
         UpdateHandInfo();
     }
 
-    public void ChangeCard(int changeIndex)
+    public void ChangeRandomCard(int changeIndex)
     {
         // 새로운 카드를 뽑고 정보를 저장하기 전에 바꾸기 전 카드의 index정보를 임시로 저장해둔다.
         int changeBitIndex = _drawCards[changeIndex].index;
@@ -55,6 +55,17 @@ public class CardDrawer
 
         // 족보 정보를 업데이트 한다.
         UpdateHandInfo();
+    }
+
+    public void ChangeSelectCard(int changeIndex, int cardIndex)
+    {
+        // 바꾸고자 하는 카드의 index번째 비트를 끈다.
+        _drawCardsMasking &= ~((long)1 << _drawCards[changeIndex].index);
+        // 새로 바꾼 카드의 index번째 비트를 켠다.
+        _drawCardsMasking |= ((long)1 << cardIndex);
+
+        // 바꾼 카드 정보를 저장
+        _drawCards[changeIndex].SetCard(cardIndex);
     }
 
     private void DrawCard(int index)

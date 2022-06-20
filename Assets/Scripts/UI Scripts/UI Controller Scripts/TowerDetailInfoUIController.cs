@@ -10,7 +10,7 @@ public class TowerDetailInfoUIController : MonoBehaviour
     [SerializeField]
     private Image _towerImage;
     [SerializeField]
-    private Image _lockButtonImage;
+    private Image _lockImage;
     [SerializeField]
     private Sprite _lockSprite;
     [SerializeField]
@@ -30,10 +30,12 @@ public class TowerDetailInfoUIController : MonoBehaviour
     [SerializeField]
     private TextMeshProUGUI _specialAttackDetailText;
     [SerializeField]
+    private Slider _hideTimerSlider;
+    [SerializeField]
     private float _hideDelay;
 
     private PopupUIAnimation _popupUIAnimation;
-    private WaitForSecondsRealtime _realOneSecond;
+    private WaitForSecondsRealtime _realPointZeroFiveSecond = new(0.05f);
     private Tower _tower;
     private float _damage;
     private float _attackRate;
@@ -47,8 +49,6 @@ public class TowerDetailInfoUIController : MonoBehaviour
         _popupUIAnimation = GetComponent<PopupUIAnimation>();
         // 팝업 애니메이션 중 점점 작아지는 메소드가 완료된 후 수행할 작업 구독. (오브젝트 비활성화)
         _popupUIAnimation.onCompletionSmaller += () => this.gameObject.SetActive(false);
-
-        _realOneSecond = new(1f);
     }
 
     public void Setup(Tower tower)
@@ -61,8 +61,11 @@ public class TowerDetailInfoUIController : MonoBehaviour
         _attackRate = tower.attackRate;
         _upgradeDIP = tower.upgradeDIP;
         _upgradeRIP = tower.upgradeRIP;
+
         _remainHideDelay = _hideDelay;
-        
+        _hideTimerSlider.maxValue = _hideDelay;
+        _hideTimerSlider.value = _hideDelay;
+
         // 소수점 첫번째 자리에서 반올림
         _damageText.text = Mathf.Round(_damage).ToString();
         // 소수점 두번째 자리에서 반올림
@@ -102,14 +105,23 @@ public class TowerDetailInfoUIController : MonoBehaviour
     {
         while(_remainHideDelay > 0)
         {
-            yield return _realOneSecond;
-            if (!_isLocking) _remainHideDelay--;
+            yield return _realPointZeroFiveSecond;
+            if (!_isLocking)
+            {
+                _remainHideDelay -= 0.05f;
+                _hideTimerSlider.value -= 0.05f;
+            }
         }
 
         HideObject();
     }
 
-    public void ResetHideDelay() => _remainHideDelay = _hideDelay;
+    public void ResetHideDelay()
+    {
+
+        _remainHideDelay = _hideDelay;
+        _hideTimerSlider.value = _hideDelay;
+    }
 
     public void HideObject()
     {
@@ -120,13 +132,15 @@ public class TowerDetailInfoUIController : MonoBehaviour
     {
         if(_isLocking)
         {
+            ResetHideDelay();
             _isLocking = false;
-            _lockButtonImage.sprite = _unlockSprite;
+            _lockImage.sprite = _unlockSprite;
         }
         else
         {
+            _hideTimerSlider.value = 0f;
             _isLocking = true;
-            _lockButtonImage.sprite = _lockSprite;
+            _lockImage.sprite = _lockSprite;
         }
     }
 }
