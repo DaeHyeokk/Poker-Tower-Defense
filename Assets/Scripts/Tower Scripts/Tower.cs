@@ -60,6 +60,9 @@ public abstract class Tower : MonoBehaviour
         }
     }
 
+    protected readonly WaitForFixedUpdate waitForFixedUpdate = new();
+
+    protected float remainAttackDelay { get; set; }
     protected int attackCount { get; set; }
     protected int specialAttackCount { get; private set; }
 
@@ -97,16 +100,23 @@ public abstract class Tower : MonoBehaviour
 
             if (_attackRate == value) return;
             else
+            {
+                float delaySpent = _attackRate - remainAttackDelay;
                 _attackRate = value;
+                remainAttackDelay = _attackRate - delaySpent;
+            }
 
+            /*
             // 공격속도 값이 변화했기 때문에 AttackTarget() 코루틴 함수의 딜레이에 사용되는 waitForSeconds 변수 업데이트.
             _attackDelay = new(_attackRate);
+            */
         }
     }
     public float range => _towerData.weapons[level].range;
     public int maxTargetCount => _towerData.weapons[level].maxTargetCount;
     public int salesGold => _towerData.weapons[level].salesGold;
     public WaitForSeconds attackDelay => _attackDelay;
+
     public virtual Tile onTile
     {
         get => _onTile;
@@ -164,8 +174,11 @@ public abstract class Tower : MonoBehaviour
         _onTile = null;
     }
 
-    private void Update()
+    private void FixedUpdate()
     {
+        if(_onTile != null)
+            _targetDetector.SearchTarget();
+
         UpdateAttackRate();
         RotateTower();
     }
@@ -175,12 +188,14 @@ public abstract class Tower : MonoBehaviour
     protected virtual void RotateTower()
     {
         if (_targetDetector.targetList.Count > 0)
-            //if(_targetDetector.targetList[0] != null)
             _rotater2D.NaturalLookAtTarget(_targetDetector.targetList[0].transform);
     }
 
     public virtual void Setup()
     {
+        _towerLevel.Reset();
+        _targetDetector.ResetTarget();
+
         attackCount = 0;
         increaseAttackRate = 0;
         increaseDamageRate = 0;
@@ -188,23 +203,7 @@ public abstract class Tower : MonoBehaviour
         _towerColor.ChangeRandomColor();
         UpdateDetailInfo();
 
-        StartCoroutine(SearchTarget());
         StartCoroutine(AttackTarget());
-    }
-
-    
-    private IEnumerator SearchTarget()
-    {
-        while(true)
-        {
-            // 타일 위에 배치된 상태가 아니라면 적을 탐색하지 않는다.
-            if (onTile == null)
-                yield return null;
-
-            _targetDetector.SearchTarget();
-
-            yield return null;
-        }
     }
 
     protected virtual IEnumerator AttackTarget()
@@ -213,23 +212,30 @@ public abstract class Tower : MonoBehaviour
         {
             // 공격할 타겟이 없다면 공격하지 않는다.
             if (_targetDetector.targetList.Count == 0)
-            //if (_targetDetector.targetList[0] == null)
-                yield return null;
+                yield return waitForFixedUpdate;
             else
             {
                 attackCount++;
 
                 for (int i = 0; i < _targetDetector.targetList.Count; i++)
                 {
-                    if(attackCount < specialAttackCount)
+                    if (attackCount < specialAttackCount)
                         ShotProjectile(_targetDetector.targetList[i], AttackType.Basic);
                     else
                         ShotProjectile(_targetDetector.targetList[i], AttackType.Special);
                 }
 
-                if (attackCount >= specialAttackCount) attackCount = 0;
+                if (attackCount >= specialAttackCount)
+                    attackCount = 0;
 
-                yield return attackDelay;
+                //yield return attackDelay;
+
+                remainAttackDelay = attackRate;
+                while(remainAttackDelay > 0)
+                {
+                    yield return waitForFixedUpdate;
+                    remainAttackDelay -= Time.fixedDeltaTime;
+                }
             }
         }
     }
@@ -253,19 +259,27 @@ public abstract class Tower : MonoBehaviour
     {
         ParticlePlayer.instance.PlayRangeAttack(target.transform, range, (int)_towerColor.colorType);
 
+        /*
         Collider2D[] collider2D = Physics2D.OverlapCircleAll(target.transform.position, range * 0.5f);
 
         for (int i = 0; i < collider2D.Length; i++)
             for (int j = 0; j < baseEnemyInflictorList.Count; j++)
                 if(collider2D[i].gameObject.activeSelf)
                     baseEnemyInflictorList[j].Inflict(collider2D[i].GetComponent<Enemy>());
+        */
+
+        targetDetector.SearchTargetWithinRange(target.transform, range);
+        for (int i = 0; i < targetDetector.targetWithinRangeList.Count; i++)
+            for (int j = 0; j < baseEnemyInflictorList.Count; j++)
+                if (targetDetector.targetWithinRangeList[i].gameObject.activeSelf)
+                    baseEnemyInflictorList[j].Inflict(targetDetector.targetWithinRangeList[i]);
+
+        targetDetector.targetWithinRangeList.Clear();
     }
 
     protected virtual void BaseInflict(Tower target, float range)
     {
-        ParticlePlayer.instance.PlayRangeAttack(target.transform, range, (int)_towerColor.colorType);
-
-        Collider[] collider = Physics.OverlapSphere(target.transform.position, range / 2);
+        Collider[] collider = Physics.OverlapSphere(target.transform.position, range * 0.5f);
 
         for (int i = 0; i < collider.Length; i++)
             for (int j = 0; j < baseEnemyInflictorList.Count; j++)
@@ -291,17 +305,27 @@ public abstract class Tower : MonoBehaviour
     {
         ParticlePlayer.instance.PlayRangeAttack(target.transform, range, (int)_towerColor.colorType);
 
-        Collider2D[] collider2D = Physics2D.OverlapCircleAll(target.transform.position, range / 2);
+        /*
+        Collider2D[] collider2D = Physics2D.OverlapCircleAll(target.transform.position, range * 0.5f);
 
         for (int i = 0; i < collider2D.Length; i++)
             for (int j = 0; j < specialEnemyInflictorList.Count; j++)
                 if (collider2D[i].gameObject.activeSelf)
                     specialEnemyInflictorList[j].Inflict(collider2D[i].GetComponent<Enemy>());
+        */
+
+        targetDetector.SearchTargetWithinRange(target.transform, range);
+        for (int i = 0; i < targetDetector.targetWithinRangeList.Count; i++)
+            for (int j = 0; j < specialEnemyInflictorList.Count; j++)
+                if (targetDetector.targetWithinRangeList[i].gameObject.activeSelf)
+                    specialEnemyInflictorList[j].Inflict(targetDetector.targetWithinRangeList[i]);
+
+        targetDetector.targetWithinRangeList.Clear();
     }
 
     protected virtual void SpecialInflict(Tower target, float range)
     {
-        Collider[] collider = Physics.OverlapSphere(target.transform.position, range / 2);
+        Collider[] collider = Physics.OverlapSphere(target.transform.position, range * 0.5f);
 
         for (int i = 0; i < collider.Length; i++)
             for (int j = 0; j < specialEnemyInflictorList.Count; j++)
@@ -416,7 +440,6 @@ public abstract class Tower : MonoBehaviour
 
         followTower.Setup(this);
         followTower.gameObject.SetActive(true);
-        followTower.StartFollowMousePosition();
 
         Color color = _towerRenderer.color;
         color.a = onTile != null ? 0.3f : 0f;
@@ -429,7 +452,6 @@ public abstract class Tower : MonoBehaviour
     {
         FollowTower followTower = _towerBuilder.followTower;
 
-        followTower.StopFollowMousePosition();
         followTower.gameObject.SetActive(false);
 
         _towerRenderer.color = _towerColor.color;
@@ -443,9 +465,6 @@ public abstract class Tower : MonoBehaviour
             onTile = null;
 
         _towerRenderer.transform.rotation = Quaternion.Euler(0f, 0f, 0f);
-
-        _towerLevel.Reset();
-        _targetDetector.ResetTarget();
 
         _towerBuilder.towerPoolList[towerIndex].ReturnObject(this);
     }

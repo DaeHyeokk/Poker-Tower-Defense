@@ -3,23 +3,23 @@ using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
 
-public abstract class FadeText : MonoBehaviour
+public abstract class FadeTextObject : MonoBehaviour
 {
     [SerializeField]
     private TextMeshPro _textMeshPro;
     [SerializeField]
-    private TextFadeAnimation _textFadeAnimation;
-
+    private TextObjectFadeAnimation _textObjectFadeAnimation;
 
     public TextMeshPro textMeshPro => _textMeshPro;
-    public TextFadeAnimation textFadeAnimation => _textFadeAnimation;
+    public TextObjectFadeAnimation textObjectFadeAnimation => _textObjectFadeAnimation;
 
     private void Awake()
     {
-        _textFadeAnimation.onCompletionFadeOut += ReturnPool;
+        _textObjectFadeAnimation.onCompletionFadeOut += ReturnPool;
     }
 
     public abstract void StartAnimation();
+
     protected abstract void ReturnPool();
 }
 

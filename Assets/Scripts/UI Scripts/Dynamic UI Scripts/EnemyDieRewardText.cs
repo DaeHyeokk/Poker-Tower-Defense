@@ -3,12 +3,9 @@ using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
 
-public class EnemyDieRewardText : FadeText
+public class EnemyDieRewardText : FadeTextObject
 {
-    public override void StartAnimation()
-    {
-        base.textFadeAnimation.FadeOutText();
-    }
+    public override void StartAnimation() => base.textObjectFadeAnimation.FadeOutText();
 
     protected override void ReturnPool() => UIManager.instance.enemyDieRewardTextPool.ReturnObject(this);
 

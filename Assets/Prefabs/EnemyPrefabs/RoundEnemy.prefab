@@ -170,9 +170,6 @@ GameObject:
   m_Component:
   - component: {fileID: 2829038141020189677}
   - component: {fileID: 1618764219061026179}
-  - component: {fileID: 2863491204728079660}
-  - component: {fileID: 5764725980874802488}
-  - component: {fileID: 7547752094694874544}
   m_Layer: 0
   m_Name: RoundEnemy
   m_TagString: Enemy
@@ -217,58 +214,6 @@ MonoBehaviour:
   _increaseReceiveDamageSprite: {fileID: 854257253769790636}
   _slowEffect: {fileID: 7887198972672471530}
   _stunEffect: {fileID: 2817740357725864666}
---- !u!114 &2863491204728079660
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2829038141020189675}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fd4eb539c46c1ad4f990711c45fb91b9, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _deltaTimeMode: 0
-  _moveDirection: {x: 0, y: 0, z: 0}
-  _moveSpeed: 0
---- !u!58 &5764725980874802488
-CircleCollider2D:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2829038141020189675}
-  m_Enabled: 1
-  m_Density: 1
-  m_Material: {fileID: 0}
-  m_IsTrigger: 1
-  m_UsedByEffector: 0
-  m_UsedByComposite: 0
-  m_Offset: {x: 0, y: 0}
-  serializedVersion: 2
-  m_Radius: 0.5
---- !u!50 &7547752094694874544
-Rigidbody2D:
-  serializedVersion: 4
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2829038141020189675}
-  m_BodyType: 0
-  m_Simulated: 1
-  m_UseFullKinematicContacts: 0
-  m_UseAutoMass: 0
-  m_Mass: 1
-  m_LinearDrag: 0
-  m_AngularDrag: 0.05
-  m_GravityScale: 0
-  m_Material: {fileID: 0}
-  m_Interpolate: 0
-  m_SleepingMode: 1
-  m_CollisionDetection: 0
-  m_Constraints: 0
 --- !u!1 &2829038141234387290
 GameObject:
   m_ObjectHideFlags: 0
@@ -473,7 +418,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: 0, y: 0.8}
-  m_SizeDelta: {x: 1.2, y: 0.25}
+  m_SizeDelta: {x: 1.5, y: 0.25}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!223 &2829038141466346611
 Canvas:
@@ -715,6 +660,10 @@ PrefabInstance:
     - target: {fileID: 4929119851235406778, guid: 1a436e1e526705a408b9d2fd10603744, type: 3}
       propertyPath: m_IsActive
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4929119851250209658, guid: 1a436e1e526705a408b9d2fd10603744, type: 3}
+      propertyPath: m_SortingOrder
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 4929119851250313946, guid: 1a436e1e526705a408b9d2fd10603744, type: 3}
       propertyPath: looping

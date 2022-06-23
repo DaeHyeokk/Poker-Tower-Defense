@@ -35,20 +35,24 @@ public class TowerDetailInfoUIController : MonoBehaviour
     private float _hideDelay;
 
     private PopupUIAnimation _popupUIAnimation;
-    private WaitForSecondsRealtime _realPointZeroFiveSecond = new(0.05f);
     private Tower _tower;
     private float _damage;
     private float _attackRate;
     private float _upgradeDIP;
     private float _upgradeRIP;
-    private float _remainHideDelay;
+    public float _remainHideDelay;
     private bool _isLocking;
+    private bool _isHiding;
+
+    private readonly WaitForFixedUpdate _waitForFixedUpdate = new();
+
+    public PopupUIAnimation popupUIAnimation => _popupUIAnimation;
 
     private void Awake()
     {
         _popupUIAnimation = GetComponent<PopupUIAnimation>();
         // 팝업 애니메이션 중 점점 작아지는 메소드가 완료된 후 수행할 작업 구독. (오브젝트 비활성화)
-        _popupUIAnimation.onCompletionSmaller += () => this.gameObject.SetActive(false);
+        _popupUIAnimation.onCompletionSmaller += () => UIManager.instance.HideTowerDetailInfo();
     }
 
     public void Setup(Tower tower)
@@ -62,17 +66,12 @@ public class TowerDetailInfoUIController : MonoBehaviour
         _upgradeDIP = tower.upgradeDIP;
         _upgradeRIP = tower.upgradeRIP;
 
-        _remainHideDelay = _hideDelay;
         _hideTimerSlider.maxValue = _hideDelay;
         _hideTimerSlider.value = _hideDelay;
 
-        // 소수점 첫번째 자리에서 반올림
         _damageText.text = _damage.ToString();
-        // 소수점 두번째 자리에서 반올림
         _attackRateText.text = _attackRate.ToString();
-        // 소수점 첫번째 자리에서 반올림
         _upgradeDIPText.text = _upgradeDIP.ToString();
-        // 소수점 네번째 자리에서 반올림
         _upgradeRIPText.text = _upgradeRIP.ToString();
 
         _baseAttackDetailText.text = tower.detailBaseAttackInfo.ToString();
@@ -84,8 +83,12 @@ public class TowerDetailInfoUIController : MonoBehaviour
         _popupUIAnimation.StartBiggerAnimation();
         StartCoroutine(AutoHideUICoroutine());
     }
+    private void OnDisable()
+    {
+        _isHiding = false;
+    }
 
-    private void Update()
+    private void FixedUpdate()
     {
         if (_damage != _tower.damage)
         {
@@ -96,20 +99,21 @@ public class TowerDetailInfoUIController : MonoBehaviour
         if (_attackRate != _tower.attackRate)
         {
             _attackRate = _tower.attackRate;
-            _attackRateText.text = Math.Round(_attackRate, 2).ToString();
+            _attackRateText.text = _attackRate.ToString();
         }
     }
 
     // 시간이 지나면 자동으로 사라지는 코루틴 메소드
     private IEnumerator AutoHideUICoroutine()
     {
+        _remainHideDelay = _hideDelay;
         while(_remainHideDelay > 0)
         {
-            yield return _realPointZeroFiveSecond;
+            yield return _waitForFixedUpdate;
             if (!_isLocking)
             {
-                _remainHideDelay -= 0.05f;
-                _hideTimerSlider.value -= 0.05f;
+                _remainHideDelay -= Time.fixedUnscaledDeltaTime;
+                _hideTimerSlider.value -= Time.fixedUnscaledDeltaTime;
             }
         }
 
@@ -118,13 +122,16 @@ public class TowerDetailInfoUIController : MonoBehaviour
 
     public void ResetHideDelay()
     {
-
         _remainHideDelay = _hideDelay;
         _hideTimerSlider.value = _hideDelay;
     }
 
     public void HideObject()
     {
+        // UI가 비활성화되는 애니메이션을 실행중일 때 화면을 터치할 경우 애니메이션이 반복되는 문제 방지.
+        if (_isHiding) return;
+
+        _isHiding = true;
         _popupUIAnimation.StartSmallerAnimation();
     }
 

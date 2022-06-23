@@ -21,7 +21,7 @@ public class Movement2D : MonoBehaviour
         set => _moveSpeed = value;
     }
 
-    private void Update()
+    private void FixedUpdate()
     {
         if (_isStop) return;
 

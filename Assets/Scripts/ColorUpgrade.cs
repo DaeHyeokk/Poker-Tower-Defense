@@ -31,7 +31,7 @@ public class ColorUpgrade : MonoBehaviour
     {
         if (_colorUpgradeCosts[index] > GameManager.instance.mineral)
         {
-            UIManager.instance.ShowSystemMessage("미네랄이 부족합니다.");
+            UIManager.instance.ShowSystemMessage(SystemMessage.MessageType.NotEnoughMineral);
             return;
         }
 

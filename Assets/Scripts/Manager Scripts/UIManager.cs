@@ -6,7 +6,7 @@ using UnityEngine.UI;
 using TMPro;
 
 public class UIManager : MonoBehaviour
-{
+{ 
     private static UIManager _instance;
     public static UIManager instance
     {
@@ -36,10 +36,15 @@ public class UIManager : MonoBehaviour
     [SerializeField]
     private GameMenuUIController _gameMenuUIController;
 
+    [Header("PopUp UI")]
+    [SerializeField]
+    private Canvas _popupUICanvas;
+    [SerializeField]
+    private TowerDetailInfoUIController _towerDetailInfoUIController;
+
     [Header("Fade Text UI")]
     [SerializeField]
-    private GameObject _systemMessagePrefab;
-    private ObjectPool<SystemMessage> _systemMessagePool;
+    private SystemMessage _systemMessage;
     [SerializeField]
     private GameObject _damageTakenTextPrefab;
     private ObjectPool<DamageTakenText> _damageTakenTextPool;
@@ -47,13 +52,14 @@ public class UIManager : MonoBehaviour
     private GameObject _enemyDieRewardTextPrefab;
     private ObjectPool<EnemyDieRewardText> _enemyDieRewardTextPool;
 
+    private readonly WaitForSecondsRealtime _gameStartFadeOutDelay = new(0.1f);
+
     public ScreenCover screenCover => _screenCover;
     public TowerInfomation towerInfomation => _towerInfomation;
     public GambleUIController gambleUIController => _gambleUIController;
     public MissionBossUIController missionBossUIController => _missionBossUIController;
     public ColorUpgradeUIController colorUpgradeUIController => _colorUpgradeUIController;
 
-    public ObjectPool<SystemMessage> systemMessagePool => _systemMessagePool;
     public ObjectPool<DamageTakenText> damageTakenTextPool => _damageTakenTextPool;
     public ObjectPool<EnemyDieRewardText> enemyDieRewardTextPool => _enemyDieRewardTextPool;
 
@@ -62,19 +68,29 @@ public class UIManager : MonoBehaviour
         if (instance != this)
             Destroy(gameObject);    // ÀÚ½ÅÀ» ÆÄ±«
 
-        _systemMessagePool = new(_systemMessagePrefab, 5);
         _damageTakenTextPool = new(_damageTakenTextPrefab, 10);
         _enemyDieRewardTextPool = new(_enemyDieRewardTextPrefab, 10);
     }
 
-    public void ShowSystemMessage(string message)
+    public void GameStartScreenCoverFadeOut()
     {
-        SystemMessage systemMessage = _systemMessagePool.GetObject();
+        _screenCover.gameObject.SetActive(true);
+        StartCoroutine(GameStartFadeOutDelayCoroutine());
+    }
+    private IEnumerator GameStartFadeOutDelayCoroutine()
+    { 
+        yield return _gameStartFadeOutDelay;
+        _screenCover.FadeOut(Color.black, 0.5f);
+    }
 
-        systemMessage.transform.position = Vector3.zero;
-        systemMessage.textMeshPro.text = message;
+    public void ShowSystemMessage(SystemMessage.MessageType messageType)
+    {
+        if (_systemMessage.gameObject.activeSelf)
+            _systemMessage.gameObject.SetActive(false);
 
-        systemMessage.StartAnimation();
+        _systemMessage.Setup(messageType);
+        _systemMessage.gameObject.SetActive(true);
+        _systemMessage.StartAnimation();
     }
 
     public void ShowDamageTakenText(float damage, Transform target, DamageTakenType damageTakenType)
@@ -111,6 +127,18 @@ public class UIManager : MonoBehaviour
     {
         _towerInfomation.gameObject.SetActive(false);
         _gambleUIController.gameObject.SetActive(true);
+    }
+
+    public void ShowTowerDetailInfo()
+    {
+        _popupUICanvas.gameObject.SetActive(true);
+        _towerDetailInfoUIController.gameObject.SetActive(true);
+    }
+
+    public void HideTowerDetailInfo()
+    {
+        _popupUICanvas.gameObject.SetActive(false);
+        _towerDetailInfoUIController.gameObject.SetActive(false);
     }
 
     public void ShowGameMenu()

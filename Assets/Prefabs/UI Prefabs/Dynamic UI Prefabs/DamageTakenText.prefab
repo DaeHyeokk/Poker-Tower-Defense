@@ -53,6 +53,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fd4eb539c46c1ad4f990711c45fb91b9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _deltaTimeMode: 0
   _moveDirection: {x: 0, y: 1, z: 0}
   _moveSpeed: 1.6
 --- !u!114 &5992163405501991828
@@ -68,7 +69,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _textMeshPro: {fileID: 4791661860645922614}
-  _textFadeAnimation: {fileID: 306553780866840651}
+  _textObjectFadeAnimation: {fileID: 306553780866840651}
   _movement2D: {fileID: 6295824775307201331}
   _normalDamageFontSize: 1.6
   _normalhighlightFontSize: 2.6
@@ -89,7 +90,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8d9a90786ce26dc49ae1bcabc38c6cd9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _fadeTime: 0.5
+  _deltaTimeMode: 0
+  _lerpSpeed: 2
   _text: {fileID: 4791661860645922614}
 --- !u!23 &6664996395323854646
 MeshRenderer:

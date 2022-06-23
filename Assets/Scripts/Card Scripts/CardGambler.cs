@@ -51,7 +51,7 @@ public class CardGambler : MonoBehaviour
         // Gamble을 진행하기 위한 100골드를 보유하고 있지 않다면 수행하지 않는다.
         if (GameManager.instance.gold < 100)
         {
-            UIManager.instance.ShowSystemMessage("골드가 부족합니다.");
+            UIManager.instance.ShowSystemMessage(SystemMessage.MessageType.NotEnoughGold);
             return;
         }
 
@@ -106,7 +106,7 @@ public class CardGambler : MonoBehaviour
         // 플레이어의 ChangeChance 횟수가 0 이하라면 수행하지 않는다.
         if (GameManager.instance.changeChance <= 0)
         {
-            UIManager.instance.ShowSystemMessage("카드 교환권이 부족합니다.");
+            UIManager.instance.ShowSystemMessage(SystemMessage.MessageType.NotEnoughChangeChance);
             return;
         }
 
@@ -132,7 +132,7 @@ public class CardGambler : MonoBehaviour
         // 플레이어의 JokerCard 개수가 0개 이하라면 수행하지 않는다.
         if (GameManager.instance.jokerCard <= 0)
         {
-            UIManager.instance.ShowSystemMessage("조커 카드가 부족합니다.");
+            UIManager.instance.ShowSystemMessage(SystemMessage.MessageType.NotEnoughJokerCard);
             return;
         }
 
@@ -143,7 +143,7 @@ public class CardGambler : MonoBehaviour
         // 플레이어의 JokerCard 개수가 0개 이하라면 수행하지 않는다.
         if (GameManager.instance.jokerCard <= 0)
         {
-            UIManager.instance.ShowSystemMessage("조커 카드가 부족합니다.");
+            UIManager.instance.ShowSystemMessage(SystemMessage.MessageType.NotEnoughJokerCard);
             return;
         }
     }

@@ -13,12 +13,7 @@ public class MissionBossUIController : MonoBehaviour
     [SerializeField]
     private TextMeshProUGUI[] _missionBossCooltimeTexts;
 
-    private WaitForSeconds _waitOneSecond;
-
-    private void Awake()
-    {
-        _waitOneSecond = new WaitForSeconds(1f);
-    }
+    private readonly WaitForFixedUpdate _waitForFixedUpdate = new();
 
     public void SetMissionBossCooltimeSlider(int index, float maxValue)
     {
@@ -32,7 +27,7 @@ public class MissionBossUIController : MonoBehaviour
         StartCoroutine(MissionBossCooltimeCoroutine(bossLevel, cooltime));
     }
 
-    public IEnumerator MissionBossCooltimeCoroutine(int bossLevel, float cooltime)
+    private IEnumerator MissionBossCooltimeCoroutine(int bossLevel, float cooltime)
     {
         // 미션 보스를 소환하는 버튼의 상호작용 기능 해제
         _missionBossButtons[bossLevel].interactable = false;
@@ -45,7 +40,13 @@ public class MissionBossUIController : MonoBehaviour
 
         while (remainCooltime > 0)
         {
-            yield return _waitOneSecond;
+            float oneSecond = 1f;
+            while(oneSecond > 0)
+            {
+                yield return _waitForFixedUpdate;
+                oneSecond -= Time.fixedDeltaTime;
+            }
+
             remainCooltime -= 1f;
             _missionBossCooltimeTexts[bossLevel].text = remainCooltime.ToString();
             _missionBossCooltimeSliders[bossLevel].value--;

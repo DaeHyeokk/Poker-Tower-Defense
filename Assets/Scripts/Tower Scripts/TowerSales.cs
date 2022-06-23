@@ -30,7 +30,7 @@ public class TowerSales : MonoBehaviour
         if (_randomTowerRewardText.gameObject.activeSelf)
             TowerBuilder.instance.BuildTower(Random.Range(0, 10));
 
-        UIManager.instance.ShowSystemMessage("판매 완료!");
+        UIManager.instance.ShowSystemMessage(SystemMessage.MessageType.CompletionTowerSales);
         _tower.ReturnPool();
     }
 }

@@ -14,6 +14,8 @@ public class WaveSystem : MonoBehaviour
     [SerializeField]
     private WaveSystemUIController _waveSystemUIController;
     [SerializeField]
+    private WaveStartMessage _waveStartMessage;
+    [SerializeField]
     private EnemySpawner _enemySpawner;
 
     private int _wave;
@@ -22,7 +24,8 @@ public class WaveSystem : MonoBehaviour
     private int _finalWave = 40;
     private bool _isBossWave = false;
 
-    private readonly WaitForSeconds _oneSecond = new(1f);
+    //private readonly WaitForSeconds _oneSecond = new(1f);
+    private readonly WaitForFixedUpdate _waitForFixedUpdate = new();
 
     public int wave
     {
@@ -52,6 +55,8 @@ public class WaveSystem : MonoBehaviour
         }
     }
 
+    public bool isBossWave => _isBossWave;
+
     private void Awake()
     {
         wave = 0;
@@ -66,14 +71,20 @@ public class WaveSystem : MonoBehaviour
         second = 10;
         while(second >= 0)
         {
-            yield return _oneSecond;
+            float oneSecond = 1f;
+            while(oneSecond > 0)
+            {
+                oneSecond -= Time.fixedDeltaTime;
+                yield return _waitForFixedUpdate;
+            }
+     
             if (second == 0)
                 break;
             else
                 second--;
         }
 
-        while (wave <= _finalWave)
+        while (wave < _finalWave)
         {
             IncreaseWave();
 
@@ -81,7 +92,12 @@ public class WaveSystem : MonoBehaviour
             {
                 while (second >= 0)
                 {
-                    yield return _oneSecond;
+                    float oneSecond = 1f;
+                    while (oneSecond > 0)
+                    {
+                        oneSecond -= Time.fixedDeltaTime;
+                        yield return _waitForFixedUpdate;
+                    }
 
                     if (second == 0)
                         break;
@@ -127,5 +143,7 @@ public class WaveSystem : MonoBehaviour
             minute = _bossLimitMinute;
             second = _bossLimitSecond;
         }
+
+        _waveStartMessage.gameObject.SetActive(true);
     }
 }

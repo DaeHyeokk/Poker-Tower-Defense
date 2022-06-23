@@ -14,7 +14,6 @@ public class RoundBossEnemy : FieldBossEnemy
 
     protected override void ReturnObject()
     {
-        enemySpawner.roundEnemyList.Remove(this);
         this.gameObject.SetActive(false);
     }
 }

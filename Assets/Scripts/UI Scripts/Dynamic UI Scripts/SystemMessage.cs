@@ -3,29 +3,72 @@ using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
 
-public class SystemMessage : FadeText
+public class SystemMessage : FadeTextUI
 {
-    [SerializeField]
-    private Movement2D _movement2D;
+    public enum MessageType { NotEnoughGold, NotEnoughMineral, NotEnoughChangeChance, NotEnoughJokerCard, CompletionColorChange, CompletionTowerSales }
 
-    private WaitForSeconds _animationStartDelay = new(0.03f);
+    private readonly WaitForFixedUpdate _waitForFixedUpdate = new();
+    private readonly float _animationStartDelay = 0.1f;
+
+    private readonly string _notEnoughGoldString = "골드가 부족합니다.";
+    private readonly string _notEnoughMineralString = "미네랄이 부족합니다.";
+    private readonly string _notEnoughChangeChanceString = "카드교환권이 부족합니다.";
+    private readonly string _notEnoughJokerCard = "조커카드가 부족합니다.";
+    private readonly string _completionColorChangeString = "색 변경 완료!";
+    private readonly string _completionTowerSalesString = "판매 완료!";
+
+    public void Setup(MessageType messageType)
+    {
+        switch (messageType)
+        {
+            case SystemMessage.MessageType.NotEnoughGold:
+                textMeshProUGUI.color = Color.red;
+                textMeshProUGUI.text = _notEnoughGoldString;
+                break;
+
+            case SystemMessage.MessageType.NotEnoughMineral:
+                textMeshProUGUI.color = Color.red;
+                textMeshProUGUI.text = _notEnoughMineralString;
+                break;
+
+            case SystemMessage.MessageType.NotEnoughChangeChance:
+                textMeshProUGUI.color = Color.red;
+                textMeshProUGUI.text = _notEnoughChangeChanceString;
+                break;
+
+            case SystemMessage.MessageType.NotEnoughJokerCard:
+                textMeshProUGUI.color = Color.red;
+                textMeshProUGUI.text = _notEnoughJokerCard;
+                break;
+
+            case SystemMessage.MessageType.CompletionColorChange:
+                textMeshProUGUI.color = Color.white;
+                textMeshProUGUI.text = _completionColorChangeString;
+                break;
+
+            case SystemMessage.MessageType.CompletionTowerSales:
+                textMeshProUGUI.color = Color.white;
+                textMeshProUGUI.text = _completionTowerSalesString;
+                break;
+        }
+    }
 
     public override void StartAnimation()
     {
-        StartCoroutine(AnimationStartDelayCoroutine());
+        StartCoroutine(StartAnimationCoroutine());
     }
 
-    private IEnumerator AnimationStartDelayCoroutine()
+    private IEnumerator StartAnimationCoroutine()
     {
-        _movement2D.Stop();
-        
-        yield return _animationStartDelay;
+        float animationStartDelay = _animationStartDelay;
+        while(animationStartDelay > 0)
+        {
+            yield return _waitForFixedUpdate;
+            animationStartDelay -= Time.fixedUnscaledDeltaTime;
+        }
 
-        _movement2D.Move();
-        base.textFadeAnimation.FadeOutText();
+        base.textUIFadeAnimation.FadeOutText();
     }
-
-    protected override void ReturnPool() => UIManager.instance.systemMessagePool.ReturnObject(this);
 }
 
 /*

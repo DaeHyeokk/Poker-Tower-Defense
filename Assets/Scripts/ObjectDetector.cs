@@ -25,7 +25,7 @@ public class ObjectDetector : MonoBehaviour
     [SerializeField]
     private GraphicRaycaster _towerInfoGraphicRay;
     [SerializeField]
-    private GraphicRaycaster _towerDetailInfoGraphicRay;
+    private GraphicRaycaster _towerDetailInfoCanvasGraphicRay;
 
     private PointerEventData _pointerEventData;
     private List<RaycastResult> _resultList;
@@ -56,7 +56,7 @@ public class ObjectDetector : MonoBehaviour
             // 이미 타워를 움직이고 있는 상태라면 건너뛴다.
             if (_clickTower != null)
             {
-                UIManager.instance.ShowSystemMessage("이미 타워 움직이는중 터치 씹힘");
+                //UIManager.instance.ShowSystemMessage("이미 타워 움직이는중 터치 씹힘");
                 return;
             }
             // 타워 상세정보 UI가 화면에 활성화 되어 있는 상태라면 오브젝트 클릭을 입력받지 않는다.
@@ -132,7 +132,6 @@ public class ObjectDetector : MonoBehaviour
 
                     for (int i = 0; i < _resultList.Count; i++)
                     {
-                        Debug.Log(_resultList[i].gameObject.tag);
                         if (_resultList[i].gameObject.CompareTag("TowerColorChanger"))
                         {
                             _towerColorChanger.ChangeColor();
@@ -160,16 +159,29 @@ public class ObjectDetector : MonoBehaviour
                 _pointerEventData.position = Input.mousePosition;
 
                 if (_resultList.Count != 0) _resultList.Clear();
-                // Tower Detail Info Canvas 안에 배치된 UI와 충돌하는 광선을 발사한다.
-                _towerDetailInfoGraphicRay.Raycast(_pointerEventData, _resultList);
 
-                for (int i = 0; i < _resultList.Count; i++)
+                // Tower Detail Info Canvas 안에 배치된 UI와 충돌하는 광선을 발사한다.
+                // GraphicRay 범위: 상단의 Wave UI 영역과 하단의 Card Gamble UI 아래 영역을 제외한 나머지 영역
+                _towerDetailInfoCanvasGraphicRay.Raycast(_pointerEventData, _resultList);
+
+                if (_resultList.Count != 0)
                 {
-                    // 타워 상세정보 UI를 터치하는 경우 자동으로 비활성화 되는 타이머를 초기화 시킨다.
-                    if (_resultList[i].gameObject.CompareTag("TowerDetailInfoUI"))
+                    bool isHitTowerDetailInfo = false;
+                    for (int i = 0; i < _resultList.Count; i++)
                     {
-                        _towerDetailInfoUIController.ResetHideDelay();
-                        break;
+                        // 타워 상세정보 UI를 터치하는 경우 자동으로 비활성화 되는 타이머를 초기화 시킨다.
+                        if (_resultList[i].gameObject.CompareTag("TowerDetailInfoUI"))
+                        {
+                            isHitTowerDetailInfo = true;
+                            _towerDetailInfoUIController.ResetHideDelay();
+                            break;
+                        }
+                    }
+                    // Tower Detail Info UI 창을 터치하는 것이 아닌 다른 곳을 터치하면 즉시 창을 닫는다.
+                    if (!isHitTowerDetailInfo)
+                    {
+                        Debug.Log("인포창 즉시닫음");
+                        _towerDetailInfoUIController.HideObject();
                     }
                 }
             }

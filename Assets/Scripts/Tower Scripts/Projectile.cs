@@ -21,7 +21,7 @@ public class Projectile : MonoBehaviour
         _movement2D = GetComponent<Movement2D>();
         _rotater2D = GetComponent<Rotater2D>();
 
-        _movement2D.moveSpeed = 6f;
+       //_movement2D.moveSpeed = 6f;
     }
 
     public void Setup(Tower fromTower, Enemy target, Sprite projectileSprite)
@@ -32,36 +32,36 @@ public class Projectile : MonoBehaviour
         _rotater2D.LookAtTarget(_target.transform);
     }
 
-    private void Update()
+    private void FixedUpdate()
     {
         // _target 오브젝트가 씬에 활성화된 상태라면 _target을 계속 추적한다.
         if (_target.gameObject.activeSelf)
         {
-            Vector3 direction = (_target.transform.position - this.transform.position).normalized;
-            _movement2D.MoveTo(direction);
-            _rotater2D.LookAtTarget(_target.transform);
+            // target과의 거리가 0.4f 이하라면 충돌했다고 판정한다.
+            if (Vector2.Distance(this.transform.position, _target.transform.position) <= 0.4f)
+            {
+                ParticlePlayer.instance.PlayCollisionProjectile(this.transform, (int)_fromTower.towerColor.colorType);
+
+                if (actionOnCollision != null)
+                    actionOnCollision();
+
+                ReturnPool();
+            }
+            else
+            {
+                Vector3 direction = (_target.transform.position - this.transform.position).normalized;
+                _movement2D.MoveTo(direction);
+                _rotater2D.LookAtTarget(_target.transform);
+            }
         }
         else
             ReturnPool();
     }
 
-    private void OnTriggerEnter2D(Collider2D collision)
-    {
-        if (!collision.CompareTag("Enemy") 
-            || !_target.gameObject.activeSelf 
-            || collision.transform != _target.transform) return;
-
-        ParticlePlayer.instance.PlayCollisionProjectile(this.transform, (int)_fromTower.towerColor.colorType);
-
-        if(actionOnCollision != null)
-            actionOnCollision();
-
-        ReturnPool();
-    }
-
     private void ReturnPool()
     {
         actionOnCollision = null;
+        _movement2D.MoveTo(Vector3.zero);
         _projectileSpawner.projectilePool.ReturnObject(this);
     }
 }

@@ -331,8 +331,6 @@ GameObject:
   - component: {fileID: 8062379368528844629}
   - component: {fileID: 4624995105575712863}
   - component: {fileID: 3755348483712011449}
-  - component: {fileID: 6077637529227769836}
-  - component: {fileID: 2658263134379632563}
   m_Layer: 0
   m_Name: SpecialBossEnemy
   m_TagString: Enemy
@@ -388,43 +386,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _targetSprite: {fileID: 4824518791374353399}
---- !u!58 &6077637529227769836
-CircleCollider2D:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8062379368528844627}
-  m_Enabled: 1
-  m_Density: 1
-  m_Material: {fileID: 0}
-  m_IsTrigger: 1
-  m_UsedByEffector: 0
-  m_UsedByComposite: 0
-  m_Offset: {x: 0, y: 0}
-  serializedVersion: 2
-  m_Radius: 0.6
---- !u!50 &2658263134379632563
-Rigidbody2D:
-  serializedVersion: 4
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8062379368528844627}
-  m_BodyType: 0
-  m_Simulated: 1
-  m_UseFullKinematicContacts: 0
-  m_UseAutoMass: 0
-  m_Mass: 1
-  m_LinearDrag: 0
-  m_AngularDrag: 0.05
-  m_GravityScale: 0
-  m_Material: {fileID: 0}
-  m_Interpolate: 0
-  m_SleepingMode: 1
-  m_CollisionDetection: 0
-  m_Constraints: 0
 --- !u!1 &8062379368777931871
 GameObject:
   m_ObjectHideFlags: 0

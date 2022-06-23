@@ -2,60 +2,61 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.UI;
+using TMPro;
 
-public class ImageFadeAnimation : MonoBehaviour
+public class TextObjectFadeAnimation : MonoBehaviour
 {
     public enum DeltaTimeMode { GameTime, RealTime }
     [SerializeField]
     private DeltaTimeMode _deltaTimeMode;
     [SerializeField]
-    private Image _image;
-    [SerializeField]
     private float _lerpSpeed;
+    [SerializeField]
+    private TextMeshPro _text;
 
+    private readonly WaitForFixedUpdate _waitForFixedUpdate = new();
     private bool _isBlinking;
-    private WaitForFixedUpdate _waitForFixedUpdate = new();
 
     public event Action onCompletionFadeIn;
     public event Action onCompletionFadeOut;
 
     public float lerpSpeed
     {
+        get => _lerpSpeed;
         set => _lerpSpeed = value;
     }
-
     public bool isBlinking => _isBlinking;
 
-    public void FadeOutImage()
+    public void FadeOutText()
     {
-        StartCoroutine(FadeOutImageCoroutine());
+        StartCoroutine(FadeOutTextCoroutine());
     }
-    public void FadeInImage()
+    public void FadeInText()
     {
-        StartCoroutine(FadeInImageCoroutine());
+        StartCoroutine(FadeInTextCoroutine());
     }
-    public void BlinkImage()
+    public void BlinkText()
     {
         _isBlinking = true;
 
         StartCoroutine(BlinkImageCoroutine());
     }
 
-    public void StopBlinkImage()
+    public void StopBlinkText()
     {
         _isBlinking = false;
     }
 
-    private IEnumerator FadeOutImageCoroutine()
+    private IEnumerator FadeOutTextCoroutine()
     {
         // 알파 값을 1로 설정.
-        Color color = _image.color;
+        Color color = _text.color;
         color.a = 1f;
-        _image.color = color;
+        _text.color = color;
 
         float currentTime = 0f;
         float percent = 0f;
+
         // 알파 값이 0이 될 때 까지 알파 값 감소
         while (percent < 1)
         {
@@ -63,9 +64,9 @@ public class ImageFadeAnimation : MonoBehaviour
             percent = currentTime * _lerpSpeed;
             float lerp = Mathf.Lerp(1f, 0f, percent);
 
-            color = _image.color;
+            color = _text.color;
             color.a = lerp;
-            _image.color = color;
+            _text.color = color;
 
             yield return _waitForFixedUpdate;
         }
@@ -74,12 +75,12 @@ public class ImageFadeAnimation : MonoBehaviour
             onCompletionFadeOut();
     }
 
-    private IEnumerator FadeInImageCoroutine()
+    private IEnumerator FadeInTextCoroutine()
     {
-        // 알파 값을 1로 설정.
-        Color color = _image.color;
+        // 알파 값을 0으로 설정.
+        Color color = _text.color;
         color.a = 0f;
-        _image.color = color;
+        _text.color = color;
 
         float currentTime = 0f;
         float percent = 0f;
@@ -91,9 +92,9 @@ public class ImageFadeAnimation : MonoBehaviour
             percent = currentTime * _lerpSpeed;
             float lerp = Mathf.Lerp(0f, 1f, percent);
 
-            color = _image.color;
+            color = _text.color;
             color.a = lerp;
-            _image.color = color;
+            _text.color = color;
 
             yield return _waitForFixedUpdate;
         }
@@ -105,9 +106,9 @@ public class ImageFadeAnimation : MonoBehaviour
     private IEnumerator BlinkImageCoroutine()
     {
         // 알파 값을 0으로 설정.
-        Color color = _image.color;
+        Color color = _text.color;
         color.a = 0f;
-        _image.color = color;
+        _text.color = color;
 
         float currentTime = 0f;
         float percent = 0f;
@@ -115,11 +116,11 @@ public class ImageFadeAnimation : MonoBehaviour
         // 알파 값이 1이 될 때 까지 알파 값 증가
         while (percent < 1)
         {
-            // 이미지가 깜빡이는 상태가 아니라면 이미지를 완전히 투명하게 바꾼 다음 코루틴을 즉시 종료한다.
+            // 텍스트가 깜빡이는 상태가 아니라면 이미지를 완전히 투명하게 바꾼 다음 코루틴을 즉시 종료한다.
             if (!_isBlinking)
             {
                 color.a = 0f;
-                _image.color = color;
+                _text.color = color;
                 yield break;
             }
 
@@ -127,9 +128,9 @@ public class ImageFadeAnimation : MonoBehaviour
             percent = currentTime * _lerpSpeed;
             float lerp = Mathf.Lerp(0f, 1f, percent);
 
-            color = _image.color;
+            color = _text.color;
             color.a = lerp;
-            _image.color = color;
+            _text.color = color;
 
             yield return _waitForFixedUpdate;
         }
@@ -137,11 +138,11 @@ public class ImageFadeAnimation : MonoBehaviour
         // 알파 값이 0이 될 때 까지 알파 값 감소
         while (percent > 0)
         {
-            // 이미지가 깜빡이는 상태가 아니라면 이미지를 완전히 투명하게 바꾼 다음 코루틴을 즉시 종료한다.
+            // 텍스트가 깜빡이는 상태가 아니라면 이미지를 완전히 투명하게 바꾼 다음 코루틴을 즉시 종료한다.
             if (!_isBlinking)
             {
                 color.a = 0f;
-                _image.color = color;
+                _text.color = color;
                 yield break;
             }
 
@@ -149,9 +150,9 @@ public class ImageFadeAnimation : MonoBehaviour
             percent = currentTime * _lerpSpeed;
             float lerp = Mathf.Lerp(1f, 0f, percent);
 
-            color = _image.color;
+            color = _text.color;
             color.a = lerp;
-            _image.color = color;
+            _text.color = color;
 
             yield return _waitForFixedUpdate;
         }

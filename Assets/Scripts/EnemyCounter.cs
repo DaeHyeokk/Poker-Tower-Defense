@@ -8,6 +8,7 @@ public class EnemyCounter : MonoBehaviour
     private EnemySpawner _enemySpawner;
     [SerializeField]
     private EnemyCounterUIController _enemyCounterUIController;
+
     private int _roundEnemyCount;
 
     public int roundEnemyCount
@@ -23,8 +24,11 @@ public class EnemyCounter : MonoBehaviour
         }
     }
 
-    private void Update()
+    private void FixedUpdate()
     {
-        roundEnemyCount = _enemySpawner.roundEnemyList.Count;
+        if (_enemySpawner.roundBossEnemy.gameObject.activeSelf)
+            roundEnemyCount = _enemySpawner.roundEnemyList.Count + 1;
+        else
+            roundEnemyCount = _enemySpawner.roundEnemyList.Count;
     }
 }

@@ -17,6 +17,6 @@ public class TowerDetailInfo : MonoBehaviour
     public void ShowTowerDetailInfo()
     {
         _towerDetailInfoUIController.Setup(_tower);
-        _towerDetailInfoUIController.gameObject.SetActive(true);
+        UIManager.instance.ShowTowerDetailInfo();
     }
 }

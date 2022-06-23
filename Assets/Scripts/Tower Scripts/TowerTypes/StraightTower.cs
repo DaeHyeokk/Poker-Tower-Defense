@@ -118,7 +118,7 @@ public class StraightTower : Tower
         {
             // 공격할 타겟이 없다면 공격하지 않는다.
             if (targetDetector.targetList.Count == 0)
-                yield return null;
+                yield return waitForFixedUpdate;
             else
             {
                 attackCount++;
@@ -139,7 +139,14 @@ public class StraightTower : Tower
                     attackCount = 0;
                 }
 
-                yield return attackDelay;
+                //yield return attackDelay;
+
+                remainAttackDelay = attackRate;
+                while (remainAttackDelay > 0)
+                {
+                    yield return waitForFixedUpdate;
+                    remainAttackDelay -= Time.fixedDeltaTime;
+                }
             }
         }
     }

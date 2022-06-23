@@ -87,6 +87,7 @@ public class GameManager : MonoBehaviour
                 _gameSpeed = 1f;
 
             Time.timeScale = _gameSpeed;
+            Time.fixedDeltaTime = 0.02f * _gameSpeed;
         }
     }
 
@@ -109,7 +110,7 @@ public class GameManager : MonoBehaviour
         _isGameover = false;
 
         ScreenSleepSetup();
-        UIManager.instance.screenCover.FadeInScreen(Color.black, 2f);
+        UIManager.instance.GameStartScreenCoverFadeOut();
     }
 
     private void ScreenSleepSetup()

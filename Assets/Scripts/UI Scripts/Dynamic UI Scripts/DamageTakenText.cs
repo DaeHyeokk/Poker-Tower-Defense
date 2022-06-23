@@ -5,7 +5,7 @@ using TMPro;
 
 public enum DamageTakenType { Normal, Critical }
 
-public class DamageTakenText : FadeText
+public class DamageTakenText : FadeTextObject
 {
     [SerializeField]
     private Movement2D _movement2D;
@@ -25,7 +25,9 @@ public class DamageTakenText : FadeText
     private float _highlightSpeed;
 
     private float _highlightFontSize;
-    private WaitForSeconds _animationStartDelay = new(0.2f);
+
+    private readonly float _animationStartDelay = 0.2f;
+    private readonly WaitForFixedUpdate _waitForFixedUpdate = new();
 
     public DamageTakenType damageTakenType
     {
@@ -33,14 +35,14 @@ public class DamageTakenText : FadeText
         {
             if (value == DamageTakenType.Normal)
             {
-                base.textMeshPro.fontSize = _normalDamageFontSize;
-                base.textMeshPro.color = _normalDamageColor;
+                textMeshPro.fontSize = _normalDamageFontSize;
+                textMeshPro.color = _normalDamageColor;
                 _highlightFontSize = _normalhighlightFontSize;
             }
             else
             {
-                base.textMeshPro.fontSize = _critDamageFontSize;
-                base.textMeshPro.color = _critDamageColor;
+                textMeshPro.fontSize = _critDamageFontSize;
+                textMeshPro.color = _critDamageColor;
                 _highlightFontSize = _crithighlightFontSize;
             }
         }
@@ -48,39 +50,44 @@ public class DamageTakenText : FadeText
 
     public override void StartAnimation()
     {
-        StartCoroutine(HighlightEffectCoroutine());
+        StartCoroutine(StartAnimationCoroutine());
     }
 
-    private IEnumerator HighlightEffectCoroutine()
+    private IEnumerator StartAnimationCoroutine()
     {
         _movement2D.Stop();
 
-        float backupFontSize = base.textMeshPro.fontSize;
+        float backupFontSize = textMeshPro.fontSize;
 
-        while(base.textMeshPro.fontSize < _highlightFontSize)
+        while(textMeshPro.fontSize < _highlightFontSize)
         {
-            base.textMeshPro.fontSize += _highlightSpeed * Time.deltaTime;
+            textMeshPro.fontSize += _highlightSpeed * Time.fixedDeltaTime;
 
-            if (base.textMeshPro.fontSize > _highlightFontSize)
-                base.textMeshPro.fontSize = _highlightFontSize;
+            if (textMeshPro.fontSize > _highlightFontSize)
+                textMeshPro.fontSize = _highlightFontSize;
 
-            yield return null;
+            yield return _waitForFixedUpdate;
         }
 
-        while(base.textMeshPro.fontSize > backupFontSize)
+        while(textMeshPro.fontSize > backupFontSize)
         {
-            base.textMeshPro.fontSize -= _highlightSpeed * Time.deltaTime;
+            textMeshPro.fontSize -= _highlightSpeed * Time.fixedDeltaTime;
 
-            if (base.textMeshPro.fontSize < backupFontSize)
-                base.textMeshPro.fontSize = backupFontSize;
+            if (textMeshPro.fontSize < backupFontSize)
+                textMeshPro.fontSize = backupFontSize;
 
-            yield return null;
+            yield return _waitForFixedUpdate;
         }
 
-        yield return _animationStartDelay;
+        float animationStartDelay = _animationStartDelay;
+        while (animationStartDelay > 0)
+        {
+            yield return _waitForFixedUpdate;
+            animationStartDelay -= Time.fixedDeltaTime;
+        }
 
         _movement2D.Move();
-        base.textFadeAnimation.FadeOutText();
+        base.textObjectFadeAnimation.FadeOutText();
     }
 
     protected override void ReturnPool() => UIManager.instance.damageTakenTextPool.ReturnObject(this);

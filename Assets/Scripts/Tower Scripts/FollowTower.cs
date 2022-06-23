@@ -11,29 +11,18 @@ public class FollowTower : MonoBehaviour
     private SpriteRenderer _attackRangeRenderer;
     private Image[] _levelImages;
 
-    private ObjectFollowMousePosition _movement;
-
     private void Awake()
     {
         _levelImages = GetComponentsInChildren<Image>(true);
-        _movement = GetComponent<ObjectFollowMousePosition>();
     }
 
     public void Setup(Tower fromTower)
     {
+        this.transform.position = fromTower.transform.position;
+
         SetTowerRenderer(fromTower);
         SetAttackRangeRendererScale(fromTower.range);
         SetTowerLevelImage(fromTower.level);
-    }
-
-    public void StartFollowMousePosition()
-    {
-        _movement.StartFollowMousePosition();
-    }
-
-    public void StopFollowMousePosition()
-    {
-        _movement.StopFollowMousePosition();
     }
 
     private void SetAttackRangeRendererScale(float range)

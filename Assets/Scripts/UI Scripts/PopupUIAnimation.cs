@@ -7,32 +7,35 @@ public class PopupUIAnimation : MonoBehaviour
 {
     [SerializeField]
     private float _animSpeed;
-    private float _time;
+    private float _scale;
+
+    private readonly WaitForFixedUpdate _waitForFixedUpdate = new();
 
     public event Action onCompletionBigger;
     public event Action onCompletionSmaller;
-
+  
     public void StartBiggerAnimation()
     {
-        _time = 0f;
+        _scale = 0f;
         StartCoroutine(BiggerAnimationCoroutine());
     }
+
     private IEnumerator BiggerAnimationCoroutine()
     {
-        while(_time <= 1.2f)
+        while(_scale < 1.2f)
         {
-            this.transform.localScale = Vector3.one * _time;
-            _time += Time.unscaledDeltaTime * _animSpeed;
+            this.transform.localScale = Vector3.one * _scale;
+            _scale += Time.fixedUnscaledDeltaTime * _animSpeed;
 
-            yield return null;
+            yield return _waitForFixedUpdate;
         }
 
-        while(_time >= 1f)
+        while (_scale >= 1f)
         {
-            this.transform.localScale = Vector3.one * _time;
-            _time -= Time.unscaledDeltaTime * _animSpeed;
+            this.transform.localScale = Vector3.one * _scale;
+            _scale -= Time.fixedUnscaledDeltaTime * _animSpeed;
 
-            yield return null;
+            yield return _waitForFixedUpdate;
         }
 
         this.transform.localScale = Vector3.one;
@@ -43,25 +46,25 @@ public class PopupUIAnimation : MonoBehaviour
 
     public void StartSmallerAnimation()
     {
-        _time = 1f;
+        _scale = 1f;
         StartCoroutine(SmallerAnimationCoroutine());
     }
     private IEnumerator SmallerAnimationCoroutine()
     {
-        while (_time <= 1.2f)
+        while (_scale <= 1.2f)
         {
-            this.transform.localScale = Vector3.one * _time;
-            _time += Time.unscaledDeltaTime * _animSpeed;
+            this.transform.localScale = Vector3.one * _scale;
+            _scale += Time.fixedUnscaledDeltaTime * _animSpeed;
 
-            yield return null;
+            yield return _waitForFixedUpdate;
         }
 
-        while (_time >= 0f)
+        while (_scale >= 0f)
         {
-            this.transform.localScale = Vector3.one * _time;
-            _time -= Time.unscaledDeltaTime * _animSpeed;
+            this.transform.localScale = Vector3.one * _scale;
+            _scale -= Time.fixedUnscaledDeltaTime * _animSpeed;
 
-            yield return null;
+            yield return _waitForFixedUpdate;
         }
 
         this.transform.localScale = Vector3.zero;

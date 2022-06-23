@@ -21,12 +21,12 @@ public class TowerColorChanger : MonoBehaviour
     {
         if(GameManager.instance.gold < _changeCosts[_tower.level])
         {
-            UIManager.instance.ShowSystemMessage("골드가 부족합니다");
+            UIManager.instance.ShowSystemMessage(SystemMessage.MessageType.NotEnoughGold);
             return;
         }
 
         GameManager.instance.gold -= _changeCosts[_tower.level];
         _tower.towerColor.ChangeRandomColor();
-        UIManager.instance.ShowSystemMessage("색 변경 완료!");
+        UIManager.instance.ShowSystemMessage(SystemMessage.MessageType.CompletionColorChange);
     }
 }

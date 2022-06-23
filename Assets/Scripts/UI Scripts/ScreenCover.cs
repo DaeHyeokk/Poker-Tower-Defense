@@ -10,27 +10,32 @@ public class ScreenCover : MonoBehaviour
     [SerializeField]
     private ImageFadeAnimation _imageFadeAnimation;
 
-    public void FadeInScreen(Color color, float fadeTime)
+    private void Awake()
+    {
+        _imageFadeAnimation.onCompletionFadeOut += () => gameObject.SetActive(false);
+    }
+
+    public void FadeOut(Color color, float lerpSpeed)
     {
         _image.color = color;
-        _imageFadeAnimation.fadeTime = fadeTime;
+        _imageFadeAnimation.lerpSpeed = lerpSpeed;
         _imageFadeAnimation.FadeOutImage();
     }
 
-    public void FadeOutScreen(Color color, float fadeTime)
+    public void FadeIn(Color color, float lerpSpeed)
     {
         _image.color = color;
-        _imageFadeAnimation.fadeTime = fadeTime;
+        _imageFadeAnimation.lerpSpeed = lerpSpeed;
         _imageFadeAnimation.FadeInImage();
     }
 
-    public void BlinkScreen(Color color, float fadeTime)
+    public void BlinkScreen(Color color, float lerpSpeed)
     {
         // 이미지가 깜빡이는 상태라면 건너뛴다.
         if (_imageFadeAnimation.isBlinking) return;
 
         _image.color = color;
-        _imageFadeAnimation.fadeTime = fadeTime;
+        _imageFadeAnimation.lerpSpeed = lerpSpeed;
         _imageFadeAnimation.BlinkImage();
     }
 
