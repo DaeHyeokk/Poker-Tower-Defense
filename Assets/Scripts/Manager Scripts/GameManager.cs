@@ -32,7 +32,7 @@ public class GameManager : MonoBehaviour
     private float _gameSpeed;
     private float _backupGameSpeed;
     private float _maxGameSpeed;
-    private bool _isPausing;
+    private bool _isPaused;
     private bool _isGameover;
 
 
@@ -92,7 +92,7 @@ public class GameManager : MonoBehaviour
     }
 
     public int pokerCount => _pokerCount;
-    public bool isPausing => _isPausing;
+    public bool isPaused => _isPaused;
     public bool isGameover => _isGameover;
 
     private void Awake()
@@ -106,11 +106,17 @@ public class GameManager : MonoBehaviour
         mineral = 100;
         changeChance = 40;
         jokerCard = 5;
-        _isPausing = false;
+        _isPaused = false;
         _isGameover = false;
 
         ScreenSleepSetup();
         UIManager.instance.GameStartScreenCoverFadeOut();
+    }
+    private void OnApplicationPause(bool pause)
+    {
+        if (pause)
+            if (!_isPaused)
+                PauseGame();
     }
 
     private void ScreenSleepSetup()
@@ -127,7 +133,7 @@ public class GameManager : MonoBehaviour
 
     public void PauseGame()
     {
-        _isPausing = true;
+        _isPaused = true;
         _backupGameSpeed = gameSpeed;
         gameSpeed = 0f;
         UIManager.instance.ShowGameMenu();
@@ -135,7 +141,7 @@ public class GameManager : MonoBehaviour
 
     public void ResumeGame()
     {
-        _isPausing = false;
+        _isPaused = false;
         gameSpeed = _backupGameSpeed;
         UIManager.instance.HideGameMenu();
     }
@@ -154,8 +160,6 @@ public class GameManager : MonoBehaviour
     {
 
     }
-
-
 }
 
 /*

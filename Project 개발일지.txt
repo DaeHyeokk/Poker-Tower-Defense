@@ -245,17 +245,21 @@ Data: 2022/06/21 THU
 ☑ Wave가 증가할 때 이를 스크린에 표시하는 Wave Info Canvas 및 Wave Start Message 스크립트 추가.
 
 Data: 2022/06/22 WED
-☑ 기존 Time.deltaTime 에 영향을 받는 로직들중에서 프레임 드랍에 관계 없이 일정하게 호출되어야 하는 로직들을(거의 대부분) FixedDeltaTime에 영향을 받도록 변경.
-    -> 게임 진행이 한결 부드러워짐.
+☑ 기존 Time.deltaTime 에 영향을 받는 로직들중에서 프레임 드랍에 관계 없이 일정하게 호출되어야 하는 로직들을 FixedDeltaTime에 영향을 받도록 변경.
 ☑ Projectile와 Enemy의 충돌을 OnTriggerEnter 메소드로 체크하던 로직에서 Projectile과 Enemy 사이의 거리를 통해 일정 거리 이하로 가까워질 경우 충돌하는 로직으로 변경.
 ☑ Physics2D.OverlapCircleAll() 메소드를 통해 타워의 범위 공격 시 범위 내의 Enemy를 탐색하는 로직 삭제.
 ☑ Target Detector 스크립트 내에 전체 Enemy List를 탐색하면서 범위 내의 적을 리스트에 담는 로직을 수행하는 SearchTargetWithinRange() 메소드를 새로 추가함. 
     -> 따라서 Enemy의 Circle Colider 2D와 Rigidbody 2D 컴포넌트를 제거할 수 있게 됨.
     -> 이 덕분에 Collider를 가진 오브젝트를 움직이는데 드는 오버헤드가 대폭 감소하여 이전에 몬스터가 400마리 이상이 되면 프레임 드랍과 Fixed Update() 텀이 매우 길어져 게임이 거의 멈춰버리는 문제를 해결하게 되었음.
     -> 그러나 유니티 프로그램으로 테스트 했을 때는 이상이 없었는데, 갤럭시 S20 스마트폰으로 테스트 했을 때 Enemy 오브젝트가 600개를 넘어가게 되면 여전히 프레임 드랍과 Fixed Update() 텀이 매우 길어져 게임이 거의 멈춰버리는 문제가 계속 나타나고 있어 이를 해결하기 위한 고민을 함.
-☑ 스마트폰 환경에서 프로파일링을 통해 FieldEnemy의 이동 및 경로 변경을 담당하는 코루틴 메소드가 FieldEnemy 개체수만큼 동작하게 되어 CoroutineDelayedCalls 오버헤드가 커진다는 것을 알게되었음. 어떻게하면 Coroutine 메소드를 줄일 수 있을지 고민한 결과 FieldEnemy 오브젝트마다 각각 독립적인 코루틴 메소드를 수행할 필요가 없을 수도 있겠다라는 생각을 하게 됨. 왜냐하면 같은 기능을 하는 로직을 생성된 모든 FieldEnemy가 해당 기능을 수행하도록 반복문을 돌려도 문제 없을 것이라 생각했기 때문. 다만 Enemy가 많아질 경우 리스트의 끝쪽에 위치한 Enemy들이 로직을 늦게 수행하게 되어 이동 속도나, 경로 이탈 등의 문제, 또한 배속으로 했을 시 이 문제가 더욱 커지게 될 수도 있겠다라는 생각을 하였음.
+☑ 스마트폰 환경에서 프로파일링을 통해 FieldEnemy의 이동 및 경로 변경을 담당하는 코루틴 메소드가 FieldEnemy 개체수만큼 동작하게 되어 CoroutineDelayedCalls 오버헤드가 커진다는 것을 알게되었음. 어떻게하면 Coroutine 메소드를 줄일 수 있을지 고민한 결과 FieldEnemy 오브젝트마다 각각 독립적인 코루틴 메소드를 수행할 필요가 없을 수도 있겠다라는 생각을 하게 됨. 왜냐하면 같은 기능을 하는 로직을 생성된 모든 FieldEnemy가 해당 기능을 수행하도록 반복문을 돌려도 문제 없을 것이라 생각했기 때문. 다만 Enemy가 많아질 경우 리스트의 끝쪽에 위치한 Enemy들이 로직을 늦게 수행하게 되어 이동 속도나 경로 이탈 등의 문제, 또한 배속으로 했을 시 이 문제가 더욱 커지게 될 수도 있겠다라는 생각을 하였음.
     -> FieldEnemy의 이동 관련 연산을 담당하는 Movement2D 컴포넌트를 FieldEnemy 오브젝트에서 삭제. 
     ->  EnemyMovementController 스크립트를 새로 생성하여 기존 FieldEnemy 스크립트에서 수행하던 이동, 경로 변경 로직을 해당 스크립트에서 수행하도록 하였음. 해당 스크립트에 FixedUpdate() 이벤트 메소드를 정의하여 매 FixedUpdate 마다 필드 위에 생성된 모든 FieldEnemy를 순회하며 이동 기능을 수행하도록 구현하였음.
     -> 그 결과 예상했던 문제는 게임을 3배속으로 돌려도 전혀 나타나지 않았고, CoroutineDelayedCalls과  Coroutine 관련 메소드들의 오버헤드가 대폭 줄어들게 됨.
-    -> 갤럭시 S20 기준으로 Enemy 개체 1500개 까지도 약간의 프레임 드랍을 빼곤 배속까지 돌릴 수 있을 정도로 성능이 향상 되었음!!
+    -> 갤럭시 S20 기준으로 Enemy 개체 1500개 까지도 프레임 드랍이 있긴하지만 배속까지 돌릴 수 있을 정도로 성능이 향상 되었음!!
 ☑ Tower Detail Info UI가 화면에 활성화 되어있을 때 Tower Detail Info UI와 Card Gamble UI 밑에 영역을 제외한 나머지 영역을 터치했을 시 Tower Detail Info UI가 자동으로 비활성화 되는 로직 추가.
+
+Date: 2022/06/26 SUN
+☑ FieldEnemy의 Health Slider UI의 Event Camera에 Main Camera를 할당하는 로직 추가.
+    -> Enemy가 많아질수록 프로파일러상에 UI 관련 함수의 오버헤드가 증가하는 현상이 나타나 자료를 찾아보았는데, World Space Canvas를 가지는 오브젝트의 Event Camera가 Null 값일 경우 매 프레임마다 MainCamera 태그를 가진 오브젝트를 찾기 위해 CompareTag 메소드를 호출하기 때문에 성능저하가 일어난다는 사실을 알게 되어 추가하였음.
+☑ 조커 카드를 사용하여 선택한 카드를 원하는 카드로 교체하는 Card Select Change 기능 추가.

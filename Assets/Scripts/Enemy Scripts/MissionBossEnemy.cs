@@ -45,7 +45,6 @@ public class MissionBossEnemy : FieldBossEnemy
 
     public override void OnMissing()
     {
-
         ReturnObject();
     }
 

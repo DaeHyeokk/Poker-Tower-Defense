@@ -18,7 +18,6 @@ public class WaveStartMessage : MonoBehaviour
     private float _lerpSpeed;
 
     private readonly float _fadeOutDelay = 0.5f;
-    private readonly WaitForFixedUpdate _waitForFixedUpdate = new();
 
     private void OnEnable()
     {
@@ -29,27 +28,17 @@ public class WaveStartMessage : MonoBehaviour
 
         _waveStartText.text = "웨이브 " + _waveSystem.wave.ToString();
 
-        StartCoroutine(AlphaLerfCoroutine(0f, 1f));
+        StartCoroutine(AlphaLerpCoroutine(0f, 1f));
     }
 
-    private IEnumerator AlphaLerfCoroutine(float start, float end)
+    private IEnumerator AlphaLerpCoroutine(float start, float end)
     {
-        float fixedUnscaledDeltaTime;
         float currentTime = 0f;
         float percent = 0f;
 
         while (percent < 1)
         {
-            if (GameManager.instance.isPausing)
-            {
-                yield return GameResumeWaitCoroutine();
-                // 게임이 일시정지 됐다가 다시 재개 되면 FixedUpdate 텀이 길기 때문에 Time.fixedUnscaledDeltaTime 가 매우 큰 값을 가지고 있게됨.
-                // 따라서 한 타임 넘겨줌으로써 Time.fixedUnscaledDeltaTime 을 정상값으로 되돌림.
-                yield return _waitForFixedUpdate;
-            }
-
-            fixedUnscaledDeltaTime = Time.fixedUnscaledDeltaTime;
-            currentTime += fixedUnscaledDeltaTime;
+            currentTime += Time.unscaledDeltaTime;
             percent = currentTime * _lerpSpeed;
             float lerp = Mathf.Lerp(start, end, percent);
 
@@ -64,39 +53,22 @@ public class WaveStartMessage : MonoBehaviour
             color.a = lerp;
             _waveWarningText.color = color;
 
-            yield return _waitForFixedUpdate;
+            yield return null;
         }
 
         float fadeOutDelay = _fadeOutDelay;
         while(fadeOutDelay > 0)
         {
-            if (GameManager.instance.isPausing)
-            {
-                yield return GameResumeWaitCoroutine();
-                // 게임이 일시정지 됐다가 다시 재개 되면 FixedUpdate 텀이 길기 때문에 Time.fixedUnscaledDeltaTime 가 매우 큰 값을 가지고 있게됨.
-                // 따라서 한 타임 넘겨줌으로써 Time.fixedUnscaledDeltaTime 을 정상값으로 되돌림.
-                yield return _waitForFixedUpdate;
-            }
+            fadeOutDelay -= Time.unscaledDeltaTime;
 
-            yield return _waitForFixedUpdate;
-
-            fixedUnscaledDeltaTime = Time.fixedUnscaledDeltaTime;
-            fadeOutDelay -= fixedUnscaledDeltaTime;
+            yield return null;
         }
-        
+
+        percent = 1;
 
         while (percent > 0)
         {
-            if (GameManager.instance.isPausing)
-            {
-                yield return GameResumeWaitCoroutine();
-                // 게임이 일시정지 됐다가 다시 재개 되면 FixedUpdate 텀이 길기 때문에 Time.fixedUnscaledDeltaTime 가 매우 큰 값을 가지고 있게됨.
-                // 따라서 한 타임 넘겨줌으로써 Time.fixedUnscaledDeltaTime 을 정상값으로 되돌림.
-                yield return _waitForFixedUpdate;
-            }
-
-            fixedUnscaledDeltaTime = Time.fixedUnscaledDeltaTime;
-            currentTime -= Time.fixedUnscaledDeltaTime;
+            currentTime -= Time.unscaledDeltaTime;
             percent = currentTime * _lerpSpeed;
             float lerp = Mathf.Lerp(start, end, percent);
 
@@ -111,15 +83,9 @@ public class WaveStartMessage : MonoBehaviour
             color.a = lerp;
             _waveWarningText.color = color;
 
-            yield return _waitForFixedUpdate;
+            yield return null;
         }
 
         gameObject.SetActive(false);
-    }
-
-    private IEnumerator GameResumeWaitCoroutine()
-    {
-        while (GameManager.instance.isPausing)
-            yield return _waitForFixedUpdate;
     }
 }

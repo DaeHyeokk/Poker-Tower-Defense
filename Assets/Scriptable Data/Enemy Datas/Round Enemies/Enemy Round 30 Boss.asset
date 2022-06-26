@@ -13,5 +13,5 @@ MonoBehaviour:
   m_Name: Enemy Round 30 Boss
   m_EditorClassIdentifier: 
   sprite: {fileID: 21300000, guid: 0890a35bc19663d40b1958a5e86c25fc, type: 3}
-  health: 150
+  health: 200
   moveSpeed: 1

@@ -24,8 +24,8 @@ public class WaveSystem : MonoBehaviour
     private int _finalWave = 40;
     private bool _isBossWave = false;
 
-    //private readonly WaitForSeconds _oneSecond = new(1f);
-    private readonly WaitForFixedUpdate _waitForFixedUpdate = new();
+    private readonly WaitForSeconds _waitOneSecond = new(1f);
+    //private readonly WaitForFixedUpdate _waitForFixedUpdate = new();
 
     public int wave
     {
@@ -71,12 +71,7 @@ public class WaveSystem : MonoBehaviour
         second = 10;
         while(second >= 0)
         {
-            float oneSecond = 1f;
-            while(oneSecond > 0)
-            {
-                oneSecond -= Time.fixedDeltaTime;
-                yield return _waitForFixedUpdate;
-            }
+            yield return _waitOneSecond;
      
             if (second == 0)
                 break;
@@ -92,12 +87,7 @@ public class WaveSystem : MonoBehaviour
             {
                 while (second >= 0)
                 {
-                    float oneSecond = 1f;
-                    while (oneSecond > 0)
-                    {
-                        oneSecond -= Time.fixedDeltaTime;
-                        yield return _waitForFixedUpdate;
-                    }
+                    yield return _waitOneSecond;
 
                     if (second == 0)
                         break;

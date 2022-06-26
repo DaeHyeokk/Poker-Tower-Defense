@@ -14,7 +14,6 @@ public class TextObjectFadeAnimation : MonoBehaviour
     [SerializeField]
     private TextMeshPro _text;
 
-    private readonly WaitForFixedUpdate _waitForFixedUpdate = new();
     private bool _isBlinking;
 
     public event Action onCompletionFadeIn;
@@ -68,7 +67,7 @@ public class TextObjectFadeAnimation : MonoBehaviour
             color.a = lerp;
             _text.color = color;
 
-            yield return _waitForFixedUpdate;
+            yield return null;
         }
 
         if (onCompletionFadeOut != null)
@@ -96,7 +95,7 @@ public class TextObjectFadeAnimation : MonoBehaviour
             color.a = lerp;
             _text.color = color;
 
-            yield return _waitForFixedUpdate;
+            yield return null;
         }
 
         if (onCompletionFadeIn != null)
@@ -132,7 +131,7 @@ public class TextObjectFadeAnimation : MonoBehaviour
             color.a = lerp;
             _text.color = color;
 
-            yield return _waitForFixedUpdate;
+            yield return null;
         }
 
         // 알파 값이 0이 될 때 까지 알파 값 감소
@@ -154,7 +153,7 @@ public class TextObjectFadeAnimation : MonoBehaviour
             color.a = lerp;
             _text.color = color;
 
-            yield return _waitForFixedUpdate;
+            yield return null;
         }
 
         // 반복해서 깜빡이도록 하기 위한 코루틴 메소드 재귀호출.
@@ -164,8 +163,8 @@ public class TextObjectFadeAnimation : MonoBehaviour
     private void IncreaseCurrentTime(ref float currentTime)
     {
         if (_deltaTimeMode == DeltaTimeMode.GameTime)
-            currentTime += Time.fixedDeltaTime;
+            currentTime += Time.deltaTime;
         else
-            currentTime += Time.fixedUnscaledDeltaTime;
+            currentTime += Time.unscaledDeltaTime;
     }
 }

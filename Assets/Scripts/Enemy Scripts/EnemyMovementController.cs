@@ -33,23 +33,24 @@ public class EnemyMovementController : MonoBehaviour
 
     private void FixedUpdate()
     {
-        for(int i=0; i<_enemySpawner.missionBossEnemyList.Count; i++)
-        {
-            fieldEnemy = _enemySpawner.missionBossEnemyList[i];
-            MoveEnemy();
-        }
-
-        if(_enemySpawner.roundBossEnemy.gameObject.activeSelf)
+        if (_enemySpawner.roundBossEnemy.gameObject.activeSelf)
         {
             fieldEnemy = _enemySpawner.roundBossEnemy;
             MoveEnemy();
         }
 
-        for(int i=0; i<_enemySpawner.roundEnemyList.Count; i++)
+        for (int i = 0; i < _enemySpawner.missionBossEnemyList.Count; i++)
+        {
+            fieldEnemy = _enemySpawner.missionBossEnemyList[i];
+            MoveEnemy();
+        }
+
+        for (int i = 0; i < _enemySpawner.roundEnemyList.Count; i++)
         {
             fieldEnemy = _enemySpawner.roundEnemyList[i];
             MoveEnemy();
         }
+
     }
 
     private void MoveEnemy()

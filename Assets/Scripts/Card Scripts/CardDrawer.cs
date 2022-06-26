@@ -66,6 +66,9 @@ public class CardDrawer
 
         // 바꾼 카드 정보를 저장
         _drawCards[changeIndex].SetCard(cardIndex);
+
+        // 족보 정보를 업데이트 한다.
+        UpdateHandInfo();
     }
 
     private void DrawCard(int index)

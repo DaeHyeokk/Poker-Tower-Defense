@@ -12,6 +12,9 @@ public abstract class Enemy : MonoBehaviour
     // Enemy를 잡을 경우 플레이어에게 지급되는 카드교환권
     [SerializeField]
     private int _rewardChangeChance;
+    // Enemy를 잡을 경우 플레이어에게 지급되는 조커카드
+    [SerializeField]
+    private int _rewardJokerCard;
 
     private Slider _healthSlider;
     private SpriteRenderer _enemySprite;

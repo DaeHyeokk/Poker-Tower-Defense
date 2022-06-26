@@ -52,7 +52,7 @@ public class UIManager : MonoBehaviour
     private GameObject _enemyDieRewardTextPrefab;
     private ObjectPool<EnemyDieRewardText> _enemyDieRewardTextPool;
 
-    private readonly WaitForSecondsRealtime _gameStartFadeOutDelay = new(0.1f);
+    private readonly WaitForSecondsRealtime _gameStartFadeOutDelay = new(0.2f);
 
     public ScreenCover screenCover => _screenCover;
     public TowerInfomation towerInfomation => _towerInfomation;
@@ -80,7 +80,7 @@ public class UIManager : MonoBehaviour
     private IEnumerator GameStartFadeOutDelayCoroutine()
     { 
         yield return _gameStartFadeOutDelay;
-        _screenCover.FadeOut(Color.black, 0.5f);
+        _screenCover.FadeOut(Color.black, 1f);
     }
 
     public void ShowSystemMessage(SystemMessage.MessageType messageType)

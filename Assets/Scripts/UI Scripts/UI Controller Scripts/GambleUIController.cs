@@ -30,7 +30,7 @@ public class GambleUIController : MonoBehaviour
     [SerializeField]
     private Sprite[] _cardSprites;
 
-    [Header("Gamble Button UI Canvas")]
+    [Header("Gamble Button UI")]
     [SerializeField]
     private Button _towerGambleButton;
     [SerializeField]
@@ -44,25 +44,32 @@ public class GambleUIController : MonoBehaviour
     [SerializeField]
     private TextMeshProUGUI _mineralGetText;
 
-    public int drawCardCount { get; set; }
+    [Header("Card Selector UI")]
+    [SerializeField]
+    private Button[] _patternButtons;
+    [SerializeField]
+    private Button[] _cardButtons;
+    [SerializeField]
+    private Image[] _cardBtnImages;
+    [SerializeField]
+    private Button _changeButton;
 
-    public void ReverseCardFrountUI(int index)
-    {
-        _cardImages[index].sprite = _cardSprites[_cardGambler.drawCards[index].index];
-        ShowFunctionButton(index);
-    }
+    public void ReverseCardFrountUI(int index) => _cardImages[index].sprite = _cardSprites[_cardGambler.drawCards[index].index];
 
     public void AllReverseCardFrontUI()
     {
         for (int index = 0; index < _cardGambler.drawCardCount; index++)
+        {
             ReverseCardFrountUI(index);
+            ShowFunctionButton(index);
+        }
     }
 
     public void ReverseCardBackUI(int index) => _cardImages[index].sprite = _cardBackSprite;
 
     public void AllReverseCardBackUI()
     {
-        for (int index = 0; index < drawCardCount; index++)
+        for (int index = 0; index < _cardGambler.drawCardCount; index++)
         {
             ReverseCardBackUI(index);
             HideFunctionButton(index);
@@ -86,6 +93,9 @@ public class GambleUIController : MonoBehaviour
 
     public void ShowFunctionToggleButton() => _functionToggleButton.gameObject.SetActive(true);
     public void HideFunctionToggleButton() => _functionToggleButton.gameObject.SetActive(false);
+
+    public void EnableFunctionToggleButton() => _functionToggleButton.interactable = true;
+    public void DisableFunctionToggleButton() => _functionToggleButton.interactable = false;
 
     public void ToggleFunctionImage()
     {
@@ -129,7 +139,6 @@ public class GambleUIController : MonoBehaviour
     {
         _towerGambleButton.interactable = true;
         _mineralGambleButton.interactable = true; ;
-
     }
 
     public void DisableGambleButtonUI()
@@ -165,12 +174,63 @@ public class GambleUIController : MonoBehaviour
 
         // 카드를 모두 뒤집는다.
         AllReverseCardBackUI();
+        // 카드 바꾸기 기능과 조커카드 기능 버튼을 비활성화 한다.
         HideFunctionToggleButton();
-        // 타워를 Get 하는 버튼을 화면에서 숨긴다.
+        // 타워를 Get 하는 버튼을 비활성화 한다.
         HideGetButtonUI();
         // Gamble 버튼을 화면에 나타낸다.
         ShowGambleButtonUI();
     }
+
+    public void MarkChangeCard(int changeIndex) => _cardImages[changeIndex].color = Color.yellow;
+    public void MarkCancelChangeCard(int changeIndex) => _cardImages[changeIndex].color = Color.white;
+
+    public void ChangeSelectCardPattern(Card.Pattern oldPattern, Card.Pattern newPattern)
+    {
+        _patternButtons[(int)oldPattern].interactable = true;
+        _patternButtons[(int)newPattern].interactable = false;
+
+        ChangeCardButtonImage(newPattern);
+        DisableCardButton(newPattern);
+    }
+
+    private void ChangeCardButtonImage(Card.Pattern newPattern)
+    {
+        for (int i = 0; i < _cardBtnImages.Length; i++)
+        {
+            int cardIndex = i + ((int)newPattern * Card.MAX_NUMBER);
+            _cardButtons[i].interactable = true;
+            _cardBtnImages[i].sprite = _cardSprites[cardIndex];
+            _cardBtnImages[i].color = Color.white;
+        }
+    }
+    
+    private void DisableCardButton(Card.Pattern newPattern)
+    {
+        for(int i=0; i<_cardGambler.drawCards.Length; i++)
+        {
+            if((int)_cardGambler.drawCards[i].pattern == (int)newPattern)
+            {
+                int numberIndex = (int)_cardGambler.drawCards[i].number;
+                _cardButtons[numberIndex].interactable = false;
+            }
+        }
+    }
+
+    public void ChangeSelectCardButton(CardSelector.Number oldNumber, CardSelector.Number newNumber)
+    {
+        if(oldNumber != CardSelector.Number.None)
+            _cardBtnImages[(int)oldNumber].color = Color.white;
+
+        if (newNumber != CardSelector.Number.None)
+        {
+            _cardBtnImages[(int)newNumber].color = Color.yellow;
+            _changeButton.interactable = true;
+        }
+        else
+            _changeButton.interactable = false;
+    }
+    
 }
 
 

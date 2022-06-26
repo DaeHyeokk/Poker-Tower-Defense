@@ -11,7 +11,7 @@ public class ObjectFollowMousePosition : MonoBehaviour
         _mainCamera = Camera.main;
     }
 
-    private void FixedUpdate()
+    private void Update()
     {
         Vector3 position = new Vector3();
         position.Set(Input.mousePosition.x, Input.mousePosition.y, 0);

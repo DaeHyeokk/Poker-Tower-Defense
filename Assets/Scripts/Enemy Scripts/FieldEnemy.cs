@@ -6,6 +6,8 @@ using UnityEngine.UI;
 public abstract class FieldEnemy : Enemy
 {
     [SerializeField]
+    private Canvas _healthSliderCanvas;
+    [SerializeField]
     private SpriteRenderer _increaseReceiveDamageSprite;
     [SerializeField]
     private Particle _slowEffect;
@@ -73,6 +75,12 @@ public abstract class FieldEnemy : Enemy
 
             _increaseReceiveDamageRate = value;
         }
+    }
+
+    protected override void Awake()
+    {
+        base.Awake();
+        _healthSliderCanvas.worldCamera = Camera.main;
     }
 
     public virtual void Setup(EnemyData enemyData)

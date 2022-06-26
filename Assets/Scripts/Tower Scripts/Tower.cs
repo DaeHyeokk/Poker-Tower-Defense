@@ -105,11 +105,6 @@ public abstract class Tower : MonoBehaviour
                 _attackRate = value;
                 remainAttackDelay = _attackRate - delaySpent;
             }
-
-            /*
-            // 공격속도 값이 변화했기 때문에 AttackTarget() 코루틴 함수의 딜레이에 사용되는 waitForSeconds 변수 업데이트.
-            _attackDelay = new(_attackRate);
-            */
         }
     }
     public float range => _towerData.weapons[level].range;
@@ -176,11 +171,13 @@ public abstract class Tower : MonoBehaviour
 
     private void FixedUpdate()
     {
-        if(_onTile != null)
+        if (_onTile != null)
+        {
             _targetDetector.SearchTarget();
 
-        UpdateAttackRate();
-        RotateTower();
+            UpdateAttackRate();
+            RotateTower();
+        }
     }
 
     private void UpdateAttackRate() => attackRate = (baseAttackRate - (upgradeRIP * upgradeCount)) / (1 + increaseAttackRate * 0.01f);

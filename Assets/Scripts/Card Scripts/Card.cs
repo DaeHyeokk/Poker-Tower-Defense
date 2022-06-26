@@ -7,7 +7,7 @@ public class Card
 {
     public const int MAX_NUMBER = 13, MAX_PATTERN = 4, MAX_COUNT = 52;
 
-    public enum Pattern { Spade, Heart, Diamond, Clover }
+    public enum Pattern { Clover, Diamond, Heart, Spade }
     public enum Number { Ace, Two, Three, Four, Five, Six, Seven, Eight, Nine, Ten, Jack, Queen, King }
 
     private Pattern _pattern;

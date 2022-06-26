@@ -63,8 +63,8 @@ public class SystemMessage : FadeTextUI
         float animationStartDelay = _animationStartDelay;
         while(animationStartDelay > 0)
         {
-            yield return _waitForFixedUpdate;
-            animationStartDelay -= Time.fixedUnscaledDeltaTime;
+            yield return null;
+            animationStartDelay -= Time.unscaledDeltaTime;
         }
 
         base.textUIFadeAnimation.FadeOutText();

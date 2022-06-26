@@ -42,7 +42,6 @@ public class TowerDetailInfoUIController : MonoBehaviour
     private float _upgradeRIP;
     public float _remainHideDelay;
     private bool _isLocking;
-    private bool _isHiding;
 
     private readonly WaitForFixedUpdate _waitForFixedUpdate = new();
 
@@ -53,6 +52,27 @@ public class TowerDetailInfoUIController : MonoBehaviour
         _popupUIAnimation = GetComponent<PopupUIAnimation>();
         // 팝업 애니메이션 중 점점 작아지는 메소드가 완료된 후 수행할 작업 구독. (오브젝트 비활성화)
         _popupUIAnimation.onCompletionSmaller += () => UIManager.instance.HideTowerDetailInfo();
+    }
+
+    private void OnEnable()
+    {
+        _popupUIAnimation.StartBiggerAnimation();
+        StartCoroutine(AutoHideUICoroutine());
+    }
+
+    private void Update()
+    {
+        if (_damage != _tower.damage)
+        {
+            _damage = _tower.damage;
+            _damageText.text = Mathf.Round(_damage).ToString();
+        }
+
+        if (_attackRate != _tower.attackRate)
+        {
+            _attackRate = _tower.attackRate;
+            _attackRateText.text = _attackRate.ToString();
+        }
     }
 
     public void Setup(Tower tower)
@@ -78,42 +98,17 @@ public class TowerDetailInfoUIController : MonoBehaviour
         _specialAttackDetailText.text = tower.detailSpecialAttackInfo.ToString();
     }
 
-    private void OnEnable()
-    {
-        _popupUIAnimation.StartBiggerAnimation();
-        StartCoroutine(AutoHideUICoroutine());
-    }
-    private void OnDisable()
-    {
-        _isHiding = false;
-    }
-
-    private void FixedUpdate()
-    {
-        if (_damage != _tower.damage)
-        {
-            _damage = _tower.damage;
-            _damageText.text = Mathf.Round(_damage).ToString();
-        }
-
-        if (_attackRate != _tower.attackRate)
-        {
-            _attackRate = _tower.attackRate;
-            _attackRateText.text = _attackRate.ToString();
-        }
-    }
-
     // 시간이 지나면 자동으로 사라지는 코루틴 메소드
     private IEnumerator AutoHideUICoroutine()
     {
         _remainHideDelay = _hideDelay;
         while(_remainHideDelay > 0)
         {
-            yield return _waitForFixedUpdate;
+            yield return null;
             if (!_isLocking)
             {
-                _remainHideDelay -= Time.fixedUnscaledDeltaTime;
-                _hideTimerSlider.value -= Time.fixedUnscaledDeltaTime;
+                _remainHideDelay -= Time.unscaledDeltaTime;
+                _hideTimerSlider.value -= Time.unscaledDeltaTime;
             }
         }
 
@@ -128,10 +123,6 @@ public class TowerDetailInfoUIController : MonoBehaviour
 
     public void HideObject()
     {
-        // UI가 비활성화되는 애니메이션을 실행중일 때 화면을 터치할 경우 애니메이션이 반복되는 문제 방지.
-        if (_isHiding) return;
-
-        _isHiding = true;
         _popupUIAnimation.StartSmallerAnimation();
     }
 

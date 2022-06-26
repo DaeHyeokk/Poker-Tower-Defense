@@ -10,6 +10,8 @@ public class CardGambler : MonoBehaviour
     [SerializeField]
     private GambleUIController _gambleUIController;
     [SerializeField]
+    private CardSelector _cardSelector;
+    [SerializeField]
     private int[] _mineralGambleAmounts;
 
     private CardDrawer _cardDrawer;
@@ -39,7 +41,6 @@ public class CardGambler : MonoBehaviour
     private void Awake()
     {
         _cardDrawer = new CardDrawer();
-        _gambleUIController.drawCardCount = _cardDrawer.drawCards.Length;
         _isGambling = false;
     }
 
@@ -80,6 +81,7 @@ public class CardGambler : MonoBehaviour
 
         // 플레이어 화면에 새로 뽑은 카드를 보여준다.
         _gambleUIController.AllReverseCardFrontUI();
+        // 카드 바꾸기 기능과 조커카드 기능 버튼을 활성화 한다.
         _gambleUIController.ShowFunctionToggleButton();
         // 뽑은 카드 결과값 갱신.
         _gambleUIController.ShowResultUI();
@@ -95,13 +97,15 @@ public class CardGambler : MonoBehaviour
 
     public void ExecuteButtonFunction(int changeIndex)
     {
+        _changeIndex = changeIndex;
+
         if (_buttonFunctionType == ButtonFunctionType.CardChange)
-            CardRandomChange(changeIndex);
+            CardRandomChange();
         else
-            UseJokerCard(changeIndex);
+            ShowCardSelector();
     }
 
-    private void CardRandomChange(int changeIndex)
+    private void CardRandomChange()
     {
         // 플레이어의 ChangeChance 횟수가 0 이하라면 수행하지 않는다.
         if (GameManager.instance.changeChance <= 0)
@@ -113,21 +117,16 @@ public class CardGambler : MonoBehaviour
         // 플레이어의 ChangeChance 횟수를 1 차감한다.
         GameManager.instance.changeChance--;
 
-        _changeIndex = changeIndex;
-
-        // 플레이어 화면에 오픈된 카드 중 바꿀 카드를 뒤집는다.
-        _gambleUIController.ReverseCardBackUI(_changeIndex);
-
         // 카드를 바꾼다.
         _cardDrawer.ChangeRandomCard(_changeIndex);
 
         // 바꾼 카드를 플레이어에게 보여준다.
-        _gambleUIController.ReverseCardFrountUI(changeIndex);
+        _gambleUIController.ReverseCardFrountUI(_changeIndex);
         // 뽑은 카드 결과값 갱신.
         _gambleUIController.ShowResultUI();
     }
 
-    private void UseJokerCard(int cardIndex)
+    private void ShowCardSelector()
     {
         // 플레이어의 JokerCard 개수가 0개 이하라면 수행하지 않는다.
         if (GameManager.instance.jokerCard <= 0)
@@ -136,18 +135,31 @@ public class CardGambler : MonoBehaviour
             return;
         }
 
+        _gambleUIController.MarkChangeCard(_changeIndex);
+        _gambleUIController.DisableFunctionToggleButton();
+        _cardSelector.gameObject.SetActive(true);
     }
-
-    private void CardSelectChange(int changeIndex)
+    
+    public void HideCardSelector()
     {
-        // 플레이어의 JokerCard 개수가 0개 이하라면 수행하지 않는다.
-        if (GameManager.instance.jokerCard <= 0)
-        {
-            UIManager.instance.ShowSystemMessage(SystemMessage.MessageType.NotEnoughJokerCard);
-            return;
-        }
+        _gambleUIController.MarkCancelChangeCard(_changeIndex);
+        _gambleUIController.EnableFunctionToggleButton();
+        _cardSelector.gameObject.SetActive(false);
     }
 
+    public void CardSelectChange(int cardIndex)
+    {
+        // 조커카드 개수 1개 차감
+        GameManager.instance.jokerCard--;
+
+        HideCardSelector();
+        // 전달받은 카드 번호로 카드를 바꾼다.
+        _cardDrawer.ChangeSelectCard(_changeIndex, cardIndex);
+        // 바꾼 카드를 플레이어에게 보여준다.
+        _gambleUIController.ReverseCardFrountUI(_changeIndex);
+        // 뽑은 카드 결과값 갱신.
+        _gambleUIController.ShowResultUI();
+    }
 
     public void GetResult()
     {
@@ -164,5 +176,8 @@ public class CardGambler : MonoBehaviour
         _isGambling = false;
         _cardDrawer.ResetDrawer();
         _gambleUIController.ResetGambleUI();
+
+        if (_cardSelector.gameObject.activeSelf)
+            HideCardSelector();
     }
 }

@@ -47,7 +47,7 @@ public class ObjectDetector : MonoBehaviour
     private void Update()
     {
         // 게임이 일시중지 상태라면 플레이어의 터치 입력을 받지 않는다.
-        if (GameManager.instance.isPausing)
+        if (GameManager.instance.isPaused)
             return;
 
         // 마우스 왼쪽 버튼을 눌렀을 때
@@ -179,10 +179,7 @@ public class ObjectDetector : MonoBehaviour
                     }
                     // Tower Detail Info UI 창을 터치하는 것이 아닌 다른 곳을 터치하면 즉시 창을 닫는다.
                     if (!isHitTowerDetailInfo)
-                    {
-                        Debug.Log("인포창 즉시닫음");
                         _towerDetailInfoUIController.HideObject();
-                    }
                 }
             }
         }
