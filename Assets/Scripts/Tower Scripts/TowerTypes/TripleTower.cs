@@ -52,39 +52,23 @@ public class TripleTower : Tower
         _isSpecialBuff = false;
     }
 
-    protected override IEnumerator AttackTarget()
+    protected override void AttackTarget()
     {
-        while (true)
+        if (!_isSpecialBuff) attackCount++;
+
+        for (int i = 0; i < targetDetector.targetList.Count; i++)
         {
-            // 공격할 타겟이 없다면 공격하지 않는다.
-            if (targetDetector.targetList.Count == 0)
-                yield return waitForFixedUpdate;
+            if (attackCount < specialAttackCount)
+                ShotProjectile(targetDetector.targetList[i], AttackType.Basic);
             else
-            {
-                if(!_isSpecialBuff) attackCount++;
+                ShotProjectile(targetDetector.targetList[i], AttackType.Special);
+        }
 
-                for (int i = 0; i < targetDetector.targetList.Count; i++)
-                {
-                    if (attackCount < specialAttackCount)
-                        ShotProjectile(targetDetector.targetList[i], AttackType.Basic);
-                    else
-                        ShotProjectile(targetDetector.targetList[i], AttackType.Special);
-                }
-
-                if (attackCount >= specialAttackCount)
-                {
-                    StartCoroutine(ToggleIsSpecialBuffCoroutine());
-                    SpecialInflict(this);
-                    attackCount = 0;
-                }
-
-                remainAttackDelay = attackRate;
-                while (remainAttackDelay > 0)
-                {
-                    yield return waitForFixedUpdate;
-                    remainAttackDelay -= Time.fixedDeltaTime;
-                }
-            }
+        if (attackCount >= specialAttackCount)
+        {
+            StartCoroutine(ToggleIsSpecialBuffCoroutine());
+            SpecialInflict(this);
+            attackCount = 0;
         }
     }
 

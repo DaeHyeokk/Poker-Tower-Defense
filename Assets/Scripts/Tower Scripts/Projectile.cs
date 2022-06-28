@@ -20,8 +20,6 @@ public class Projectile : MonoBehaviour
         _spriteRenderer = GetComponent<SpriteRenderer>();
         _movement2D = GetComponent<Movement2D>();
         _rotater2D = GetComponent<Rotater2D>();
-
-       //_movement2D.moveSpeed = 6f;
     }
 
     public void Setup(Tower fromTower, Enemy target, Sprite projectileSprite)
@@ -32,7 +30,7 @@ public class Projectile : MonoBehaviour
         _rotater2D.LookAtTarget(_target.transform);
     }
 
-    private void FixedUpdate()
+    private void Update()
     {
         // _target 오브젝트가 씬에 활성화된 상태라면 _target을 계속 추적한다.
         if (_target.gameObject.activeSelf)

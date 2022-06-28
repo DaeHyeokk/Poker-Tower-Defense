@@ -112,42 +112,24 @@ public class StraightTower : Tower
         detailSpecialAttackInfo.Append(_specialIncreaseAttackRate.inflictorInfo.ToString());
     }
 
-    protected override IEnumerator AttackTarget()
+    protected override void AttackTarget()
     {
-        while (true)
+        attackCount++;
+
+        for (int i = 0; i < targetDetector.targetList.Count; i++)
         {
-            // 공격할 타겟이 없다면 공격하지 않는다.
-            if (targetDetector.targetList.Count == 0)
-                yield return waitForFixedUpdate;
+            if (attackCount < specialAttackCount)
+                ShotProjectile(targetDetector.targetList[i], AttackType.Basic);
             else
-            {
-                attackCount++;
+                ShotProjectile(targetDetector.targetList[i], AttackType.Special);
+        }
 
-                for (int i = 0; i < targetDetector.targetList.Count; i++)
-                {
-                    if (attackCount < specialAttackCount)
-                        ShotProjectile(targetDetector.targetList[i], AttackType.Basic);
-                    else
-                        ShotProjectile(targetDetector.targetList[i], AttackType.Special);
-                }
+        if (attackCount >= specialAttackCount)
+        {
+            _buffRangeParticle.PlayParticle();
+            SpecialInflict(this, specialBuffRange);
 
-                if (attackCount >= specialAttackCount)
-                {
-                    _buffRangeParticle.PlayParticle();
-                    SpecialInflict(this, specialBuffRange);
-
-                    attackCount = 0;
-                }
-
-                //yield return attackDelay;
-
-                remainAttackDelay = attackRate;
-                while (remainAttackDelay > 0)
-                {
-                    yield return waitForFixedUpdate;
-                    remainAttackDelay -= Time.fixedDeltaTime;
-                }
-            }
+            attackCount = 0;
         }
     }
 

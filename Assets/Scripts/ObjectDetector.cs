@@ -13,7 +13,7 @@ public class ObjectDetector : MonoBehaviour
     private RaycastHit[] _hits;
 
     [SerializeField]
-    private TowerInfomation _towerInfo;
+    private CardSelector _cardSelector;
     [SerializeField]
     private TowerColorChanger _towerColorChanger;
     [SerializeField]
@@ -55,12 +55,11 @@ public class ObjectDetector : MonoBehaviour
         {
             // 이미 타워를 움직이고 있는 상태라면 건너뛴다.
             if (_clickTower != null)
-            {
-                //UIManager.instance.ShowSystemMessage("이미 타워 움직이는중 터치 씹힘");
                 return;
-            }
-            // 타워 상세정보 UI가 화면에 활성화 되어 있는 상태라면 오브젝트 클릭을 입력받지 않는다.
-            if (_towerDetailInfoUIController.gameObject.activeSelf)
+
+            // Tower Detail Info UI 또는 Card Selector UI가 화면에 활성화 되어 있는 상태라면 오브젝트 클릭을 입력받지 않는다.
+            if (_towerDetailInfoUIController.gameObject.activeSelf 
+                || _cardSelector.gameObject.activeSelf)
                 return;
 
             // 카메라 위치에서 화면의 마우스 커서를 관통하는 광선(ray) 생성

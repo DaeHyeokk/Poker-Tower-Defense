@@ -22,21 +22,21 @@ public class MissionBossEnemy : FieldBossEnemy
 
     private IEnumerator LimitTimerCoroutine()
     {
-        int missingCount = _limitTime;
+        int limitTime = _limitTime;
         _limitTimeText.color = Color.black;
-        _limitTimeText.text = missingCount.ToString();
+        _limitTimeText.text = limitTime.ToString();
 
-        while (missingCount > 0)
+        while (limitTime > 0)
         {
             yield return _waitOneSecond;
-            missingCount--;
+            limitTime--;
 
             // 남은 시간이 10초 미만이 되면 텍스트 색깔을 빨간색으로 변경
-            if (missingCount == 9)
+            if (limitTime == 9)
                 _limitTimeText.color = Color.red;
 
             // 남은 시간 텍스트 업데이트
-            _limitTimeText.text = missingCount.ToString();
+            _limitTimeText.text = limitTime.ToString();
         }
 
         if (this.gameObject.activeSelf)

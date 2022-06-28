@@ -7,7 +7,7 @@ public class EnemySpawner : MonoBehaviour
     [SerializeField]
     private float _spawnDelay;            // 적 생성 주기
     [SerializeField]
-    private Transform _spawnPoint;
+    private Transform[] _wayPoints;
 
     [Header("Round Enemy")]
     [SerializeField]
@@ -29,7 +29,11 @@ public class EnemySpawner : MonoBehaviour
 
     [Header("Special Boss")]
     [SerializeField]
+    private EnemyData[] _specialBossEnemyDatas;
+    [SerializeField]
     private SpecialBossEnemy _specialBossEnemy;
+    [SerializeField]
+    private int _specialBossMaxLevel;
 
     private ObjectPool<RoundEnemy> _roundEnemyPool;
     private RoundBossEnemy _roundBossEnemy;
@@ -38,8 +42,9 @@ public class EnemySpawner : MonoBehaviour
     private MissionBossEnemy[] _missionBossEnemies = new MissionBossEnemy[3];
     private List<MissionBossEnemy> _missionBossEnemyList = new List<MissionBossEnemy>();
 
-    private readonly WaitForFixedUpdate _waitForFixedUpdate = new();
+    private readonly WaitForSeconds _waitForOneSeconds = new(1f);
 
+    public Transform[] wayPoints => _wayPoints;
     public ObjectPool<RoundEnemy> roundEnemyPool => _roundEnemyPool;
     public List<FieldEnemy> roundEnemyList => _roundEnemyList;
     public List<MissionBossEnemy> missionBossEnemyList => _missionBossEnemyList;
@@ -49,7 +54,6 @@ public class EnemySpawner : MonoBehaviour
     private void Awake()
     {
         _roundEnemyPool = new ObjectPool<RoundEnemy>(_roundEnemyPrefab, 80);
-
         InstantiateBossEnemy();
         MissionBossCooltimeSetup();
     }
@@ -57,13 +61,11 @@ public class EnemySpawner : MonoBehaviour
     private void InstantiateBossEnemy()
     {
         _roundBossEnemy = Instantiate(_roundBossEnemyPrefab).GetComponent<RoundBossEnemy>();
-        _roundBossEnemy.enemySpawner = this;
         _roundBossEnemy.gameObject.SetActive(false);
 
         for (int i = 0; i < 3; i++)
         {
             _missionBossEnemies[i] = Instantiate(_missionBossEnemyPrefabs[i]).GetComponent<MissionBossEnemy>();
-            _missionBossEnemies[i].enemySpawner = this;
             _missionBossEnemies[i].gameObject.SetActive(false);
         }
     }
@@ -88,11 +90,8 @@ public class EnemySpawner : MonoBehaviour
         while (spawnEnemy++ < 40)
         {
             FieldEnemy _enemy = _roundEnemyPool.GetObject();
-            // enemy가 EnemySpawner 참조값을 할당 받지 않았다면 수행.
-            if (_enemy.enemySpawner == null)
-                _enemy.enemySpawner = this;
 
-            _enemy.transform.position = _spawnPoint.position;
+            _enemy.transform.position = _wayPoints[0].position;
             // Enemy Setup() 메서드의 매개변수로 enemyData 정보를 전달.
             _enemy.Setup(_roundEnemyDatas[wave - 1]);
             // _roundEnemyList 리스트에 추가함 -> 필드 위에 생성되어 있는 Enemy를 참조하기 위함.
@@ -100,13 +99,7 @@ public class EnemySpawner : MonoBehaviour
 
             float spawnDelay = _spawnDelay;
 
-            // 프레임이 떨어지는 상황에서도 일정한 간격으로 몬스터를 생성하기 위해 fixedDeltaTime 사용.
-            // _spawnDelay 시간 동안 대기.
-            while (spawnDelay > 0)
-            {
-                spawnDelay -= Time.fixedDeltaTime;
-                yield return _waitForFixedUpdate;
-            }
+            yield return _waitForOneSeconds;
         }
     }
 
@@ -118,7 +111,7 @@ public class EnemySpawner : MonoBehaviour
             return;
 
         _roundBossEnemy.gameObject.SetActive(true);
-        _roundBossEnemy.transform.position = _spawnPoint.position;
+        _roundBossEnemy.transform.position = _wayPoints[0].position;
         _roundBossEnemy.Setup(_roundEnemyDatas[wave - 1]);
     }
 
@@ -130,10 +123,23 @@ public class EnemySpawner : MonoBehaviour
             return;
 
         _missionBossEnemies[bossLevel].gameObject.SetActive(true);
-        _missionBossEnemies[bossLevel].transform.position = _spawnPoint.position;
+        _missionBossEnemies[bossLevel].transform.position = _wayPoints[0].position;
         _missionBossEnemies[bossLevel].Setup(_missionBossEnemyDatas[bossLevel]);
         _missionBossEnemyList.Add(_missionBossEnemies[bossLevel]);
         _missionBossUIController.StartMissionBossCooltime(bossLevel, _missionBossRespawnCooltimes[bossLevel]);
+    }
+
+    public bool IsLevelupSpecialBoss()
+    {
+        _specialBossEnemy.level++;
+
+        if (_specialBossEnemy.level > _specialBossMaxLevel)
+            return false;
+        else
+        {
+            _specialBossEnemy.Setup(_specialBossEnemyDatas[_specialBossEnemy.level - 1]);
+            return true;
+        }
     }
 }
 

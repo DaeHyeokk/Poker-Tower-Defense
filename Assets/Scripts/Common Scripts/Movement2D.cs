@@ -21,7 +21,16 @@ public class Movement2D : MonoBehaviour
         set => _moveSpeed = value;
     }
 
-    private void FixedUpdate()
+    public Vector3 moveDirection
+    {
+        get => _moveDirection;
+        set
+        {
+            _moveDirection = value;
+        }
+    }
+
+    private void Update()
     {
         if (_isStop) return;
 

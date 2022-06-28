@@ -30,9 +30,10 @@ public abstract class Tower : MonoBehaviour
     private WaitForSeconds _attackDelay;
     private float _attackRate;
     private float _maxAttackRate;
+    private float _remainAttackDelay;
     private float _increaseAttackRate;
     private float _increaseDamageRate;
-
+ 
     private float increaseAttackRate
     {
         get => _increaseAttackRate;
@@ -60,16 +61,16 @@ public abstract class Tower : MonoBehaviour
         }
     }
 
-    protected readonly WaitForFixedUpdate waitForFixedUpdate = new();
+    protected readonly WaitForSeconds _waitForPointFiveSeconds = new(0.5f);
 
     protected float remainAttackDelay { get; set; }
     protected int attackCount { get; set; }
     protected int specialAttackCount { get; private set; }
 
-    protected List<IEnemyInflictable> baseEnemyInflictorList { get; set; }
-    protected List<IEnemyInflictable> specialEnemyInflictorList { get; set; }
-    protected List<ITowerInflictable> baseTowerInflictorList { get; set; }
-    protected List<ITowerInflictable> specialTowerInflictorList { get; set; }
+    protected List<IEnemyInflictable> baseEnemyInflictorList { get; set; } = new();
+    protected List<IEnemyInflictable> specialEnemyInflictorList { get; set; } = new();
+    protected List<ITowerInflictable> baseTowerInflictorList { get; set; } = new();
+    protected List<ITowerInflictable> specialTowerInflictorList { get; set; } = new();
 
     protected ProjectileSpawner projectileSpawner => _projectileSpawner;
     protected Transform spawnPoint => _spawnPoint;
@@ -80,8 +81,8 @@ public abstract class Tower : MonoBehaviour
     public TowerColor towerColor => _towerColor;
     public Sprite normalProjectileSprite => _towerData.normalProjectileSprites[(int)_towerColor.colorType];
     public Sprite specialProjectileSprite => _towerData.specialProjectileSprites[(int)_towerColor.colorType];
-    public StringBuilder detailBaseAttackInfo { get; set; }
-    public StringBuilder detailSpecialAttackInfo { get; set; }
+    public StringBuilder detailBaseAttackInfo { get; set; } = new();
+    public StringBuilder detailSpecialAttackInfo { get; set; } = new();
     public int upgradeCount => _colorUpgrade.colorUpgradeCounts[(int)towerColor.colorType];
     public int level => _towerLevel.level;
     public float baseDamage => _towerData.weapons[level].damage;
@@ -110,7 +111,6 @@ public abstract class Tower : MonoBehaviour
     public float range => _towerData.weapons[level].range;
     public int maxTargetCount => _towerData.weapons[level].maxTargetCount;
     public int salesGold => _towerData.weapons[level].salesGold;
-    public WaitForSeconds attackDelay => _attackDelay;
 
     public virtual Tile onTile
     {
@@ -150,34 +150,22 @@ public abstract class Tower : MonoBehaviour
         _towerBuilder = FindObjectOfType<TowerBuilder>();
         _colorUpgrade = FindObjectOfType<ColorUpgrade>();
 
-
         _towerColor = new TowerColor(_towerRenderer);
         _towerLevel = new TowerLevel(_levelLayout);
         _targetDetector = new TargetDetector(this, FindObjectOfType<EnemySpawner>());
 
-        baseEnemyInflictorList = new();
-        specialEnemyInflictorList = new();
-        baseTowerInflictorList = new();
-        specialTowerInflictorList = new();
-
-        detailBaseAttackInfo = new();
-        detailSpecialAttackInfo = new();
-
         _maxAttackRate = 0.1f;
         specialAttackCount = 10;
-
-        _onTile = null;
     }
 
-    private void FixedUpdate()
+    private void Update()
     {
-        if (_onTile != null)
-        {
-            _targetDetector.SearchTarget();
+        if (_onTile == null) return;
 
-            UpdateAttackRate();
-            RotateTower();
-        }
+        _targetDetector.SearchTarget();
+        UpdateAttackRate();
+        RotateTower();
+        DecreaseAttackDelay();
     }
 
     private void UpdateAttackRate() => attackRate = (baseAttackRate - (upgradeRIP * upgradeCount)) / (1 + increaseAttackRate * 0.01f);
@@ -186,6 +174,17 @@ public abstract class Tower : MonoBehaviour
     {
         if (_targetDetector.targetList.Count > 0)
             _rotater2D.NaturalLookAtTarget(_targetDetector.targetList[0].transform);
+    }
+
+    private void DecreaseAttackDelay()
+    {
+        remainAttackDelay -= Time.deltaTime;
+        if (_targetDetector.targetList.Count == 0) return;
+        if (remainAttackDelay <= 0f)
+        {
+            AttackTarget();
+            remainAttackDelay = _attackRate;
+        }
     }
 
     public virtual void Setup()
@@ -199,42 +198,22 @@ public abstract class Tower : MonoBehaviour
 
         _towerColor.ChangeRandomColor();
         UpdateDetailInfo();
-
-        StartCoroutine(AttackTarget());
     }
 
-    protected virtual IEnumerator AttackTarget()
+    protected virtual void AttackTarget()
     {
-        while (true)
+        attackCount++;
+
+        for (int i = 0; i < _targetDetector.targetList.Count; i++)
         {
-            // 공격할 타겟이 없다면 공격하지 않는다.
-            if (_targetDetector.targetList.Count == 0)
-                yield return waitForFixedUpdate;
+            if (attackCount < specialAttackCount)
+                ShotProjectile(_targetDetector.targetList[i], AttackType.Basic);
             else
-            {
-                attackCount++;
-
-                for (int i = 0; i < _targetDetector.targetList.Count; i++)
-                {
-                    if (attackCount < specialAttackCount)
-                        ShotProjectile(_targetDetector.targetList[i], AttackType.Basic);
-                    else
-                        ShotProjectile(_targetDetector.targetList[i], AttackType.Special);
-                }
-
-                if (attackCount >= specialAttackCount)
-                    attackCount = 0;
-
-                //yield return attackDelay;
-
-                remainAttackDelay = attackRate;
-                while(remainAttackDelay > 0)
-                {
-                    yield return waitForFixedUpdate;
-                    remainAttackDelay -= Time.fixedDeltaTime;
-                }
-            }
+                ShotProjectile(_targetDetector.targetList[i], AttackType.Special);
         }
+
+        if (attackCount >= specialAttackCount)
+            attackCount = 0;
     }
 
     protected abstract void ShotProjectile(Enemy target, AttackType attackType);
@@ -256,16 +235,8 @@ public abstract class Tower : MonoBehaviour
     {
         ParticlePlayer.instance.PlayRangeAttack(target.transform, range, (int)_towerColor.colorType);
 
-        /*
-        Collider2D[] collider2D = Physics2D.OverlapCircleAll(target.transform.position, range * 0.5f);
-
-        for (int i = 0; i < collider2D.Length; i++)
-            for (int j = 0; j < baseEnemyInflictorList.Count; j++)
-                if(collider2D[i].gameObject.activeSelf)
-                    baseEnemyInflictorList[j].Inflict(collider2D[i].GetComponent<Enemy>());
-        */
-
         targetDetector.SearchTargetWithinRange(target.transform, range);
+
         for (int i = 0; i < targetDetector.targetWithinRangeList.Count; i++)
             for (int j = 0; j < baseEnemyInflictorList.Count; j++)
                 if (targetDetector.targetWithinRangeList[i].gameObject.activeSelf)
@@ -302,16 +273,8 @@ public abstract class Tower : MonoBehaviour
     {
         ParticlePlayer.instance.PlayRangeAttack(target.transform, range, (int)_towerColor.colorType);
 
-        /*
-        Collider2D[] collider2D = Physics2D.OverlapCircleAll(target.transform.position, range * 0.5f);
-
-        for (int i = 0; i < collider2D.Length; i++)
-            for (int j = 0; j < specialEnemyInflictorList.Count; j++)
-                if (collider2D[i].gameObject.activeSelf)
-                    specialEnemyInflictorList[j].Inflict(collider2D[i].GetComponent<Enemy>());
-        */
-
         targetDetector.SearchTargetWithinRange(target.transform, range);
+
         for (int i = 0; i < targetDetector.targetWithinRangeList.Count; i++)
             for (int j = 0; j < specialEnemyInflictorList.Count; j++)
                 if (targetDetector.targetWithinRangeList[i].gameObject.activeSelf)
@@ -339,7 +302,11 @@ public abstract class Tower : MonoBehaviour
     {
         this.increaseAttackRate += increaseAttackRate;
 
-        yield return new WaitForSeconds(duration);
+        while(duration > 0)
+        {
+            yield return _waitForPointFiveSeconds;
+            duration -= 0.5f;
+        }
 
         this.increaseAttackRate -= increaseAttackRate;
     }
@@ -353,7 +320,11 @@ public abstract class Tower : MonoBehaviour
     {
         this.increaseDamageRate += increaseDamageRate;
 
-        yield return new WaitForSeconds(duration);
+        while (duration > 0)
+        {
+            yield return _waitForPointFiveSeconds;
+            duration -= 0.5f;
+        }
 
         this.increaseDamageRate -= increaseDamageRate;
     }

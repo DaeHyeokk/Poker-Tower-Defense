@@ -6,6 +6,12 @@ using UnityEngine.UI;
 
 public abstract class Enemy : MonoBehaviour
 {
+    [SerializeField]
+    private SpriteRenderer _enemySprite;
+    [SerializeField]
+    private Transform _healthbarGauge;
+    [SerializeField]
+    private SpriteRenderer _increaseReceiveDamageSprite;
     // Enemy를 잡을 경우 플레이어에게 지급되는 골드
     [SerializeField]
     private int _rewardGold;
@@ -16,32 +22,99 @@ public abstract class Enemy : MonoBehaviour
     [SerializeField]
     private int _rewardJokerCard;
 
-    private Slider _healthSlider;
-    private SpriteRenderer _enemySprite;
-    private WaitForSeconds _takeDamageAnimationDelay;
-    private StringBuilder _rewardText;
+    private EnemySpawner _enemySpawner;
+    private EnemyHealthbar _enemyHealthbar;
+    private StringBuilder _rewardText = new();
+    private float _maxHealth;  // Enemy의 최대 체력
+    private float _health;     // Enemy의 현재 체력
+    private float _increaseReceiveDamageRate; // Enemy가 공격 당할 때 받는 피해량
 
-    protected Slider healthSlider => _healthSlider;
-    protected SpriteRenderer enemySprite => _enemySprite;
-    protected float maxHealth { get; set; }  // Enemy의 최대 체력
-    protected float health { get; set; }     // Enemy의 현재 체력
-  
+    private readonly WaitForSeconds _takeDamageAnimationDelay = new(0.05f);
+    private readonly WaitForSeconds _waitForPointFiveSeconds = new(0.5f);
+
+    protected float maxHealth => _maxHealth;  // Enemy의 최대 체력
+    protected float health => _health;  // Enemy의 현재 체력
+    private float increaseReceiveDamageRate
+    {
+        get => _increaseReceiveDamageRate;
+        set
+        {
+            // increaseReceiveDamageRate 값이 0이고 value값이 0보다 크다면 디버프 스프라이트를 활성화 한다.
+            if (_increaseReceiveDamageRate == 0 && value > 0)
+                _increaseReceiveDamageSprite.gameObject.SetActive(true);
+            // increaseReceiveDamageRate 값이 0이 아니고 value값이 0이라면 디버프 스프라이트를 비활성화 한다.
+            else if (_increaseReceiveDamageRate > 0 && value == 0)
+                _increaseReceiveDamageSprite.gameObject.SetActive(false);
+            
+            _increaseReceiveDamageRate = value;
+        }
+    }
+
+    protected WaitForSeconds waitForPointFiveSeconds => _waitForPointFiveSeconds;
+
+    public EnemySpawner enemySpawner => _enemySpawner;
+
     protected virtual void Awake()
     {
-        _healthSlider = GetComponentInChildren<Slider>();
-        _enemySprite = GetComponentInChildren<SpriteRenderer>();
-        _takeDamageAnimationDelay = new WaitForSeconds(0.05f);
-        _rewardText = new();
-
+        _enemySpawner = FindObjectOfType<EnemySpawner>();
+        _enemyHealthbar = new(_healthbarGauge);
         SetRewardText();
+    }
+
+    public virtual void Setup(EnemyData enemyData)
+    {
+        // 생성할 Enemy의 체력, 색깔 설정
+        _maxHealth = enemyData.health;
+        _health = _maxHealth;
+        _enemyHealthbar.maxHealth = _maxHealth;
+        _enemyHealthbar.health = _maxHealth;
+        _enemySprite.sprite = enemyData.sprite;
+        _enemySprite.color = Color.white;
+
+        increaseReceiveDamageRate = 0f;
     }
 
     public virtual void TakeDamage(float damage, DamageTakenType damageTakenType)
     {
         StartCoroutine(EnemyTakeDamageAnimationCoroutine());
+
+        damage *= 1f + (increaseReceiveDamageRate * 0.01f);
+        _health -= damage;
+        _enemyHealthbar.health -= damage;
+
+        UIManager.instance.ShowDamageTakenText(damage, this.transform, damageTakenType);
+
+        if (_health <= 0)
+            Die();
     }
 
-    public abstract void TakeIncreaseReceivedDamage(float increaseReceivedDamageRate, float duration);
+    public void TakeIncreaseReceivedDamage(float increaseReceivedDamageRate, float duration)
+    {
+        StartCoroutine(IncreaseReceivedDamageCoroutine(increaseReceivedDamageRate, duration));
+    }
+    private IEnumerator IncreaseReceivedDamageCoroutine(float IRDRate, float duration)
+    {
+        Debug.Log("증가전 총 피해량: " + increaseReceiveDamageRate);
+        this.increaseReceiveDamageRate += IRDRate;
+
+        Debug.Log("받는피해량 증가: " + IRDRate);
+        Debug.Log("증가된 총 피해량: " + increaseReceiveDamageRate);
+
+        // duration만큼 지연
+        while (duration > 0)
+        {
+            //yield return null;
+            yield return _waitForPointFiveSeconds;
+            duration -= 0.5f;
+        }
+
+        Debug.Log("감소전 총 피해량: " + increaseReceiveDamageRate);
+        this.increaseReceiveDamageRate -= IRDRate;
+
+        Debug.Log("받는피해량 감소: " + IRDRate);
+        Debug.Log("감소된 총 피해량: " + increaseReceiveDamageRate);
+    }
+
     public abstract void TakeStun(float duration);
     public abstract void TakeSlowing(float slowingRate, float duration);
 

@@ -25,7 +25,6 @@ public class WaveSystem : MonoBehaviour
     private bool _isBossWave = false;
 
     private readonly WaitForSeconds _waitOneSecond = new(1f);
-    //private readonly WaitForFixedUpdate _waitForFixedUpdate = new();
 
     public int wave
     {

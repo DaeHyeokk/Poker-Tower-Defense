@@ -36,7 +36,7 @@ public class WaveStartMessage : MonoBehaviour
         float currentTime = 0f;
         float percent = 0f;
 
-        while (percent < 1)
+        while (percent < 1f)
         {
             currentTime += Time.unscaledDeltaTime;
             percent = currentTime * _lerpSpeed;
@@ -64,13 +64,14 @@ public class WaveStartMessage : MonoBehaviour
             yield return null;
         }
 
-        percent = 1;
+        currentTime = 0f;
+        percent = 0f;
 
-        while (percent > 0)
+        while (percent < 1f)
         {
-            currentTime -= Time.unscaledDeltaTime;
+            currentTime += Time.unscaledDeltaTime;
             percent = currentTime * _lerpSpeed;
-            float lerp = Mathf.Lerp(start, end, percent);
+            float lerp = Mathf.Lerp(end, start, percent);
 
             _backgroundImage.transform.localScale = new Vector3(1f, lerp, 1f);
 

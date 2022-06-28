@@ -4,47 +4,71 @@ Start : 2022/04/20 WED
   참고 링크: https://docs.microsoft.com/ko-kr/dotnet/csharp/fundamentals/coding-style/coding-conventions
 2. 클래스를 꼼꼼히 설계하여 클래스끼리 최대한 약한 결합을 가지고, 코드의 중복을 최소화 할 것.
 
+
 Date : 2022/04/20 WED
 < List >
 ☑ Stage Tilemap 필드 구현.
+
 ☑ Enemy 오브젝트 구현.
+
 ☑ Enemy Spawner 오브젝트 구현.
+
 
 Date : 2022/04/21 THU
 < List >
 ☑ Object Pooling 기법 구현.
+
 ☑ ObjectPool 오브젝트 및 스크립트 구현.
+
 
 Date : 2022/04/24 SUN
 < List >
 ☑ Photon package Import.
+
 ☑ Tower 오브젝트의 공격을 담당하는 TowerWeapon 컴포넌트 구현.
+
 ☑ TowerTile 오브젝트 위에 타워가 건설되있는지 여부를 확인하기 위한 Tile 컴포넌트 구현.
+
 ☑ 플레이어의 화면 클릭(터치)를 인식하고 그에 맞는 작업을 수행하는 ObjectDetector 컴포넌트 구현.
+
 ☑ TowerData scriptable의 데이터필드 변경.
     -> 타워의 레벨에 따른 능력치 변화를 각각 설정할 수 있도록 Weapon 구조체를 선언하고 Weapon array에 레벨에 따른 능력치를 설정하였음.
+
 ☑ Tile 오브젝트 위에 타워를 건설하기 위한 TowerBuilder 컴포넌트 구현.
+
 
 Date : 2022/04/27 TUE
 < List >
 ☑ 코드 네이밍 규칙에 맞게 전체적으로 변경.
+
 ☑ Abstract Class 인 TowerWeapon Class 구현. (앞으로 계속 업데이트 해야함)
+
 ☑ TowerWeapon class를 상속받는 9가지 타입의 타워 구현.
+
 
 Date : 2022/04/28 WED
 < List >
 ☑ 카드 뽑기를 위한 CardDrawer 컴포넌트 구현.
+
 ☑ 카드와 관련된 UI들을 제어하기 위한 CardUIController 컴포넌트 구현.
+
 ☑ 인게임 내 전체 UI의 상태 변경을 담당하는 UIManager 구현.
+
 ☑ TowerBuilder 컴포넌트에서 CardDrawer에서 뽑은 족보에 맞는 타워를 건설하도록 변경.
+
 
 Date : 2022/04/29 FRI
 < List >
 ☑ Enemy 이미지 변경 및 체력바 변경.
+
 ☑ 이미지를 변경하면서 오브젝트가 바라보는 방향이 중요해짐. 진행 방향에 따른 방향 전환 구현.
+
 ☑ 우주 배경 이미지 추가. 백그라운드 스크롤링을 통해 천천히 왼쪽으로 움직이도록 구현.
+
 ☑ 타워의 Enemy 탐색 기능 구현.
+
 ☑ 타일맵 디자인 개선.
+
 
 Date : 2022/04/30 SAT
 < List >
@@ -52,37 +76,51 @@ Date : 2022/04/30 SAT
     -> 추상클래스인 TowerWeapon의 종류마다 프리팹을 만들어 관리할 때는 한 스크립트에서 하는 기능이 너무 많고,
     TowerWeapon과 관련 없는 Tower만의 기능을 추가할 때 다수의 프리팹에 컴포넌트를 연결해줘야 했던 문제점을
    해결하기 위해 재설계를 진행.
+
 ☑ Tower 오브젝트를 새로 만들고, Tower에서 TowerWeapon을 사용하는 형태로 구현.
+
 ☑ 기존에 TowerWeapon에서 하던 기능들을 세분화하여 컴포넌트로 만들었음.
-☑ 상대와 경쟁하는 대전모드를 만들기 위해 고민중. 동시에 라운드를 진행할 수 있게 하고싶은데, 현재의 맵 디자인으로는 
-     제한 사항이 많을듯하여 다른 디자인을 구상중.
+
+☑ 상대와 경쟁하는 대전모드를 만들기 위해 고민중. 동시에 라운드를 진행할 수 있게 하고싶은데, 현재의 맵 디자인으로는 제한 사항이 많을듯하여 다른 디자인을 구상중.
+
 
 Date : 2022/05/01 SUN
 < List>
 ☑ 스테이지 디자인 변경.
+
 ☑ 카드 뽑는 방식 5포커에서 7포커로 변경.
+
 ☑ 대전모드 임시 UI 구현.
+
 ☑ 타일 위에 타워를 짓던 방식에서 맵 중앙에서 타워가 생성되도록 변경.
+
 
 Date : 2022/05/02 MON
 < List >
 ☑ 포커 족보를 확인하는 로직을 비트마스크 기법으로 변경
     -> 기존 방식에서는 카드의 정보를 무늬, 숫자로 나눠서 저장하기 위한 추가적인 배열 선언이 필요했기 때문에 비트마스크 기법을 이용하면 추가적인 배열 선언을 하지 않아도 돼서 메모리 공간을 절약할 수 있을 것이라 판단했기 때문. 또한 배열의 원소에 접근하여 값을 바꾸거나 비교하는 연산보다 비트연산이 훨씬 빠를 것이라고 생각했는데, 적용 결과 실제로 함수의 실행 속도가 눈에 띄게 개선되었음.
+
 ☑ 드래그를 통해 타워를 움직이는 기능 구현.
+
 ☑ 타워를 드래그 하는 중일 때, 타워의 사거리를 표시하는 기능 구현.
+
 
 Date : 2022/05/03 THU
 < List >
 ☑ 타워가 공격할 때 생성되는 발사체의 클래스 구조 설계, Enemy 클래스 구조 설계 진행중.
+
 
 Date : 2022/05/04 WED
 < List >
 ☑ 타워 오브젝트의 구조 다시 재설계. ㅠㅠ
     -> why? 타워의 공격을 구현할 방법을 생각하던중 유니티 최적화와 관련하여 Monobehaviour를 상속받는 클래스가 적을수록 좋다는 정보를 얻음. 기존 타워 오브젝트에서 TowerLevel, TowerColor, TargetDetector 컴포넌트는 단독으로 동작하는 것이 아닌 타워의 제어를 통해 기능을 수행하고 있었는데 이 컴포넌트들은 Monobehaviour 을 상속받지 않고 기능을 수행하도록 구현하는 것이 더 좋을 것이라 생각하였음.
 
+
 Date : 2022/05/07 SAT
 ☑ 타워 오브젝트 재설계 완료.
+
 ☑ 타워의 발사체 발사 및 Enemy와 충돌 시 데미지를 입히고 Enemy의 체력이 0 이하가 되면 스크린에서 사라지는 로직 구현.
+
 
 Date : 2022/05/08 SUN
 ☑ 생성 됐다가 죽고 오브젝트풀에 들어간 Enemy가 다시 생성될 때 이상하게 이동하는 버그, 타워가 발사한 총알이 갑자기 오브젝트풀로 돌아가는 버그 수정.
@@ -93,123 +131,185 @@ Date : 2022/05/08 SUN
     -> 스턴은 가장 긴 스턴 시간을 기준으로 동작하도록 구현하였음. 메소드가 호출될 때마다 StunCount 변수에 스턴 횟수를 누적 시키고, 스턴 시간이 지나면 누적시켰던 스턴 횟수를 다시 감소 시킨 다음, StunCount 가 0일 때(누적된 스턴 시간이 없을 때)만 이동 속도를 원래대로 되돌리도록 구현하였음.
 (예를 들어 5초 스턴과 3초 스턴 공격을 받는다고 했을 때 stunCount 값은 2가 되고 3초 스턴이 풀리면 1로 감소, 5초 스턴이 풀리면서 0이 되어 이동 속도가 원래대로 돌아옴.)
 
+
 Date : 2022/05/09 MON
 ☑ Enemy 클래스 세분화 -> Enemy(FieldEnemy(RoundEnemy,FieldBossEnemy(RoundBossEnemy, MissionBossEnemy), PlanetBossEnemy)
+
 ☑ RoundBossEnemy, MissionBossEnemy, PlanetBossEnemy 구현.
+
 ☑ GameManager에 남은 라이프, 현재 골드, 미네랄, 카드 변경권 횟수 추가.
+
 
 Date : 2022/05/10 TUE
 ☑ EnemySpawner에서 보스 몬스터를 소환하는 로직 추가.
+
 ☑ 보스 소환 버튼, 색깔 업그레이드 버튼, 게임에 사용되는 재화 UI 추가.
     -> UI 요소들을 게임 화면에 어떻게 배치할지 고민 많이 하고 배치했으나, 너무 번잡하다는 느낌을 받음. 타 게임들은 어떻게 배치했는지 찾아봐야 할듯.
+
 
 Date : 2022/05/11 WED
 ☑ 게임 UI Canvas의 Render mode World space에서 Screen space - overlay로 변경, UI Scale mode Scale With Screen Size로 변경.
     -> why? World space로 배치하는게 편리해서 그렇게 구현하였지만 모바일 플랫폼 게임을 만드는 것이 목적이었기 때문에 다양한 모바일 기기 화면에 동적으로 UI의 비율을 맞추기 위함.
 
+
 Date : 2022/05/12 THU
 ☑ 미네랄 뽑기 기능 구현.
+
 ☑ 타워 뽑기, 미네랄 뽑기 두가지 기능을 수행하는 CardGambler 컴포넌트 구현.
+
 ☑ CardGambler를 추가하면서 기존에 CardDrawer, CardUIController 클래스가 Monobehaviour 클래스를 상속받던 것을 삭제하고 CardGambler가 생성하고 제어하도록 변경.
+
 ☑ Color Upgrade 기능 구현.
+
 ☑ Mission Boss 쿨타임 기능 구현.
+
 
 Date: 2022/05/13 FRI
 ☑ 타워의 특수 능력 구상 중..
 
+
 Date: 2022/05/15 SUN
 ☑ 타워가 다른 오브젝트(Enemy, Tower)들과 상호작용 하기 위한 Inflict 클래스 설계.
+
 ☑ IInflictable 인터페이스 추가.
+
 ☑ IInflictable 을 구현하는 다양한 Inflictor 클래스 구현 
     -> BasicAttack, CriticalStrike, Slowing, Stun, IncreaseAttackRate, IncreaseDamageRate, IncreaseReceivedDamageRate
+
 
 Date: 2022/05/16 MON
 ☑ FlushTower, FullHouseTower, FourKindTower, OnepairTower 타워의 특수 능력 구현.
 
+
 Date: 2022/05/17 TUE
 ☑ 나머지 타워들의 특수 능력 구현.
 
+
 Date: 2022/05/18 WED
 ☑ 메인 스테이지 디자인 변경.
+
 ☑ 타워를 임의의 포지션이 아닌 타일 위에만 배치할 수 있도록 변경.
+
 
 Date: 2022/05/19 THU
 ☑ Enemy가 타워한테 공격 받았을 때 스프라이트 컬러가 잠깐 빨간색으로 변하도록 변경.
+
 ☑ Enemy가 죽을 경우 보여줄 파티클 생성 및 로직 구현.
+
 ☑ Particle Player 오브젝트 구현.
+
 
 Date: 2022/05/21 SAT
 ☑ 모바일 기기의 다양한 해상도에 맞출 수 있도록 UI 재배치.
+
 ☑ 타워 레벨업 기능 구현.
+
 
 Date: 2022/05/22 SUN
 ☑ FollowTower 오브젝트 생성. 타워가 이동할 때 Tower 오브젝트 대신 FollowTower 오브젝트가 대신 마우스 포인트를 따라다니도록 변경.
     -> 타워가 이동하는 중에도 타워가 원래 있던 자리에서 계속 적을 공격할 수 있도록 하기 위함.
+
 ☑ 타워가 이동 중일 때 Tower 오브젝트의 스프라이트 투명도가 낮아지도록 변경하여 시각효과 개선.
+
 
 Date: 2022/05/26 THU
 ☑ Enemy가 받는 상태이상의 시각효과를 위한 파티클 생성 및 적용.
+
 ☑ Tower가 버프 스킬을 사용할 때의 시각효과를 위한 파티클 생성 및 적용.
+
 
 Date: 2022/05/28 SAT
 ☑ Tower가 받는 버프의 시각효과를 위한 파티클 생성 및 적용
+
 ☑ 기존 IInflictable 인터페이스를 IEnemyInflictable, ITowerInflictable로 변경.
+
 ☑ 타워의 공격속도 계산 공식 변경.
+
 
 Date: 2022/05/29 SUN
 ☑ 화면 중앙에 나타나서 서서히 위로 올라가며 사라지는 System Message Text 추가.
+
 ☑ System Message Text를 효율적으로 관리하기 위한 Object Pool 추가.
+
 
 Date: 2022/05/30 MON
 ☑ 몬스터가 데미지를 입었을 때 몬스터 위에 받은 데미지를 보여주는 Damage Taken Text 추가.
+
 ☑ Damage Taken Text를 효율적으로 관리하기 위한 Object Pool 추가.
+
 
 Date: 2022/06/01 WED
 ☑ Follow Tower Prefab 통합.
+
 ☑ Tower Infomation UI Canvas 구현.
+
 
 Date: 2022/06/02 THU
 ☑ UIManager에서 담당하던 기능 세분화.
+
 ☑ Tower Infomation UI에서 현재 이동중인 타워의 정보를 보여주는 기능 구현.
+
 ☑ Tower의 종류, 레벨에 따른 판매 골드를 저장하는 로직 추가.
+
 ☑ Tower Sales, Tower Color Changer 컴포넌트 구현 및 UI 구현.
+
 
 Data: 2022/06/03 FRI
 ☑ 드래그 앤 드롭 방식으로 동작하는 타워 판매, 색상 변경 기능 구현.
 
+
 Data: 2022/06/11 SAT
 ☑ 드래그 앤 드롭 방식으로 동작하는 타워 상세 정보 기능 구현.
+
 ☑ 타워 상세 정보 UI 구현.
+
 ☑ Inflictor 상세 정보 출력 기능 구현.
     -> 문자열을 만들 때 생성되는 Garbage를 최소화하기 위해 StringBuilder 클래스를 이용하여 구현함.
+
 ☑ 타워 능력치 조정.
+
 
 Data: 2022/06/12 SUN
 ☑ 게임 일시정지, 배속, 재시작 기능 구현.
+
 ☑ 게임 일시정지 시 나타나는 게임 메뉴 캔버스 구현.
+
 
 Data: 2022/06/13 MON
 ☑ Wave UI 구현.
+
 ☑ CardDrawer 클래스의 족보 판별 로직이 스트레이트 플러쉬를 판별하지 못하는 오류 수정.
+
 
 Data: 2022/06/16 THU
 ☑ Wave System 구현.
+
 ☑ EnemySpawner를 싱글톤 객체로 변경.
+
 
 Data: 2022/06/17 FRI
 ☑ SystemMessage, DamageTakenText, EnemyDieRewordText 의 상위클래스 FadeText 구현.
+
 ☑ DamageTaken Text를 화면에 좀더 리얼하게 표현하기 위해 Text의 Font Size가 잠깐 커졌다 작아진 뒤 사라지도록 변경.
+
 ☑ Enemy가 죽을 때 플레이어에게 들어오는 재화를 화면에 표시하기 위한 EnemyDieRewordText 구현.
+
 
 Data: 2022/06/18 SAT
 ☑ 게임의 TimeScale이 변경 되어도 영향을 받지 않는 오브젝트들을 구현하기 위해 열거형 타입의 DeltaTimeMode 값에 따라 deltaTime과 unscaledDeltaTime을 사용하도록 변경.
+
 ☑ 팝업 UI가 활성화 될 때 크기가 점점 커지면서 나타나고, 비활성화 될 때 크기가 점점 작아지면서 사라지도록 연출 하기 위한 PopupUIAnimation 스크립트 구현. 
+
 
 Data: 2022/06/19 SUN
 ☑ 조커 카드 기능을 구현하기 위해 기존의 Card Change Button을 Function Button으로 변경.
+
 ☑ 하나의 버튼으로 카드 바꾸기와 조커 카드 기능을 수행할 수 있도록 하기위한 Function Toggle 버튼 및 기능 구현.
+
 ☑ 기존의 Card Gambler 스크립트와 Gamble UI Controller 스크립트의 코드 짜임새가 비효율적이라 판단하여 리팩토링을 진행하였음.
+
 ☑ 오브젝트의 활성화 여부를 체크하기 위해 GameObject.activeInHierarchy 프로퍼티를 참조하던 방식에서 GameObject.activeSelf 프로퍼티를 참조하는 방식으로 변경.
+
 
 Data: 2022/06/20 MON
 ☑ 금일 모바일 기기 테스트 중 필드에 생성된 Enemy 개체 수가 140개 이상이 될 때 프레임이 심각하게 떨어지는 현상을 보임.
@@ -225,41 +325,87 @@ Data: 2022/06/20 MON
     -> 4. 그 밖에 GraphicRaycast나 Physics2D, Canvas.BuildBatch에서 성능 저하가 일어나고 있음을 확인함. 어떻게 고쳐나갈지 고민해봐야 할듯.
 
 ☑ 게임의 3배속 기능 삭제. 최대 2배속으로 변경.
+
 ☑ 적 유닛이 60마리 이상일 때 화면을 빨간색으로 깜빡이는 기능 삭제.
     -> 프레임 드랍이 일어날 때 화면이 불규칙하고 느리게 깜빡이게 되는 문제가 있어 삭제함.
+
 ☑ 크게 바꾼거라곤 EnemySpawner 밖에 없는데 Enemy 개체 350마리 까지는 안정적으로 60프레임을 유지하게 됨. 금일 발생했던 이슈는 일시적인 현상이었던 것으로 보임.
+
 ☑ 게임 기획상 필드 위에 존재할 수 있는 최대 Enemy 수는 80마리이며, pvp 모드까지 고려했을 때 최대 160마리가 존재할 수 있기 때문에 160마리일 때 안정적인 프레임을 유지했던 현재 로직을 유지하여 개발을 계속 진행하기로 결정함.
+
 ☑ Rotater2D 컴포넌트에 NaturalLookAtTarget() 메소드 추가. 타워가 적을 향해 회전할 때 즉시 rotation값을 변경하는 로직에서는 부자연스러웠기 때문에 부드럽게 회전하는 로직으로 변경.
+
 
 Data: 2022/06/21 THU
 ☑ 프로파일러를 통해 확인한 Canvas.BuildBatch 성능 저하 이슈 해결한듯(?)
     -> 하나의 Canvas에 UI 요소들을 몰아 넣으면 UI 값을 바꿀 때마다 전체 UI를 다시 그리기 때문에 성능 저하가 일어난다고 알고 있어서 기존 MainUICanvas 위에 또다른 Canvas들을 배치해서 UI를 배치하였음. 하지만 최근 Wave System을 구현하면서 현재 Wave정보와 남은 시간, 필드에 생성된 적 유닛 수를 보여주는 UI는 따로 Canvas로 만들지 않고 MainUICanvas 위에 바로 배치하였는데, MainUICanvas에 속한 UI의 값이 바뀌면서 자식 Canvas까지 전부 다시 그리고 있는게 아닐까? 라는 생각을 하게 됨. Wave Info Canvas를 만들어서 배치했더니 프로파일러 상에 Canvas.BuildBatch 부분이 20%~40%까지 차지하던 것에서 2%~4% 정도로 개선됨.
+
 ☑ 프로파일를 통해 Physic2D.SyncRigidbodyTransformChanges 에서 8%정도 차지하고 있는데, Enemy가 Rigidbody2D 컴포넌트를 가지고 있어 Enemy가 많아질수록 성능 저하가 일어나는 것으로 추정.
     -> Enemy가 Rigidbody2D를 가지고 있는 이유가 Projectile과의 충돌, 광역 공격에 사용되는 OverlapCircleAll() 메소드에 충돌하기 위해서인데 이 로직들을 다른 로직으로 변경하면 Collider와 Rigidbody를 제거해도 되기 때문에 물리 연산을 줄일 수 있을지 고민중.
+
 ☑ Movement2D 의 Update() 메소드를 FixedUpdate() 메소드로 변경.
+
 ☑ Game Speed를 변경할 때 Time.fixedDeltaTime 값을 0.02f * gameSpeed 로 변경하는 로직 추가.
     -> Game Speed를 변경했더니 프레임 드랍이 심해지는 문제로 인해 정보를 찾아보던 중 유니티 공식 문서에서 Time.fixedDeltaTime 값도 같이 바꿔주는 것이 좋다는 글을 봐서 변경함.
+
 ☑ 오브젝트의 이동이나 Tower의 공격, 애니메이션 등 프레임드랍 시 플레이어의 눈에 드러나는 요소들을 고정수치 Fixed로 변경.
+
 ☑ Enemy가 일정 속도 이상으로 빨라질경우 혹은 프레임 드랍이 일어나는 경우 WayPoint 경로를 이탈하게 되어 다시 위치를 바로잡는 과정에서 뒤에 이동속도가 같은 Enemy와 겹쳐지거나 뒤쳐지는 문제가 있었는데, Movement2D의 Update()를 FixedUpdate()로 변경하고, Enemy의 경로 이탈을 예상하는 로직을 변경함으로써 해당 문제를 해결하였음.
+
 ☑ Game Speed를 3배속으로 진행했을 때 물리 충돌이 제대로 이루어지지 않거나 프레임 드랍이 일어나는 증상을 완화시켰고, Enemy 의 이동속도가 매우 빨라져도 이동 경로를 이탈하지 않기 때문에 3배속 기능을 다시 복구시킴.
+
 ☑ Wave가 증가할 때 이를 스크린에 표시하는 Wave Info Canvas 및 Wave Start Message 스크립트 추가.
+
 
 Data: 2022/06/22 WED
 ☑ 기존 Time.deltaTime 에 영향을 받는 로직들중에서 프레임 드랍에 관계 없이 일정하게 호출되어야 하는 로직들을 FixedDeltaTime에 영향을 받도록 변경.
+
 ☑ Projectile와 Enemy의 충돌을 OnTriggerEnter 메소드로 체크하던 로직에서 Projectile과 Enemy 사이의 거리를 통해 일정 거리 이하로 가까워질 경우 충돌하는 로직으로 변경.
+
 ☑ Physics2D.OverlapCircleAll() 메소드를 통해 타워의 범위 공격 시 범위 내의 Enemy를 탐색하는 로직 삭제.
+
 ☑ Target Detector 스크립트 내에 전체 Enemy List를 탐색하면서 범위 내의 적을 리스트에 담는 로직을 수행하는 SearchTargetWithinRange() 메소드를 새로 추가함. 
     -> 따라서 Enemy의 Circle Colider 2D와 Rigidbody 2D 컴포넌트를 제거할 수 있게 됨.
+
     -> 이 덕분에 Collider를 가진 오브젝트를 움직이는데 드는 오버헤드가 대폭 감소하여 이전에 몬스터가 400마리 이상이 되면 프레임 드랍과 Fixed Update() 텀이 매우 길어져 게임이 거의 멈춰버리는 문제를 해결하게 되었음.
-    -> 그러나 유니티 프로그램으로 테스트 했을 때는 이상이 없었는데, 갤럭시 S20 스마트폰으로 테스트 했을 때 Enemy 오브젝트가 600개를 넘어가게 되면 여전히 프레임 드랍과 Fixed Update() 텀이 매우 길어져 게임이 거의 멈춰버리는 문제가 계속 나타나고 있어 이를 해결하기 위한 고민을 함.
+
+    -> 그러나 유니티 프로그램으로 테스트 했을 때는 이상이 없었는데, 갤럭시 S20 스마트폰으로 테스트 했을 때 Enemy 오브젝트가 600개를 넘어가게 되면 여전히 프레임 드랍과 Fixed Update() 수행 시간이 매우 길어져 게임이 거의 멈춰버리는 문제가 계속 나타나고 있어 이를 해결하기 위한 고민을 함.
+
 ☑ 스마트폰 환경에서 프로파일링을 통해 FieldEnemy의 이동 및 경로 변경을 담당하는 코루틴 메소드가 FieldEnemy 개체수만큼 동작하게 되어 CoroutineDelayedCalls 오버헤드가 커진다는 것을 알게되었음. 어떻게하면 Coroutine 메소드를 줄일 수 있을지 고민한 결과 FieldEnemy 오브젝트마다 각각 독립적인 코루틴 메소드를 수행할 필요가 없을 수도 있겠다라는 생각을 하게 됨. 왜냐하면 같은 기능을 하는 로직을 생성된 모든 FieldEnemy가 해당 기능을 수행하도록 반복문을 돌려도 문제 없을 것이라 생각했기 때문. 다만 Enemy가 많아질 경우 리스트의 끝쪽에 위치한 Enemy들이 로직을 늦게 수행하게 되어 이동 속도나 경로 이탈 등의 문제, 또한 배속으로 했을 시 이 문제가 더욱 커지게 될 수도 있겠다라는 생각을 하였음.
     -> FieldEnemy의 이동 관련 연산을 담당하는 Movement2D 컴포넌트를 FieldEnemy 오브젝트에서 삭제. 
+
     ->  EnemyMovementController 스크립트를 새로 생성하여 기존 FieldEnemy 스크립트에서 수행하던 이동, 경로 변경 로직을 해당 스크립트에서 수행하도록 하였음. 해당 스크립트에 FixedUpdate() 이벤트 메소드를 정의하여 매 FixedUpdate 마다 필드 위에 생성된 모든 FieldEnemy를 순회하며 이동 기능을 수행하도록 구현하였음.
+
     -> 그 결과 예상했던 문제는 게임을 3배속으로 돌려도 전혀 나타나지 않았고, CoroutineDelayedCalls과  Coroutine 관련 메소드들의 오버헤드가 대폭 줄어들게 됨.
+
     -> 갤럭시 S20 기준으로 Enemy 개체 1500개 까지도 프레임 드랍이 있긴하지만 배속까지 돌릴 수 있을 정도로 성능이 향상 되었음!!
+
 ☑ Tower Detail Info UI가 화면에 활성화 되어있을 때 Tower Detail Info UI와 Card Gamble UI 밑에 영역을 제외한 나머지 영역을 터치했을 시 Tower Detail Info UI가 자동으로 비활성화 되는 로직 추가.
+
 
 Date: 2022/06/26 SUN
 ☑ FieldEnemy의 Health Slider UI의 Event Camera에 Main Camera를 할당하는 로직 추가.
     -> Enemy가 많아질수록 프로파일러상에 UI 관련 함수의 오버헤드가 증가하는 현상이 나타나 자료를 찾아보았는데, World Space Canvas를 가지는 오브젝트의 Event Camera가 Null 값일 경우 매 프레임마다 MainCamera 태그를 가진 오브젝트를 찾기 위해 CompareTag 메소드를 호출하기 때문에 성능저하가 일어난다는 사실을 알게 되어 추가하였음.
+
 ☑ 조커 카드를 사용하여 선택한 카드를 원하는 카드로 교체하는 Card Select Change 기능 추가.
+
+
+Date: 2022/06/27 MON
+☑ EnemyMovementController 스크립트를 사용하던 로직에서 다시 FieldEnemy마다 EnemyMovement 컴포넌트로 이동을 수행하고, Update() 메소드로 이동 경로를 설정하는 로직으로 변경.
+    -> EnemyMovementController 스크립트를 구현했던 이유가 기존 코루틴 메소드를 무한히 반복하며 수행하던 로직이 코루틴 딜레이를 많이 호출하게 되어 발생하는 성능 저하 이슈를 해결하기 위함이었는데, 생각해본 결과 코루틴이 아닌 유니티의 이벤트 메소드 Update()를 이용하면 코루틴 딜레이를 호출하지 않기 때문에 개체수가 많아질 수록 성능이 저하되던 문제를 보이지 않을 것이라 생각하였음. 그 결과 코루틴 딜레이 이슈도 해결되고 전체 Enemy List를 탐색하면서 커졌던 수행시간도 빠르게 수행할 수 있게 되었음.
+
+☑ Field Enemy가 다음 웨이포인트를 향해 이동할 때 경로 이탈을 방지하기 위해 일정 거리 이하가 되면 오브젝트의 포지션을 웨이포인트 포지션으로 바꿔주는 로직에서 보였던 이슈 해결.
+    -> 게임을 3배속으로 하는 경우와 같이 Enemy의 이동속도가 매우 빨라질 때 한번에 이동하는 거리가 커지면서 뒤에 있는 Enemy가 앞에 있는 Enemy의 위치와 같아지는 문제가 있었는데, 웨이포인트 포지션으로 위치를 바꿔주는 로직에다 Enemy와 웨이포인트의 거리와 Enemy가 한 프레임에 이동하는 이동 거리의 차이만큼 추가로 더해줌으로써 문제를 해결함. (코너를 도는 느낌) 
+
+☑ FieldEnemy 개체수가 증가할 때 마다 Canvas.BuildBatch에서 보이던 성능 저하 문제 해결.
+    -> FieldEnemy 의 체력바 기능을 구현하기 위해 자식오브젝트로 World Space 캔버스를 가진 Slider UI를 추가했었는데, 단순히 Canvas가 개체수만큼 많아지니까 화면에 보여주는게 느리겠구나 정도로만 짐작하고 있던 상황에서 유니티의 Frame Debugger 기능을 알게되었음. Frame Debugger로 화면이 어떤 순서로 그려지는지 확인한 결과 FieldEnemy는 개수가 몇개이든 동시에 그려지는데 반해 FieldEnemy가 가지고 있는 Slider UI는 한번의 Draw call에 하나씩만 그려지고 있다는 것을 확인함. 어떻게 동시에 그리게 할 수 있을까 생각하다 그냥 Square 오브젝트를 두개 생성하여 Slider가 수행하던 체력바 기능을 직접 구현하였는데 그 결과 Canvas.BuildBatch 성능이 월등히 좋아지게 되어 FieldEnemy 개체수가 엄청나게 많아져도(1500마리 이상) 높은 프레임(최소 60FPS)을 안정적으로 유지할 수 있게 되었음.
+
+☑ 모든 Enemy 오브젝트의 Health Slider UI 오브젝트 삭제.
+
+☑ Enemy의 체력바 기능을 담당하는 EnemyHealthbar 스크립트 구현.
+    -> 체력이 10% 감소할 때마다 Healthbar Gauge의 Scale X값이 0.1f 감소 하도록 구현하였는데 X값이 0.1f 감소할 때마다 Position X값을 -0.05f 만큼 이동 시키면 Slider처럼 체력이 감소한 형태를 유지할 수 있어 이를 간단히 공식으로 구현하였음.
+
+☑ FixedDeltaTIme에 영향을 받도록 변경했던 로직들을 다시 DeltaTime에 영향을 받도록 변경.
+    -> 병목 현상을 보이던 부분들을 고쳐나가면서 더이상의 프레임 드랍은 없어졌고, 매번 일정하게 연산을 수행하기 위해 FixedUpdate()를 사용하는 것이 아닌 물리 연산을 수행하는 로직에서 FixedUpdate()를 사용하는 것임을 알게 되어 바꾸게 되었음.
+
+☑ Special Boss가 받는 데미지에 관계 없이 1씩만 받던 것에서 100% 피해를 전부 받도록 변경, 받는 피해량 증가 디버프 또한 받도록 변경하고 체력을 높게 조정.

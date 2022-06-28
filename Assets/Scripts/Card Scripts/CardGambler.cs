@@ -97,15 +97,13 @@ public class CardGambler : MonoBehaviour
 
     public void ExecuteButtonFunction(int changeIndex)
     {
-        _changeIndex = changeIndex;
-
         if (_buttonFunctionType == ButtonFunctionType.CardChange)
-            CardRandomChange();
+            CardRandomChange(changeIndex);
         else
-            ShowCardSelector();
+            ShowCardSelector(changeIndex);
     }
 
-    private void CardRandomChange()
+    private void CardRandomChange(int changeIndex)
     {
         // 플레이어의 ChangeChance 횟수가 0 이하라면 수행하지 않는다.
         if (GameManager.instance.changeChance <= 0)
@@ -118,15 +116,15 @@ public class CardGambler : MonoBehaviour
         GameManager.instance.changeChance--;
 
         // 카드를 바꾼다.
-        _cardDrawer.ChangeRandomCard(_changeIndex);
+        _cardDrawer.ChangeRandomCard(changeIndex);
 
         // 바꾼 카드를 플레이어에게 보여준다.
-        _gambleUIController.ReverseCardFrountUI(_changeIndex);
+        _gambleUIController.ReverseCardFrountUI(changeIndex);
         // 뽑은 카드 결과값 갱신.
         _gambleUIController.ShowResultUI();
     }
 
-    private void ShowCardSelector()
+    private void ShowCardSelector(int changeIndex)
     {
         // 플레이어의 JokerCard 개수가 0개 이하라면 수행하지 않는다.
         if (GameManager.instance.jokerCard <= 0)
@@ -135,9 +133,23 @@ public class CardGambler : MonoBehaviour
             return;
         }
 
-        _gambleUIController.MarkChangeCard(_changeIndex);
-        _gambleUIController.DisableFunctionToggleButton();
-        _cardSelector.gameObject.SetActive(true);
+        // 이미 Card Selector가 활성화 되어있는 경우 바꿀 카드의 index만 바꾼다.
+        if (_cardSelector.gameObject.activeSelf)
+        {
+            _gambleUIController.MarkCancelChangeCard(_changeIndex);
+
+            _changeIndex = changeIndex;
+
+            _gambleUIController.MarkChangeCard(_changeIndex);
+
+        }
+        else
+        {
+            _changeIndex = changeIndex;
+            _gambleUIController.MarkChangeCard(_changeIndex);
+            _gambleUIController.DisableFunctionToggleButton();
+            _cardSelector.gameObject.SetActive(true);
+        }
     }
     
     public void HideCardSelector()

@@ -30,6 +30,8 @@ public class UIManager : MonoBehaviour
     [SerializeField]
     private GambleUIController _gambleUIController;
     [SerializeField]
+    private CardSelector _cardSelector;
+    [SerializeField]
     private MissionBossUIController _missionBossUIController;
     [SerializeField]
     private ColorUpgradeUIController _colorUpgradeUIController;
@@ -56,7 +58,9 @@ public class UIManager : MonoBehaviour
 
     public ScreenCover screenCover => _screenCover;
     public TowerInfomation towerInfomation => _towerInfomation;
+    public TowerDetailInfoUIController towerDetailInfoUIController => _towerDetailInfoUIController;
     public GambleUIController gambleUIController => _gambleUIController;
+    public CardSelector cardSelector => _cardSelector;
     public MissionBossUIController missionBossUIController => _missionBossUIController;
     public ColorUpgradeUIController colorUpgradeUIController => _colorUpgradeUIController;
 

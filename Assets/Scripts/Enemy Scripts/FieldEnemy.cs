@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -6,22 +7,14 @@ using UnityEngine.UI;
 public abstract class FieldEnemy : Enemy
 {
     [SerializeField]
-    private Canvas _healthSliderCanvas;
-    [SerializeField]
-    private SpriteRenderer _increaseReceiveDamageSprite;
-    [SerializeField]
     private Particle _slowEffect;
     [SerializeField]
     private Particle _stunEffect;
 
+    private EnemyMovement _enemyMovement;
+
     private int _stunCount; // 스턴을 중첩해서 맞을 경우 가장 마지막에 풀리는 스턴을 알기 위한 변수
     private int _slowCount; // 슬로우를 중첩해서 맞을 경우 가장 마지막에 풀리는 슬로우를 알기 위한 변수
-    private float _increaseReceiveDamageRate; // Enemy가 공격 당할 때 받는 피해량
-    private EnemyMovementState _enemyMovementState = new();
-    private WaitForFixedUpdate _waitForFixedUpdate = new();
-
-    public EnemyMovementState enemyMovementState => _enemyMovementState;
-    public EnemySpawner enemySpawner { get; set; }
 
     private int stunCount
     {
@@ -32,13 +25,13 @@ public abstract class FieldEnemy : Enemy
             if (_stunCount == 0 && value > 0)
             {
                 _stunEffect.PlayParticle();
-                _enemyMovementState.isStop = true;
+                _enemyMovement.Stop();
             }
             // stunCount가 0이 되면 스턴 파티클을 중지하고 이동을 재개한다.
             else if (_stunCount != 0 && value == 0)
             {
                 _stunEffect.StopParticle();
-                _enemyMovementState.isStop = false;
+                _enemyMovement.Move();
             }
 
             _stunCount = value;
@@ -61,61 +54,21 @@ public abstract class FieldEnemy : Enemy
         }
     }
 
-    private float increaseReceiveDamageRate
-    {
-        get => _increaseReceiveDamageRate;
-        set
-        {
-            // increaseReceiveDamageRate 값이 0이고 value값이 0보다 크다면 디버프 스프라이트를 활성화 한다.
-            if (_increaseReceiveDamageRate == 0 && value > 0)
-                _increaseReceiveDamageSprite.gameObject.SetActive(true);
-            // increaseReceiveDamageRate 값이 0이 아니고 value값이 0이라면 디버프 스프라이트를 비활성화 한다.
-            else if (_increaseReceiveDamageRate > 0 && value == 0)
-                _increaseReceiveDamageSprite.gameObject.SetActive(false);
-
-            _increaseReceiveDamageRate = value;
-        }
-    }
-
     protected override void Awake()
     {
         base.Awake();
-        _healthSliderCanvas.worldCamera = Camera.main;
+        _enemyMovement = GetComponent<EnemyMovement>();
     }
 
-    public virtual void Setup(EnemyData enemyData)
+    public override void Setup(EnemyData enemyData)
     {
-        // 생성할 Enemy의 체력, 색깔 설정
-        maxHealth = enemyData.health;
-        health = maxHealth;
-        healthSlider.maxValue = maxHealth;
-        healthSlider.value = maxHealth;
-        enemySprite.sprite = enemyData.sprite;
-        enemySprite.color = Color.white;
+        base.Setup(enemyData);
 
-        // 생성할 Enemy의 이동속도 설정
-        _enemyMovementState.Setup(enemyData.moveSpeed);
+        // 생성할 Enemy의 이동속도, 이동정보 설정
+        _enemyMovement.moveSpeed = enemyData.moveSpeed;
 
         slowCount = 0;
         stunCount = 0;
-        increaseReceiveDamageRate = 0;
-
-        this.transform.rotation = Quaternion.Euler(0, 0, 0);
-    }
-
-    public override void TakeDamage(float damage, DamageTakenType damageTakenType)
-    {
-        base.TakeDamage(damage, damageTakenType);
-
-        damage *= 1f + (_increaseReceiveDamageRate * 0.01f);
-
-        health -= damage;
-        healthSlider.value -= damage;
-
-        UIManager.instance.ShowDamageTakenText(damage, this.transform, damageTakenType);
-
-        if (health <= 0)
-            Die();
     }
 
     public override void TakeStun(float duration)
@@ -130,8 +83,9 @@ public abstract class FieldEnemy : Enemy
         // duration 만큼 지연
         while (duration > 0)
         {
-            yield return _waitForFixedUpdate;
-            duration -= Time.fixedDeltaTime;
+            //yield return _waitForFixedUpdate;
+            yield return waitForPointFiveSeconds;
+            duration -= 0.5f;
         }
 
         // 스턴 시간이 종료 되었으므로 stunCount 1 감소.
@@ -146,44 +100,26 @@ public abstract class FieldEnemy : Enemy
     private IEnumerator SlowingCoroutine(float slowingRate, float duration)
     {
         // 감소하는 이동 속도를 저장해둔다.
-        float slowSpeed = _enemyMovementState.moveSpeed * slowingRate * 0.01f;
+        float slowSpeed = _enemyMovement.moveSpeed * slowingRate * 0.01f;
         // slowCount 1 증가.
         slowCount++;
 
         // 감소하는 이동 속도만큼 감소시킨다.
-        _enemyMovementState.moveSpeed -= slowSpeed;
+        _enemyMovement.moveSpeed -= slowSpeed;
 
         // duration 만큼 지연
         while (duration > 0)
         {
-            yield return _waitForFixedUpdate;
-            duration -= Time.fixedDeltaTime;
+            //yield return _waitForFixedUpdate;
+            yield return waitForPointFiveSeconds;
+            duration -= 0.5f;
         }
 
         // 감소시켰던 이동 속도를 되돌린다.
-        _enemyMovementState.moveSpeed += slowSpeed;
+        _enemyMovement.moveSpeed += slowSpeed;
 
         // 증가시켰던 slowCount를 다시 감소시킨다.
         slowCount--;
-    }
-
-    public override void TakeIncreaseReceivedDamage(float increaseReceivedDamageRate, float duration)
-    {
-        StartCoroutine(IncreaseReceivedDamageCoroutine(increaseReceivedDamageRate, duration));
-    }
-
-    private IEnumerator IncreaseReceivedDamageCoroutine(float increaseReceivedDamageRate, float duration)
-    {
-        this.increaseReceiveDamageRate += increaseReceivedDamageRate;
-
-        // duration만큼 지연
-        while (duration > 0)
-        {
-            yield return _waitForFixedUpdate;
-            duration -= Time.fixedDeltaTime;
-        }
-
-        this.increaseReceiveDamageRate -= increaseReceivedDamageRate;
     }
 
     protected override void Die()

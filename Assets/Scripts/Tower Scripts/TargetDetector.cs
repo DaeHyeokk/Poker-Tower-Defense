@@ -31,13 +31,16 @@ public class TargetDetector
         // 단일 타겟 타워일 경우 수행
         if (_detectingMode == DetectingMode.Single)
         {
-            // 사거리 내에 스폐셜보스가 있다면 가장 우선 타격한다.
-            _distance = Vector2.Distance(_tower.transform.position, _enemySpawner.specialBossEnemy.transform.position);
-            if (_distance <= _tower.range)
+            // 스폐셜 보스가 필드에 활성화된 상태라면 가장 우선 타격한다.
+            if (_enemySpawner.specialBossEnemy.gameObject.activeSelf)
             {
-                _targetList.Clear();
-                _targetList.Add(_enemySpawner.specialBossEnemy);
-                return;
+                _distance = Vector2.Distance(_tower.transform.position, _enemySpawner.specialBossEnemy.transform.position);
+                if (_distance <= _tower.range)
+                {
+                    _targetList.Clear();
+                    _targetList.Add(_enemySpawner.specialBossEnemy);
+                    return;
+                }
             }
 
             // 그다음 라운드 보스가 필드에 활성화된 상태라면 라운드 보스를 우선 타격한다.
@@ -97,10 +100,13 @@ public class TargetDetector
         {
             _targetList.Clear();
 
-            // 사거리 내에 스폐셜보스가 있다면 가장 우선 타격한다.
-            _distance = Vector2.Distance(_tower.transform.position, _enemySpawner.specialBossEnemy.transform.position);
-            if (_distance <= _tower.range)
-                _targetList.Add(_enemySpawner.specialBossEnemy);
+            // 스폐셜 보스가 필드에 활성화된 상태라면 가장 우선 타격한다.
+            if (_enemySpawner.specialBossEnemy.gameObject.activeSelf)
+            {
+                _distance = Vector2.Distance(_tower.transform.position, _enemySpawner.specialBossEnemy.transform.position);
+                if (_distance <= _tower.range)
+                    _targetList.Add(_enemySpawner.specialBossEnemy);
+            }
 
             // 그다음 라운드 보스가 필드에 활성화된 상태라면 라운드 보스를 우선 타격한다.
             if (_enemySpawner.roundBossEnemy.gameObject.activeSelf)

@@ -34,6 +34,8 @@ public class PopupUIAnimation : MonoBehaviour
             yield return null;
         }
 
+        _scale = 1f;
+
         while (_scale >= 1f)
         {
             this.transform.localScale = Vector3.one * _scale;
@@ -70,6 +72,8 @@ public class PopupUIAnimation : MonoBehaviour
 
             yield return null;
         }
+
+        _scale = 1.2f;
 
         while (_scale >= 0f)
         {

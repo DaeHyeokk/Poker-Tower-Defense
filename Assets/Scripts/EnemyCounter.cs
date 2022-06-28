@@ -24,7 +24,7 @@ public class EnemyCounter : MonoBehaviour
         }
     }
 
-    private void FixedUpdate()
+    private void Update()
     {
         if (_enemySpawner.roundBossEnemy.gameObject.activeSelf)
             roundEnemyCount = _enemySpawner.roundEnemyList.Count + 1;

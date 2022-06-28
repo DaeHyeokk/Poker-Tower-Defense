@@ -26,8 +26,7 @@ public class DamageTakenText : FadeTextObject
 
     private float _highlightFontSize;
 
-    private readonly float _animationStartDelay = 0.2f;
-    private readonly WaitForFixedUpdate _waitForFixedUpdate = new();
+    private readonly WaitForSeconds _waitAnimationStartDelay = new(0.2f);
 
     public DamageTakenType damageTakenType
     {
@@ -61,30 +60,25 @@ public class DamageTakenText : FadeTextObject
 
         while(textMeshPro.fontSize < _highlightFontSize)
         {
-            textMeshPro.fontSize += _highlightSpeed * Time.fixedDeltaTime;
+            textMeshPro.fontSize += _highlightSpeed * Time.deltaTime;
 
             if (textMeshPro.fontSize > _highlightFontSize)
                 textMeshPro.fontSize = _highlightFontSize;
 
-            yield return _waitForFixedUpdate;
+            yield return null;
         }
 
         while(textMeshPro.fontSize > backupFontSize)
         {
-            textMeshPro.fontSize -= _highlightSpeed * Time.fixedDeltaTime;
+            textMeshPro.fontSize -= _highlightSpeed * Time.deltaTime;
 
             if (textMeshPro.fontSize < backupFontSize)
                 textMeshPro.fontSize = backupFontSize;
 
-            yield return _waitForFixedUpdate;
+            yield return null;
         }
 
-        float animationStartDelay = _animationStartDelay;
-        while (animationStartDelay > 0)
-        {
-            yield return _waitForFixedUpdate;
-            animationStartDelay -= Time.fixedDeltaTime;
-        }
+        yield return _waitAnimationStartDelay;
 
         _movement2D.Move();
         base.textObjectFadeAnimation.FadeOutText();
