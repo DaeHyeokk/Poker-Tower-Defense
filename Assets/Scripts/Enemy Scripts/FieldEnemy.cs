@@ -58,6 +58,7 @@ public abstract class FieldEnemy : Enemy
     {
         base.Awake();
         _enemyMovement = GetComponent<EnemyMovement>();
+        SetRewardText();
     }
 
     public override void Setup(EnemyData enemyData)
@@ -129,6 +130,7 @@ public abstract class FieldEnemy : Enemy
     }
 
     protected abstract void ReturnObject();
+    public abstract void OnMissing();
 }
 
 /*

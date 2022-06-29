@@ -55,7 +55,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _deltaTimeMode: 0
   _moveDirection: {x: 0, y: 1, z: 0}
-  _moveSpeed: 1.6
+  _moveSpeed: 1.4
 --- !u!114 &5992163405501991828
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -91,7 +91,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _deltaTimeMode: 0
-  _lerpSpeed: 2
+  _lerpSpeed: 2.2
   _text: {fileID: 4791661860645922614}
 --- !u!23 &6664996395323854646
 MeshRenderer:
@@ -133,7 +133,7 @@ MeshRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 10
+  m_SortingOrder: 12
   m_AdditionalVertexStreams: {fileID: 0}
 --- !u!114 &4791661860645922614
 MonoBehaviour:
@@ -182,8 +182,8 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 2
-  m_fontSizeBase: 2
+  m_fontSize: 1.9
+  m_fontSizeBase: 1.9
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
@@ -192,7 +192,7 @@ MonoBehaviour:
   m_HorizontalAlignment: 2
   m_VerticalAlignment: 512
   m_textAlignment: 65535
-  m_characterSpacing: -15
+  m_characterSpacing: -17
   m_wordSpacing: 0
   m_lineSpacing: 0
   m_lineSpacingMax: 0

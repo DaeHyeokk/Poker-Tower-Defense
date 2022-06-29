@@ -9,12 +9,12 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8e61bb01788e6b742b78dd0066b02575, type: 3}
-  m_Name: Enemy Round 31
+  m_Script: {fileID: 11500000, guid: bae1fc952a4f5ae4ab0e3aae03a07732, type: 3}
+  m_Name: Special Boss Lv5
   m_EditorClassIdentifier: 
-  sprite: {fileID: 21300000, guid: 1453f46128df0e14690d75cc33de5bea, type: 3}
-  health: 200
-  moveSpeed: 1
-  rewardGold: 5
-  rewardChangeChance: 0
-  rewardJokerCard: 0
+  sprite: {fileID: 21300000, guid: 3d715685694a5db46a31e9702b3775c5, type: 3}
+  health: 500
+  moveSpeed: 0
+  rewardGold: 500
+  rewardChangeChance: 5
+  rewardJokerCard: 1

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
 
-public class MissionBossEnemy : FieldBossEnemy
+public class MissionBossEnemy : FieldEnemy
 {
     [SerializeField]
     private int _bossLevel; 
@@ -50,7 +50,6 @@ public class MissionBossEnemy : FieldBossEnemy
 
     protected override void ReturnObject()
     {
-        enemySpawner.missionBossEnemyList.Remove(this);
         this.gameObject.SetActive(false);
     }
 }

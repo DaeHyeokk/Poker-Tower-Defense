@@ -72,7 +72,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 9
+  m_SortingOrder: 11
   m_Sprite: {fileID: 7482667652216324306, guid: 311925a002f4447b3a28927169b83ea6, type: 3}
   m_Color: {r: 1, g: 0, b: 0, a: 1}
   m_FlipX: 0
@@ -156,7 +156,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 8
+  m_SortingOrder: 10
   m_Sprite: {fileID: 7482667652216324306, guid: 311925a002f4447b3a28927169b83ea6, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
@@ -277,7 +277,7 @@ Transform:
   m_GameObject: {fileID: 4387109090894824419}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 1.3, z: 0}
-  m_LocalScale: {x: 2.5, y: 0.35, z: 1}
+  m_LocalScale: {x: 2.5, y: 0.4, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 6127576028684590372}
@@ -638,12 +638,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d9b72f1c4311be6438b7df8efdb4e9be, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _enemySprite: {fileID: 4824518791374353399}
+  _healthbarGauge: {fileID: 6568851770278806919}
+  _increaseReceiveDamageSprite: {fileID: 3622560223533545615}
   _rewardGold: 500
   _rewardChangeChance: 5
   _rewardJokerCard: 0
-  _enemySprite: {fileID: 4824518791374353399}
-  _healthbarGauge: {fileID: 4354685754073269609}
-  _increaseReceiveDamageSprite: {fileID: 3622560223533545615}
   _slowEffect: {fileID: 1275035358121461290}
   _stunEffect: {fileID: 6975457146586578529}
   _bossLevel: 3

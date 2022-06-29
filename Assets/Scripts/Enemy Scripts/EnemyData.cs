@@ -6,8 +6,8 @@ using UnityEngine.UI;
 [CreateAssetMenu(menuName = "Scriptable/EnemyData", fileName = "Enemy Data")]
 public class EnemyData : ScriptableObject
 {
-    public Sprite sprite; // 적 스프라이트 이미지
-    public float health; // 체력
+    public Sprite sprite;   // 적 스프라이트 이미지
+    public float health;    // 체력
     public float moveSpeed; // 이동 속도
 }
 

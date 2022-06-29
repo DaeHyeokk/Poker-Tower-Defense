@@ -26,29 +26,23 @@ public class ParticlePlayer : MonoBehaviour
     [SerializeField]
     private GameObject[] _collisionProjectilePrefabs;
 
-    private WaitForSeconds _delayTime;
-    private WaitForSeconds _collisionProjectileDelayTime;
-    private ObjectPool<Particle> _enemyDiePool;
-    private List<ObjectPool<Particle>> _rangeAttackPoolList;
-    private List<ObjectPool<Particle>> _collisionProjectilePoolList;
+    private readonly WaitForSeconds _delayTime = new(0.5f);
+    private readonly WaitForSeconds _collisionProjectileDelayTime = new(0.15f);
 
-    public ObjectPool<Particle> enemyDiePool => _enemyDiePool;
+    private ObjectPool<Particle> _enemyDiePool;
+    private ObjectPool<Particle>[] _rangeAttackPools;
+    private ObjectPool<Particle>[] _collisionProjectilePools;
 
     private void Awake()
     {
-        _delayTime = new WaitForSeconds(0.5f);
-        _collisionProjectileDelayTime = new WaitForSeconds(0.15f);
         _enemyDiePool = new(_enemyDiePrefab, 10);
 
-        _rangeAttackPoolList = new List<ObjectPool<Particle>>();
+        for (int i = 0; i < _rangeAttackPrefabs.Length; i++)
+            _rangeAttackPools[i] = new ObjectPool<Particle>(_rangeAttackPrefabs[i], 5);
+
 
         for (int i = 0; i < _rangeAttackPrefabs.Length; i++)
-            _rangeAttackPoolList.Add(new(_rangeAttackPrefabs[i], 5));
-
-        _collisionProjectilePoolList = new List<ObjectPool<Particle>>();
-
-        for (int i = 0; i < _rangeAttackPrefabs.Length; i++)
-            _collisionProjectilePoolList.Add(new(_collisionProjectilePrefabs[i], 10));
+            _collisionProjectilePools[i] = new ObjectPool<Particle>(_collisionProjectilePrefabs[i], 10);
     }
 
     public void PlayEnemyDie(Transform enemyTransform)
@@ -69,7 +63,7 @@ public class ParticlePlayer : MonoBehaviour
 
     public void PlayCollisionProjectile(Transform projectileTransform, int index)
     {
-        Particle particle = _collisionProjectilePoolList[index].GetObject();
+        Particle particle = _collisionProjectilePools[index].GetObject();
         particle.transform.position = projectileTransform.position;
         particle.transform.localScale = projectileTransform.lossyScale;
         particle.PlayParticle();
@@ -79,13 +73,13 @@ public class ParticlePlayer : MonoBehaviour
     private IEnumerator CollisionProjectileReturnPoolCoroutine(Particle particle, int index)
     {
         yield return _collisionProjectileDelayTime;
-        _collisionProjectilePoolList[index].ReturnObject(particle);
+        _collisionProjectilePools[index].ReturnObject(particle);
     }
 
 
     public void PlayRangeAttack(Transform targetTransform, float range, int index)
     {
-        Particle particle = _rangeAttackPoolList[index].GetObject();
+        Particle particle = _rangeAttackPools[index].GetObject();
         particle.transform.position = targetTransform.position;
         particle.transform.localScale = new Vector3(range * 2, range * 2, 0f);
         particle.PlayParticle();
@@ -95,7 +89,7 @@ public class ParticlePlayer : MonoBehaviour
     private IEnumerator RangeAttackReturnPoolCoroutine(Particle particle, int index)
     {
         yield return _delayTime;
-        _rangeAttackPoolList[index].ReturnObject(particle);
+        _rangeAttackPools[index].ReturnObject(particle);
     }
 
 }

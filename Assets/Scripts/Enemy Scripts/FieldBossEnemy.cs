@@ -6,6 +6,5 @@ using TMPro;
 
 public abstract class FieldBossEnemy : FieldEnemy
 {
-    public event Action onMissingAction;
-    public abstract void OnMissing();
+    
 }

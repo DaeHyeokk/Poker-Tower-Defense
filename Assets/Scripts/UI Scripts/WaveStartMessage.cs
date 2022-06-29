@@ -17,7 +17,7 @@ public class WaveStartMessage : MonoBehaviour
     [SerializeField]
     private float _lerpSpeed;
 
-    private readonly float _fadeOutDelay = 0.5f;
+    private readonly float _fadeOutDelay = 0.65f;
 
     private void OnEnable()
     {
@@ -56,37 +56,19 @@ public class WaveStartMessage : MonoBehaviour
             yield return null;
         }
 
-        float fadeOutDelay = _fadeOutDelay;
-        while(fadeOutDelay > 0)
+        if (start < end)
         {
-            fadeOutDelay -= Time.unscaledDeltaTime;
+            float fadeOutDelay = _fadeOutDelay;
+            while (fadeOutDelay > 0)
+            {
+                fadeOutDelay -= Time.unscaledDeltaTime;
 
-            yield return null;
+                yield return null;
+            }
+            // 크기와 알파값이 감소하도록 재귀호출.
+            StartCoroutine(AlphaLerpCoroutine(end, start));
         }
-
-        currentTime = 0f;
-        percent = 0f;
-
-        while (percent < 1f)
-        {
-            currentTime += Time.unscaledDeltaTime;
-            percent = currentTime * _lerpSpeed;
-            float lerp = Mathf.Lerp(end, start, percent);
-
-            _backgroundImage.transform.localScale = new Vector3(1f, lerp, 1f);
-
-            Color color;
-            color = _waveStartText.color;
-            color.a = lerp;
-            _waveStartText.color = color;
-
-            color = _waveWarningText.color;
-            color.a = lerp;
-            _waveWarningText.color = color;
-
-            yield return null;
-        }
-
-        gameObject.SetActive(false);
+        else
+            gameObject.SetActive(false);
     }
 }

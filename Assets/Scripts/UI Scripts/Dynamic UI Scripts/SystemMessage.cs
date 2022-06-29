@@ -5,15 +5,15 @@ using TMPro;
 
 public class SystemMessage : FadeTextUI
 {
-    public enum MessageType { NotEnoughGold, NotEnoughMineral, NotEnoughChangeChance, NotEnoughJokerCard, CompletionColorChange, CompletionTowerSales }
+    public enum MessageType { NotEnoughGold, NotEnoughMineral, NotEnoughChangeChance, NotEnoughJokerCard, AlreadyUsedJokerCard, CompletionColorChange, CompletionTowerSales }
 
-    private readonly WaitForFixedUpdate _waitForFixedUpdate = new();
-    private readonly float _animationStartDelay = 0.1f;
+    private readonly WaitForSecondsRealtime _waitForSecondsRealtime = new(0.1f);
 
     private readonly string _notEnoughGoldString = "골드가 부족합니다.";
     private readonly string _notEnoughMineralString = "미네랄이 부족합니다.";
     private readonly string _notEnoughChangeChanceString = "카드교환권이 부족합니다.";
     private readonly string _notEnoughJokerCard = "조커카드가 부족합니다.";
+    private readonly string _alreadyUsedJokerCard = "조커카드를 이미 사용하셨습니다.";
     private readonly string _completionColorChangeString = "색 변경 완료!";
     private readonly string _completionTowerSalesString = "판매 완료!";
 
@@ -41,6 +41,11 @@ public class SystemMessage : FadeTextUI
                 textMeshProUGUI.text = _notEnoughJokerCard;
                 break;
 
+            case SystemMessage.MessageType.AlreadyUsedJokerCard:
+                textMeshProUGUI.color = Color.red;
+                textMeshProUGUI.text = _alreadyUsedJokerCard;
+                break;
+
             case SystemMessage.MessageType.CompletionColorChange:
                 textMeshProUGUI.color = Color.white;
                 textMeshProUGUI.text = _completionColorChangeString;
@@ -60,12 +65,7 @@ public class SystemMessage : FadeTextUI
 
     private IEnumerator StartAnimationCoroutine()
     {
-        float animationStartDelay = _animationStartDelay;
-        while(animationStartDelay > 0)
-        {
-            yield return null;
-            animationStartDelay -= Time.unscaledDeltaTime;
-        }
+        yield return _waitForSecondsRealtime;
 
         base.textUIFadeAnimation.FadeOutText();
     }

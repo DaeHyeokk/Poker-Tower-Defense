@@ -15,7 +15,6 @@ public class ImageFadeAnimation : MonoBehaviour
     private float _lerpSpeed;
 
     private bool _isBlinking;
-    private WaitForFixedUpdate _waitForFixedUpdate = new();
 
     public event Action onCompletionFadeIn;
     public event Action onCompletionFadeOut;
@@ -59,7 +58,11 @@ public class ImageFadeAnimation : MonoBehaviour
         // 알파 값이 0이 될 때 까지 알파 값 감소
         while (percent < 1)
         {
-            IncreaseCurrentTime(ref currentTime);
+            if (_deltaTimeMode == DeltaTimeMode.GameTime)
+                currentTime += Time.deltaTime;
+            else
+                currentTime += Time.unscaledDeltaTime;
+
             percent = currentTime * _lerpSpeed;
             float lerp = Mathf.Lerp(1f, 0f, percent);
 
@@ -67,7 +70,7 @@ public class ImageFadeAnimation : MonoBehaviour
             color.a = lerp;
             _image.color = color;
 
-            yield return _waitForFixedUpdate;
+            yield return null;
         }
 
         if (onCompletionFadeOut != null)
@@ -76,7 +79,7 @@ public class ImageFadeAnimation : MonoBehaviour
 
     private IEnumerator FadeInImageCoroutine()
     {
-        // 알파 값을 1로 설정.
+        // 알파 값을 0으로 설정.
         Color color = _image.color;
         color.a = 0f;
         _image.color = color;
@@ -87,7 +90,11 @@ public class ImageFadeAnimation : MonoBehaviour
         // 알파 값이 1이 될 때 까지 알파 값 증가
         while (percent < 1)
         {
-            IncreaseCurrentTime(ref currentTime);
+            if (_deltaTimeMode == DeltaTimeMode.GameTime)
+                currentTime += Time.deltaTime;
+            else
+                currentTime += Time.unscaledDeltaTime;
+
             percent = currentTime * _lerpSpeed;
             float lerp = Mathf.Lerp(0f, 1f, percent);
 
@@ -95,7 +102,7 @@ public class ImageFadeAnimation : MonoBehaviour
             color.a = lerp;
             _image.color = color;
 
-            yield return _waitForFixedUpdate;
+            yield return null;
         }
 
         if (onCompletionFadeIn != null)
@@ -123,7 +130,11 @@ public class ImageFadeAnimation : MonoBehaviour
                 yield break;
             }
 
-            IncreaseCurrentTime(ref currentTime);
+            if (_deltaTimeMode == DeltaTimeMode.GameTime)
+                currentTime += Time.deltaTime;
+            else
+                currentTime += Time.unscaledDeltaTime;
+
             percent = currentTime * _lerpSpeed;
             float lerp = Mathf.Lerp(0f, 1f, percent);
 
@@ -131,7 +142,7 @@ public class ImageFadeAnimation : MonoBehaviour
             color.a = lerp;
             _image.color = color;
 
-            yield return _waitForFixedUpdate;
+            yield return null;
         }
 
         // 알파 값이 0이 될 때 까지 알파 값 감소
@@ -145,7 +156,11 @@ public class ImageFadeAnimation : MonoBehaviour
                 yield break;
             }
 
-            IncreaseCurrentTime(ref currentTime);
+            if (_deltaTimeMode == DeltaTimeMode.GameTime)
+                currentTime += Time.deltaTime;
+            else
+                currentTime += Time.unscaledDeltaTime;
+
             percent = currentTime * _lerpSpeed;
             float lerp = Mathf.Lerp(1f, 0f, percent);
 
@@ -153,18 +168,10 @@ public class ImageFadeAnimation : MonoBehaviour
             color.a = lerp;
             _image.color = color;
 
-            yield return _waitForFixedUpdate;
+            yield return null;
         }
 
         // 반복해서 깜빡이도록 하기 위한 코루틴 메소드 재귀호출.
         StartCoroutine(BlinkImageCoroutine());
-    }
-
-    private void IncreaseCurrentTime(ref float currentTime)
-    {
-        if (_deltaTimeMode == DeltaTimeMode.GameTime)
-            currentTime += Time.fixedDeltaTime;
-        else
-            currentTime += Time.fixedUnscaledDeltaTime;
     }
 }

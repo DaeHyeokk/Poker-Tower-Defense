@@ -15,18 +15,37 @@ public class SpecialBossEnemy : Enemy
     protected override void Awake()
     {
         base.Awake();
-        enemySpawner.IsLevelupSpecialBoss();
+        enemySpawner.LevelupSpecialBoss();
     }
-    public override void Setup(EnemyData enemyData)
+
+    public void Setup(SpecialBossData enemyData)
     {
         base.Setup(enemyData);
-        _healthText.text = Mathf.Round(enemyData.health).ToString();
+        UpdateHealthText();
+
+        _rewardGold = enemyData.rewardGold;
+        _rewardChangeChance = enemyData.rewardChangeChance;
+        _rewardJokerCard = enemyData.rewardJokerCard;
+
+        SetRewardText();
+        //_healthText.text = Mathf.Round(enemyData.health).ToString();
+    }
+
+    private void UpdateHealthText()
+    {
+        float healthPercent = _enemyHealthbar.healthPercent;
+
+        if (healthPercent >= 1f)
+            _healthText.text = Mathf.Round(healthPercent).ToString() + '%';
+        // 남은 체력이 1% 미만일 경우 소수점 첫째 자리까지 표시.
+        else
+            _healthText.text = (Mathf.Round(healthPercent * 10f) / 10f).ToString() + '%';
     }
 
     public override void TakeDamage(float damage, DamageTakenType damageTakenType)
     {
         base.TakeDamage(damage, damageTakenType);
-        _healthText.text = Mathf.Round(health).ToString();
+        UpdateHealthText();
     }
 
     // Special Bass는 스턴과 슬로우 디버프를 받지 않음 //
@@ -50,8 +69,6 @@ public class SpecialBossEnemy : Enemy
     private void Respawn()
     {
         gameObject.SetActive(false);
-
-        if (enemySpawner.IsLevelupSpecialBoss())
-            gameObject.SetActive(true);
+        enemySpawner.LevelupSpecialBoss();
     }
 }

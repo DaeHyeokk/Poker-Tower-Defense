@@ -46,12 +46,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fd949890890da94418bc030380ee9831, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _enemySprite: {fileID: 3228874159434448766}
+  _healthbarGauge: {fileID: 9015653908245896199}
+  _increaseReceiveDamageSprite: {fileID: 850196265547816066}
   _rewardGold: 100
   _rewardChangeChance: 2
   _rewardJokerCard: 0
-  _enemySprite: {fileID: 3228874159434448766}
-  _healthbarGauge: {fileID: 7960106537944234640}
-  _increaseReceiveDamageSprite: {fileID: 850196265547816066}
   _slowEffect: {fileID: 7417208525217431426}
   _stunEffect: {fileID: 1090811235946300176}
 --- !u!114 &3562794833485848733
@@ -179,7 +179,7 @@ Transform:
   m_GameObject: {fileID: 4939251496962905054}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 1.3, z: 0}
-  m_LocalScale: {x: 2.4999995, y: 0.3, z: 1}
+  m_LocalScale: {x: 2.4999995, y: 0.4, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 5416009019468607350}

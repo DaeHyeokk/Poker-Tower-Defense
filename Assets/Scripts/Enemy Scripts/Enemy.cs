@@ -9,21 +9,21 @@ public abstract class Enemy : MonoBehaviour
     [SerializeField]
     private SpriteRenderer _enemySprite;
     [SerializeField]
-    private Transform _healthbarGauge;
+    private SpriteRenderer _healthbarGauge;
     [SerializeField]
     private SpriteRenderer _increaseReceiveDamageSprite;
     // Enemy를 잡을 경우 플레이어에게 지급되는 골드
     [SerializeField]
-    private int _rewardGold;
+    protected int _rewardGold;
     // Enemy를 잡을 경우 플레이어에게 지급되는 카드교환권
     [SerializeField]
-    private int _rewardChangeChance;
+    protected int _rewardChangeChance;
     // Enemy를 잡을 경우 플레이어에게 지급되는 조커카드
     [SerializeField]
-    private int _rewardJokerCard;
+    protected int _rewardJokerCard;
 
-    private EnemySpawner _enemySpawner;
-    private EnemyHealthbar _enemyHealthbar;
+    protected EnemySpawner _enemySpawner;
+    protected EnemyHealthbar _enemyHealthbar;
     private StringBuilder _rewardText = new();
     private float _maxHealth;  // Enemy의 최대 체력
     private float _health;     // Enemy의 현재 체력
@@ -58,7 +58,6 @@ public abstract class Enemy : MonoBehaviour
     {
         _enemySpawner = FindObjectOfType<EnemySpawner>();
         _enemyHealthbar = new(_healthbarGauge);
-        SetRewardText();
     }
 
     public virtual void Setup(EnemyData enemyData)
@@ -129,12 +128,16 @@ public abstract class Enemy : MonoBehaviour
         GameManager.instance.gold += _rewardGold;
         if (_rewardChangeChance > 0)
             GameManager.instance.changeChance += _rewardChangeChance;
+        if (_rewardJokerCard > 0)
+            GameManager.instance.jokerCard += _rewardJokerCard;
 
         UIManager.instance.ShowEnemyDieRewardText(_rewardText, this.transform);
     }
 
-    private void SetRewardText()
+    protected void SetRewardText()
     {
+        _rewardText.Clear();
+
         _rewardText.Append('+');
         _rewardText.Append(_rewardGold.ToString());
         _rewardText.Append('G');
@@ -145,6 +148,14 @@ public abstract class Enemy : MonoBehaviour
             _rewardText.Append("카드교환권");
             _rewardText.Append('+');
             _rewardText.Append(_rewardChangeChance.ToString());
+        }
+
+        if (_rewardJokerCard > 0)
+        {
+            _rewardText.Append('\n');
+            _rewardText.Append("조커카드");
+            _rewardText.Append('+');
+            _rewardText.Append(_rewardJokerCard.ToString());
         }
     }
 

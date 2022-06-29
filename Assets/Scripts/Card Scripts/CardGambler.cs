@@ -15,13 +15,13 @@ public class CardGambler : MonoBehaviour
     private int[] _mineralGambleAmounts;
 
     private CardDrawer _cardDrawer;
-    private int _changeIndex;
-
     // 무엇을 위해(타워짓기, 미네랄뽑기) 카드를 뽑는지를 나타내는 변수
     private GambleType _gambleType;
     // 화면에서 카드 UI 밑의 버튼을 눌렀을 때 수행하는 기능을 나타내는 변수 (초기 설정값은 Card Change 기능)
     private ButtonFunctionType _buttonFunctionType = ButtonFunctionType.CardChange;
-    private bool _isGambling;
+    private int _changeIndex;
+    private bool _isSelectChanged;
+    private bool _isGambled;
 
     public int drawCardCount => _cardDrawer.drawCards.Length;
     public Card[] drawCards => _cardDrawer.drawCards;
@@ -41,13 +41,13 @@ public class CardGambler : MonoBehaviour
     private void Awake()
     {
         _cardDrawer = new CardDrawer();
-        _isGambling = false;
+        _isGambled = false;
     }
 
     public void StartGamble(int gambleType)
     {
         // 이미 Gamble을 진행하고 있는 중이라면 수행하지 않는다. (혹시모를 버그 방지)
-        if (_isGambling) return;
+        if (_isGambled) return;
 
         // Gamble을 진행하기 위한 100골드를 보유하고 있지 않다면 수행하지 않는다.
         if (GameManager.instance.gold < 100)
@@ -71,7 +71,7 @@ public class CardGambler : MonoBehaviour
         }
 
         // Gamble을 진행 중인 상태로 바꾼다.
-        _isGambling = true;
+        _isGambled = true;
 
         // 뽑기 버튼을 화면에서 숨긴다.
         _gambleUIController.HideGambleButtonUI();
@@ -132,6 +132,12 @@ public class CardGambler : MonoBehaviour
             UIManager.instance.ShowSystemMessage(SystemMessage.MessageType.NotEnoughJokerCard);
             return;
         }
+        // 플레이어가 JokerCard를 이미 사용한 상태라면 수행하지 않는다.
+        else if(_isSelectChanged)
+        {
+            UIManager.instance.ShowSystemMessage(SystemMessage.MessageType.AlreadyUsedJokerCard);
+            return;
+        }
 
         // 이미 Card Selector가 활성화 되어있는 경우 바꿀 카드의 index만 바꾼다.
         if (_cardSelector.gameObject.activeSelf)
@@ -171,6 +177,8 @@ public class CardGambler : MonoBehaviour
         _gambleUIController.ReverseCardFrountUI(_changeIndex);
         // 뽑은 카드 결과값 갱신.
         _gambleUIController.ShowResultUI();
+
+        _isSelectChanged = true;
     }
 
     public void GetResult()
@@ -185,7 +193,8 @@ public class CardGambler : MonoBehaviour
 
     public void ResetGambler()
     {
-        _isGambling = false;
+        _isSelectChanged = false;
+        _isGambled = false;
         _cardDrawer.ResetDrawer();
         _gambleUIController.ResetGambleUI();
 

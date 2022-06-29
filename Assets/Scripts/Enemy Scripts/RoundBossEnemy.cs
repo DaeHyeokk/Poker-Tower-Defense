@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class RoundBossEnemy : FieldBossEnemy
+public class RoundBossEnemy : FieldEnemy
 {
     public override void OnMissing()
     {

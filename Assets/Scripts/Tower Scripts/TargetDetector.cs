@@ -31,7 +31,7 @@ public class TargetDetector
         // 단일 타겟 타워일 경우 수행
         if (_detectingMode == DetectingMode.Single)
         {
-            // 스폐셜 보스가 필드에 활성화된 상태라면 가장 우선 타격한다.
+            // 스폐셜 보스가 필드에 활성화 된 상태라면 가장 우선 타격한다.
             if (_enemySpawner.specialBossEnemy.gameObject.activeSelf)
             {
                 _distance = Vector2.Distance(_tower.transform.position, _enemySpawner.specialBossEnemy.transform.position);
@@ -43,7 +43,7 @@ public class TargetDetector
                 }
             }
 
-            // 그다음 라운드 보스가 필드에 활성화된 상태라면 라운드 보스를 우선 타격한다.
+            // 그다음 라운드 보스가 필드에 활성화 된 상태라면 라운드 보스를 우선 타격한다.
             if (_enemySpawner.roundBossEnemy.gameObject.activeSelf)
             {
                 _distance = Vector2.Distance(_tower.transform.position, _enemySpawner.roundBossEnemy.transform.position);
@@ -55,22 +55,25 @@ public class TargetDetector
                 }
             }
 
-            // 그다음 미션 보스를 우선 타격한다.
-            for (int i = 0; i < _enemySpawner.missionBossEnemyList.Count; i++)
+            // 그다음 미션 보스가 필드에 활성화 된 상태라면 우선 타격한다.
+            for (int i = 0; i < _enemySpawner.missionBossEnemies.Length; i++)
             {
-                _distance = Vector2.Distance(_tower.transform.position, _enemySpawner.missionBossEnemyList[i].transform.position);
-                if (_distance <= _tower.range)
+                if (_enemySpawner.missionBossEnemies[i].gameObject.activeSelf)
                 {
-                    _targetList.Clear();
-                    _targetList.Add(_enemySpawner.missionBossEnemyList[i]);
-                    return;
+                    _distance = Vector2.Distance(_tower.transform.position, _enemySpawner.missionBossEnemies[i].transform.position);
+                    if (_distance <= _tower.range)
+                    {
+                        _targetList.Clear();
+                        _targetList.Add(_enemySpawner.missionBossEnemies[i]);
+                        return;
+                    }
                 }
             }
 
             if (_targetList.Count != 0)
             {
                 _distance = Vector2.Distance(_tower.transform.position, _targetList[0].transform.position);
-                if (_distance > _tower.range || !_targetList[0].gameObject.activeSelf)
+                if (_distance > _tower.range)
                     _targetList.Clear();
                 else
                     return;
@@ -100,7 +103,7 @@ public class TargetDetector
         {
             _targetList.Clear();
 
-            // 스폐셜 보스가 필드에 활성화된 상태라면 가장 우선 타격한다.
+            // 스폐셜 보스가 필드에 활성화 된 상태라면 가장 우선 타격한다.
             if (_enemySpawner.specialBossEnemy.gameObject.activeSelf)
             {
                 _distance = Vector2.Distance(_tower.transform.position, _enemySpawner.specialBossEnemy.transform.position);
@@ -108,7 +111,7 @@ public class TargetDetector
                     _targetList.Add(_enemySpawner.specialBossEnemy);
             }
 
-            // 그다음 라운드 보스가 필드에 활성화된 상태라면 라운드 보스를 우선 타격한다.
+            // 그다음 라운드 보스가 필드에 활성화 된 상태라면 라운드 보스를 우선 타격한다.
             if (_enemySpawner.roundBossEnemy.gameObject.activeSelf)
             {
                 _distance = Vector2.Distance(_tower.transform.position, _enemySpawner.roundBossEnemy.transform.position);
@@ -121,15 +124,18 @@ public class TargetDetector
                 }
             }
 
-            // 그다음 미션 보스를 우선 타격한다.
-            for (int i = 0; i < _enemySpawner.missionBossEnemyList.Count; i++)
+            // 그다음 미션 보스가 필드에 활성화 된 상태라면 미션 보스를 우선 타격한다.
+            for (int i = 0; i < _enemySpawner.missionBossEnemies.Length; i++)
             {
-                _distance = Vector2.Distance(_tower.transform.position, _enemySpawner.missionBossEnemyList[i].transform.position);
-                if (_distance <= _tower.range)
-                    _targetList.Add(_enemySpawner.missionBossEnemyList[i]);
+                if (_enemySpawner.missionBossEnemies[i].gameObject.activeSelf)
+                {
+                    _distance = Vector2.Distance(_tower.transform.position, _enemySpawner.missionBossEnemies[i].transform.position);
+                    if (_distance <= _tower.range)
+                        _targetList.Add(_enemySpawner.missionBossEnemies[i]);
 
-                if (_targetList.Count >= _tower.maxTargetCount)
-                    return;
+                    if (_targetList.Count >= _tower.maxTargetCount)
+                        return;
+                }
             }
 
             for (int i = 0; i < _enemySpawner.roundEnemyList.Count; i++)
@@ -148,31 +154,37 @@ public class TargetDetector
     {
         float rangeRadius = range * 0.5f;
 
-        // 범위 내에 스폐셜보스가 있는지 탐색한다.
-        _distance = Vector2.Distance(centralPosition.position, _enemySpawner.specialBossEnemy.transform.position);
-        if (_distance <= rangeRadius)
-            _targetWithinRangeList.Add(_enemySpawner.specialBossEnemy);
+        // 범위 내에 활성화 된 스폐셜보스가 있는지 탐색한다.
+        if (_enemySpawner.specialBossEnemy.gameObject.activeSelf)
+        {
+            _distance = Vector2.Distance(centralPosition.position, _enemySpawner.specialBossEnemy.transform.position);
+            if (_distance <= rangeRadius)
+                _targetWithinRangeList.Add(_enemySpawner.specialBossEnemy);
+        }
 
-        // 라운드보스가 필드에 활성화된 상태라면 범위 내에 라운드보스가 있는지 탐색한다.
+        // 범위 내에 활성화 된 라운드보스가 있는지 탐색한다.
         if (_enemySpawner.roundBossEnemy.gameObject.activeSelf)
         {
             _distance = Vector2.Distance(centralPosition.position, _enemySpawner.roundBossEnemy.transform.position);
             if (_distance <= rangeRadius)
-                _targetList.Add(_enemySpawner.roundBossEnemy);
+                _targetWithinRangeList.Add(_enemySpawner.roundBossEnemy);
         }
 
-        // 범위 내에 미션보스가 있는지 탐색한다.
-        for (int i = 0; i < _enemySpawner.missionBossEnemyList.Count; i++)
+        // 범위 내에 활성화 된 미션보스가 있는지 탐색한다.
+        for (int i = 0; i < _enemySpawner.missionBossEnemies.Length; i++)
         {
-            _distance = Vector3.Distance(centralPosition.position, _enemySpawner.missionBossEnemyList[i].transform.position);
-            if (_distance <= rangeRadius)
-                _targetWithinRangeList.Add(_enemySpawner.missionBossEnemyList[i]);
+            if (_enemySpawner.missionBossEnemies[i].gameObject.activeSelf)
+            {
+                _distance = Vector2.Distance(centralPosition.position, _enemySpawner.missionBossEnemies[i].transform.position);
+                if (_distance <= rangeRadius)
+                    _targetWithinRangeList.Add(_enemySpawner.missionBossEnemies[i]);
+            }
         }
 
         // 범위 내에 라운드 몬스터가 있는지 탐색한다.
         for (int i = 0; i < _enemySpawner.roundEnemyList.Count; i++)
         {
-            _distance = Vector3.Distance(centralPosition.position, _enemySpawner.roundEnemyList[i].transform.position);
+            _distance = Vector2.Distance(centralPosition.position, _enemySpawner.roundEnemyList[i].transform.position);
 
             if (_distance <= rangeRadius)
                 _targetWithinRangeList.Add(_enemySpawner.roundEnemyList[i]);

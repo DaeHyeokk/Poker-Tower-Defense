@@ -160,10 +160,11 @@ public abstract class Tower : MonoBehaviour
 
     private void Update()
     {
+        UpdateAttackRate();
+
         if (_onTile == null) return;
 
         _targetDetector.SearchTarget();
-        UpdateAttackRate();
         RotateTower();
         DecreaseAttackDelay();
     }

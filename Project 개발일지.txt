@@ -398,7 +398,7 @@ Date: 2022/06/27 MON
     -> 게임을 3배속으로 하는 경우와 같이 Enemy의 이동속도가 매우 빨라질 때 한번에 이동하는 거리가 커지면서 뒤에 있는 Enemy가 앞에 있는 Enemy의 위치와 같아지는 문제가 있었는데, 웨이포인트 포지션으로 위치를 바꿔주는 로직에다 Enemy와 웨이포인트의 거리와 Enemy가 한 프레임에 이동하는 이동 거리의 차이만큼 추가로 더해줌으로써 문제를 해결함. (코너를 도는 느낌) 
 
 ☑ FieldEnemy 개체수가 증가할 때 마다 Canvas.BuildBatch에서 보이던 성능 저하 문제 해결.
-    -> FieldEnemy 의 체력바 기능을 구현하기 위해 자식오브젝트로 World Space 캔버스를 가진 Slider UI를 추가했었는데, 단순히 Canvas가 개체수만큼 많아지니까 화면에 보여주는게 느리겠구나 정도로만 짐작하고 있던 상황에서 유니티의 Frame Debugger 기능을 알게되었음. Frame Debugger로 화면이 어떤 순서로 그려지는지 확인한 결과 FieldEnemy는 개수가 몇개이든 동시에 그려지는데 반해 FieldEnemy가 가지고 있는 Slider UI는 한번의 Draw call에 하나씩만 그려지고 있다는 것을 확인함. 어떻게 동시에 그리게 할 수 있을까 생각하다 그냥 Square 오브젝트를 두개 생성하여 Slider가 수행하던 체력바 기능을 직접 구현하였는데 그 결과 Canvas.BuildBatch 성능이 월등히 좋아지게 되어 FieldEnemy 개체수가 엄청나게 많아져도(1500마리 이상) 높은 프레임(최소 60FPS)을 안정적으로 유지할 수 있게 되었음.
+    -> FieldEnemy 의 체력바 기능을 구현하기 위해 자식오브젝트로 World Space 캔버스를 가진 Slider UI를 추가했었는데, 단순히 Canvas가 개체수만큼 많아지니까 화면에 보여주는게 느리겠구나 정도로만 짐작하고 있던 상황에서 유니티의 Frame Debugger 기능을 알게되었음. Frame Debugger로 화면이 어떤 순서로 그려지는지 확인한 결과 FieldEnemy는 개수가 몇개이든 동시에 그려지는데 반해 FieldEnemy가 가지고 있는 Slider UI는 한번의 Draw call에 하나씩만 그려지고 있다는 것을 확인함. 어떻게 동시에 그리게 할 수 있을까 생각하다 그냥 Square 오브젝트를 두개 생성하여 Slider가 수행하던 체력바 기능을 직접 구현하였는데 그 결과 Canvas.BuildBatch 성능이 월등히 좋아지게 되어 FieldEnemy 개체수가 엄청나게 많아져도(1500마리 이상) 높은 프레임(최소 60FPS)을 안정적으로 유지할 수 있게 되었음. 또한 드로우콜이 줄어들수록 스마트폰의 배터리 소모나, 발열 문제를 개선할 수 있다고 하여 만족스러운 최적화가 된듯.
 
 ☑ 모든 Enemy 오브젝트의 Health Slider UI 오브젝트 삭제.
 
@@ -409,3 +409,17 @@ Date: 2022/06/27 MON
     -> 병목 현상을 보이던 부분들을 고쳐나가면서 더이상의 프레임 드랍은 없어졌고, 매번 일정하게 연산을 수행하기 위해 FixedUpdate()를 사용하는 것이 아닌 물리 연산을 수행하는 로직에서 FixedUpdate()를 사용하는 것임을 알게 되어 바꾸게 되었음.
 
 ☑ Special Boss가 받는 데미지에 관계 없이 1씩만 받던 것에서 100% 피해를 전부 받도록 변경, 받는 피해량 증가 디버프 또한 받도록 변경하고 체력을 높게 조정.
+
+
+Date: 2022/06/29 WED
+☑ Projectile의 Sprite 이미지의 Color를 불투명으로 변경.
+    -> 이전부터 게임이 종종 아예 멈춰버리는 현상이 있었는데 이번에 프로파일러로 확인하는데 성공하여 semaphore.waitforsignal 부분이 문제를 일으키고 있음을 알게되었음. 서칭해본 결과 반투명 오브젝트가 많으면 이와 같은 문제를 일으킬 수 있다는 정보를 접하게 되었는데 기존 Projectile 오브젝트가 반투명이어서 공격 속도가 빠른 타워가 Projectile을 많이 생성하면서 이러한 멈춤 현상이 생기게 된 것일 수도 있겠다 싶어 변경함. 변경 이후 공격 속도가 매우 빠른 타워로 한참동안 공격하도록 두었는데 멈춤 현상은 보이지 않았지만 앞으로 더 지켜봐야 할 문제인듯. 
+출처) https://forum.unity.com/threads/semaphore-waitforsignal-causing-performance-issues.824580/
+
+☑ 스마트폰 기기의 다양한 해상도에 대응하기 위해 씬 로드 시 Screen 해상도를 설정 값으로 변경하는 로직 추가.
+로직 출처) https://giseung.tistory.com/19
+
+☑ EnemyData Scriptable을 상속받는 SpecialBossData Scriptable 추가.
+    -> 기존 Round Enemy, Round Boss Enemy, Mission Boss Enemy는 재생성 되어도 주는 보상이 같기 때문에 EnemyData Scriptable에 보상 관련 필드를 추가하여 매번 새로운 값을 갱신할 필요가 없었지만, Special Boss Enemy는 레벨이 올라갈 때 마다 플레이어에게 다른 보상을 줘야하기 때문에 보상 관련 필드를 추가하기 위해 생성하였음.
+
+☑ 게임 패배 시 플레이어에게 보여줄 Game Defeat UI 구현.
