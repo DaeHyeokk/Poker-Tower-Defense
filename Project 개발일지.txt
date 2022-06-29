@@ -422,4 +422,6 @@ Date: 2022/06/29 WED
 ☑ EnemyData Scriptable을 상속받는 SpecialBossData Scriptable 추가.
     -> 기존 Round Enemy, Round Boss Enemy, Mission Boss Enemy는 재생성 되어도 주는 보상이 같기 때문에 EnemyData Scriptable에 보상 관련 필드를 추가하여 매번 새로운 값을 갱신할 필요가 없었지만, Special Boss Enemy는 레벨이 올라갈 때 마다 플레이어에게 다른 보상을 줘야하기 때문에 보상 관련 필드를 추가하기 위해 생성하였음.
 
+☑ 뽑기 한번에 조커카드를 한장만 사용할 수 있도록 변경.
+
 ☑ 게임 패배 시 플레이어에게 보여줄 Game Defeat UI 구현.
