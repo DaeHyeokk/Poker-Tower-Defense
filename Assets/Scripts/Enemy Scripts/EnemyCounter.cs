@@ -8,6 +8,8 @@ public class EnemyCounter : MonoBehaviour
     private EnemySpawner _enemySpawner;
     [SerializeField]
     private EnemyCounterUIController _enemyCounterUIController;
+    [SerializeField]
+    private int _maxEnemyCount;
 
     private int _roundEnemyCount;
 
@@ -21,6 +23,10 @@ public class EnemyCounter : MonoBehaviour
 
             _roundEnemyCount = value;
             _enemyCounterUIController.SetEnemyCountText(value);
+
+            // 적의 수가 최대 몬스터 숫자에 도달할 경우 패배한다.
+            if (value >= _maxEnemyCount)
+                GameManager.instance.DefeatGame();
         }
     }
 

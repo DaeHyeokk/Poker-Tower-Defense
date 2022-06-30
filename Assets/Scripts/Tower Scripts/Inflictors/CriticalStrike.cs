@@ -46,8 +46,8 @@ public class CriticalStrike : IEnemyInflictable
         if (target == null) return;
 
         if (chance > Random.Range(0, 100))
-            target.TakeDamage(damage * rate * 0.01f, DamageTakenType.Critical);
+            target.TakeDamage(_fromTower, damage * rate * 0.01f, DamageTakenType.Critical);
         else
-            target.TakeDamage(damage, DamageTakenType.Normal);
+            target.TakeDamage(_fromTower, damage, DamageTakenType.Normal);
     }
 }

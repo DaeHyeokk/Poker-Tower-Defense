@@ -37,6 +37,8 @@ public class UIManager : MonoBehaviour
     private ColorUpgradeUIController _colorUpgradeUIController;
     [SerializeField]
     private GameMenuUIController _gameMenuUIController;
+    [SerializeField]
+    private GameDefeatUIController _gameDefeatUIController;
 
     [Header("PopUp UI")]
     [SerializeField]
@@ -56,6 +58,7 @@ public class UIManager : MonoBehaviour
 
     private readonly WaitForSecondsRealtime _gameStartFadeOutDelay = new(0.2f);
 
+    /**************************** 언젠가 쓰이게 될 수도 있음 **********************************************
     public ScreenCover screenCover => _screenCover;
     public TowerInfomation towerInfomation => _towerInfomation;
     public TowerDetailInfoUIController towerDetailInfoUIController => _towerDetailInfoUIController;
@@ -63,6 +66,7 @@ public class UIManager : MonoBehaviour
     public CardSelector cardSelector => _cardSelector;
     public MissionBossUIController missionBossUIController => _missionBossUIController;
     public ColorUpgradeUIController colorUpgradeUIController => _colorUpgradeUIController;
+    /*****************************************************************************************************/
 
     public ObjectPool<DamageTakenText> damageTakenTextPool => _damageTakenTextPool;
     public ObjectPool<EnemyDieRewardText> enemyDieRewardTextPool => _enemyDieRewardTextPool;
@@ -152,6 +156,11 @@ public class UIManager : MonoBehaviour
     public void HideGameMenu()
     {
         _gameMenuUIController.gameObject.SetActive(false);
+    }
+
+    public void ShowGameDefeatPanel()
+    {
+        _gameDefeatUIController.gameObject.SetActive(true);
     }
 }
 

@@ -425,3 +425,10 @@ Date: 2022/06/29 WED
 ☑ 뽑기 한번에 조커카드를 한장만 사용할 수 있도록 변경.
 
 ☑ 게임 패배 시 플레이어에게 보여줄 Game Defeat UI 구현.
+
+Date: 2022/06/30 THU
+☑ Game Defeat UI Controller 스크립트 구현.
+
+☑ 기존 참조값을 할당 받아서 사용하던 방식에서 GameManager의 Action 대리자 OnGamePaused, OnGameResumed, OnGameEnd을 구독하여 이벤트 호출에 동작하도록 변경.
+
+☑ Tower 오브젝트가 적을 죽인 횟수를 저장하고, 게임이 끝날 시 저장한 횟수를 플레이어에게 보여주는 로직 구현.

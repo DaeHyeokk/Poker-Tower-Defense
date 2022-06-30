@@ -7,7 +7,7 @@ using UnityEngine.UI;
 public abstract class Enemy : MonoBehaviour
 {
     [SerializeField]
-    private SpriteRenderer _enemySprite;
+    protected SpriteRenderer _enemySprite;
     [SerializeField]
     private SpriteRenderer _healthbarGauge;
     [SerializeField]
@@ -22,12 +22,14 @@ public abstract class Enemy : MonoBehaviour
     [SerializeField]
     protected int _rewardJokerCard;
 
-    protected EnemySpawner _enemySpawner;
-    protected EnemyHealthbar _enemyHealthbar;
     private StringBuilder _rewardText = new();
+    private float _enemyScale;
     private float _maxHealth;  // Enemy의 최대 체력
     private float _health;     // Enemy의 현재 체력
     private float _increaseReceiveDamageRate; // Enemy가 공격 당할 때 받는 피해량
+
+    protected EnemySpawner _enemySpawner;
+    protected EnemyHealthbar _enemyHealthbar;
 
     private readonly WaitForSeconds _takeDamageAnimationDelay = new(0.05f);
     private readonly WaitForSeconds _waitForPointFiveSeconds = new(0.5f);
@@ -58,25 +60,43 @@ public abstract class Enemy : MonoBehaviour
     {
         _enemySpawner = FindObjectOfType<EnemySpawner>();
         _enemyHealthbar = new(_healthbarGauge);
+        _enemyScale = this.transform.localScale.x;
     }
 
     public virtual void Setup(EnemyData enemyData)
     {
-        // 생성할 Enemy의 체력, 색깔 설정
+        // 생성할 Enemy의 체력 설정
         _maxHealth = enemyData.health;
         _health = _maxHealth;
         _enemyHealthbar.maxHealth = _maxHealth;
         _enemyHealthbar.health = _maxHealth;
+        // 생성할 Enemy의 스프라이트 설정 및 색깔 초기화
         _enemySprite.sprite = enemyData.sprite;
         _enemySprite.color = Color.white;
 
         increaseReceiveDamageRate = 0f;
+        StartCoroutine(SpawnAnimationCoroutine());
     }
 
-    public virtual void TakeDamage(float damage, DamageTakenType damageTakenType)
+    private IEnumerator SpawnAnimationCoroutine()
     {
-        StartCoroutine(EnemyTakeDamageAnimationCoroutine());
+        float lerpSpeed = 8f;
+        float currentTime = 0f;
+        float percent = 0f;
 
+        while (percent < 1f)
+        {
+            currentTime += Time.deltaTime;
+            percent = currentTime * lerpSpeed;
+            float scale = Mathf.Lerp(0f, _enemyScale, percent);
+            this.transform.localScale = new Vector3(scale, scale, scale);
+
+            yield return null;
+        }
+    }
+
+    public virtual void TakeDamage(Tower fromTower, float damage, DamageTakenType damageTakenType)
+    {
         damage *= 1f + (increaseReceiveDamageRate * 0.01f);
         _health -= damage;
         _enemyHealthbar.health -= damage;
@@ -84,7 +104,21 @@ public abstract class Enemy : MonoBehaviour
         UIManager.instance.ShowDamageTakenText(damage, this.transform, damageTakenType);
 
         if (_health <= 0)
+        {
+            // FromTower의 인덱스 번호를 참조하여 킬수 카운트 증가.
+            GameManager.instance.towerKilledCounts[fromTower.towerIndex]++;
             Die();
+        }
+        else
+            StartCoroutine(EnemyTakeDamageAnimationCoroutine());
+    }
+    private IEnumerator EnemyTakeDamageAnimationCoroutine()
+    {
+        _enemySprite.color = Color.red;
+
+        yield return _takeDamageAnimationDelay;
+
+        _enemySprite.color = Color.white;
     }
 
     public void TakeIncreaseReceivedDamage(float increaseReceivedDamageRate, float duration)
@@ -93,11 +127,7 @@ public abstract class Enemy : MonoBehaviour
     }
     private IEnumerator IncreaseReceivedDamageCoroutine(float IRDRate, float duration)
     {
-        Debug.Log("증가전 총 피해량: " + increaseReceiveDamageRate);
         this.increaseReceiveDamageRate += IRDRate;
-
-        Debug.Log("받는피해량 증가: " + IRDRate);
-        Debug.Log("증가된 총 피해량: " + increaseReceiveDamageRate);
 
         // duration만큼 지연
         while (duration > 0)
@@ -107,11 +137,7 @@ public abstract class Enemy : MonoBehaviour
             duration -= 0.5f;
         }
 
-        Debug.Log("감소전 총 피해량: " + increaseReceiveDamageRate);
         this.increaseReceiveDamageRate -= IRDRate;
-
-        Debug.Log("받는피해량 감소: " + IRDRate);
-        Debug.Log("감소된 총 피해량: " + increaseReceiveDamageRate);
     }
 
     public abstract void TakeStun(float duration);
@@ -119,7 +145,7 @@ public abstract class Enemy : MonoBehaviour
 
     protected virtual void Die()
     {
-        ParticlePlayer.instance.PlayEnemyDie(this.transform);
+        ParticlePlayer.instance.PlayEnemyDie(_enemySprite.transform);
         GiveReward();
     }
 
@@ -157,15 +183,6 @@ public abstract class Enemy : MonoBehaviour
             _rewardText.Append('+');
             _rewardText.Append(_rewardJokerCard.ToString());
         }
-    }
-
-    private IEnumerator EnemyTakeDamageAnimationCoroutine()
-    {
-        _enemySprite.color = Color.red;
-
-        yield return _takeDamageAnimationDelay;
-
-        _enemySprite.color = Color.white;
     }
 }
 

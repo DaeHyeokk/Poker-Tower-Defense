@@ -14,6 +14,7 @@ public class CardGambler : MonoBehaviour
     [SerializeField]
     private int[] _mineralGambleAmounts;
 
+    private TowerBuilder _towerBuilder;
     private CardDrawer _cardDrawer;
     // 무엇을 위해(타워짓기, 미네랄뽑기) 카드를 뽑는지를 나타내는 변수
     private GambleType _gambleType;
@@ -40,6 +41,7 @@ public class CardGambler : MonoBehaviour
 
     private void Awake()
     {
+        _towerBuilder = FindObjectOfType<TowerBuilder>();
         _cardDrawer = new CardDrawer();
         _isGambled = false;
     }
@@ -184,7 +186,7 @@ public class CardGambler : MonoBehaviour
     public void GetResult()
     {
         if (_gambleType == GambleType.Tower)
-            TowerBuilder.instance.BuildTower((int)_cardDrawer.drawHand);
+            _towerBuilder.BuildTower((int)_cardDrawer.drawHand);
         else
             GameManager.instance.mineral += _mineralGambleAmounts[(int)_cardDrawer.drawHand];
 

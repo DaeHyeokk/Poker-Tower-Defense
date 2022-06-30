@@ -55,7 +55,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _deltaTimeMode: 0
   _moveDirection: {x: 0, y: 1, z: 0}
-  _moveSpeed: 1.4
+  _moveSpeed: 1.55
 --- !u!114 &5992163405501991828
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -77,7 +77,7 @@ MonoBehaviour:
   _critDamageFontSize: 2
   _crithighlightFontSize: 3.3
   _critDamageColor: {r: 1, g: 0, b: 0, a: 1}
-  _highlightSpeed: 12
+  _highlightSpeed: 13
 --- !u!114 &306553780866840651
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -91,7 +91,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _deltaTimeMode: 0
-  _lerpSpeed: 2.2
+  _lerpSpeed: 2.4
   _text: {fileID: 4791661860645922614}
 --- !u!23 &6664996395323854646
 MeshRenderer:

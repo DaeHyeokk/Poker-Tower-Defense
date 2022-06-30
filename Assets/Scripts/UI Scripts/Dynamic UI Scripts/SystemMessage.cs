@@ -5,9 +5,18 @@ using TMPro;
 
 public class SystemMessage : FadeTextUI
 {
-    public enum MessageType { NotEnoughGold, NotEnoughMineral, NotEnoughChangeChance, NotEnoughJokerCard, AlreadyUsedJokerCard, CompletionColorChange, CompletionTowerSales }
+    public enum MessageType 
+    { 
+        NotEnoughGold, 
+        NotEnoughMineral, 
+        NotEnoughChangeChance, 
+        NotEnoughJokerCard, 
+        AlreadyUsedJokerCard, 
+        CompletionColorChange, 
+        CompletionTowerSales 
+    }
 
-    private readonly WaitForSecondsRealtime _waitForSecondsRealtime = new(0.1f);
+    private readonly WaitForSecondsRealtime _waitForSecondsRealtime = new(0.5f);
 
     private readonly string _notEnoughGoldString = "골드가 부족합니다.";
     private readonly string _notEnoughMineralString = "미네랄이 부족합니다.";

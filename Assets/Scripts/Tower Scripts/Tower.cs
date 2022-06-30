@@ -27,10 +27,9 @@ public abstract class Tower : MonoBehaviour
     private TowerBuilder _towerBuilder;
     private ColorUpgrade _colorUpgrade;
     private Tile _onTile;
-    private WaitForSeconds _attackDelay;
+
     private float _attackRate;
     private float _maxAttackRate;
-    private float _remainAttackDelay;
     private float _increaseAttackRate;
     private float _increaseDamageRate;
  
@@ -156,17 +155,20 @@ public abstract class Tower : MonoBehaviour
 
         _maxAttackRate = 0.1f;
         specialAttackCount = 10;
+
+        GameManager.instance.OnGameEnd += GameoverAction;
     }
 
     private void Update()
     {
         UpdateAttackRate();
 
-        if (_onTile == null) return;
-
-        _targetDetector.SearchTarget();
-        RotateTower();
-        DecreaseAttackDelay();
+        if (_onTile != null)
+        {
+            _targetDetector.SearchTarget();
+            RotateTower();
+            DecreaseAttackDelay();
+        }
     }
 
     private void UpdateAttackRate() => attackRate = (baseAttackRate - (upgradeRIP * upgradeCount)) / (1 + increaseAttackRate * 0.01f);
@@ -184,20 +186,22 @@ public abstract class Tower : MonoBehaviour
         if (remainAttackDelay <= 0f)
         {
             AttackTarget();
-            remainAttackDelay = _attackRate;
+            remainAttackDelay = attackRate;
         }
     }
 
     public virtual void Setup()
     {
-        _towerLevel.Reset();
-        _targetDetector.ResetTarget();
+        _towerRenderer.transform.rotation = Quaternion.Euler(0f, 0f, 0f);
 
         attackCount = 0;
         increaseAttackRate = 0;
         increaseDamageRate = 0;
 
+        _towerLevel.Reset();
+        _targetDetector.ResetTarget();
         _towerColor.ChangeRandomColor();
+
         UpdateDetailInfo();
     }
 
@@ -280,8 +284,6 @@ public abstract class Tower : MonoBehaviour
             for (int j = 0; j < specialEnemyInflictorList.Count; j++)
                 if (targetDetector.targetWithinRangeList[i].gameObject.activeSelf)
                     specialEnemyInflictorList[j].Inflict(targetDetector.targetWithinRangeList[i]);
-
-        targetDetector.targetWithinRangeList.Clear();
     }
 
     protected virtual void SpecialInflict(Tower target, float range)
@@ -428,14 +430,22 @@ public abstract class Tower : MonoBehaviour
         UIManager.instance.HideTowerInfo();
     }
 
+    public void IncreaseKillCount()
+    {
+
+    }
+
     public void ReturnPool()
     {
         if (onTile != null)
             onTile = null;
 
-        _towerRenderer.transform.rotation = Quaternion.Euler(0f, 0f, 0f);
-
         _towerBuilder.towerPoolList[towerIndex].ReturnObject(this);
+    }
+
+    private void GameoverAction()
+    {
+        attackRate = Mathf.Infinity;
     }
 }
 

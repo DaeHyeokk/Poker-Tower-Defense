@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
 
-public class MissionBossEnemy : FieldEnemy
+public class MissionBossEnemy : FieldBossEnemy
 {
     [SerializeField]
     private int _bossLevel; 
@@ -40,11 +40,16 @@ public class MissionBossEnemy : FieldEnemy
         }
 
         if (this.gameObject.activeSelf)
-            OnMissing();
+            Missing();
     }
 
-    public override void OnMissing()
+    public override void Missing()
     {
+        /*
+         * 보스 잡기 실패 패널티를 주는 로직이 들어갈 곳
+         * 
+         */
+
         ReturnObject();
     }
 

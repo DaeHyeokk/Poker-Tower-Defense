@@ -105,7 +105,7 @@ public class WaveSystem : MonoBehaviour
 
             // 보스 웨이브가 끝날 때 까지 보스를 못잡을 경우 실행.
             if (_isBossWave && _enemySpawner.roundBossEnemy.gameObject.activeSelf)
-                _enemySpawner.roundBossEnemy.OnMissing();
+                _enemySpawner.roundBossEnemy.Missing();
         }
 
         GameManager.instance.ClearGame();

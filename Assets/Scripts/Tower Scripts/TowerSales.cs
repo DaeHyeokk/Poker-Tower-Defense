@@ -10,8 +10,13 @@ public class TowerSales : MonoBehaviour
     [SerializeField]
     private TextMeshProUGUI _randomTowerRewardText;
 
+    private TowerBuilder _towerBuilder;
     private Tower _tower;
 
+    private void Awake()
+    {
+        _towerBuilder = FindObjectOfType<TowerBuilder>();
+    }
     public void Setup(Tower tower)
     {
         _tower = tower;
@@ -28,7 +33,7 @@ public class TowerSales : MonoBehaviour
         GameManager.instance.gold += _tower.salesGold;
 
         if (_randomTowerRewardText.gameObject.activeSelf)
-            TowerBuilder.instance.BuildTower(Random.Range(0, 10));
+            _towerBuilder.BuildTower(Random.Range(0, 10));
 
         UIManager.instance.ShowSystemMessage(SystemMessage.MessageType.CompletionTowerSales);
         _tower.ReturnPool();

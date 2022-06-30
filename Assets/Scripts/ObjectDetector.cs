@@ -37,19 +37,20 @@ public class ObjectDetector : MonoBehaviour
     void Awake()
     {
         // 'MainCamera' 태그를 가지고 있는 오브젝트를 탐색 후 Camera 컴포넌트 정보 전달
-        // GameObject.FindGameObjectWithTag("MainCamera").GetComponent<Camera>(); 와 동일
         _mainCamera = Camera.main;
         _pointerEventData = new(null);
         _resultList = new List<RaycastResult>();
         _clickTower = null;
+
+        // 게임이 끝나거나 일시정지 되면 플레이어의 오브젝트 터치 입력을 받지 않도록 비활성화하고,
+        // 게임이 재게되면 오브젝트 터치 입력을 다시 받도록 활성화 한다.
+        GameManager.instance.OnGameEnd += () => this.gameObject.SetActive(false);
+        GameManager.instance.OnGamePaused += () => this.gameObject.SetActive(false);
+        GameManager.instance.OnGameResumed += () => this.gameObject.SetActive(true);
     }
 
     private void Update()
     {
-        // 게임이 일시중지 상태라면 플레이어의 터치 입력을 받지 않는다.
-        if (GameManager.instance.isPaused)
-            return;
-
         // 마우스 왼쪽 버튼을 눌렀을 때
         if (Input.GetMouseButtonDown(0))
         {

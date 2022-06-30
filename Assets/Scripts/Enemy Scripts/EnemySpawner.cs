@@ -1,11 +1,10 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class EnemySpawner : MonoBehaviour
 {
-    [SerializeField]
-    private float _spawnDelay;            // 적 생성 주기
     [SerializeField]
     private Transform[] _wayPoints;
     [SerializeField]
@@ -58,6 +57,8 @@ public class EnemySpawner : MonoBehaviour
         _roundEnemyPool = new ObjectPool<RoundEnemy>(_roundEnemyPrefab, 80);
         InstantiateBossEnemy();
         MissionBossCooltimeSetup();
+
+        GameManager.instance.OnGameEnd += () => this.gameObject.SetActive(false);
     }
 
     private void InstantiateBossEnemy()
@@ -94,14 +95,14 @@ public class EnemySpawner : MonoBehaviour
             FieldEnemy _enemy = _roundEnemyPool.GetObject();
 
             _enemy.transform.position = _wayPoints[0].position;
-            // Enemy Setup() 메서드의 매개변수로 enemyData 정보를 전달.
+            // Enemy Setup() 메소드의 매개변수로 enemyData 정보를 전달.
             _enemy.Setup(_roundEnemyDatas[wave - 1]);
             // _roundEnemyList 리스트에 추가함 -> 필드 위에 생성되어 있는 Enemy를 참조하기 위함.
             _roundEnemyList.Add(_enemy);
 
-            float spawnDelay = _spawnDelay;
 
             yield return _waitForOneSeconds;
+
         }
     }
 
@@ -124,9 +125,9 @@ public class EnemySpawner : MonoBehaviour
         if (_missionBossEnemies[bossLevel].gameObject.activeSelf)
             return;
 
+        _missionBossEnemies[bossLevel].gameObject.SetActive(true);
         _missionBossEnemies[bossLevel].transform.position = _wayPoints[0].position;
         _missionBossEnemies[bossLevel].Setup(_missionBossEnemyDatas[bossLevel]);
-        _missionBossEnemies[bossLevel].gameObject.SetActive(true);
   
         _missionBossUIController.StartMissionBossCooltime(bossLevel, _missionBossRespawnCooltimes[bossLevel]);
     }
@@ -139,8 +140,8 @@ public class EnemySpawner : MonoBehaviour
             return;
         else
         {
-            _specialBossEnemy.Setup(_specialBossDatas[_specialBossEnemy.level - 1]);
             _specialBossEnemy.gameObject.SetActive(true);
+            _specialBossEnemy.Setup(_specialBossDatas[_specialBossEnemy.level - 1]);
         }
     }
 }

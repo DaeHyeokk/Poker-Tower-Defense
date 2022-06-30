@@ -6,7 +6,7 @@ using UnityEngine;
 public class BasicAttack : IEnemyInflictable
 {
     private Tower _fromTower;
-    private StringBuilder _inflictorInfo;
+    private StringBuilder _inflictorInfo = new("공격력의 100% 데미지");
 
     private float damage => _fromTower.damage;
     public StringBuilder inflictorInfo => _inflictorInfo;
@@ -14,7 +14,6 @@ public class BasicAttack : IEnemyInflictable
     public BasicAttack(Tower fromTower)
     {
         _fromTower = fromTower;
-        _inflictorInfo = new("공격력의 100% 데미지");
     }
 
     public void UpdateInflictorInfo()
@@ -26,6 +25,6 @@ public class BasicAttack : IEnemyInflictable
     {
         if (target == null) return;
 
-        target.TakeDamage(damage, DamageTakenType.Normal);
+        target.TakeDamage(_fromTower, damage, DamageTakenType.Normal);
     }
 }

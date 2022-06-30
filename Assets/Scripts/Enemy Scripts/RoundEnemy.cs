@@ -5,12 +5,6 @@ public class RoundEnemy : FieldEnemy
         enemySpawner.roundEnemyList.Remove(this);
         enemySpawner.roundEnemyPool.ReturnObject(this);
     }
-
-    public override void OnMissing()
-    {
-        ParticlePlayer.instance.PlayEnemyDie(this.transform);
-        this.gameObject.SetActive(false);
-    }
 }
 
 

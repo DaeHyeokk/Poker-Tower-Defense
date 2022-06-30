@@ -30,8 +30,8 @@ public class ParticlePlayer : MonoBehaviour
     private readonly WaitForSeconds _collisionProjectileDelayTime = new(0.15f);
 
     private ObjectPool<Particle> _enemyDiePool;
-    private ObjectPool<Particle>[] _rangeAttackPools;
-    private ObjectPool<Particle>[] _collisionProjectilePools;
+    private ObjectPool<Particle>[] _rangeAttackPools = new ObjectPool<Particle>[3];
+    private ObjectPool<Particle>[] _collisionProjectilePools = new ObjectPool<Particle>[3];
 
     private void Awake()
     {
@@ -93,3 +93,9 @@ public class ParticlePlayer : MonoBehaviour
     }
 
 }
+
+/*
+ * File : ParticlePlayer.cs
+ * 
+ * 파티클을 실행하자마자 비활성화 되는 오브젝트들의 파티클을 플레이 해주는 스크립트.
+ */

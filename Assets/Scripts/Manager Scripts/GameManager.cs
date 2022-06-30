@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -33,8 +34,13 @@ public class GameManager : MonoBehaviour
     private float _backupGameSpeed;
     private float _maxGameSpeed;
     private bool _isPaused;
-    private bool _isGameover;
+    private bool _isEnd;
 
+    public event Action OnGamePaused;
+    public event Action OnGameResumed;
+    public event Action OnGameEnd;
+
+    public int[] towerKilledCounts { get; set; } = new int[10];
 
     public int gold
     {
@@ -92,8 +98,6 @@ public class GameManager : MonoBehaviour
     }
 
     public int pokerCount => _pokerCount;
-    public bool isPaused => _isPaused;
-    public bool isGameover => _isGameover;
 
     private void Awake()
     {
@@ -106,8 +110,6 @@ public class GameManager : MonoBehaviour
         mineral = 100;
         changeChance = 40;
         jokerCard = 5;
-        _isPaused = false;
-        _isGameover = false;
 
         UIManager.instance.GameStartScreenCoverFadeOut();
         ScreenSleepSetup();
@@ -116,8 +118,9 @@ public class GameManager : MonoBehaviour
 
     private void OnApplicationPause(bool pause)
     {
+        // 게임이 이미 멈춘 상태거나 끝난 상태가 아니라면 게임을 멈춘다.
         if (pause)
-            if (!_isPaused)
+            if (!_isPaused && !_isEnd)
                 PauseGame();
     }
 
@@ -159,7 +162,7 @@ public class GameManager : MonoBehaviour
 
     public void PauseGame()
     {
-        _isPaused = true;
+        OnGamePaused();
         _backupGameSpeed = gameSpeed;
         gameSpeed = 0f;
         UIManager.instance.ShowGameMenu();
@@ -167,7 +170,7 @@ public class GameManager : MonoBehaviour
 
     public void ResumeGame()
     {
-        _isPaused = false;
+        OnGameResumed();
         gameSpeed = _backupGameSpeed;
         UIManager.instance.HideGameMenu();
     }
@@ -179,13 +182,20 @@ public class GameManager : MonoBehaviour
 
     public void DefeatGame()
     {
-        _isGameover = true;
+        StartCoroutine(DefeatGameCoroutine());
+    }
+    private IEnumerator DefeatGameCoroutine()
+    {
+        OnGameEnd();
+        yield return new WaitForSeconds(1.3f);
         gameSpeed = 0f;
+        UIManager.instance.ShowGameDefeatPanel();
     }
 
     public void ClearGame()
     {
-
+        OnGameEnd();
+        gameSpeed = 0f;
     }
 }
 

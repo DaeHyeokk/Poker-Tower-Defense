@@ -21,16 +21,15 @@ public class SpecialBossEnemy : Enemy
     public void Setup(SpecialBossData enemyData)
     {
         base.Setup(enemyData);
-        UpdateHealthText();
+        //UpdateHealthText();
 
         _rewardGold = enemyData.rewardGold;
         _rewardChangeChance = enemyData.rewardChangeChance;
         _rewardJokerCard = enemyData.rewardJokerCard;
 
         SetRewardText();
-        //_healthText.text = Mathf.Round(enemyData.health).ToString();
+        _healthText.text = ((int)Mathf.Round(enemyData.health)).ToString();
     }
-
     private void UpdateHealthText()
     {
         float healthPercent = _enemyHealthbar.healthPercent;
@@ -42,10 +41,11 @@ public class SpecialBossEnemy : Enemy
             _healthText.text = (Mathf.Round(healthPercent * 10f) / 10f).ToString() + '%';
     }
 
-    public override void TakeDamage(float damage, DamageTakenType damageTakenType)
+    public override void TakeDamage(Tower fromTower, float damage, DamageTakenType damageTakenType)
     {
-        base.TakeDamage(damage, damageTakenType);
-        UpdateHealthText();
+        base.TakeDamage(fromTower, damage, damageTakenType);
+        //UpdateHealthText();
+        _healthText.text = ((int)Mathf.Round(_enemyHealthbar.health)).ToString();
     }
 
     // Special Bass는 스턴과 슬로우 디버프를 받지 않음 //
