@@ -471,7 +471,6 @@ GameObject:
   - component: {fileID: 5996013255816726567}
   - component: {fileID: 3475490575391621250}
   - component: {fileID: 5568708979727221422}
-  - component: {fileID: 8726126547546708461}
   m_Layer: 5
   m_Name: GradeLayout
   m_TagString: Untagged
@@ -544,23 +543,6 @@ MonoBehaviour:
   m_DefaultSpriteDPI: 96
   m_DynamicPixelsPerUnit: 1
   m_PresetInfoIsWorld: 1
---- !u!114 &8726126547546708461
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8092583402114973814}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: dc42784cf147c0c48a680349fa168899, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_IgnoreReversedGraphics: 1
-  m_BlockingObjects: 0
-  m_BlockingMask:
-    serializedVersion: 2
-    m_Bits: 4294967295
 --- !u!1 &9029358858965485102
 GameObject:
   m_ObjectHideFlags: 0

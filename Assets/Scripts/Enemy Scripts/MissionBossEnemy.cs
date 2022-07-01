@@ -45,10 +45,8 @@ public class MissionBossEnemy : FieldBossEnemy
 
     public override void Missing()
     {
-        /*
-         * 보스 잡기 실패 패널티를 주는 로직이 들어갈 곳
-         * 
-         */
+        // 2웨이브동안 골드패널티를 부여한다.
+        _goldPenalty.remainWave += 2;
 
         ReturnObject();
     }

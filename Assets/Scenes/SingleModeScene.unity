@@ -2085,9 +2085,9 @@ RectTransform:
   m_Father: {fileID: 1678961292}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.5, y: 1}
-  m_AnchorMax: {x: 0.5, y: 1}
-  m_AnchoredPosition: {x: 383, y: -182}
+  m_AnchorMin: {x: 0.5, y: 0.5}
+  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchoredPosition: {x: 383, y: 1420}
   m_SizeDelta: {x: 160, y: 160}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &87276334
@@ -4461,8 +4461,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 231099347}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 15, y: 0, z: 0}
-  m_LocalScale: {x: 4, y: 2, z: 1}
+  m_LocalPosition: {x: 4.8, y: 0, z: 0}
+  m_LocalScale: {x: 1.2, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 775186323}
@@ -4480,7 +4480,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 32a21b1120de7e446904e14bac685949, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  width: 15
+  width: 4.8
 --- !u!114 &231099350
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -16682,7 +16682,7 @@ GameObject:
   - component: {fileID: 931556835}
   - component: {fileID: 931556834}
   m_Layer: 5
-  m_Name: EnemyCountPanel
+  m_Name: Enemy Count Panel
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -32233,7 +32233,6 @@ MonoBehaviour:
   - {fileID: 788027741}
   - {fileID: 950206275}
   - {fileID: 1371366218}
-  _waveSystem: {fileID: 2008602629}
   _roundEnemyDatas:
   - {fileID: 11400000, guid: 5a488ea1c2efc5b45b6c65f5844d472f, type: 2}
   - {fileID: 11400000, guid: 6480c3bc0c05bf942bd9794c9adbf7f4, type: 2}
@@ -33780,13 +33779,14 @@ GameObject:
   - component: {fileID: 1907893578}
   - component: {fileID: 1907893582}
   - component: {fileID: 1907893581}
+  - component: {fileID: 1907893583}
   m_Layer: 5
-  m_Name: Gold Penalty Panel
+  m_Name: Gold PenaltyPanel
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &1907893578
 RectTransform:
   m_ObjectHideFlags: 0
@@ -33847,6 +33847,19 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1907893577}
   m_CullTransparentMesh: 1
+--- !u!114 &1907893583
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1907893577}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: eb86d991b62d2c04b9c9a66d90e0b216, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _remainWaveText: {fileID: 686908616}
 --- !u!1 &1913398335
 GameObject:
   m_ObjectHideFlags: 0
@@ -35063,6 +35076,7 @@ MonoBehaviour:
   _bossLimitSecond: 15
   _waveSystemUIController: {fileID: 2008602628}
   _waveStartMessage: {fileID: 1324219310}
+  _goldPenalty: {fileID: 1907893583}
   _enemySpawner: {fileID: 1821786458}
 --- !u!1 &2013325340
 GameObject:
@@ -35247,9 +35261,9 @@ RectTransform:
   m_Father: {fileID: 1678961292}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.5, y: 1}
-  m_AnchorMax: {x: 0.5, y: 1}
-  m_AnchoredPosition: {x: 597, y: -182}
+  m_AnchorMin: {x: 0.5, y: 0.5}
+  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchoredPosition: {x: 597, y: 1420}
   m_SizeDelta: {x: 160, y: 160}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &2014289236
@@ -36824,8 +36838,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2135271845}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -0.23, y: 0, z: 0}
-  m_LocalScale: {x: 4, y: 2, z: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1.2, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 775186323}
@@ -36843,7 +36857,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 32a21b1120de7e446904e14bac685949, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  width: 15
+  width: 4.8
 --- !u!114 &2135271848
 MonoBehaviour:
   m_ObjectHideFlags: 0

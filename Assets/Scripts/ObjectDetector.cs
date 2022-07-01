@@ -6,12 +6,6 @@ using UnityEngine.EventSystems;
 
 public class ObjectDetector : MonoBehaviour
 {
-    private Tower _clickTower;
-    private Camera _mainCamera;
-    private Ray _ray;
-    private RaycastHit _hit;
-    private RaycastHit[] _hits;
-
     [SerializeField]
     private CardSelector _cardSelector;
     [SerializeField]
@@ -27,14 +21,19 @@ public class ObjectDetector : MonoBehaviour
     [SerializeField]
     private GraphicRaycaster _towerDetailInfoCanvasGraphicRay;
 
+    private Tower _clickTower;
+    private Camera _mainCamera;
     private PointerEventData _pointerEventData;
+    private Ray _ray;
+    private RaycastHit _hit;
+    private RaycastHit[] _hits;
     private List<RaycastResult> _resultList;
 
     private Ray2D _ray2D;
     private RaycastHit2D _hit2D;
     private RaycastHit2D[] _hits2D;
 
-    void Awake()
+    private void Awake()
     {
         // 'MainCamera' 태그를 가지고 있는 오브젝트를 탐색 후 Camera 컴포넌트 정보 전달
         _mainCamera = Camera.main;
@@ -49,12 +48,21 @@ public class ObjectDetector : MonoBehaviour
         GameManager.instance.OnGameResumed += () => this.gameObject.SetActive(true);
     }
 
+    private void OnDisable()
+    {
+        if (_clickTower != null)
+        {
+            _clickTower.StopTower();
+            _clickTower = null;
+        }
+    }
+
     private void Update()
     {
         // 마우스 왼쪽 버튼을 눌렀을 때
         if (Input.GetMouseButtonDown(0))
         {
-            // 이미 타워를 움직이고 있는 상태라면 건너뛴다.
+            // 이미 타워를 움직이고 있는 상태라면 움직ㅇ
             if (_clickTower != null)
                 return;
 
@@ -71,7 +79,7 @@ public class ObjectDetector : MonoBehaviour
             // 광선에 부딪히는 오브젝트를 검출해서 hit에 저장
             if (Physics.Raycast(_ray, out _hit, Mathf.Infinity))
             {
-                // 광선에 부딪힌 타겟이 타워라면 마우스를 떼기 전까지 계속해서 마우스포인터를 따라감
+                // 광선에 부딪힌 타겟이 타워라면 타워가 마우스 포인터를 따라다니는 MoveTower() 메소드를 호출한다.
                 if (_hit.transform.CompareTag("Tower"))
                 {
                     _clickTower = _hit.transform.GetComponent<Tower>();

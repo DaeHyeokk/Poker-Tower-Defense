@@ -12,6 +12,7 @@ public abstract class FieldEnemy : Enemy
     private Particle _stunEffect;
 
     private EnemyMovement _enemyMovement;
+    protected GoldPenalty _goldPenalty;
 
     private int _stunCount; // 스턴을 중첩해서 맞을 경우 가장 마지막에 풀리는 스턴을 알기 위한 변수
     private int _slowCount; // 슬로우를 중첩해서 맞을 경우 가장 마지막에 풀리는 슬로우를 알기 위한 변수
@@ -58,6 +59,7 @@ public abstract class FieldEnemy : Enemy
     {
         base.Awake();
         _enemyMovement = GetComponent<EnemyMovement>();
+        _goldPenalty = FindObjectOfType<WaveSystem>().goldPenalty;
         SetRewardText();
 
         GameManager.instance.OnGameEnd += GameoverAction;

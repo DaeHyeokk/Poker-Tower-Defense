@@ -7,8 +7,6 @@ public class EnemySpawner : MonoBehaviour
 {
     [SerializeField]
     private Transform[] _wayPoints;
-    [SerializeField]
-    private WaveSystem _waveSystem;
 
     [Header("Round Enemy")]
     [SerializeField]
@@ -45,7 +43,6 @@ public class EnemySpawner : MonoBehaviour
     private readonly WaitForSeconds _waitForOneSeconds = new(1f);
 
     public Transform[] wayPoints => _wayPoints;
-    public WaveSystem waveSystem => _waveSystem;
     public ObjectPool<RoundEnemy> roundEnemyPool => _roundEnemyPool;
     public List<FieldEnemy> roundEnemyList => _roundEnemyList;
     public MissionBossEnemy[] missionBossEnemies => _missionBossEnemies;

@@ -149,7 +149,7 @@ public abstract class Enemy : MonoBehaviour
         GiveReward();
     }
 
-    private void GiveReward()
+    protected virtual void GiveReward()
     {
         GameManager.instance.gold += _rewardGold;
         if (_rewardChangeChance > 0)

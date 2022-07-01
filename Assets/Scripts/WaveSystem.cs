@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using UnityEngine;
 
@@ -16,6 +17,8 @@ public class WaveSystem : MonoBehaviour
     [SerializeField]
     private WaveStartMessage _waveStartMessage;
     [SerializeField]
+    private GoldPenalty _goldPenalty;
+    [SerializeField]
     private EnemySpawner _enemySpawner;
 
     private int _wave;
@@ -25,6 +28,8 @@ public class WaveSystem : MonoBehaviour
     private bool _isBossWave = false;
 
     private readonly WaitForSeconds _waitOneSecond = new(1f);
+
+    public GoldPenalty goldPenalty => _goldPenalty;
 
     public int wave
     {
@@ -102,6 +107,10 @@ public class WaveSystem : MonoBehaviour
                     second = 59;
                 }
             }
+
+            // 현재 골드 패널티가 활성화 상태라면 남은 웨이브를 1 감소시킨다.
+            if(_goldPenalty.gameObject.activeSelf)
+                _goldPenalty.remainWave--;
 
             // 보스 웨이브가 끝날 때 까지 보스를 못잡을 경우 실행.
             if (_isBossWave && _enemySpawner.roundBossEnemy.gameObject.activeSelf)

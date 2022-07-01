@@ -1,5 +1,13 @@
 public class RoundEnemy : FieldEnemy
 {
+    protected override void GiveReward()
+    {
+        // 골드 패널티가 활성화 된 상태라면 플레이어에게 보상을 주지 않는다.
+        if (_goldPenalty.gameObject.activeSelf)
+            return;
+
+        base.GiveReward();
+    }
     protected override void ReturnObject()
     {
         enemySpawner.roundEnemyList.Remove(this);

@@ -18,6 +18,6 @@ public class GameDefeatUIController : MonoBehaviour
         _defeatWaveText.text = _waveSystem.wave.ToString();
 
         for(int i=0; i<_towerKillCountTexts.Length; i++)
-            _towerKillCountTexts[i].text = GameManager.instance.towerKilledCounts[i].ToString();
+            _towerKillCountTexts[i].text = GameManager.instance.towerKilledCounts[i].ToString() + "킬";
     }
 }

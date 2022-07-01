@@ -430,11 +430,6 @@ public abstract class Tower : MonoBehaviour
         UIManager.instance.HideTowerInfo();
     }
 
-    public void IncreaseKillCount()
-    {
-
-    }
-
     public void ReturnPool()
     {
         if (onTile != null)

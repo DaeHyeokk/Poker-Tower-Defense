@@ -163,6 +163,7 @@ public class GameManager : MonoBehaviour
     public void PauseGame()
     {
         OnGamePaused();
+        _isPaused = true;
         _backupGameSpeed = gameSpeed;
         gameSpeed = 0f;
         UIManager.instance.ShowGameMenu();
@@ -171,6 +172,7 @@ public class GameManager : MonoBehaviour
     public void ResumeGame()
     {
         OnGameResumed();
+        _isPaused = false;
         gameSpeed = _backupGameSpeed;
         UIManager.instance.HideGameMenu();
     }
@@ -188,6 +190,7 @@ public class GameManager : MonoBehaviour
     {
         OnGameEnd();
         yield return new WaitForSeconds(1.3f);
+        _isEnd = true;
         gameSpeed = 0f;
         UIManager.instance.ShowGameDefeatPanel();
     }
