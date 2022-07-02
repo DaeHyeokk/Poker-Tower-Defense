@@ -22,12 +22,11 @@ public abstract class Enemy : MonoBehaviour
     [SerializeField]
     protected int _rewardJokerCard;
 
-    private StringBuilder _rewardText = new();
-    private float _enemyScale;
     private float _maxHealth;  // Enemy의 최대 체력
     private float _health;     // Enemy의 현재 체력
     private float _increaseReceiveDamageRate; // Enemy가 공격 당할 때 받는 피해량
 
+    protected RewardStringBuilder _rewardStringBuilder;
     protected EnemySpawner _enemySpawner;
     protected EnemyHealthbar _enemyHealthbar;
 
@@ -60,7 +59,7 @@ public abstract class Enemy : MonoBehaviour
     {
         _enemySpawner = FindObjectOfType<EnemySpawner>();
         _enemyHealthbar = new(_healthbarGauge);
-        _enemyScale = this.transform.localScale.x;
+        _rewardStringBuilder = new();
     }
 
     public virtual void Setup(EnemyData enemyData)
@@ -80,7 +79,7 @@ public abstract class Enemy : MonoBehaviour
 
     private IEnumerator SpawnAnimationCoroutine()
     {
-        float lerpSpeed = 8f;
+        float lerpSpeed = 9f;
         float currentTime = 0f;
         float percent = 0f;
 
@@ -88,7 +87,7 @@ public abstract class Enemy : MonoBehaviour
         {
             currentTime += Time.deltaTime;
             percent = currentTime * lerpSpeed;
-            float scale = Mathf.Lerp(0f, _enemyScale, percent);
+            float scale = Mathf.Lerp(0f, 1f, percent);
             this.transform.localScale = new Vector3(scale, scale, scale);
 
             yield return null;
@@ -132,9 +131,8 @@ public abstract class Enemy : MonoBehaviour
         // duration만큼 지연
         while (duration > 0)
         {
-            //yield return null;
-            yield return _waitForPointFiveSeconds;
-            duration -= 0.5f;
+            yield return null;
+            duration -= Time.deltaTime;
         }
 
         this.increaseReceiveDamageRate -= IRDRate;
@@ -152,37 +150,14 @@ public abstract class Enemy : MonoBehaviour
     protected virtual void GiveReward()
     {
         GameManager.instance.gold += _rewardGold;
+
         if (_rewardChangeChance > 0)
             GameManager.instance.changeChance += _rewardChangeChance;
+
         if (_rewardJokerCard > 0)
             GameManager.instance.jokerCard += _rewardJokerCard;
 
-        UIManager.instance.ShowEnemyDieRewardText(_rewardText, this.transform);
-    }
-
-    protected void SetRewardText()
-    {
-        _rewardText.Clear();
-
-        _rewardText.Append('+');
-        _rewardText.Append(_rewardGold.ToString());
-        _rewardText.Append('G');
-
-        if(_rewardChangeChance > 0)
-        {
-            _rewardText.Append('\n');
-            _rewardText.Append("카드교환권");
-            _rewardText.Append('+');
-            _rewardText.Append(_rewardChangeChance.ToString());
-        }
-
-        if (_rewardJokerCard > 0)
-        {
-            _rewardText.Append('\n');
-            _rewardText.Append("조커카드");
-            _rewardText.Append('+');
-            _rewardText.Append(_rewardJokerCard.ToString());
-        }
+        UIManager.instance.ShowEnemyDieRewardText(_rewardStringBuilder.ToString(), this.transform);
     }
 }
 

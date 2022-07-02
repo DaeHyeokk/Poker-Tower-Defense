@@ -27,9 +27,10 @@ public class SpecialBossEnemy : Enemy
         _rewardChangeChance = enemyData.rewardChangeChance;
         _rewardJokerCard = enemyData.rewardJokerCard;
 
-        SetRewardText();
+        _rewardStringBuilder.Set(_rewardGold, _rewardChangeChance, _rewardJokerCard);
         _healthText.text = ((int)Mathf.Round(enemyData.health)).ToString();
     }
+
     private void UpdateHealthText()
     {
         float healthPercent = _enemyHealthbar.healthPercent;

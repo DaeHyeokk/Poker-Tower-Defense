@@ -48,13 +48,14 @@ public class UIManager : MonoBehaviour
 
     [Header("Fade Text UI")]
     [SerializeField]
-    private SystemMessage _systemMessage;
+    private GameObject _systemMessagePrefab;
+    private ObjectPool<SystemMessage> _systemMessagePool;
     [SerializeField]
     private GameObject _damageTakenTextPrefab;
     private ObjectPool<DamageTakenText> _damageTakenTextPool;
     [SerializeField]
-    private GameObject _enemyDieRewardTextPrefab;
-    private ObjectPool<EnemyDieRewardText> _enemyDieRewardTextPool;
+    private GameObject _rewardTextPrefab;
+    private ObjectPool<RewardText> _rewardTextPool;
 
     private readonly WaitForSecondsRealtime _gameStartFadeOutDelay = new(0.2f);
 
@@ -68,16 +69,18 @@ public class UIManager : MonoBehaviour
     public ColorUpgradeUIController colorUpgradeUIController => _colorUpgradeUIController;
     /*****************************************************************************************************/
 
+    public ObjectPool<SystemMessage> systemMessagePool => _systemMessagePool;
     public ObjectPool<DamageTakenText> damageTakenTextPool => _damageTakenTextPool;
-    public ObjectPool<EnemyDieRewardText> enemyDieRewardTextPool => _enemyDieRewardTextPool;
+    public ObjectPool<RewardText> rewardTextPool => _rewardTextPool;
 
     private void Awake()
     {
         if (instance != this)
             Destroy(gameObject);    // 자신을 파괴
 
+        _systemMessagePool = new(_systemMessagePrefab, 5);
         _damageTakenTextPool = new(_damageTakenTextPrefab, 10);
-        _enemyDieRewardTextPool = new(_enemyDieRewardTextPrefab, 10);
+        _rewardTextPool = new(_rewardTextPrefab, 10);
     }
 
     public void GameStartScreenCoverFadeOut()
@@ -93,12 +96,10 @@ public class UIManager : MonoBehaviour
 
     public void ShowSystemMessage(SystemMessage.MessageType messageType)
     {
-        if (_systemMessage.gameObject.activeSelf)
-            _systemMessage.gameObject.SetActive(false);
+        SystemMessage systemMessage = _systemMessagePool.GetObject();
 
-        _systemMessage.Setup(messageType);
-        _systemMessage.gameObject.SetActive(true);
-        _systemMessage.StartAnimation();
+        systemMessage.Setup(messageType);
+        systemMessage.StartAnimation();
     }
 
     public void ShowDamageTakenText(float damage, Transform target, DamageTakenType damageTakenType)
@@ -112,15 +113,30 @@ public class UIManager : MonoBehaviour
         damageTakenText.StartAnimation();
     }
 
-    public void ShowEnemyDieRewardText(StringBuilder reward, Transform target)
+    public void ShowEnemyDieRewardText(string reward, Transform target)
     {
-        EnemyDieRewardText enemyDieGoldText = _enemyDieRewardTextPool.GetObject();
+        RewardText enemyDieRewardText = _rewardTextPool.GetObject();
 
-        enemyDieGoldText.transform.position = target.position + new Vector3(0.1f, 0f, 0f);
-        enemyDieGoldText.textMeshPro.text = reward.ToString();
+        enemyDieRewardText.transform.localScale = Vector3.one;
+        enemyDieRewardText.transform.position = target.position + new Vector3(0.1f, 0f, 0f);
+        enemyDieRewardText.textMeshPro.text = reward;
 
-        enemyDieGoldText.StartAnimation();
+        enemyDieRewardText.movement2D.Move();
+        enemyDieRewardText.StartAnimation();
 
+    }
+
+    public void ShowWaveRewardText(string reward)
+    {
+        RewardText waveRewardText = _rewardTextPool.GetObject();
+
+ 
+        waveRewardText.transform.localScale = new Vector3(2f, 2f, 2f);
+        waveRewardText.transform.position = Vector3.zero;
+        waveRewardText.textMeshPro.text = "<color=\"white\">웨이브 보상 지급!</color>\n" + reward;
+
+        waveRewardText.movement2D.Stop();
+        waveRewardText.StartAnimation();
     }
 
     public void ShowTowerInfo(Tower tower)

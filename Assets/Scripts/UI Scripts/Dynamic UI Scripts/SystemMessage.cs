@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
 
-public class SystemMessage : FadeTextUI
+public class SystemMessage : FadeTextObject
 {
     public enum MessageType 
     { 
@@ -13,10 +13,17 @@ public class SystemMessage : FadeTextUI
         NotEnoughJokerCard, 
         AlreadyUsedJokerCard, 
         CompletionColorChange, 
-        CompletionTowerSales 
+        CompletionTowerSales,
+        MissingBossPenalty
     }
 
-    private readonly WaitForSecondsRealtime _waitForSecondsRealtime = new(0.5f);
+    [SerializeField]
+    private Movement2D _movement2D;
+    [SerializeField]
+    private float _penaltyMessagefadeStartDelay;
+
+    private float _fadeStartDelay;
+    private readonly WaitForSecondsRealtime _waitForSecondsRealtime = new(0.2f);
 
     private readonly string _notEnoughGoldString = "골드가 부족합니다.";
     private readonly string _notEnoughMineralString = "미네랄이 부족합니다.";
@@ -25,44 +32,63 @@ public class SystemMessage : FadeTextUI
     private readonly string _alreadyUsedJokerCard = "조커카드를 이미 사용하셨습니다.";
     private readonly string _completionColorChangeString = "색 변경 완료!";
     private readonly string _completionTowerSalesString = "판매 완료!";
+    private readonly string _missingBossPenaltyString = "보스를 놓치셨습니다.\n라운드 보상 획득이 제한됩니다.";
 
     public void Setup(MessageType messageType)
     {
+        _movement2D.Move();
+        _fadeStartDelay = 0f;
+
         switch (messageType)
         {
             case SystemMessage.MessageType.NotEnoughGold:
-                textMeshProUGUI.color = Color.red;
-                textMeshProUGUI.text = _notEnoughGoldString;
+                this.transform.position = Vector3.zero;
+                textMeshPro.color = Color.yellow;
+                textMeshPro.text = _notEnoughGoldString;
                 break;
 
             case SystemMessage.MessageType.NotEnoughMineral:
-                textMeshProUGUI.color = Color.red;
-                textMeshProUGUI.text = _notEnoughMineralString;
+                this.transform.position = Vector3.zero;
+                textMeshPro.color = Color.cyan;
+                textMeshPro.text = _notEnoughMineralString;
                 break;
 
             case SystemMessage.MessageType.NotEnoughChangeChance:
-                textMeshProUGUI.color = Color.red;
-                textMeshProUGUI.text = _notEnoughChangeChanceString;
+                this.transform.position = Vector3.zero;
+                textMeshPro.color = Color.red;
+                textMeshPro.text = _notEnoughChangeChanceString;
                 break;
 
             case SystemMessage.MessageType.NotEnoughJokerCard:
-                textMeshProUGUI.color = Color.red;
-                textMeshProUGUI.text = _notEnoughJokerCard;
+                this.transform.position = Vector3.zero;
+                textMeshPro.color = Color.red;
+                textMeshPro.text = _notEnoughJokerCard;
                 break;
 
             case SystemMessage.MessageType.AlreadyUsedJokerCard:
-                textMeshProUGUI.color = Color.red;
-                textMeshProUGUI.text = _alreadyUsedJokerCard;
+                this.transform.position = Vector3.zero;
+                textMeshPro.color = Color.red;
+                textMeshPro.text = _alreadyUsedJokerCard;
                 break;
 
             case SystemMessage.MessageType.CompletionColorChange:
-                textMeshProUGUI.color = Color.white;
-                textMeshProUGUI.text = _completionColorChangeString;
+                this.transform.position = Vector3.zero;
+                textMeshPro.color = Color.white;
+                textMeshPro.text = _completionColorChangeString;
                 break;
 
             case SystemMessage.MessageType.CompletionTowerSales:
-                textMeshProUGUI.color = Color.white;
-                textMeshProUGUI.text = _completionTowerSalesString;
+                this.transform.position = Vector3.zero;
+                textMeshPro.color = Color.white;
+                textMeshPro.text = _completionTowerSalesString;
+                break;
+
+            case SystemMessage.MessageType.MissingBossPenalty:
+                _movement2D.Stop();
+                _fadeStartDelay = _penaltyMessagefadeStartDelay;
+                this.transform.position = new Vector3(0f, 1f, 0f);
+                textMeshPro.color = Color.red;
+                textMeshPro.text = _missingBossPenaltyString;
                 break;
         }
     }
@@ -74,10 +100,18 @@ public class SystemMessage : FadeTextUI
 
     private IEnumerator StartAnimationCoroutine()
     {
-        yield return _waitForSecondsRealtime;
+        //yield return _waitForSecondsRealtime;
 
-        base.textUIFadeAnimation.FadeOutText();
+        while(_fadeStartDelay > 0f)
+        {
+            yield return null;
+            _fadeStartDelay -= Time.unscaledDeltaTime;
+        }
+
+        base.textObjectFadeAnimation.FadeOutText();
     }
+
+    protected override void ReturnPool() => UIManager.instance.systemMessagePool.ReturnObject(this);
 }
 
 /*

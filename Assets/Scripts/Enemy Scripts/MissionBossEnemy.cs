@@ -12,7 +12,14 @@ public class MissionBossEnemy : FieldBossEnemy
     [SerializeField]
     private TextMeshProUGUI _limitTimeText;
 
+    private GoldPenalty _goldPenalty;
     private WaitForSeconds _waitOneSecond = new(1f);
+
+    protected override void Awake()
+    {
+        base.Awake();
+        _goldPenalty = FindObjectOfType<WaveSystem>().goldPenalty;
+    }
 
     public override void Setup(EnemyData enemyData)
     {
@@ -40,14 +47,14 @@ public class MissionBossEnemy : FieldBossEnemy
         }
 
         if (this.gameObject.activeSelf)
-            Missing();
+            OnMissing();
     }
 
-    public override void Missing()
+    public override void OnMissing()
     {
         // 2웨이브동안 골드패널티를 부여한다.
         _goldPenalty.remainWave += 2;
-
+        UIManager.instance.ShowSystemMessage(SystemMessage.MessageType.MissingBossPenalty);
         ReturnObject();
     }
 

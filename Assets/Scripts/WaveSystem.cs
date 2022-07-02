@@ -21,6 +21,7 @@ public class WaveSystem : MonoBehaviour
     [SerializeField]
     private EnemySpawner _enemySpawner;
 
+    private RewardStringBuilder _waveRewardStringBuilder;
     private int _wave;
     private int _minute;
     private int _second;
@@ -40,6 +41,7 @@ public class WaveSystem : MonoBehaviour
             _waveSystemUIController.SetWaveText(value);
         }
     }
+
     public int minute
     {
         get => _minute;
@@ -49,6 +51,7 @@ public class WaveSystem : MonoBehaviour
             _waveSystemUIController.SetMinuteText(value);
         }
     }
+
     public int second
     {
         get => _second;
@@ -64,7 +67,8 @@ public class WaveSystem : MonoBehaviour
     private void Awake()
     {
         wave = 0;
-
+        _waveRewardStringBuilder = new();
+        _waveRewardStringBuilder.Set(200, 0, 0);
         StartCoroutine(StartWaveSystemCoroutine());
     }
 
@@ -108,13 +112,9 @@ public class WaveSystem : MonoBehaviour
                 }
             }
 
-            // 현재 골드 패널티가 활성화 상태라면 남은 웨이브를 1 감소시킨다.
-            if(_goldPenalty.gameObject.activeSelf)
-                _goldPenalty.remainWave--;
-
             // 보스 웨이브가 끝날 때 까지 보스를 못잡을 경우 실행.
             if (_isBossWave && _enemySpawner.roundBossEnemy.gameObject.activeSelf)
-                _enemySpawner.roundBossEnemy.Missing();
+                _enemySpawner.roundBossEnemy.OnMissing();
         }
 
         GameManager.instance.ClearGame();
@@ -123,6 +123,13 @@ public class WaveSystem : MonoBehaviour
     private void IncreaseWave()
     {
         wave++;
+
+        // 현재 골드 패널티가 활성화 상태라면 남은 웨이브를 1 감소시킨다.
+        if (_goldPenalty.gameObject.activeSelf)
+            _goldPenalty.remainWave--;
+        // 골드 패널티를 받고있는 상태가 아니라면 플레이어에게 골드를 지급한다.
+        else
+            GiveWaveReward();
 
         if (wave % 10 != 0)
         {
@@ -143,5 +150,12 @@ public class WaveSystem : MonoBehaviour
         }
 
         _waveStartMessage.gameObject.SetActive(true);
+    }
+
+    private void GiveWaveReward()
+    {
+        // 200골드 지급
+        GameManager.instance.gold += 200;
+        UIManager.instance.ShowWaveRewardText(_waveRewardStringBuilder.ToString());
     }
 }

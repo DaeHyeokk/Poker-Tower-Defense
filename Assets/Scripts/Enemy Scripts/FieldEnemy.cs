@@ -12,7 +12,6 @@ public abstract class FieldEnemy : Enemy
     private Particle _stunEffect;
 
     private EnemyMovement _enemyMovement;
-    protected GoldPenalty _goldPenalty;
 
     private int _stunCount; // 스턴을 중첩해서 맞을 경우 가장 마지막에 풀리는 스턴을 알기 위한 변수
     private int _slowCount; // 슬로우를 중첩해서 맞을 경우 가장 마지막에 풀리는 슬로우를 알기 위한 변수
@@ -59,9 +58,8 @@ public abstract class FieldEnemy : Enemy
     {
         base.Awake();
         _enemyMovement = GetComponent<EnemyMovement>();
-        _goldPenalty = FindObjectOfType<WaveSystem>().goldPenalty;
-        SetRewardText();
 
+        _rewardStringBuilder.Set(_rewardGold, _rewardChangeChance, _rewardJokerCard);
         GameManager.instance.OnGameEnd += GameoverAction;
     }
 
@@ -88,9 +86,8 @@ public abstract class FieldEnemy : Enemy
         // duration 만큼 지연
         while (duration > 0)
         {
-            //yield return _waitForFixedUpdate;
-            yield return waitForPointFiveSeconds;
-            duration -= 0.5f;
+            yield return null;
+            duration -= Time.deltaTime;
         }
 
         // 스턴 시간이 종료 되었으므로 stunCount 1 감소.
@@ -115,9 +112,8 @@ public abstract class FieldEnemy : Enemy
         // duration 만큼 지연
         while (duration > 0)
         {
-            //yield return _waitForFixedUpdate;
-            yield return waitForPointFiveSeconds;
-            duration -= 0.5f;
+            yield return null;
+            duration -= Time.deltaTime;
         }
 
         // 감소시켰던 이동 속도를 되돌린다.

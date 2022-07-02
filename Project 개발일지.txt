@@ -439,3 +439,17 @@ Date: 2022/07/01 FRI
 ☑ semaphore.waitforsignal 부분의 문제가 또다시 발생함. GfxDeviceVK.Present 에서도 지연시간이 16ms정도 걸리는 것으로 보아 뭔가 문제가 있는거 같긴한데, 원인을 못찾는중.
 서칭해본 결과 CPU 렌더링이 완료되고 GPU 렌더링이 끝나기를 기다리는 대기시간이 길어지면서 생기는 문제라고 하는데 증상이 나타나면 게임이 아예 멈춰버리는 수준으로 지연되기 때문에 뭔가 잘못 구현한 부분이 있는듯함.
 Drawcall 최적화를 해보면서도 느꼈던 것인데, CPU 최적화도 중요하지만 그래픽스 렌더링 부분도 간과해서는 안되는 부분이라는 것을 느꼈음.
+
+Date: 2022/07/02 SAT
+☑ Mission Boss를 놓칠 경우 플레이어에게 패널티가 부과된다는 메세지를 출력하는 로직 구현.
+
+☑ Round Enemy를 잡을 경우 5골드를 지급하는 로직을 삭제하고 웨이브가 시작할 시 200골드를 지급하는 로직으로 변경.
+
+☑ 패널티 또한 2웨이브 웨이브가 시작할 때 지급하는 골드를 못받는 로직으로 변경.
+
+☑ 다음 웨이브 시작 시 200골드를 주는 것을 플레이어에게 보여주기 위해 기존 EnemyDieRewardText를 RewardText로 변경하고,
+ UIManager에서 적이 죽을 때 RewardText를 보여주는 메소드와 라운드 시작 시 RewardText를 보여주는 메소드를 추가하였음.
+
+☑ RewardText가 여러곳에서 쓰이게 될 것이기 때문에 보상 목록을 매개변수로 받아 StringBuilder로 만드는 RewardStringBuilder 클래스 추가.
+
+☑ TextMeshPro의 Rich Text Tags 기능을 이용하여 Reward Text의 골드, 카드변환권, 조커카드가 각각 다른 색으로 출력되도록 변경.
