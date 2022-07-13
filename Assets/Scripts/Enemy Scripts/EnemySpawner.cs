@@ -35,7 +35,7 @@ public class EnemySpawner : MonoBehaviour
     private int _specialBossMaxLevel;
 
     private ObjectPool<RoundEnemy> _roundEnemyPool;
-    private List<FieldEnemy> _roundEnemyList = new List<FieldEnemy>();
+    private LinkedList<FieldEnemy> _roundEnemyList = new();
 
     private RoundBossEnemy _roundBossEnemy;
     private MissionBossEnemy[] _missionBossEnemies = new MissionBossEnemy[3];
@@ -44,7 +44,7 @@ public class EnemySpawner : MonoBehaviour
 
     public Transform[] wayPoints => _wayPoints;
     public ObjectPool<RoundEnemy> roundEnemyPool => _roundEnemyPool;
-    public List<FieldEnemy> roundEnemyList => _roundEnemyList;
+    public LinkedList<FieldEnemy> roundEnemyList => _roundEnemyList;
     public MissionBossEnemy[] missionBossEnemies => _missionBossEnemies;
     public RoundBossEnemy roundBossEnemy => _roundBossEnemy;
     public SpecialBossEnemy specialBossEnemy => _specialBossEnemy;
@@ -54,7 +54,7 @@ public class EnemySpawner : MonoBehaviour
         _roundEnemyPool = new ObjectPool<RoundEnemy>(_roundEnemyPrefab, 80);
         InstantiateBossEnemy();
         MissionBossCooltimeSetup();
-
+   
         GameManager.instance.OnGameEnd += () => this.gameObject.SetActive(false);
     }
 
@@ -95,11 +95,9 @@ public class EnemySpawner : MonoBehaviour
             // Enemy Setup() 메소드의 매개변수로 enemyData 정보를 전달.
             _enemy.Setup(_roundEnemyDatas[wave - 1]);
             // _roundEnemyList 리스트에 추가함 -> 필드 위에 생성되어 있는 Enemy를 참조하기 위함.
-            _roundEnemyList.Add(_enemy);
-
+            _roundEnemyList.AddLast(_enemy);
 
             yield return _waitForOneSeconds;
-
         }
     }
 

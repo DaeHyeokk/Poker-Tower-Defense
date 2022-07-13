@@ -7,31 +7,42 @@ public class TowerColor
     public enum ColorType { Red, Green, Blue }
 
     private SpriteRenderer _towerRenderer;
-
-    private Color[] _colorDatas;
     private ColorType _colorType;
 
-    public Color color => _colorDatas[(int)_colorType];
     public ColorType colorType => _colorType;
+    public Color color
+    {
+        get
+        {
+            switch(_colorType)
+            {
+                case ColorType.Red:
+                    return Color.red;
+
+                case ColorType.Green:
+                    return Color.green;
+
+                case ColorType.Blue:
+                    return Color.blue;
+
+                default:
+                    return Color.white;
+            }
+        }
+    }
 
     public TowerColor(SpriteRenderer towerRenderer)
     {
         _towerRenderer = towerRenderer;
-
-        _colorDatas = new Color[3];
-
-        _colorDatas[0] = new Color(180, 0, 0);  // Red
-        _colorDatas[1] = new Color(0, 180, 0);  // Green
-        _colorDatas[2] = new Color(0, 0, 180);  // Blue
     }
 
     public void ChangeRandomColor()
     {
         // 랜덤으로 ColorType 설정
-        ColorType type = (ColorType)Random.Range((int)ColorType.Red, (int)ColorType.Blue + 1);
-        _colorType = type;
+        ColorType colorType = (ColorType)Random.Range((int)ColorType.Red, (int)ColorType.Blue + 1);
+        _colorType = colorType;
 
-        _towerRenderer.color = _colorDatas[(int)_colorType];
+        _towerRenderer.color = color;
     }
 }
 

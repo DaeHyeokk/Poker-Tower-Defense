@@ -12,8 +12,7 @@ public class SystemMessage : FadeTextObject
         NotEnoughChangeChance, 
         NotEnoughJokerCard, 
         AlreadyUsedJokerCard, 
-        CompletionColorChange, 
-        CompletionTowerSales,
+        CompletionColorChange,
         MissingBossPenalty
     }
 
@@ -31,7 +30,6 @@ public class SystemMessage : FadeTextObject
     private readonly string _notEnoughJokerCard = "조커카드가 부족합니다.";
     private readonly string _alreadyUsedJokerCard = "조커카드를 이미 사용하셨습니다.";
     private readonly string _completionColorChangeString = "색 변경 완료!";
-    private readonly string _completionTowerSalesString = "판매 완료!";
     private readonly string _missingBossPenaltyString = "보스를 놓치셨습니다.\n라운드 보상 획득이 제한됩니다.";
 
     public void Setup(MessageType messageType)
@@ -77,11 +75,13 @@ public class SystemMessage : FadeTextObject
                 textMeshPro.text = _completionColorChangeString;
                 break;
 
+            /*
             case SystemMessage.MessageType.CompletionTowerSales:
                 this.transform.position = Vector3.zero;
                 textMeshPro.color = Color.white;
                 textMeshPro.text = _completionTowerSalesString;
                 break;
+            */
 
             case SystemMessage.MessageType.MissingBossPenalty:
                 _movement2D.Stop();

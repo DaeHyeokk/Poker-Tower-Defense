@@ -32,7 +32,7 @@ public abstract class Tower : MonoBehaviour
     private float _maxAttackRate;
     private float _increaseAttackRate;
     private float _increaseDamageRate;
- 
+
     private float increaseAttackRate
     {
         get => _increaseAttackRate;
@@ -425,7 +425,9 @@ public abstract class Tower : MonoBehaviour
 
         followTower.gameObject.SetActive(false);
 
-        _towerRenderer.color = _towerColor.color;
+        Color color = _towerRenderer.color;
+        color.a = 1f;
+        _towerRenderer.color = color;
 
         UIManager.instance.HideTowerInfo();
     }

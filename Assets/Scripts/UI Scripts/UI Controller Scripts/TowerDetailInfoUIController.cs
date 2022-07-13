@@ -43,8 +43,6 @@ public class TowerDetailInfoUIController : MonoBehaviour
     public float _remainHideDelay;
     private bool _isLocking;
 
-    private readonly WaitForFixedUpdate _waitForFixedUpdate = new();
-
     public PopupUIAnimation popupUIAnimation => _popupUIAnimation;
 
     private void Awake()

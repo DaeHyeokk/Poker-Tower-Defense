@@ -21,7 +21,7 @@ public class WaveSystem : MonoBehaviour
     [SerializeField]
     private EnemySpawner _enemySpawner;
 
-    private RewardStringBuilder _waveRewardStringBuilder;
+    private RewardStringBuilder _waveRewardStringBuilder = new();
     private int _wave;
     private int _minute;
     private int _second;
@@ -29,7 +29,7 @@ public class WaveSystem : MonoBehaviour
     private bool _isBossWave = false;
 
     private readonly WaitForSeconds _waitOneSecond = new(1f);
-
+    private readonly string _waveRewardString = "<color=\"white\">웨이브 보상 지급</color>\n";
     public GoldPenalty goldPenalty => _goldPenalty;
 
     public int wave
@@ -67,7 +67,6 @@ public class WaveSystem : MonoBehaviour
     private void Awake()
     {
         wave = 0;
-        _waveRewardStringBuilder = new();
         _waveRewardStringBuilder.Set(200, 0, 0);
         StartCoroutine(StartWaveSystemCoroutine());
     }
@@ -156,6 +155,6 @@ public class WaveSystem : MonoBehaviour
     {
         // 200골드 지급
         GameManager.instance.gold += 200;
-        UIManager.instance.ShowWaveRewardText(_waveRewardStringBuilder.ToString());
+        UIManager.instance.ShowWaveRewardText(_waveRewardString + _waveRewardStringBuilder.ToString());
     }
 }

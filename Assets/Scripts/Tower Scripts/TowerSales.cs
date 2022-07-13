@@ -12,6 +12,9 @@ public class TowerSales : MonoBehaviour
 
     private TowerBuilder _towerBuilder;
     private Tower _tower;
+    private RewardStringBuilder _rewardStringBuilder = new();
+
+    private readonly string _soldOutString = "<color=\"white\">판매 완료</color>\n";
 
     private void Awake()
     {
@@ -21,6 +24,7 @@ public class TowerSales : MonoBehaviour
     {
         _tower = tower;
         _salesGoldText.text = tower.salesGold.ToString() + 'G';
+        _rewardStringBuilder.Set(tower.salesGold, 0, 0);
 
         if (tower.level >= 3)
             _randomTowerRewardText.gameObject.SetActive(true);
@@ -35,7 +39,7 @@ public class TowerSales : MonoBehaviour
         if (_randomTowerRewardText.gameObject.activeSelf)
             _towerBuilder.BuildTower(Random.Range(0, 10));
 
-        UIManager.instance.ShowSystemMessage(SystemMessage.MessageType.CompletionTowerSales);
+        UIManager.instance.ShowTowerSalesRewardText(_soldOutString + _rewardStringBuilder.ToString());
         _tower.ReturnPool();
     }
 }

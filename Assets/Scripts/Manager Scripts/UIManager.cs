@@ -57,8 +57,6 @@ public class UIManager : MonoBehaviour
     private GameObject _rewardTextPrefab;
     private ObjectPool<RewardText> _rewardTextPool;
 
-    private readonly WaitForSecondsRealtime _gameStartFadeOutDelay = new(0.2f);
-
     /**************************** 언젠가 쓰이게 될 수도 있음 **********************************************
     public ScreenCover screenCover => _screenCover;
     public TowerInfomation towerInfomation => _towerInfomation;
@@ -86,12 +84,7 @@ public class UIManager : MonoBehaviour
     public void GameStartScreenCoverFadeOut()
     {
         _screenCover.gameObject.SetActive(true);
-        StartCoroutine(GameStartFadeOutDelayCoroutine());
-    }
-    private IEnumerator GameStartFadeOutDelayCoroutine()
-    { 
-        yield return _gameStartFadeOutDelay;
-        _screenCover.FadeOut(Color.black, 1f);
+        _screenCover.FadeOut(Color.black, 0.5f);
     }
 
     public void ShowSystemMessage(SystemMessage.MessageType messageType)
@@ -121,22 +114,40 @@ public class UIManager : MonoBehaviour
         enemyDieRewardText.transform.position = target.position + new Vector3(0.1f, 0f, 0f);
         enemyDieRewardText.textMeshPro.text = reward;
 
-        enemyDieRewardText.movement2D.Move();
         enemyDieRewardText.StartAnimation();
-
     }
 
     public void ShowWaveRewardText(string reward)
     {
         RewardText waveRewardText = _rewardTextPool.GetObject();
 
- 
         waveRewardText.transform.localScale = new Vector3(2f, 2f, 2f);
-        waveRewardText.transform.position = Vector3.zero;
-        waveRewardText.textMeshPro.text = "<color=\"white\">웨이브 보상 지급!</color>\n" + reward;
+        waveRewardText.transform.position = new Vector3(0f, 0.8f, 0f);
+        waveRewardText.textMeshPro.text = reward;
 
-        waveRewardText.movement2D.Stop();
         waveRewardText.StartAnimation();
+    }
+
+    public void ShowTowerSalesRewardText(string reward)
+    {
+        RewardText waveRewardText = _rewardTextPool.GetObject();
+
+        waveRewardText.transform.localScale = new Vector3(1.5f, 1.5f, 1.5f);
+        waveRewardText.transform.position = Vector3.zero;
+        waveRewardText.textMeshPro.text = reward;
+
+        waveRewardText.StartAnimation();
+    }
+
+    public void ShowMissionRewardText(string reward)
+    {
+        RewardText missionRewardText = _rewardTextPool.GetObject();
+
+        missionRewardText.transform.localScale = new Vector3(1.5f, 1.5f, 1.5f);
+        missionRewardText.transform.position = Vector3.zero;
+        missionRewardText.textMeshPro.text = reward;
+
+        missionRewardText.StartAnimation();
     }
 
     public void ShowTowerInfo(Tower tower)

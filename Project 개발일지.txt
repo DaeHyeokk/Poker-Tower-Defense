@@ -453,3 +453,8 @@ Date: 2022/07/02 SAT
 ☑ RewardText가 여러곳에서 쓰이게 될 것이기 때문에 보상 목록을 매개변수로 받아 StringBuilder로 만드는 RewardStringBuilder 클래스 추가.
 
 ☑ TextMeshPro의 Rich Text Tags 기능을 이용하여 Reward Text의 골드, 카드변환권, 조커카드가 각각 다른 색으로 출력되도록 변경.
+
+Data: 2022/07/13 WED
+☑ 미션 기능을 구현하기 위한 미션의 종류와 미션 클래스 구조 설계 완료.
+
+☑ Mission UI Canvas 구현.

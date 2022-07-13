@@ -196,6 +196,7 @@ public class GambleUIController : MonoBehaviour
 
     private void ChangeCardButtonImage(Card.Pattern newPattern)
     {
+        // 카드 전체 이미지를 다른 무늬로 바꾸고 활성화 한다.
         for (int i = 0; i < _cardBtnImages.Length; i++)
         {
             int cardIndex = i + ((int)newPattern * Card.MAX_NUMBER);
@@ -207,6 +208,7 @@ public class GambleUIController : MonoBehaviour
     
     private void DisableCardButton(Card.Pattern newPattern)
     {
+        // 이미 뽑은 카드들이 있다면 비활성화 한다.
         for(int i=0; i<_cardGambler.drawCards.Length; i++)
         {
             if((int)_cardGambler.drawCards[i].pattern == (int)newPattern)

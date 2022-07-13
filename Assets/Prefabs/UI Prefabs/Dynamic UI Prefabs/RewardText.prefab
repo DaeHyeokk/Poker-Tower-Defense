@@ -55,7 +55,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _deltaTimeMode: 1
   _moveDirection: {x: 0, y: 1, z: 0}
-  _moveSpeed: 0.2
+  _moveSpeed: 0.25
 --- !u!114 &306553780866840651
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -69,7 +69,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _deltaTimeMode: 1
-  _lerpSpeed: 0.5
+  _lerpSpeed: 0.9
   _text: {fileID: 1871136372535504876}
 --- !u!114 &1075602490827070119
 MonoBehaviour:

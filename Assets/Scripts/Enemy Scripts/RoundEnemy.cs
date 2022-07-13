@@ -2,6 +2,7 @@ public class RoundEnemy : FieldEnemy
 {
     protected override void GiveReward()
     {
+        // 일반 몬스터는 보상을 주지 않음.
         return;
     }
 
