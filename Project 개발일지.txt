@@ -458,3 +458,8 @@ Data: 2022/07/13 WED
 ☑ 미션 기능을 구현하기 위한 미션의 종류와 미션 클래스 구조 설계 완료.
 
 ☑ Mission UI Canvas 구현.
+
+Data: 2022/07/24 SUN
+☑ MissionManager 구현.
+
+☑ 싹쓰리! 미션 구현.

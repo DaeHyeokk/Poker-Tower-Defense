@@ -1,12 +1,16 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using TMPro;
 
 public class AllKillMission : Mission
 {
+    [SerializeField]
+    private TextMeshProUGUI _completionCountText;
+
     private EnemyCounter _enemyCounter;
     private int _completionCount;
-    private readonly string _missionCompletionString = "<color=\"white\">싹쓸이 클리어!</color>";
+    private readonly string _missionCompletionString = "<color=\"white\">싹쓸이 클리어!</color>\n";
 
     protected override string missionCompletionString => _missionCompletionString;
 
@@ -20,9 +24,9 @@ public class AllKillMission : Mission
     {
         if (_enemyCounter.roundEnemyCount == 0)
         {
-            _completionCount++;
             GiveReward();
-
+            _completionCount++;
+            _completionCountText.text = _completionCount.ToString() + "회";
         }
     }
 }

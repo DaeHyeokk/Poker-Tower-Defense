@@ -29,10 +29,6 @@ public class ObjectDetector : MonoBehaviour
     private RaycastHit[] _hits;
     private List<RaycastResult> _resultList;
 
-    private Ray2D _ray2D;
-    private RaycastHit2D _hit2D;
-    private RaycastHit2D[] _hits2D;
-
     private void Awake()
     {
         // 'MainCamera' 태그를 가지고 있는 오브젝트를 탐색 후 Camera 컴포넌트 정보 전달

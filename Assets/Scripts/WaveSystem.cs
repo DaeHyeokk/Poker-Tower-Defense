@@ -99,7 +99,13 @@ public class WaveSystem : MonoBehaviour
                     if (second == 0)
                         break;
                     else
+                    {
                         second--;
+
+                        // 보스웨이브가 아닌 라운드에 시간이 10초 남게 되면 싹쓰리 미션을 클리어 했는지 검사한다.
+                        if (!_isBossWave && minute == 0 && second == 10)
+                            MissionManager.instance.allKillMission.CheckMission();
+                    }
                 }
 
                 if (minute == 0)

@@ -12013,6 +12013,7 @@ GameObject:
   - component: {fileID: 390321556}
   - component: {fileID: 390321555}
   - component: {fileID: 390321554}
+  - component: {fileID: 390321557}
   m_Layer: 5
   m_Name: MissionCanvas
   m_TagString: Untagged
@@ -12103,6 +12104,22 @@ Canvas:
   m_SortingLayerID: 0
   m_SortingOrder: 0
   m_TargetDisplay: 0
+--- !u!114 &390321557
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 390321552}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f09a61668c1dcfc4a8737c0cb0b4fde8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _rewardGold: 100
+  _rewardChangeChance: 0
+  _rewardJokerCard: 0
+  _completionCountText: {fileID: 1310024682}
 --- !u!1 &394556089
 GameObject:
   m_ObjectHideFlags: 0
@@ -21371,8 +21388,8 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 912086041}
   m_HandleRect: {fileID: 912086040}
   m_Direction: 2
-  m_Value: 0.9999998
-  m_Size: 0.4833597
+  m_Value: 1
+  m_Size: 0.48335972
   m_NumberOfSteps: 0
   m_OnValueChanged:
     m_PersistentCalls:
@@ -23711,6 +23728,7 @@ Transform:
   - {fileID: 1283248749}
   - {fileID: 137001727}
   - {fileID: 1586254584}
+  - {fileID: 1538360652}
   m_Father: {fileID: 0}
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -28906,8 +28924,8 @@ RectTransform:
   m_Father: {fileID: 401238933}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0.5166402}
-  m_AnchorMax: {x: 1, y: 0.9999999}
+  m_AnchorMin: {x: 0, y: 0.5166403}
+  m_AnchorMax: {x: 1, y: 1}
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 20, y: 20}
   m_Pivot: {x: 0.5, y: 0.5}
@@ -34095,7 +34113,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 153366073c8aa424e833fbf988bdbef6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _popupUIAnimation: {fileID: 1073024934}
   _collectMissionButton: {fileID: 1016212474}
   _killMissionButton: {fileID: 1467324620}
   _collectMissionScrollView: {fileID: 1018137498}
@@ -41161,8 +41178,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 1, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: -100.375, y: -23.292694}
-  m_SizeDelta: {x: 200.75, y: -46.5856}
+  m_AnchoredPosition: {x: -101.869995, y: -23.292624}
+  m_SizeDelta: {x: 203.75, y: -46.585247}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1310024682
 MonoBehaviour:
@@ -47796,6 +47813,50 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1537526373}
   m_CullTransparentMesh: 1
+--- !u!1 &1538360651
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1538360652}
+  - component: {fileID: 1538360653}
+  m_Layer: 0
+  m_Name: MissionManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1538360652
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1538360651}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 684466007}
+  m_RootOrder: 3
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1538360653
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1538360651}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d033fc36704728e45a51877a8cab19ea, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1539971317
 GameObject:
   m_ObjectHideFlags: 0
@@ -59987,7 +60048,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0, y: 0.00024414062}
+  m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 2393.8757}
   m_Pivot: {x: 0, y: 1}
 --- !u!114 &1985268632
@@ -61079,7 +61140,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _defaultLimitMinute: 0
-  _defaultLimitSecond: 45
+  _defaultLimitSecond: 50
   _bossLimitMinute: 1
   _bossLimitSecond: 15
   _waveSystemUIController: {fileID: 2008602628}
