@@ -12014,6 +12014,7 @@ GameObject:
   - component: {fileID: 390321555}
   - component: {fileID: 390321554}
   - component: {fileID: 390321557}
+  - component: {fileID: 390321558}
   m_Layer: 5
   m_Name: MissionCanvas
   m_TagString: Untagged
@@ -12120,6 +12121,22 @@ MonoBehaviour:
   _rewardChangeChance: 0
   _rewardJokerCard: 0
   _completionCountText: {fileID: 1310024682}
+--- !u!114 &390321558
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 390321552}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4b2dbeacefb6c564586c9f0e90f89e41, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _rewardGold: 500
+  _rewardChangeChance: 5
+  _rewardJokerCard: 2
+  _completionCountText: {fileID: 101389723}
 --- !u!1 &394556089
 GameObject:
   m_ObjectHideFlags: 0

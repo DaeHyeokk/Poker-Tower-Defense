@@ -184,7 +184,11 @@ public class GameManager : MonoBehaviour
 
     public void DefeatGame()
     {
-        StartCoroutine(DefeatGameCoroutine());
+        OnGameEnd();
+        _isEnd = true;
+        gameSpeed = 0f;
+        UIManager.instance.ShowGameDefeatPanel();
+        //StartCoroutine(DefeatGameCoroutine());
     }
     private IEnumerator DefeatGameCoroutine()
     {

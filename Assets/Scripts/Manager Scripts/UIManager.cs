@@ -143,7 +143,7 @@ public class UIManager : MonoBehaviour
     {
         RewardText missionRewardText = _rewardTextPool.GetObject();
 
-        missionRewardText.transform.localScale = new Vector3(2f, 2f, 2f);
+        missionRewardText.transform.localScale = new Vector3(1.7f, 1.7f, 1.7f);
         missionRewardText.transform.position = Vector3.zero;
         missionRewardText.textMeshPro.text = reward;
 

@@ -80,6 +80,9 @@ public class EnemySpawner : MonoBehaviour
 
     public void SpawnEnemy(int wave)
     {
+        // 오브젝트가 비활성화된 상태라면 건너뛴다.
+        if (!this.gameObject.activeSelf) return;
+
         StartCoroutine(SpawnEnemyCoroutine(wave));
     }
 

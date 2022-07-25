@@ -19,9 +19,11 @@ public class MissionManager : MonoBehaviour
         }
     }
 
-    private Mission _allKillMission;
+    private AllKillMission _allKillMission;
+    private CutItCloseMission _cutItCloseMission;
 
-    public Mission allKillMission => _allKillMission;
+    public AllKillMission allKillMission => _allKillMission;
+    public CutItCloseMission cutItCloseMission => _cutItCloseMission;
 
     private void Awake()
     {
@@ -29,5 +31,6 @@ public class MissionManager : MonoBehaviour
             Destroy(gameObject);    // 자신을 파괴
 
         _allKillMission = FindObjectOfType<AllKillMission>();
+        _cutItCloseMission = FindObjectOfType<CutItCloseMission>();
     }
 }

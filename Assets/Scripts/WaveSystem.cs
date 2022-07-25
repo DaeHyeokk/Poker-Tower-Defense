@@ -88,7 +88,11 @@ public class WaveSystem : MonoBehaviour
 
         while (wave < _finalWave)
         {
-            IncreaseWave();
+            // 보스 웨이브가 끝날 때 까지 보스를 못잡을 경우 실행.
+            if (_isBossWave && _enemySpawner.roundBossEnemy.gameObject.activeSelf)
+                _enemySpawner.roundBossEnemy.OnMissing();
+            else
+                IncreaseWave();
 
             while (minute >= 0)
             {
@@ -116,10 +120,6 @@ public class WaveSystem : MonoBehaviour
                     second = 59;
                 }
             }
-
-            // 보스 웨이브가 끝날 때 까지 보스를 못잡을 경우 실행.
-            if (_isBossWave && _enemySpawner.roundBossEnemy.gameObject.activeSelf)
-                _enemySpawner.roundBossEnemy.OnMissing();
         }
 
         GameManager.instance.ClearGame();
@@ -136,7 +136,7 @@ public class WaveSystem : MonoBehaviour
         else
             GiveWaveReward();
 
-        if (wave % 10 != 0)
+        if (wave % 10 != 0 && wave != 1)
         {
             if (_isBossWave) _isBossWave = false;
             _enemySpawner.SpawnEnemy(wave);

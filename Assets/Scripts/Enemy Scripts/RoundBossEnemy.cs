@@ -12,6 +12,12 @@ public class RoundBossEnemy : FieldBossEnemy
         ReturnObject();
     }
 
+    protected override void Die()
+    {
+        base.Die();
+        MissionManager.instance.cutItCloseMission.CheckMission();
+    }
+
     protected override void ReturnObject()
     {
         this.gameObject.SetActive(false);
