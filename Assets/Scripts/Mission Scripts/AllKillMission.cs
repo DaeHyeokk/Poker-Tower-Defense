@@ -3,14 +3,10 @@ using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
 
-public class AllKillMission : Mission
+public class AllKillMission : RepeatMission
 {
-    [SerializeField]
-    private TextMeshProUGUI _completionCountText;
-
     private EnemyCounter _enemyCounter;
-    private int _completionCount;
-    private readonly string _missionCompletionString = "<color=\"white\">½Ï¾µÀÌ Å¬¸®¾î!</color>\n";
+    private readonly string _missionCompletionString = "<color=\"white\">½Ï¾µÀÌ</color>\n";
 
     protected override string missionCompletionString => _missionCompletionString;
 
@@ -23,10 +19,6 @@ public class AllKillMission : Mission
     public override void CheckMission()
     {
         if (_enemyCounter.roundEnemyCount == 0)
-        {
             GiveReward();
-            _completionCount++;
-            _completionCountText.text = _completionCount.ToString() + "È¸";
-        }
     }
 }

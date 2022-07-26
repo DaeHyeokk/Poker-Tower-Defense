@@ -12,7 +12,6 @@ public abstract class Mission : MonoBehaviour
     private int _rewardJokerCard;
 
     protected readonly RewardStringBuilder _rewardStringBuilder = new();
-
     protected abstract string missionCompletionString { get; }
 
     protected virtual void Awake()
@@ -20,7 +19,7 @@ public abstract class Mission : MonoBehaviour
         _rewardStringBuilder.Set(_rewardGold, _rewardChangeChance, _rewardJokerCard);
     }
 
-    protected void GiveReward()
+    protected virtual void GiveReward()
     {
         if (_rewardGold > 0)
             GameManager.instance.gold += _rewardGold;
@@ -29,7 +28,7 @@ public abstract class Mission : MonoBehaviour
         if (_rewardJokerCard > 0)
             GameManager.instance.jokerCard += _rewardJokerCard;
 
-        UIManager.instance.ShowMissionRewardText(missionCompletionString + _rewardStringBuilder.ToString());
+        UIManager.instance.ShowMissionRewardText("<color=\"red\">미션클리어!</color>\n" + missionCompletionString + _rewardStringBuilder.ToString());
     }
 
     public abstract void CheckMission();

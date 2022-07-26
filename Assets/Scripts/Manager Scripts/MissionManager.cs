@@ -21,9 +21,11 @@ public class MissionManager : MonoBehaviour
 
     private AllKillMission _allKillMission;
     private CutItCloseMission _cutItCloseMission;
+    private AtTheGatesOfHellMission _atTheGatesOfHellMission;
 
     public AllKillMission allKillMission => _allKillMission;
     public CutItCloseMission cutItCloseMission => _cutItCloseMission;
+    public AtTheGatesOfHellMission atTheGatesOfHellMission => _atTheGatesOfHellMission;
 
     private void Awake()
     {
@@ -32,5 +34,6 @@ public class MissionManager : MonoBehaviour
 
         _allKillMission = FindObjectOfType<AllKillMission>();
         _cutItCloseMission = FindObjectOfType<CutItCloseMission>();
+        _atTheGatesOfHellMission = FindObjectOfType<AtTheGatesOfHellMission>();
     }
 }

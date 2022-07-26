@@ -56,6 +56,8 @@ public class UIManager : MonoBehaviour
     [SerializeField]
     private GameObject _rewardTextPrefab;
     private ObjectPool<RewardText> _rewardTextPool;
+    
+    private Queue<RewardText> _missionRewardTextQueue = new();
 
     /**************************** 언젠가 쓰이게 될 수도 있음 **********************************************
     public ScreenCover screenCover => _screenCover;
@@ -113,6 +115,8 @@ public class UIManager : MonoBehaviour
         enemyDieRewardText.transform.localScale = Vector3.one;
         enemyDieRewardText.transform.position = target.position + new Vector3(0.1f, 0f, 0f);
         enemyDieRewardText.textMeshPro.text = reward;
+        enemyDieRewardText.textObjectFadeAnimation.lerpSpeed = 1f;
+        enemyDieRewardText.movement2D.Move();
 
         enemyDieRewardText.StartAnimation();
     }
@@ -124,19 +128,23 @@ public class UIManager : MonoBehaviour
         waveRewardText.transform.localScale = new Vector3(2f, 2f, 2f);
         waveRewardText.transform.position = new Vector3(0f, 0.8f, 0f);
         waveRewardText.textMeshPro.text = reward;
+        waveRewardText.textObjectFadeAnimation.lerpSpeed = 1f;
+        waveRewardText.movement2D.Move();
 
         waveRewardText.StartAnimation();
     }
 
     public void ShowTowerSalesRewardText(string reward)
     {
-        RewardText waveRewardText = _rewardTextPool.GetObject();
+        RewardText towerSalesRewardText = _rewardTextPool.GetObject();
 
-        waveRewardText.transform.localScale = new Vector3(1.5f, 1.5f, 1.5f);
-        waveRewardText.transform.position = Vector3.zero;
-        waveRewardText.textMeshPro.text = reward;
+        towerSalesRewardText.transform.localScale = new Vector3(1.5f, 1.5f, 1.5f);
+        towerSalesRewardText.transform.position = Vector3.zero;
+        towerSalesRewardText.textMeshPro.text = reward;
+        towerSalesRewardText.textObjectFadeAnimation.lerpSpeed = 1f;
+        towerSalesRewardText.movement2D.Move();
 
-        waveRewardText.StartAnimation();
+        towerSalesRewardText.StartAnimation();
     }
 
     public void ShowMissionRewardText(string reward)
@@ -146,8 +154,18 @@ public class UIManager : MonoBehaviour
         missionRewardText.transform.localScale = new Vector3(1.7f, 1.7f, 1.7f);
         missionRewardText.transform.position = Vector3.zero;
         missionRewardText.textMeshPro.text = reward;
+        missionRewardText.textObjectFadeAnimation.lerpSpeed = 0.5f;
+        missionRewardText.movement2D.Stop();
+        missionRewardText.gameObject.SetActive(false);
 
-        missionRewardText.StartAnimation();
+        _missionRewardTextQueue.Enqueue(missionRewardText);
+        if(_missionRewardTextQueue.Count == 1)
+            missionRewardText.StartAnimation();
+    }
+
+    public void ReturnMissionRewardText(RewardText missionRewardText)
+    {
+        _missionRewardTextQueue.Dequeue();
     }
 
     public void ShowTowerInfo(Tower tower)

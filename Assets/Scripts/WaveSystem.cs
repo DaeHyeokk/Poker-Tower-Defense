@@ -136,7 +136,7 @@ public class WaveSystem : MonoBehaviour
         else
             GiveWaveReward();
 
-        if (wave % 10 != 0 && wave != 1)
+        if (wave % 10 != 0)
         {
             if (_isBossWave) _isBossWave = false;
             _enemySpawner.SpawnEnemy(wave);
