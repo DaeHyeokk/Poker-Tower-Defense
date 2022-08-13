@@ -80,17 +80,17 @@ public class TargetDetector
 
             float _closestDistSqr = Mathf.Infinity;
             Enemy tempTarget = null;
-            LinkedListNode<FieldEnemy> fieldEnemyNode = _enemySpawner.roundEnemyList.First;
-            while (fieldEnemyNode != null)
+            LinkedListNode<RoundEnemy> roundEnemyNode = _enemySpawner.roundEnemyList.First;
+            while (roundEnemyNode != null)
             {
-                distance = Vector2.Distance(_tower.transform.position, fieldEnemyNode.Value.transform.position);
+                distance = Vector2.Distance(_tower.transform.position, roundEnemyNode.Value.transform.position);
 
                 if (distance <= _tower.range && distance <= _closestDistSqr)
                 {
                     _closestDistSqr = distance;
-                    tempTarget = fieldEnemyNode.Value;
+                    tempTarget = roundEnemyNode.Value;
                 }
-                fieldEnemyNode = fieldEnemyNode.Next;
+                roundEnemyNode = roundEnemyNode.Next;
             }
             
             if (tempTarget != null)
@@ -137,17 +137,17 @@ public class TargetDetector
                 }
             }
 
-            LinkedListNode<FieldEnemy> fieldEnemyNode = _enemySpawner.roundEnemyList.First;
-            while(fieldEnemyNode != null)
+            LinkedListNode<RoundEnemy> roundEnemyNode = _enemySpawner.roundEnemyList.First;
+            while(roundEnemyNode != null)
             {
-                distance = Vector2.Distance(_tower.transform.position, fieldEnemyNode.Value.transform.position);
+                distance = Vector2.Distance(_tower.transform.position, roundEnemyNode.Value.transform.position);
                 if (distance <= _tower.range)
-                    _targetList.Add(fieldEnemyNode.Value);
+                    _targetList.Add(roundEnemyNode.Value);
 
                 if (_targetList.Count >= _tower.maxTargetCount)
                     return;
 
-                fieldEnemyNode = fieldEnemyNode.Next;
+                roundEnemyNode = roundEnemyNode.Next;
             }
         }
     }
@@ -188,15 +188,15 @@ public class TargetDetector
         }
 
         // 범위 내에 라운드 몬스터가 있는지 탐색한다.
-        LinkedListNode<FieldEnemy> fieldEnemyNode = _enemySpawner.roundEnemyList.First;
-        while(fieldEnemyNode != null)
+        LinkedListNode<RoundEnemy> roundEnemyNode = _enemySpawner.roundEnemyList.First;
+        while(roundEnemyNode != null)
         {
-            distance = Vector2.Distance(centralPosition.position, fieldEnemyNode.Value.transform.position);
+            distance = Vector2.Distance(centralPosition.position, roundEnemyNode.Value.transform.position);
 
             if (distance <= rangeRadius)
-                _targetWithinRangeList.Add(fieldEnemyNode.Value);
+                _targetWithinRangeList.Add(roundEnemyNode.Value);
 
-            fieldEnemyNode = fieldEnemyNode.Next;
+            roundEnemyNode = roundEnemyNode.Next;
         }
     }
 

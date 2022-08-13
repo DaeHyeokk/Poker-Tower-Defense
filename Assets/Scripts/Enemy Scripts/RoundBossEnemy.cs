@@ -15,7 +15,6 @@ public class RoundBossEnemy : FieldBossEnemy
     protected override void Die()
     {
         base.Die();
-        MissionManager.instance.cutItCloseMission.CheckMission();
     }
 
     protected override void ReturnObject()

@@ -10,9 +10,10 @@ public abstract class RepeatMission : Mission
 
     private int _completionCount;
 
-    protected override void GiveReward()
+    protected override void CompleteMission()
     {
-        base.GiveReward();
+        GiveReward();
+
         _completionCount++;
         _completionCountText.text = _completionCount.ToString() + "회";
     }

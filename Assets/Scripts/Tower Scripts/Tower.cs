@@ -17,6 +17,7 @@ public abstract class Tower : MonoBehaviour
     [SerializeField]
     private Particle _increaseAttackRateEffect;
 
+    private LinkedListNode<Tower> _towerNode;
     private Rotater2D _rotater2D;
     private HorizontalLayoutGroup _levelLayout;
     private SpriteRenderer _towerRenderer;
@@ -75,6 +76,7 @@ public abstract class Tower : MonoBehaviour
     protected Transform spawnPoint => _spawnPoint;
     protected Rotater2D rotater2D => _rotater2D;
 
+    public LinkedListNode<Tower> towerNode => _towerNode;
     public TargetDetector targetDetector => _targetDetector;
     public SpriteRenderer towerRenderer => _towerRenderer;
     public TowerColor towerColor => _towerColor;
@@ -149,6 +151,7 @@ public abstract class Tower : MonoBehaviour
         _towerBuilder = FindObjectOfType<TowerBuilder>();
         _colorUpgrade = FindObjectOfType<ColorUpgrade>();
 
+        _towerNode = new LinkedListNode<Tower>(this);
         _towerColor = new TowerColor(_towerRenderer);
         _towerLevel = new TowerLevel(_levelLayout);
         _targetDetector = new TargetDetector(this, FindObjectOfType<EnemySpawner>());
@@ -437,6 +440,7 @@ public abstract class Tower : MonoBehaviour
         if (onTile != null)
             onTile = null;
 
+        _towerBuilder.towerList.Remove(_towerNode);
         _towerBuilder.towerPoolList[towerIndex].ReturnObject(this);
     }
 

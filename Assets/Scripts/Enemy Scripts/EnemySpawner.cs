@@ -14,13 +14,13 @@ public class EnemySpawner : MonoBehaviour
     [SerializeField]
     private GameObject _roundEnemyPrefab;
     [SerializeField]
-    private GameObject _roundBossEnemyPrefab;
+    private RoundBossEnemy _roundBossEnemy;
 
     [Header("Mission Boss")]
     [SerializeField]
     private EnemyData[] _missionBossEnemyDatas;
     [SerializeField]
-    private GameObject[] _missionBossEnemyPrefabs;
+    private MissionBossEnemy[] _missionBossEnemies;
     [SerializeField]
     private float[] _missionBossRespawnCooltimes;
     [SerializeField]
@@ -35,16 +35,13 @@ public class EnemySpawner : MonoBehaviour
     private int _specialBossMaxLevel;
 
     private ObjectPool<RoundEnemy> _roundEnemyPool;
-    private LinkedList<FieldEnemy> _roundEnemyList = new();
-
-    private RoundBossEnemy _roundBossEnemy;
-    private MissionBossEnemy[] _missionBossEnemies = new MissionBossEnemy[3];
+    private LinkedList<RoundEnemy> _roundEnemyList = new();
 
     private readonly WaitForSeconds _waitForOneSeconds = new(1f);
 
     public Transform[] wayPoints => _wayPoints;
     public ObjectPool<RoundEnemy> roundEnemyPool => _roundEnemyPool;
-    public LinkedList<FieldEnemy> roundEnemyList => _roundEnemyList;
+    public LinkedList<RoundEnemy> roundEnemyList => _roundEnemyList;
     public MissionBossEnemy[] missionBossEnemies => _missionBossEnemies;
     public RoundBossEnemy roundBossEnemy => _roundBossEnemy;
     public SpecialBossEnemy specialBossEnemy => _specialBossEnemy;
@@ -52,12 +49,13 @@ public class EnemySpawner : MonoBehaviour
     private void Awake()
     {
         _roundEnemyPool = new ObjectPool<RoundEnemy>(_roundEnemyPrefab, 80);
-        InstantiateBossEnemy();
+        //InstantiateBossEnemy();
         MissionBossCooltimeSetup();
    
         GameManager.instance.OnGameEnd += () => this.gameObject.SetActive(false);
     }
 
+    /*
     private void InstantiateBossEnemy()
     {
         _roundBossEnemy = Instantiate(_roundBossEnemyPrefab).GetComponent<RoundBossEnemy>();
@@ -69,6 +67,7 @@ public class EnemySpawner : MonoBehaviour
             _missionBossEnemies[i].gameObject.SetActive(false);
         }
     }
+    */
 
     private void MissionBossCooltimeSetup()
     {
@@ -92,13 +91,13 @@ public class EnemySpawner : MonoBehaviour
 
         while (spawnEnemy++ < 40)
         {
-            FieldEnemy _enemy = _roundEnemyPool.GetObject();
+            RoundEnemy _enemy = _roundEnemyPool.GetObject();
 
             _enemy.transform.position = _wayPoints[0].position;
             // Enemy Setup() 메소드의 매개변수로 enemyData 정보를 전달.
             _enemy.Setup(_roundEnemyDatas[wave - 1]);
-            // _roundEnemyList 리스트에 추가함 -> 필드 위에 생성되어 있는 Enemy를 참조하기 위함.
-            _roundEnemyList.AddLast(_enemy);
+            // _roundEnemyList 리스트에 _enemy가 가지고 있는 노드를 추가함 -> 필드 위에 생성되어 있는 Enemy를 참조하기 위함.
+            _roundEnemyList.AddLast(_enemy.roundEnemyNode);
 
             yield return _waitForOneSeconds;
         }

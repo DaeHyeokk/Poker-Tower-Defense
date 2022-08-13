@@ -12,17 +12,12 @@ public class AtTheGatesOfHellMission : NonRepeatMission
         _enemyCounter = FindObjectOfType<EnemyCounter>();
     }
 
-    private void Update()
+    protected override void Update()
     {
-        // 미션을 이미 완수했으면 수행하지 않는다.
-        if (isCompleted) return;
+        // 미션이 종료된 상태라면 건너뛴다.
+        if (isEnd) return;
 
-        CheckMission();
-    }
-
-    public override void CheckMission()
-    {
         if (_enemyCounter.roundEnemyCount >= 75)
-            GiveReward();
+            CompleteMission();
     }
 }

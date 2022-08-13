@@ -1,5 +1,19 @@
+using System.Collections;
+using System.Collections.Generic;
+
 public class RoundEnemy : FieldEnemy
 {
+    // 필드 위에 소환된 RoundEnemy 연결리스트에 삽입 및 삭제 될 때 사용되는 노드.
+    private LinkedListNode<RoundEnemy> _roundEnemyNode;
+
+    public LinkedListNode<RoundEnemy> roundEnemyNode => _roundEnemyNode;
+
+    protected override void Awake()
+    {
+        base.Awake();
+        _roundEnemyNode = new(this);
+    }
+
     protected override void GiveReward()
     {
         // 일반 몬스터는 보상을 주지 않음.
@@ -8,7 +22,7 @@ public class RoundEnemy : FieldEnemy
 
     protected override void ReturnObject()
     {
-        enemySpawner.roundEnemyList.Remove(this);
+        enemySpawner.roundEnemyList.Remove(_roundEnemyNode);
         enemySpawner.roundEnemyPool.ReturnObject(this);
     }
 }

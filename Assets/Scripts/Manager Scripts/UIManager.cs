@@ -56,9 +56,9 @@ public class UIManager : MonoBehaviour
     [SerializeField]
     private GameObject _rewardTextPrefab;
     private ObjectPool<RewardText> _rewardTextPool;
-    
-    private Queue<RewardText> _missionRewardTextQueue = new();
 
+    private Queue<RewardText> _missionRewardTextQueue = new();
+    private bool _isReadyShowMissionReward = true;
     /**************************** 언젠가 쓰이게 될 수도 있음 **********************************************
     public ScreenCover screenCover => _screenCover;
     public TowerInfomation towerInfomation => _towerInfomation;
@@ -67,7 +67,7 @@ public class UIManager : MonoBehaviour
     public CardSelector cardSelector => _cardSelector;
     public MissionBossUIController missionBossUIController => _missionBossUIController;
     public ColorUpgradeUIController colorUpgradeUIController => _colorUpgradeUIController;
-    /*****************************************************************************************************/
+    ******************************************************************************************************/
 
     public ObjectPool<SystemMessage> systemMessagePool => _systemMessagePool;
     public ObjectPool<DamageTakenText> damageTakenTextPool => _damageTakenTextPool;
@@ -81,6 +81,8 @@ public class UIManager : MonoBehaviour
         _systemMessagePool = new(_systemMessagePrefab, 5);
         _damageTakenTextPool = new(_damageTakenTextPrefab, 10);
         _rewardTextPool = new(_rewardTextPrefab, 10);
+
+        StartCoroutine(ShowMissionRewardTextCoroutine());
     }
 
     public void GameStartScreenCoverFadeOut()
@@ -147,7 +149,7 @@ public class UIManager : MonoBehaviour
         towerSalesRewardText.StartAnimation();
     }
 
-    public void ShowMissionRewardText(string reward)
+    public void reservateMissionReward(string reward)
     {
         RewardText missionRewardText = _rewardTextPool.GetObject();
 
@@ -159,13 +161,43 @@ public class UIManager : MonoBehaviour
         missionRewardText.gameObject.SetActive(false);
 
         _missionRewardTextQueue.Enqueue(missionRewardText);
-        if(_missionRewardTextQueue.Count == 1)
-            missionRewardText.StartAnimation();
+    }
+
+    private IEnumerator ShowMissionRewardTextCoroutine()
+    {
+        RewardText missionRewardText;
+
+        while(true)
+        {
+            // 미션리워드를 화면에 띄울 준비가 되어 있고, 큐에 대기중인 미션리워드가 있는 경우 수행.
+            if (_isReadyShowMissionReward && _missionRewardTextQueue.TryDequeue(out missionRewardText))
+            {
+                _isReadyShowMissionReward = false;
+                missionRewardText.gameObject.SetActive(true);
+                missionRewardText.StartAnimation();
+            }
+
+            yield return null;
+        }
+    }
+
+    public void ShowMissionRewardText(string reward)
+    {
+        RewardText missionRewardText = _rewardTextPool.GetObject();
+
+        missionRewardText.transform.localScale = new Vector3(1.7f, 1.7f, 1.7f);
+        missionRewardText.transform.position = Vector3.zero;
+        missionRewardText.textMeshPro.text = reward;
+        missionRewardText.textObjectFadeAnimation.lerpSpeed = 0.5f;
+        missionRewardText.movement2D.Stop();
+        missionRewardText.gameObject.SetActive(false);
+
     }
 
     public void ReturnMissionRewardText(RewardText missionRewardText)
     {
-        _missionRewardTextQueue.Dequeue();
+        _isReadyShowMissionReward = true;
+        _rewardTextPool.ReturnObject(missionRewardText);
     }
 
     public void ShowTowerInfo(Tower tower)

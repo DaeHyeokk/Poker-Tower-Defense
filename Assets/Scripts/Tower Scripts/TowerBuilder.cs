@@ -13,10 +13,12 @@ public class TowerBuilder : MonoBehaviour
     [SerializeField]
     private Transform _towerSpawnPoint;
 
+    private LinkedList<Tower> _towerList = new();
     private List<ObjectPool<Tower>> _towerPoolList = new();
     private FollowTower _followTower;
 
     public Sprite[] towerSprites => _towerSprites;
+    public LinkedList<Tower> towerList => _towerList;
     public List<ObjectPool<Tower>> towerPoolList => _towerPoolList;
     public FollowTower followTower => _followTower;
 
@@ -33,6 +35,7 @@ public class TowerBuilder : MonoBehaviour
     public void BuildTower(int towerIndex)
     {
         Tower tower = _towerPoolList[towerIndex].GetObject();
+        _towerList.AddLast(tower.towerNode);
 
         // 타워는 화면의 정중앙에서 생성 된다.
         tower.transform.position = _towerSpawnPoint.position;

@@ -12,7 +12,7 @@ public class RewardText : FadeTextObject
 
     public override void StartAnimation() => base.textObjectFadeAnimation.FadeOutText();
 
-    protected override void ReturnPool() => UIManager.instance.rewardTextPool.ReturnObject(this);
+    protected override void ReturnPool() => UIManager.instance.ReturnMissionRewardText(this);
 
 }
 

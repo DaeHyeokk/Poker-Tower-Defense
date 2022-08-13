@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using TMPro;
 
 public abstract class NonRepeatMission : Mission
 {
@@ -9,13 +10,27 @@ public abstract class NonRepeatMission : Mission
     [SerializeField]
     private GameObject _completionPanel;
 
-    protected bool isCompleted { get; set; }
+    protected bool isEnd { get; set; }
 
-    protected override void GiveReward()
+    protected override void CompleteMission()
     {
-        base.GiveReward();
-        isCompleted = true;
+        GiveReward();
+
         _completionPanel.SetActive(true);
         _missionPanel.transform.SetAsLastSibling();
+
+        isEnd = true;
+    }
+
+    protected void FailedMission()
+    {
+        _completionPanel.SetActive(true);
+        _missionPanel.transform.SetAsLastSibling();
+
+        TextMeshProUGUI completionText = _completionPanel.GetComponentInChildren<TextMeshProUGUI>();
+        completionText.text = "미션 실패";
+        completionText.color = Color.red;
+
+        isEnd = true;
     }
 }

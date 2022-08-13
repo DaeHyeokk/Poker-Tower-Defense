@@ -30,6 +30,10 @@ public class WaveSystem : MonoBehaviour
 
     private readonly WaitForSeconds _waitOneSecond = new(1f);
     private readonly string _waveRewardString = "<color=\"white\">웨이브 보상 지급</color>\n";
+
+    public event Action onWaveStart;
+    public event Action onBossWaveStart;
+
     public GoldPenalty goldPenalty => _goldPenalty;
 
     public int wave
@@ -103,13 +107,7 @@ public class WaveSystem : MonoBehaviour
                     if (second == 0)
                         break;
                     else
-                    {
                         second--;
-
-                        // 보스웨이브가 아닌 라운드에 시간이 10초 남게 되면 싹쓰리 미션을 클리어 했는지 검사한다.
-                        if (!_isBossWave && minute == 0 && second == 10)
-                            MissionManager.instance.allKillMission.CheckMission();
-                    }
                 }
 
                 if (minute == 0)
@@ -128,7 +126,7 @@ public class WaveSystem : MonoBehaviour
     private void IncreaseWave()
     {
         wave++;
-
+        
         // 현재 골드 패널티가 활성화 상태라면 남은 웨이브를 1 감소시킨다.
         if (_goldPenalty.gameObject.activeSelf)
             _goldPenalty.remainWave--;
@@ -138,6 +136,10 @@ public class WaveSystem : MonoBehaviour
 
         if (wave % 10 != 0)
         {
+            // 웨이브가 시작됐음을 알리는 메세지를 보낸다.(?)
+            if (onWaveStart != null)
+                onWaveStart();
+
             if (_isBossWave) _isBossWave = false;
             _enemySpawner.SpawnEnemy(wave);
 
@@ -147,6 +149,10 @@ public class WaveSystem : MonoBehaviour
         // 10의 배수 웨이브는 보스 웨이브.
         else
         {
+            // 보스웨이브가 시작됐음을 알리는 메세지를 보낸다.(?)
+            if (onBossWaveStart != null)
+                onBossWaveStart();
+
             _isBossWave = true;
             _enemySpawner.SpawnRoundBoss(wave);
 
