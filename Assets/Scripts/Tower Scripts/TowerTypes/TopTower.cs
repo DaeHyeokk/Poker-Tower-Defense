@@ -16,9 +16,6 @@ public class TopTower : Tower
     [SerializeField]
     private Slowing.Attribute[] _specialSlowingAttributes;
 
-    private readonly string _towername = "Å¾ Å¸¿ö";
-
-    public override string towerName => _towername;
     public override int towerIndex => 0;
 
     protected override void Awake()

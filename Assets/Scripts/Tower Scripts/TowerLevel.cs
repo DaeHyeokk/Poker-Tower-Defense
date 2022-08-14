@@ -9,8 +9,9 @@ public class TowerLevel
     private Image[] _levelImages;
 
     private int _level;
-
+    private int _maxLevel = 3;
     public int level => _level;
+    public int maxLevel => _maxLevel;
 
     public TowerLevel(HorizontalLayoutGroup levelLayout)
     {
@@ -36,7 +37,7 @@ public class TowerLevel
     public bool LevelUp()
     {
         // Tower가 최대 등급에 도달했을 경우 작업을 수행하지 않는다
-        if (_level >= 3)
+        if (_level >= _maxLevel)
             return false;
 
         _level++;

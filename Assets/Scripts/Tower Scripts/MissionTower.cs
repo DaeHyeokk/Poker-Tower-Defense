@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -8,6 +6,8 @@ public class MissionTower : MonoBehaviour
     private enum SelectTowerType { 선택안함, 탑, 원페어, 투페어, 트리플, 스트레이트, 마운틴, 플러쉬, 풀하우스, 포카인드, 스트레이트플러쉬 }
     private enum SelectTowerColor { 선택안함, 빨강, 초록, 파랑 }
 
+    [SerializeField]
+    private HorizontalLayoutGroup _levelLayout;
     [SerializeField]
     private SelectTowerType _selectTowerType;
     [SerializeField]
@@ -23,20 +23,22 @@ public class MissionTower : MonoBehaviour
     private int _level;
     private TowerColor.ColorType _colorType;
 
+    
     private void Awake()
     {
         _towerBuilder = FindObjectOfType<TowerBuilder>();
         _towerImage = GetComponent<Image>();
-        _levelImages = GetComponentsInChildren<Image>(true);
+        _levelImages = _levelLayout.GetComponentsInChildren<Image>(true);
 
         Setup();
     }
+    
 
     // 처음 생성되면 타워의 종류, 레벨, 색깔타입을 랜덤으로 설정한다.
     public void Setup()
     {
         if (_selectTowerType == SelectTowerType.선택안함)
-            _towerIndex = Random.Range(0, 10); // 0이상 10미만인 수 중에서 랜덤으로 추출.
+            _towerIndex = Random.Range(0, _towerBuilder.towerTypeNames.Length); // 0이상 타워타입의 개수 미만인 수 중에서 랜덤으로 추출.
         else
             _towerIndex = (int)_selectTowerType - 1;
 
@@ -80,7 +82,10 @@ public class MissionTower : MonoBehaviour
     private void SetTowerLevelImage()
     {
         for (int i = 0; i < _level; i++)
+        {
+            //Debug.Log("i: " + i.ToString() + " _level: " + _level.ToString());
             _levelImages[i].gameObject.SetActive(true);
+        }
     }
 
     public bool IsCompareTower(Tower tower)

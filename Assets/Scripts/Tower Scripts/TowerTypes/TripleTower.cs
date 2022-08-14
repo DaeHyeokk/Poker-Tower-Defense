@@ -21,11 +21,9 @@ public class TripleTower : Tower
     private IncreaseAttackRate.Attribute[] _specialIncreaseAttackRateAttributes;
 
     private bool _isSpecialBuff;
-    private readonly string _towerName = "트리플 타워";
 
     private float _specialBuffDuration => _specialIncreaseAttackRateAttributes[level].duration;
 
-    public override string towerName => _towerName;
     public override int towerIndex => 3;
 
     protected override void Awake()

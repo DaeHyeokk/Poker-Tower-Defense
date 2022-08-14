@@ -33,11 +33,8 @@ public class StraightTower : Tower
     private CriticalStrike _specialCriticalStrike;
     private IncreaseAttackRate _specialIncreaseAttackRate;
 
-    private readonly string _towerName = "스트레이트 타워";
-
     private float specialBuffRange => _specialBuffRanges[level];
 
-    public override string towerName => _towerName;
     public override int towerIndex => 4;
     public override Tile onTile
     {

@@ -32,6 +32,8 @@ public class UIManager : MonoBehaviour
     [SerializeField]
     private CardSelector _cardSelector;
     [SerializeField]
+    private MissionUIController _missionUIController;
+    [SerializeField]
     private MissionBossUIController _missionBossUIController;
     [SerializeField]
     private ColorUpgradeUIController _colorUpgradeUIController;
@@ -82,7 +84,14 @@ public class UIManager : MonoBehaviour
         _damageTakenTextPool = new(_damageTakenTextPrefab, 10);
         _rewardTextPool = new(_rewardTextPrefab, 10);
 
+        SetupMissionTowerCoroutine();
         StartCoroutine(ShowMissionRewardTextCoroutine());
+    }
+
+    private void SetupMissionTowerCoroutine()
+    {
+        _missionUIController.gameObject.SetActive(true);
+        _missionUIController.gameObject.SetActive(false);
     }
 
     public void GameStartScreenCoverFadeOut()
@@ -156,7 +165,7 @@ public class UIManager : MonoBehaviour
         missionRewardText.transform.localScale = new Vector3(1.7f, 1.7f, 1.7f);
         missionRewardText.transform.position = Vector3.zero;
         missionRewardText.textMeshPro.text = reward;
-        missionRewardText.textObjectFadeAnimation.lerpSpeed = 0.5f;
+        missionRewardText.textObjectFadeAnimation.lerpSpeed = 0.4f;
         missionRewardText.movement2D.Stop();
         missionRewardText.gameObject.SetActive(false);
 

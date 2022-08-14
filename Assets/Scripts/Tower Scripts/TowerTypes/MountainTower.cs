@@ -26,11 +26,8 @@ public class MountainTower : Tower
     private IncreaseReceivedDamageRate _baseIRDRate;
     private IncreaseDamageRate _specialIDRate;
 
-    private readonly string _towerName = "마운틴 타워";
-
     private float specialBuffRange => _specialBuffRanges[level];
 
-    public override string towerName => _towerName;
     public override int towerIndex => 5;
     public override Tile onTile
     {

@@ -26,9 +26,6 @@ public class FourKindTower : Tower
     [SerializeField]
     private float _specialRange;
 
-    private readonly string _towerName = "포카인드 타워";
-
-    public override string towerName => _towerName;
     public override int towerIndex => 8;
 
     protected override void Awake()

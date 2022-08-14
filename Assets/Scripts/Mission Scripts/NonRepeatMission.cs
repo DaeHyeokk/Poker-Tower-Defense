@@ -10,6 +10,8 @@ public abstract class NonRepeatMission : Mission
     [SerializeField]
     private GameObject _completionPanel;
 
+    protected GameObject missionPanel => _missionPanel;
+    protected GameObject completionPanel => _completionPanel;
     protected bool isEnd { get; set; }
 
     protected override void CompleteMission()

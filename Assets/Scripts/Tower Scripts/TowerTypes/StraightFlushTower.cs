@@ -26,9 +26,6 @@ public class StraightFlushTower : Tower
     [SerializeField]
     private float _specialRange;
 
-    private readonly string _towerName = "스티플 타워";
-
-    public override string towerName => _towerName;
     public override int towerIndex => 9;
 
     protected override void Awake()

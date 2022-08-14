@@ -16,9 +16,6 @@ public class OnePairTower : Tower
     [SerializeField]
     private float _specialRange;
 
-    public readonly string _towerName = "원페어 타워";
-
-    public override string towerName => _towerName;
     public override int towerIndex => 1;
 
     protected override void Awake()

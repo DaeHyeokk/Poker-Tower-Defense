@@ -139,7 +139,7 @@ public abstract class Tower : MonoBehaviour
         }
     }
 
-    public abstract string towerName { get; }
+    public string towerName => _towerBuilder.towerTypeNames[towerIndex];
     public abstract int towerIndex { get; }
 
     protected virtual void Awake()
