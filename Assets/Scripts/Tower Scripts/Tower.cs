@@ -159,7 +159,7 @@ public abstract class Tower : MonoBehaviour
         _maxAttackRate = 0.1f;
         specialAttackCount = 10;
 
-        GameManager.instance.OnGameEnd += GameoverAction;
+        GameManager.instance.onGameEnd += GameoverAction;
     }
 
     private void Update()

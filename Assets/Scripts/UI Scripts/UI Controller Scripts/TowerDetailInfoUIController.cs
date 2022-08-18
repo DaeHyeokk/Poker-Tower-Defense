@@ -69,7 +69,7 @@ public class TowerDetailInfoUIController : MonoBehaviour
         if (_attackRate != _tower.attackRate)
         {
             _attackRate = _tower.attackRate;
-            _attackRateText.text = _attackRate.ToString();
+            _attackRateText.text = Math.Round(_attackRate, 2).ToString();
         }
     }
 
@@ -87,8 +87,8 @@ public class TowerDetailInfoUIController : MonoBehaviour
         _hideTimerSlider.maxValue = _hideDelay;
         _hideTimerSlider.value = _hideDelay;
 
-        _damageText.text = _damage.ToString();
-        _attackRateText.text = _attackRate.ToString();
+        _damageText.text = Mathf.Round(_damage).ToString();
+        _attackRateText.text = Math.Round(_attackRate, 2).ToString();
         _upgradeDIPText.text = _upgradeDIP.ToString();
         _upgradeRIPText.text = _upgradeRIP.ToString();
 

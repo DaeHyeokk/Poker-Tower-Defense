@@ -60,7 +60,6 @@ public abstract class FieldEnemy : Enemy
         _enemyMovement = GetComponent<EnemyMovement>();
 
         _rewardStringBuilder.Set(_rewardGold, _rewardChangeChance, _rewardJokerCard);
-        GameManager.instance.OnGameEnd += GameoverAction;
     }
 
     public override void Setup(EnemyData enemyData)
@@ -128,14 +127,7 @@ public abstract class FieldEnemy : Enemy
         base.Die();
         ReturnObject();
     }
-    private void GameoverAction()
-    {
-        if (this.gameObject.activeSelf)
-        {
-            ParticlePlayer.instance.PlayEnemyDie(_enemySprite.transform);
-            this.gameObject.SetActive(false);
-        }
-    }
+
     protected abstract void ReturnObject();
 }
 

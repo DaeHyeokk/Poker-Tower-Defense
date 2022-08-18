@@ -52,7 +52,7 @@ public class EnemySpawner : MonoBehaviour
         //InstantiateBossEnemy();
         MissionBossCooltimeSetup();
    
-        GameManager.instance.OnGameEnd += () => this.gameObject.SetActive(false);
+        GameManager.instance.onGameEnd += () => this.gameObject.SetActive(false);
     }
 
     /*

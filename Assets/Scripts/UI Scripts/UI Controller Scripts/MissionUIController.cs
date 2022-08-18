@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -14,17 +15,36 @@ public class MissionUIController : MonoBehaviour
     [SerializeField]
     private ScrollRect _killMissionScrollView;
 
+    public event Action onShowMissionDetailUI;
+    public event Action onHideMissionDetailUI;
+
+    private void ShowMissionDetailUI()
+    {
+        if (onShowMissionDetailUI != null)
+            onShowMissionDetailUI();
+
+        gameObject.SetActive(true);
+    }
+
+    private void HideMissionDetailUI()
+    {
+        if (onHideMissionDetailUI != null)
+            onHideMissionDetailUI();
+
+        gameObject.SetActive(false);
+    }
+
     public void OnClickMissionButton()
     {
         if (!gameObject.activeSelf)
-            gameObject.SetActive(true);
+            ShowMissionDetailUI();
         else
-            gameObject.SetActive(false);
+            HideMissionDetailUI();
     }
 
     public void OnClickCloseButton()
     {
-        gameObject.SetActive(false);
+        HideMissionDetailUI();
     }
 
     public void OnClickCollectMissionButton()

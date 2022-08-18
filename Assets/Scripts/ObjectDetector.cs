@@ -29,6 +29,8 @@ public class ObjectDetector : MonoBehaviour
     private RaycastHit[] _hits;
     private List<RaycastResult> _resultList;
 
+    private int _popupUICount;
+
     private void Awake()
     {
         // 'MainCamera' 태그를 가지고 있는 오브젝트를 탐색 후 Camera 컴포넌트 정보 전달
@@ -39,11 +41,15 @@ public class ObjectDetector : MonoBehaviour
 
         // 게임이 끝나거나 일시정지 되면 플레이어의 오브젝트 터치 입력을 받지 않도록 비활성화하고,
         // 게임이 재게되면 오브젝트 터치 입력을 다시 받도록 활성화 한다.
-        GameManager.instance.OnGameEnd += () => this.gameObject.SetActive(false);
-        GameManager.instance.OnGamePaused += () => this.gameObject.SetActive(false);
-        GameManager.instance.OnGameResumed += () => this.gameObject.SetActive(true);
+        GameManager.instance.onGameEnd += () => _popupUICount++;
+        GameManager.instance.onGamePaused += () => _popupUICount++;
+        GameManager.instance.onGameResumed += () => _popupUICount--;
+
+        UIManager.instance.missionUIController.onShowMissionDetailUI += () => _popupUICount++;
+        UIManager.instance.missionUIController.onHideMissionDetailUI += () => _popupUICount--;
     }
 
+    /*
     private void OnDisable()
     {
         if (_clickTower != null)
@@ -52,13 +58,26 @@ public class ObjectDetector : MonoBehaviour
             _clickTower = null;
         }
     }
+    */
 
     private void Update()
     {
+        // 화면상에 팝업 UI가 한개 이상 활성화된 상태라면 플레이어의 타워 터치입력을 수행하지 않는다.
+        if(_popupUICount > 0)
+        {
+            if (_clickTower != null)
+            {
+                _clickTower.StopTower();
+                _clickTower = null;
+            }
+
+            return;
+        }
+
         // 마우스 왼쪽 버튼을 눌렀을 때
         if (Input.GetMouseButtonDown(0))
         {
-            // 이미 타워를 움직이고 있는 상태라면 움직ㅇ
+            // 이미 타워를 움직이고 있는 상태라면 건너뛴다.
             if (_clickTower != null)
                 return;
 
@@ -170,20 +189,15 @@ public class ObjectDetector : MonoBehaviour
 
                 if (_resultList.Count != 0)
                 {
-                    bool isHitTowerDetailInfo = false;
                     for (int i = 0; i < _resultList.Count; i++)
                     {
                         // 타워 상세정보 UI를 터치하는 경우 자동으로 비활성화 되는 타이머를 초기화 시킨다.
                         if (_resultList[i].gameObject.CompareTag("TowerDetailInfoUI"))
                         {
-                            isHitTowerDetailInfo = true;
                             _towerDetailInfoUIController.ResetHideDelay();
                             break;
                         }
                     }
-                    // Tower Detail Info UI 창을 터치하는 것이 아닌 다른 곳을 터치하면 즉시 창을 닫는다.
-                    if (!isHitTowerDetailInfo)
-                        _towerDetailInfoUIController.HideObject();
                 }
             }
         }

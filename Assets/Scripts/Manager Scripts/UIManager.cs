@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Text;
@@ -28,6 +29,8 @@ public class UIManager : MonoBehaviour
     [SerializeField]
     private TowerInfomation _towerInfomation;
     [SerializeField]
+    private TowerDetailInfoUIController _towerDetailInfoUIController;
+    [SerializeField]
     private GambleUIController _gambleUIController;
     [SerializeField]
     private CardSelector _cardSelector;
@@ -42,12 +45,6 @@ public class UIManager : MonoBehaviour
     [SerializeField]
     private GameDefeatUIController _gameDefeatUIController;
 
-    [Header("PopUp UI")]
-    [SerializeField]
-    private Canvas _popupUICanvas;
-    [SerializeField]
-    private TowerDetailInfoUIController _towerDetailInfoUIController;
-
     [Header("Fade Text UI")]
     [SerializeField]
     private GameObject _systemMessagePrefab;
@@ -61,6 +58,7 @@ public class UIManager : MonoBehaviour
 
     private Queue<RewardText> _missionRewardTextQueue = new();
     private bool _isReadyShowMissionReward = true;
+
     /**************************** 언젠가 쓰이게 될 수도 있음 **********************************************
     public ScreenCover screenCover => _screenCover;
     public TowerInfomation towerInfomation => _towerInfomation;
@@ -70,6 +68,7 @@ public class UIManager : MonoBehaviour
     public MissionBossUIController missionBossUIController => _missionBossUIController;
     public ColorUpgradeUIController colorUpgradeUIController => _colorUpgradeUIController;
     ******************************************************************************************************/
+    public MissionUIController missionUIController => _missionUIController;
 
     public ObjectPool<SystemMessage> systemMessagePool => _systemMessagePool;
     public ObjectPool<DamageTakenText> damageTakenTextPool => _damageTakenTextPool;
@@ -225,13 +224,11 @@ public class UIManager : MonoBehaviour
 
     public void ShowTowerDetailInfo()
     {
-        _popupUICanvas.gameObject.SetActive(true);
         _towerDetailInfoUIController.gameObject.SetActive(true);
     }
 
     public void HideTowerDetailInfo()
     {
-        _popupUICanvas.gameObject.SetActive(false);
         _towerDetailInfoUIController.gameObject.SetActive(false);
     }
 

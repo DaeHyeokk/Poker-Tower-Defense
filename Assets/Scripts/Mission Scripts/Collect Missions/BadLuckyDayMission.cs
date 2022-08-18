@@ -41,8 +41,8 @@ public class BadLuckyDayMission : NonRepeatMission
             towerListNode = towerListNode.Next;
         }
 
-        // 탑타워가 3개 이상 있을 경우 미션 클리어.
-        if (towerCount >= 3)
+        // 탑타워가 4개 이상 있을 경우 미션 클리어.
+        if (towerCount >= 4)
             CompleteMission();
     }
 }

@@ -484,3 +484,7 @@ Data: 2022/08/14 SUN
 ☑ 3시3끼 3겹살 미션 구현.
 ☑ 4각4각 4과 미션 구현.
 ☑ 5물5물 5징어 미션 구현.
+
+Data: 2022/08/17 WED
+☑ DontDestroyObject인 SoundManager 구현.
+☑ 스테이지 메인 BGM 구현.

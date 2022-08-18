@@ -36,9 +36,9 @@ public class GameManager : MonoBehaviour
     private bool _isPaused;
     private bool _isEnd;
 
-    public event Action OnGamePaused;
-    public event Action OnGameResumed;
-    public event Action OnGameEnd;
+    public event Action onGamePaused;
+    public event Action onGameResumed;
+    public event Action onGameEnd;
 
     public int[] towerKilledCounts { get; set; } = new int[10];
 
@@ -106,11 +106,13 @@ public class GameManager : MonoBehaviour
         
         _maxGameSpeed = 3f;
         gameSpeed = 1f;
-        gold = 600;
+        gold = 400;
         mineral = 100;
         changeChance = 40;
         jokerCard = 5;
 
+        SoundManager.instance.LoadSceneSoundResource(SceneManager.GetActiveScene().name);
+        SoundManager.instance.PlayBGM("Main BGM");
         UIManager.instance.GameStartScreenCoverFadeOut();
         ScreenSleepSetup();
         SetScreenResolution();
@@ -162,7 +164,7 @@ public class GameManager : MonoBehaviour
 
     public void PauseGame()
     {
-        OnGamePaused();
+        onGamePaused();
         _isPaused = true;
         _backupGameSpeed = gameSpeed;
         gameSpeed = 0f;
@@ -171,7 +173,7 @@ public class GameManager : MonoBehaviour
 
     public void ResumeGame()
     {
-        OnGameResumed();
+        onGameResumed();
         _isPaused = false;
         gameSpeed = _backupGameSpeed;
         UIManager.instance.HideGameMenu();
@@ -184,7 +186,7 @@ public class GameManager : MonoBehaviour
 
     public void DefeatGame()
     {
-        OnGameEnd();
+        onGameEnd();
         _isEnd = true;
         gameSpeed = 0f;
         UIManager.instance.ShowGameDefeatPanel();
@@ -192,7 +194,7 @@ public class GameManager : MonoBehaviour
     }
     private IEnumerator DefeatGameCoroutine()
     {
-        OnGameEnd();
+        onGameEnd();
         yield return new WaitForSeconds(1.3f);
         _isEnd = true;
         gameSpeed = 0f;
@@ -201,7 +203,7 @@ public class GameManager : MonoBehaviour
 
     public void ClearGame()
     {
-        OnGameEnd();
+        onGameEnd();
         gameSpeed = 0f;
     }
 }
