@@ -72,7 +72,6 @@ public class UIManager : MonoBehaviour
 
     public ObjectPool<SystemMessage> systemMessagePool => _systemMessagePool;
     public ObjectPool<DamageTakenText> damageTakenTextPool => _damageTakenTextPool;
-    public ObjectPool<RewardText> rewardTextPool => _rewardTextPool;
 
     private void Awake()
     {
@@ -83,11 +82,11 @@ public class UIManager : MonoBehaviour
         _damageTakenTextPool = new(_damageTakenTextPrefab, 10);
         _rewardTextPool = new(_rewardTextPrefab, 10);
 
-        SetupMissionTowerCoroutine();
+        SetupMissionTower();
         StartCoroutine(ShowMissionRewardTextCoroutine());
     }
 
-    private void SetupMissionTowerCoroutine()
+    private void SetupMissionTower()
     {
         _missionUIController.gameObject.SetActive(true);
         _missionUIController.gameObject.SetActive(false);
@@ -183,6 +182,9 @@ public class UIManager : MonoBehaviour
                 _isReadyShowMissionReward = false;
                 missionRewardText.gameObject.SetActive(true);
                 missionRewardText.StartAnimation();
+
+                // 미션리워드를 화면에 표시함과 동시에 미션 완료 사운드 플레이.
+                SoundManager.instance.PlaySFX("Mission Complete Sound");
             }
 
             yield return null;

@@ -215,13 +215,36 @@ public abstract class Tower : MonoBehaviour
         for (int i = 0; i < _targetDetector.targetList.Count; i++)
         {
             if (attackCount < specialAttackCount)
+            {
                 ShotProjectile(_targetDetector.targetList[i], AttackType.Basic);
+                PlayAttackSound(AttackType.Basic);
+            }
             else
+            {
                 ShotProjectile(_targetDetector.targetList[i], AttackType.Special);
+                PlayAttackSound(AttackType.Special);
+            }
         }
-
         if (attackCount >= specialAttackCount)
             attackCount = 0;
+    }
+
+    protected void PlayAttackSound(AttackType attackType)
+    {
+        if (_targetDetector.detectingMode == TargetDetector.DetectingMode.Single)
+        {
+            if (attackType == AttackType.Basic)
+                SoundManager.instance.PlaySFX("Single Target Tower Basic Attack Sound");
+            else
+                SoundManager.instance.PlaySFX("Single Target Tower Special Attack Sound");
+        }
+        else
+        {
+            if (attackType == AttackType.Basic)
+                SoundManager.instance.PlaySFX("Multiple Target Tower Basic Attack Sound");
+            else
+                SoundManager.instance.PlaySFX("Multiple Target Tower Special Attack Sound");
+        }
     }
 
     protected abstract void ShotProjectile(Enemy target, AttackType attackType);
@@ -357,6 +380,8 @@ public abstract class Tower : MonoBehaviour
                 // 타워 레벨업 시 타워의 상세 정보 StringBuilder를 업데이트 한다.
                 UpdateDetailInfo();
                 mergeTower.ReturnPool();
+
+                SoundManager.instance.PlaySFX("Tower Levelup Sound");
                 return true;
             }
         }

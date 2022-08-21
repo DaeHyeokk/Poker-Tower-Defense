@@ -30,9 +30,9 @@ public class TowerAbilityUIController : MonoBehaviour
         _attackRate = tower.attackRate;
 
         // 소수점 첫째 자리에서 반올림
-        _damageText.text = _damage.ToString();
+        _damageText.text = Mathf.Round(_damage).ToString();
         // 소수점 둘째 자리에서 반올림
-        _attackRateText.text = _attackRate.ToString();
+        _attackRateText.text = Math.Round(_attackRate, 2).ToString();
     }
 
     private void Update()
@@ -40,13 +40,15 @@ public class TowerAbilityUIController : MonoBehaviour
         if(_damage != _tower.damage)
         {
             _damage = _tower.damage;
+            // 소수점 첫째 자리에서 반올림
             _damageText.text = Mathf.Round(_damage).ToString();
         }
 
         if(_attackRate != _tower.attackRate)
         {
             _attackRate = _tower.attackRate;
-            _attackRateText.text = _attackRate.ToString();
+            // 소수점 둘째 자리에서 반올림
+            _attackRateText.text = Math.Round(_attackRate, 2).ToString();
         }
     }
 }

@@ -35,6 +35,7 @@ public class ColorUpgrade : MonoBehaviour
             return;
         }
 
+        SoundManager.instance.PlaySFX("Color Upgrade Sound");
         GameManager.instance.mineral -= _colorUpgradeCosts[index];
 
         SetColorUpgradeCount(index, _colorUpgradeCounts[index] + 1);

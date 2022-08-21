@@ -126,7 +126,10 @@ public class WaveSystem : MonoBehaviour
     private void IncreaseWave()
     {
         wave++;
-        
+
+        // 웨이브 시작 시 웨이브 시작 사운드를 재생한다.
+        SoundManager.instance.PlaySFX("Wave Start Sound");
+
         // 현재 골드 패널티가 활성화 상태라면 남은 웨이브를 1 감소시킨다.
         if (_goldPenalty.gameObject.activeSelf)
             _goldPenalty.remainWave--;
@@ -140,7 +143,13 @@ public class WaveSystem : MonoBehaviour
             if (onWaveStart != null)
                 onWaveStart();
 
-            if (_isBossWave) _isBossWave = false;
+            // 이전 웨이브가 보스웨이브였을 경우 수행.
+            if (_isBossWave)
+            {
+                _isBossWave = false;
+                // 보스 웨이브 전용 BGM에서 메인 BGM으로 전환한다.
+                SoundManager.instance.PlayBGM("Main BGM");
+            }
             _enemySpawner.SpawnEnemy(wave);
 
             minute = _defaultLimitMinute;
@@ -152,6 +161,8 @@ public class WaveSystem : MonoBehaviour
             // 보스웨이브가 시작됐음을 알리는 메세지를 보낸다.(?)
             if (onBossWaveStart != null)
                 onBossWaveStart();
+            // 보스웨이브가 시작되면 보스 웨이브 전용 BGM을 재생한다.
+            SoundManager.instance.PlayBGM("Boss Wave BGM");
 
             _isBossWave = true;
             _enemySpawner.SpawnRoundBoss(wave);

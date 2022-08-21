@@ -56,6 +56,8 @@ public class TowerDetailInfoUIController : MonoBehaviour
     {
         _popupUIAnimation.StartBiggerAnimation();
         StartCoroutine(AutoHideUICoroutine());
+
+        SoundManager.instance.PlaySFX("Tower Detail Info UI Show Sound");
     }
 
     private void Update()
@@ -122,6 +124,8 @@ public class TowerDetailInfoUIController : MonoBehaviour
     public void HideObject()
     {
         _popupUIAnimation.StartSmallerAnimation();
+
+        SoundManager.instance.PlaySFX("Tower Detail Info UI Hide Sound");
     }
 
     public void ToggleLockButton()

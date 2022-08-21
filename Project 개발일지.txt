@@ -488,3 +488,12 @@ Data: 2022/08/14 SUN
 Data: 2022/08/17 WED
 ☑ DontDestroyObject인 SoundManager 구현.
 ☑ 스테이지 메인 BGM 구현.
+
+Data: 2022/08/20 SUN
+☑ 효과음 적용중..
+☑ semaphore waitforsignal에서 매우매우 느려지는 문제가 있었는데, 프로젝트 설정에 있는 멀티스레드 렌더링이 체크되어 있으면 이런 문제가 발생한다는 정보를 발견하여 이를 비활성화 하였음. 같은 문제가 또 발생하는지 지켜봐야 할듯. -> 문제 계속 발생... -> GfxDeviceVK.Present 에서 문제가 발생함.
+
+Data: 2022/08/21 MON
+☑ 사운드 조절 기능 구현.
+☑ GfxDeviceVK.Present 문제를 해결하기 위해 Project Settings의 Player 탭에서 Auto Graphics API 를 비활성화 하고 OpenGLES2를 추가함. 
+같은 문제가 또 발생하는지 지켜봐야 할듯.

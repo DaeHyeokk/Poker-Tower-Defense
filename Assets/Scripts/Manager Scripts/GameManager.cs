@@ -111,8 +111,6 @@ public class GameManager : MonoBehaviour
         changeChance = 40;
         jokerCard = 5;
 
-        SoundManager.instance.LoadSceneSoundResource(SceneManager.GetActiveScene().name);
-        SoundManager.instance.PlayBGM("Main BGM");
         UIManager.instance.GameStartScreenCoverFadeOut();
         ScreenSleepSetup();
         SetScreenResolution();
@@ -169,6 +167,9 @@ public class GameManager : MonoBehaviour
         _backupGameSpeed = gameSpeed;
         gameSpeed = 0f;
         UIManager.instance.ShowGameMenu();
+
+        SoundManager.instance.PauseBGM();
+        SoundManager.instance.PlaySFX("Game Pause Sound");
     }
 
     public void ResumeGame()
@@ -177,6 +178,8 @@ public class GameManager : MonoBehaviour
         _isPaused = false;
         gameSpeed = _backupGameSpeed;
         UIManager.instance.HideGameMenu();
+
+        SoundManager.instance.ResumeBGM();
     }
 
     public void RestartGame()
@@ -190,6 +193,7 @@ public class GameManager : MonoBehaviour
         _isEnd = true;
         gameSpeed = 0f;
         UIManager.instance.ShowGameDefeatPanel();
+        SoundManager.instance.PlaySFX("Game Defeat Sound");
         //StartCoroutine(DefeatGameCoroutine());
     }
     private IEnumerator DefeatGameCoroutine()
@@ -205,6 +209,8 @@ public class GameManager : MonoBehaviour
     {
         onGameEnd();
         gameSpeed = 0f;
+
+        SoundManager.instance.PlaySFX("Game Clear Sound");
     }
 }
 

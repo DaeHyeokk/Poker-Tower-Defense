@@ -28,5 +28,6 @@ public class TowerColorChanger : MonoBehaviour
         GameManager.instance.gold -= _changeCosts[_tower.level];
         _tower.towerColor.ChangeRandomColor();
         UIManager.instance.ShowSystemMessage(SystemMessage.MessageType.CompletionColorChange);
+        SoundManager.instance.PlaySFX("Color Change Sound");
     }
 }

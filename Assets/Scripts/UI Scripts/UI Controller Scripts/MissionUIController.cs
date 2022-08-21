@@ -24,6 +24,8 @@ public class MissionUIController : MonoBehaviour
             onShowMissionDetailUI();
 
         gameObject.SetActive(true);
+
+        SoundManager.instance.PlaySFX("Mission UI Show Sound");
     }
 
     private void HideMissionDetailUI()
@@ -32,6 +34,8 @@ public class MissionUIController : MonoBehaviour
             onHideMissionDetailUI();
 
         gameObject.SetActive(false);
+
+        SoundManager.instance.PlaySFX("Mission UI Hide Sound");
     }
 
     public void OnClickMissionButton()

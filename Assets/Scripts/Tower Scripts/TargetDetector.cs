@@ -12,7 +12,11 @@ public class TargetDetector
     private List<Enemy> _targetList = new();
     private List<Enemy> _targetWithinRangeList = new();
 
-    public DetectingMode detectingMode { set => _detectingMode = value; }
+    public DetectingMode detectingMode
+    {
+        get => _detectingMode;
+        set => _detectingMode = value;
+    }
     public List<Enemy> targetList => _targetList;
     public List<Enemy> targetWithinRangeList => _targetWithinRangeList;
 

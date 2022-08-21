@@ -57,9 +57,15 @@ public class TripleTower : Tower
         for (int i = 0; i < targetDetector.targetList.Count; i++)
         {
             if (attackCount < specialAttackCount)
+            {
                 ShotProjectile(targetDetector.targetList[i], AttackType.Basic);
+                PlayAttackSound(AttackType.Basic);
+            }
             else
+            {
                 ShotProjectile(targetDetector.targetList[i], AttackType.Special);
+                PlayAttackSound(AttackType.Special);
+            }
         }
 
         if (attackCount >= specialAttackCount)
@@ -67,6 +73,8 @@ public class TripleTower : Tower
             StartCoroutine(ToggleIsSpecialBuffCoroutine());
             SpecialInflict(this);
             attackCount = 0;
+
+            SoundManager.instance.PlaySFX("Self Buff Sound");
         }
     }
 

@@ -33,6 +33,8 @@ public class StraightTower : Tower
     private CriticalStrike _specialCriticalStrike;
     private IncreaseAttackRate _specialIncreaseAttackRate;
 
+    private bool _isSpecialBuff;
+    private float _specialBuffDuration => _specialIARateAttributes[level].duration;
     private float specialBuffRange => _specialBuffRanges[level];
 
     public override int towerIndex => 4;
@@ -84,7 +86,10 @@ public class StraightTower : Tower
     {
         base.Setup();
         SetBuffRangeParticleScale();
+
+        _isSpecialBuff = false;
     }
+
     protected override void UpdateDetailInfo()
     {
         UpdateDetailInflictorInfo();
@@ -111,22 +116,30 @@ public class StraightTower : Tower
 
     protected override void AttackTarget()
     {
-        attackCount++;
+        if (!_isSpecialBuff) attackCount++;
 
         for (int i = 0; i < targetDetector.targetList.Count; i++)
         {
             if (attackCount < specialAttackCount)
+            {
                 ShotProjectile(targetDetector.targetList[i], AttackType.Basic);
+                PlayAttackSound(AttackType.Basic);
+            }
             else
+            {
                 ShotProjectile(targetDetector.targetList[i], AttackType.Special);
+                PlayAttackSound(AttackType.Special);
+            }
         }
 
         if (attackCount >= specialAttackCount)
         {
             _buffRangeParticle.PlayParticle();
             SpecialInflict(this, specialBuffRange);
-
+            StartCoroutine(ToggleIsSpecialBuffCoroutine());
             attackCount = 0;
+
+            SoundManager.instance.PlaySFX("Range Buff Sound");
         }
     }
 
@@ -153,6 +166,15 @@ public class StraightTower : Tower
         }
 
         return false;
+    }
+
+    private IEnumerator ToggleIsSpecialBuffCoroutine()
+    {
+        _isSpecialBuff = true;
+
+        yield return new WaitForSeconds(_specialBuffDuration);
+
+        _isSpecialBuff = false;
     }
 
     private void SetBuffRangeParticleScale()

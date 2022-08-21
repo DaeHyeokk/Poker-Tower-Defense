@@ -47,6 +47,8 @@ public class TowerBuilder : MonoBehaviour
         tower.Setup();
 
         _towerSpawnPoint.position -= new Vector3(0f, 0f, 0.000001f);
+
+        SoundManager.instance.PlaySFX("Tower Build Sound");
     }
 }
 

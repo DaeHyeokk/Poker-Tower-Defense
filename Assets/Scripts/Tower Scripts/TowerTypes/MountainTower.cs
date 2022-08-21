@@ -26,6 +26,9 @@ public class MountainTower : Tower
     private IncreaseReceivedDamageRate _baseIRDRate;
     private IncreaseDamageRate _specialIDRate;
 
+
+    private bool _isSpecialBuff;
+    private float _specialBuffDuration => _specialIDRateAttributes[level].duration;
     private float specialBuffRange => _specialBuffRanges[level];
 
     public override int towerIndex => 5;
@@ -75,6 +78,8 @@ public class MountainTower : Tower
     {
         base.Setup();
         SetBuffRangeParticleScale();
+
+        _isSpecialBuff = false;
     }
 
     protected override void UpdateDetailInfo()
@@ -101,22 +106,30 @@ public class MountainTower : Tower
 
     protected override void AttackTarget()
     {
-        attackCount++;
+        if (!_isSpecialBuff) attackCount++;
 
         for (int i = 0; i < targetDetector.targetList.Count; i++)
         {
             if (attackCount < specialAttackCount)
+            {
                 ShotProjectile(targetDetector.targetList[i], AttackType.Basic);
+                PlayAttackSound(AttackType.Basic);
+            }
             else
+            {
                 ShotProjectile(targetDetector.targetList[i], AttackType.Special);
+                PlayAttackSound(AttackType.Special);
+            }
         }
 
         if (attackCount >= specialAttackCount)
         {
             _buffRangeParticle.PlayParticle();
             SpecialInflict(this, specialBuffRange);
-
+            StartCoroutine(ToggleIsSpecialBuffCoroutine());   
             attackCount = 0;
+
+            SoundManager.instance.PlaySFX("Range Buff Sound");
         }
     }
 
@@ -143,6 +156,15 @@ public class MountainTower : Tower
         }
 
         return false;
+    }
+
+    private IEnumerator ToggleIsSpecialBuffCoroutine()
+    {
+        _isSpecialBuff = true;
+
+        yield return new WaitForSeconds(_specialBuffDuration);
+
+        _isSpecialBuff = false;
     }
 
     private void SetBuffRangeParticleScale()

@@ -101,6 +101,7 @@ public abstract class Enemy : MonoBehaviour
         _enemyHealthbar.health -= damage;
 
         UIManager.instance.ShowDamageTakenText(damage, this.transform, damageTakenType);
+        //SoundManager.instance.PlaySFX("Enemy Hit Sound");
 
         if (_health <= 0)
         {
@@ -144,6 +145,7 @@ public abstract class Enemy : MonoBehaviour
     protected virtual void Die()
     {
         ParticlePlayer.instance.PlayEnemyDie(_enemySprite.transform);
+        SoundManager.instance.PlaySFX("Enemy Die Sound");
         GiveReward();
     }
 

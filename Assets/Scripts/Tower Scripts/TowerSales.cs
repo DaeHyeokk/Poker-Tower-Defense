@@ -40,6 +40,7 @@ public class TowerSales : MonoBehaviour
             _towerBuilder.BuildTower(Random.Range(0, 10));
 
         UIManager.instance.ShowTowerSalesRewardText(_soldOutString + _rewardStringBuilder.ToString());
+        SoundManager.instance.PlaySFX("Tower Sales Sound");
         _tower.ReturnPool();
     }
 }

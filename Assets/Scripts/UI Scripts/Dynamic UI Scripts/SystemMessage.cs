@@ -22,7 +22,6 @@ public class SystemMessage : FadeTextObject
     private float _penaltyMessagefadeStartDelay;
 
     private float _fadeStartDelay;
-    private readonly WaitForSecondsRealtime _waitForSecondsRealtime = new(0.2f);
 
     private readonly string _notEnoughGoldString = "골드가 부족합니다.";
     private readonly string _notEnoughMineralString = "미네랄이 부족합니다.";
@@ -100,8 +99,6 @@ public class SystemMessage : FadeTextObject
 
     private IEnumerator StartAnimationCoroutine()
     {
-        //yield return _waitForSecondsRealtime;
-
         while(_fadeStartDelay > 0f)
         {
             yield return null;

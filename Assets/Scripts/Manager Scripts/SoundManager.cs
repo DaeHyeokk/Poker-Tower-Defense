@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
 public class SoundManager : MonoBehaviour
 {
@@ -25,16 +26,14 @@ public class SoundManager : MonoBehaviour
     [SerializeField]
     private AudioSource _sfxAudioSource;
 
-    private float _bgmVolume = 1f;
-    private float _sfxVolume = 1f;
-    private bool _isBGMMuted;
-    private bool _isSFXMuted;
+    private Scene _currentScene;
 
     private Dictionary<string, AudioClip> _bgmAudioClipDict = new();
     private Dictionary<string, AudioClip> _sfxAudioClipDict = new();
     private Dictionary<string, int> _sfxAudioCountDict = new();
 
-    private readonly WaitForSeconds _pointOneSeconds = new(0.1f);
+    public AudioSource bgmAudioSource => _bgmAudioSource;
+    public AudioSource sfxAudioSource => _sfxAudioSource;
 
     private void Awake()
     {
@@ -42,14 +41,37 @@ public class SoundManager : MonoBehaviour
             Destroy(gameObject);
     }
 
-    public void LoadSceneSoundResource(string sceneName)
+    private void OnEnable()
+    {
+        SceneManager.sceneLoaded += OnSceneLoad;
+    }
+
+    private void OnDisable()
+    {
+        SceneManager.sceneLoaded -= OnSceneLoad;
+    }
+
+    private void OnSceneLoad(Scene scene, LoadSceneMode mode)
+    {
+        // 원래 씬과 새로 로드하는 씬이 서로 다른 씬일 경우에만 리소스 파일을 로딩한다.
+        if (instance._currentScene != scene)
+        {
+            instance.LoadSceneSoundResource();
+            instance._currentScene = scene;
+        }
+
+        instance.PlayBGM("Main BGM");
+    }
+
+    private void LoadSceneSoundResource()
     {
         AudioClip[] audioClips;
+
         _bgmAudioClipDict.Clear();
         _sfxAudioClipDict.Clear();
         _sfxAudioCountDict.Clear();
 
-        switch(sceneName)
+        switch(SceneManager.GetActiveScene().name)
         {
             case "SingleModeScene":
                 audioClips = Resources.LoadAll<AudioClip>("Sounds/Stage/BGM");
@@ -89,20 +111,25 @@ public class SoundManager : MonoBehaviour
         }
         else
         {
-            // 현재 BGM을 재생중이었다면 정지한다.
-            if (_bgmAudioSource.isPlaying)
-            {
-                _bgmAudioSource.Stop();
-            }
-            
-            if (_isBGMMuted)
-                _bgmAudioSource.volume = 0f;
-            else
-                _bgmAudioSource.volume = _bgmVolume;
+            // 전에 플레이 중이던 BGM을 정지한다.
+            _bgmAudioSource.Stop();
 
             _bgmAudioSource.clip = audioClip;
+
             _bgmAudioSource.Play();
         }
+    }
+    
+    public void PauseBGM()
+    {
+        if(_bgmAudioSource.isPlaying)
+            _bgmAudioSource.Pause();
+    }
+
+    public void ResumeBGM()
+    {
+        if (!_bgmAudioSource.isPlaying)
+            _bgmAudioSource.Play();
     }
 
     public void PlaySFX(string audioFileName)
@@ -115,16 +142,13 @@ public class SoundManager : MonoBehaviour
         }
         else
         {
-            // 동일한 오디오가 5개 이상 중첩 재생중이라면 재생하지 않는다.
-            if (_sfxAudioCountDict[audioFileName] >= 5)
+            // 동일한 오디오가 10개 이상 중첩 재생중이라면 재생하지 않는다.
+            if (_sfxAudioCountDict[audioFileName] >= 10)
                 return;
 
             _sfxAudioCountDict[audioFileName]++;
 
-            if (_isSFXMuted)
-                _sfxAudioSource.PlayOneShot(audioClip, 0f);
-            else
-                _sfxAudioSource.PlayOneShot(audioClip, _sfxVolume);
+                _sfxAudioSource.PlayOneShot(audioClip, _sfxAudioSource.volume);
 
             // 오디오 출력이 종료되면 카운트를 감소시키기 위한 코루틴 메소드.
             StartCoroutine(DecreaseAudioCountCoroutine(audioFileName, audioClip.length));
@@ -135,30 +159,10 @@ public class SoundManager : MonoBehaviour
     {
         while(delay > 0f)
         {
-            yield return _pointOneSeconds;
-            delay -= 0.1f;
+            yield return null;
+            delay -= Time.deltaTime;
         }
 
         _sfxAudioCountDict[audioFileName]--;
-    }
-
-    public void ToggleIsBGMMuted()
-    {
-        _isBGMMuted = !_isBGMMuted;
-    }
-
-    public void ToggleIsSFXMuted()
-    {
-        _isSFXMuted = !_isSFXMuted;
-    }
-
-    public void SetBGMVolume(float volume)
-    {
-        _bgmVolume = volume;
-    }
-
-    public void SetSFXVolume(float volume)
-    {
-        _sfxVolume = volume;
     }
 }

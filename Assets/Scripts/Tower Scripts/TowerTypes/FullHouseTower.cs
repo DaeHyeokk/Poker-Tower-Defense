@@ -57,9 +57,16 @@ public class FullHouseTower : Tower
         for (int i = 0; i < targetDetector.targetList.Count; i++)
         {
             if (attackCount < specialAttackCount)
+            {
+
                 ShotProjectile(targetDetector.targetList[i], AttackType.Basic);
+                PlayAttackSound(AttackType.Basic);
+            }
             else
+            {
                 ShotProjectile(targetDetector.targetList[i], AttackType.Special);
+                PlayAttackSound(AttackType.Special);
+            }
         }
 
         if (attackCount >= specialAttackCount)
@@ -67,6 +74,8 @@ public class FullHouseTower : Tower
             SpecialInflict(this);
             StartCoroutine(ToggleIsSpecialBuffCoroutine());
             attackCount = 0;
+
+            SoundManager.instance.PlaySFX("Self Buff Sound");
         }
     }
 
