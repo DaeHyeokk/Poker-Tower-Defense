@@ -13,8 +13,5 @@ MonoBehaviour:
   m_Name: Enemy Round 2
   m_EditorClassIdentifier: 
   sprite: {fileID: 21300000, guid: 007b39972199bf542ab4a1bc2735c16e, type: 3}
-  health: 200
+  health: 125
   moveSpeed: 1
-  rewardGold: 5
-  rewardChangeChance: 0
-  rewardJokerCard: 0

@@ -121,16 +121,15 @@ public class StraightTower : Tower
         for (int i = 0; i < targetDetector.targetList.Count; i++)
         {
             if (attackCount < specialAttackCount)
-            {
                 ShotProjectile(targetDetector.targetList[i], AttackType.Basic);
-                PlayAttackSound(AttackType.Basic);
-            }
             else
-            {
                 ShotProjectile(targetDetector.targetList[i], AttackType.Special);
-                PlayAttackSound(AttackType.Special);
-            }
         }
+
+        if(attackCount < specialAttackCount)
+            PlayAttackSound(AttackType.Basic);
+        else
+            PlayAttackSound(AttackType.Special);
 
         if (attackCount >= specialAttackCount)
         {

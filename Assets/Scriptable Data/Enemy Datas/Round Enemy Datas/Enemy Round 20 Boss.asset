@@ -13,8 +13,5 @@ MonoBehaviour:
   m_Name: Enemy Round 20 Boss
   m_EditorClassIdentifier: 
   sprite: {fileID: 21300000, guid: 14da319c2e784bb4f98e7747ba324abc, type: 3}
-  health: 200
+  health: 140000
   moveSpeed: 1
-  rewardGold: 100
-  rewardChangeChance: 2
-  rewardJokerCard: 0

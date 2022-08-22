@@ -24,16 +24,18 @@ public class SoundManager : MonoBehaviour
     [SerializeField]
     private AudioSource _bgmAudioSource;
     [SerializeField]
-    private AudioSource _sfxAudioSource;
+    private GameObject _sfxAudioSourcePrefab;
+    private ObjectPool<SFXAudioSource> _sfxAudioSourcePool;
 
     private Scene _currentScene;
 
     private Dictionary<string, AudioClip> _bgmAudioClipDict = new();
     private Dictionary<string, AudioClip> _sfxAudioClipDict = new();
-    private Dictionary<string, int> _sfxAudioCountDict = new();
+    private Dictionary<AudioClip, Queue<SFXAudioSource>> _sfxPlayingAudioClipDict = new();
 
     public AudioSource bgmAudioSource => _bgmAudioSource;
-    public AudioSource sfxAudioSource => _sfxAudioSource;
+    public float sfxVolume { get; set; } = 1f;
+    public bool isSfxMuted { get; set; }
 
     private void Awake()
     {
@@ -43,15 +45,15 @@ public class SoundManager : MonoBehaviour
 
     private void OnEnable()
     {
-        SceneManager.sceneLoaded += OnSceneLoad;
+        SceneManager.sceneLoaded += LoadSceneAction;
     }
 
     private void OnDisable()
     {
-        SceneManager.sceneLoaded -= OnSceneLoad;
+        SceneManager.sceneLoaded -= LoadSceneAction;
     }
 
-    private void OnSceneLoad(Scene scene, LoadSceneMode mode)
+    private void LoadSceneAction(Scene scene, LoadSceneMode mode)
     {
         // 원래 씬과 새로 로드하는 씬이 서로 다른 씬일 경우에만 리소스 파일을 로딩한다.
         if (instance._currentScene != scene)
@@ -60,44 +62,44 @@ public class SoundManager : MonoBehaviour
             instance._currentScene = scene;
         }
 
+        _sfxAudioSourcePool = new(_sfxAudioSourcePrefab, 10);
         instance.PlayBGM("Main BGM");
     }
 
     private void LoadSceneSoundResource()
     {
-        AudioClip[] audioClips;
+        AudioClip[] bgmAudioClips;
+        AudioClip[] sfxAudioClips;
 
         _bgmAudioClipDict.Clear();
         _sfxAudioClipDict.Clear();
-        _sfxAudioCountDict.Clear();
+        _sfxPlayingAudioClipDict.Clear();
 
         switch(SceneManager.GetActiveScene().name)
         {
             case "SingleModeScene":
-                audioClips = Resources.LoadAll<AudioClip>("Sounds/Stage/BGM");
-                foreach(AudioClip audioClip in audioClips)
-                    _bgmAudioClipDict.Add(audioClip.name, audioClip);
-
-                audioClips = Resources.LoadAll<AudioClip>("Sounds/Stage/SFX");
-                foreach(AudioClip audioClip in audioClips)
-                {
-                    _sfxAudioClipDict.Add(audioClip.name, audioClip);
-                    _sfxAudioCountDict.Add(audioClip.name, 0);
-                }
+                bgmAudioClips = Resources.LoadAll<AudioClip>("Sounds/Stage/BGM");
+                sfxAudioClips = Resources.LoadAll<AudioClip>("Sounds/Stage/SFX");
                 break;
 
             case "LobbyScene":
-                audioClips = Resources.LoadAll<AudioClip>("Sounds/Lobby/BGM");
-                foreach(AudioClip audioClip in audioClips)
-                    _bgmAudioClipDict.Add(audioClip.name, audioClip);
-
-                audioClips = Resources.LoadAll<AudioClip>("Sounds/Lobby/SFX");
-                foreach(AudioClip audioClip in audioClips)
-                {
-                    _sfxAudioClipDict.Add(audioClip.name, audioClip);
-                    _sfxAudioCountDict.Add(audioClip.name, 0);
-                }
+                bgmAudioClips = Resources.LoadAll<AudioClip>("Sounds/Lobby/BGM");
+                sfxAudioClips = Resources.LoadAll<AudioClip>("Sounds/Lobby/SFX");
                 break;
+
+            default:
+                bgmAudioClips = null;
+                sfxAudioClips = null;
+                break;
+        }
+
+        foreach (AudioClip audioClip in bgmAudioClips)
+            _bgmAudioClipDict.Add(audioClip.name, audioClip);
+
+        foreach (AudioClip audioClip in sfxAudioClips)
+        {
+            _sfxAudioClipDict.Add(audioClip.name, audioClip);
+            _sfxPlayingAudioClipDict.Add(audioClip, new Queue<SFXAudioSource>());
         }
     }
 
@@ -142,27 +144,21 @@ public class SoundManager : MonoBehaviour
         }
         else
         {
-            // 동일한 오디오가 10개 이상 중첩 재생중이라면 재생하지 않는다.
-            if (_sfxAudioCountDict[audioFileName] >= 10)
-                return;
+            // 동일한 오디오가 5개 이상 중첩 재생중이라면 가장 먼저 플레이한 사운드를 중지한다.
+            if (_sfxPlayingAudioClipDict[audioClip].Count >= 5)
+                ReturnAudioSource(audioClip);
 
-            _sfxAudioCountDict[audioFileName]++;
-
-                _sfxAudioSource.PlayOneShot(audioClip, _sfxAudioSource.volume);
-
-            // 오디오 출력이 종료되면 카운트를 감소시키기 위한 코루틴 메소드.
-            StartCoroutine(DecreaseAudioCountCoroutine(audioFileName, audioClip.length));
+            SFXAudioSource sfxAudioSource = _sfxAudioSourcePool.GetObject();
+            _sfxPlayingAudioClipDict[audioClip].Enqueue(sfxAudioSource);
+            sfxAudioSource.audioSource.clip = audioClip;
+            sfxAudioSource.audioSource.Play();
         }
     }
 
-    private IEnumerator DecreaseAudioCountCoroutine(string audioFileName, float delay)
+    public void ReturnAudioSource(AudioClip audioClip)
     {
-        while(delay > 0f)
-        {
-            yield return null;
-            delay -= Time.deltaTime;
-        }
-
-        _sfxAudioCountDict[audioFileName]--;
+        SFXAudioSource sfxAudioSource = _sfxPlayingAudioClipDict[audioClip].Dequeue();
+        sfxAudioSource.audioSource.Stop();
+        _sfxAudioSourcePool.ReturnObject(sfxAudioSource);
     }
 }

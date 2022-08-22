@@ -83,7 +83,22 @@ public class UIManager : MonoBehaviour
         _rewardTextPool = new(_rewardTextPrefab, 10);
 
         SetupMissionTower();
-        StartCoroutine(ShowMissionRewardTextCoroutine());
+    }
+
+    private void Update()
+    {
+        RewardText missionRewardText;
+
+        // 미션리워드를 화면에 띄울 준비가 되어 있고, 큐에 대기중인 미션리워드가 있는 경우 수행.
+        if (_isReadyShowMissionReward && _missionRewardTextQueue.TryDequeue(out missionRewardText))
+        {
+            _isReadyShowMissionReward = false;
+            missionRewardText.gameObject.SetActive(true);
+            missionRewardText.StartAnimation();
+
+            // 미션리워드를 화면에 표시함과 동시에 미션 완료 사운드 플레이.
+            SoundManager.instance.PlaySFX("Mission Complete Sound");
+        }
     }
 
     private void SetupMissionTower()
@@ -168,27 +183,6 @@ public class UIManager : MonoBehaviour
         missionRewardText.gameObject.SetActive(false);
 
         _missionRewardTextQueue.Enqueue(missionRewardText);
-    }
-
-    private IEnumerator ShowMissionRewardTextCoroutine()
-    {
-        RewardText missionRewardText;
-
-        while(true)
-        {
-            // 미션리워드를 화면에 띄울 준비가 되어 있고, 큐에 대기중인 미션리워드가 있는 경우 수행.
-            if (_isReadyShowMissionReward && _missionRewardTextQueue.TryDequeue(out missionRewardText))
-            {
-                _isReadyShowMissionReward = false;
-                missionRewardText.gameObject.SetActive(true);
-                missionRewardText.StartAnimation();
-
-                // 미션리워드를 화면에 표시함과 동시에 미션 완료 사운드 플레이.
-                SoundManager.instance.PlaySFX("Mission Complete Sound");
-            }
-
-            yield return null;
-        }
     }
 
     public void ShowMissionRewardText(string reward)

@@ -30,7 +30,7 @@ public class SoundSettingUIController : MonoBehaviour
         SetSFXMuteButton();
 
         _bgmVolumeSlider.value = SoundManager.instance.bgmAudioSource.volume;
-        _sfxVolumeSlider.value = SoundManager.instance.sfxAudioSource.volume;
+        _sfxVolumeSlider.value = SoundManager.instance.sfxVolume;
     }
 
     public void OnClickBGMMuteButton()
@@ -41,7 +41,7 @@ public class SoundSettingUIController : MonoBehaviour
 
     public void OnClickSFXMuteButton()
     {
-        SoundManager.instance.sfxAudioSource.mute = !(SoundManager.instance.sfxAudioSource.mute);
+        SoundManager.instance.isSfxMuted = !(SoundManager.instance.isSfxMuted);
         SetSFXMuteButton();
     }
 
@@ -52,7 +52,7 @@ public class SoundSettingUIController : MonoBehaviour
 
     public void OnValueChangeSFXVolumeSlider()
     {
-        SoundManager.instance.sfxAudioSource.volume = _sfxVolumeSlider.value;
+        SoundManager.instance.sfxVolume = _sfxVolumeSlider.value;
     }
 
     private void SetBGMMuteButton()
@@ -75,7 +75,7 @@ public class SoundSettingUIController : MonoBehaviour
 
     private void SetSFXMuteButton()
     {
-        if (SoundManager.instance.sfxAudioSource.mute)
+        if (SoundManager.instance.isSfxMuted)
         {
             Color color = _sfxMuteButtonBackGround.color;
             color = Color.gray;
