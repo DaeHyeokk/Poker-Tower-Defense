@@ -17,10 +17,8 @@ public class ObjectPool<T> where T : Component
 
     private void Initialize(int initCount)
     {
-        int newObjectCount = initCount;
-
         if (_objectStack != null)
-            for (int i = 0; i < newObjectCount; i++)
+            for (int i = 0; i < initCount; i++)
                 _objectStack.Push(CreateNewObject());
     }
 
@@ -50,6 +48,15 @@ public class ObjectPool<T> where T : Component
     {
         getObject.gameObject.SetActive(false);
         _objectStack.Push(getObject);
+    }
+
+    public void ClearObjectPool()
+    {
+        while(_objectStack.Count > 0)
+        {
+            T clearObject = _objectStack.Pop();
+            UnityEngine.Object.Destroy(clearObject);
+        }
     }
 }
 

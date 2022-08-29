@@ -609,7 +609,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &8062379368528844629
 Transform:
   m_ObjectHideFlags: 0
@@ -643,12 +643,14 @@ MonoBehaviour:
   _increaseReceiveDamageSprite: {fileID: 3622560223533545615}
   _rewardGold: 500
   _rewardChangeChance: 5
-  _rewardJokerCard: 0
+  _rewardJokerCard: 1
+  _enemyDieAudioClip: {fileID: 8300000, guid: a7e876c875ced084e82340d1d910ee96, type: 3}
   _slowEffect: {fileID: 1275035358121461290}
   _stunEffect: {fileID: 6975457146586578529}
   _bossLevel: 3
   _limitTime: 60
   _limitTimeText: {fileID: 103101691756550027}
+  _missingAudioClip: {fileID: 8300000, guid: 5fdb13d3756c84fecac96f5a2d124370, type: 3}
 --- !u!114 &3636876225680352083
 MonoBehaviour:
   m_ObjectHideFlags: 0

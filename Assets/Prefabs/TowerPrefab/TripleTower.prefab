@@ -411,17 +411,17 @@ MonoBehaviour:
   - rate: 400
     chance: 40
   - rate: 600
-    chance: 55
+    chance: 50
   - rate: 900
-    chance: 70
+    chance: 60
   _specialCritAttributes:
   - rate: 500
     chance: 60
-  - rate: 700
+  - rate: 600
     chance: 70
-  - rate: 1000
+  - rate: 800
     chance: 85
-  - rate: 1500
+  - rate: 1000
     chance: 100
   _specialIncreaseDamageRateAttributes:
   - rate: 20
@@ -429,18 +429,18 @@ MonoBehaviour:
   - rate: 30
     duration: 6
   - rate: 50
-    duration: 8
+    duration: 7
   - rate: 70
-    duration: 10
+    duration: 8
   _specialIncreaseAttackRateAttributes:
   - rate: 30
     duration: 5
   - rate: 40
     duration: 6
-  - rate: 60
+  - rate: 50
+    duration: 7
+  - rate: 70
     duration: 8
-  - rate: 80
-    duration: 10
 --- !u!65 &4807052944266994545
 BoxCollider:
   m_ObjectHideFlags: 0

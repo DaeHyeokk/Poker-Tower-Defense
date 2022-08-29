@@ -5142,7 +5142,7 @@ MonoBehaviour:
     chance: 60
   - rate: 500
     chance: 80
-  _specialAttackRange: 0.5
+  _specialAttackRange: 0.8
   _specialBuffRanges:
   - 0.55
   - 0.75

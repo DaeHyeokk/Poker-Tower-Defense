@@ -21,31 +21,31 @@ MonoBehaviour:
   - {fileID: 21300002, guid: 34117c1e0c2d27d43973517e619028e5, type: 3}
   - {fileID: 21300002, guid: a9450bfa7931d2a4399a9c70edcaa576, type: 3}
   weapons:
+  - salesGold: 200
+    maxTargetCount: 1
+    damage: 75
+    rate: 1.4
+    range: 1.2
+    upgradeDIP: 10
+    upgradeRIP: 0.006
   - salesGold: 400
     maxTargetCount: 1
-    damage: 30
-    rate: 2
-    range: 1.2
-    upgradeDIP: 5
-    upgradeRIP: 0.005
+    damage: 100
+    rate: 1.25
+    range: 1.3
+    upgradeDIP: 20
+    upgradeRIP: 0.0075
   - salesGold: 800
     maxTargetCount: 1
-    damage: 40
-    rate: 1.8
-    range: 1.3
-    upgradeDIP: 10
-    upgradeRIP: 0.007
+    damage: 200
+    rate: 1.1
+    range: 1.4
+    upgradeDIP: 35
+    upgradeRIP: 0.01
   - salesGold: 1600
     maxTargetCount: 1
-    damage: 60
-    rate: 1.5
-    range: 1.4
-    upgradeDIP: 20
-    upgradeRIP: 0.01
-  - salesGold: 3200
-    maxTargetCount: 1
-    damage: 100
-    rate: 1
+    damage: 350
+    rate: 0.9
     range: 1.5
-    upgradeDIP: 40
-    upgradeRIP: 0.015
+    upgradeDIP: 60
+    upgradeRIP: 0.0125

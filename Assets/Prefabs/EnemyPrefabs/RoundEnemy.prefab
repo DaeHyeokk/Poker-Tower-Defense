@@ -173,6 +173,7 @@ MonoBehaviour:
   _rewardGold: 5
   _rewardChangeChance: 0
   _rewardJokerCard: 0
+  _enemyDieAudioClip: {fileID: 8300000, guid: a7e876c875ced084e82340d1d910ee96, type: 3}
   _slowEffect: {fileID: 7887198972672471530}
   _stunEffect: {fileID: 2817740357725864666}
 --- !u!114 &2937512797264257102

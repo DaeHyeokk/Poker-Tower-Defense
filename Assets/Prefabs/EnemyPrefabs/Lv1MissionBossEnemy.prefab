@@ -525,7 +525,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &8062379368528844629
 Transform:
   m_ObjectHideFlags: 0
@@ -560,11 +560,13 @@ MonoBehaviour:
   _rewardGold: 100
   _rewardChangeChance: 0
   _rewardJokerCard: 0
+  _enemyDieAudioClip: {fileID: 8300000, guid: a7e876c875ced084e82340d1d910ee96, type: 3}
   _slowEffect: {fileID: 4767358017981018472}
   _stunEffect: {fileID: 1859808568015942818}
   _bossLevel: 1
   _limitTime: 60
   _limitTimeText: {fileID: 103101691756550027}
+  _missingAudioClip: {fileID: 8300000, guid: 5fdb13d3756c84fecac96f5a2d124370, type: 3}
 --- !u!114 &8357590174879068053
 MonoBehaviour:
   m_ObjectHideFlags: 0

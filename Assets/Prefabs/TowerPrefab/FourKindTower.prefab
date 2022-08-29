@@ -229,7 +229,7 @@ MonoBehaviour:
     chance: 60
   - rate: 500
     chance: 75
-  - rate: 800
+  - rate: 700
     chance: 90
   _basicSlowingAttributes:
   - rate: 30
@@ -247,9 +247,9 @@ MonoBehaviour:
   _specialCriticalStrikeAttributes:
   - rate: 400
     chance: 60
-  - rate: 500
+  - rate: 600
     chance: 70
-  - rate: 700
+  - rate: 800
     chance: 85
   - rate: 1000
     chance: 100
@@ -266,8 +266,8 @@ MonoBehaviour:
   - rate: 90
     duration: 4
     chance: 90
-  _basicRange: 0.2
-  _specialRange: 0.7
+  _basicRange: 0.5
+  _specialRange: 0.8
 --- !u!65 &-6758310859523100175
 BoxCollider:
   m_ObjectHideFlags: 0

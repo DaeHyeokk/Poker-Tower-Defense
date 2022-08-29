@@ -17,7 +17,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &132912154915249116
 Transform:
   m_ObjectHideFlags: 0
@@ -52,8 +52,10 @@ MonoBehaviour:
   _rewardGold: 100
   _rewardChangeChance: 2
   _rewardJokerCard: 0
+  _enemyDieAudioClip: {fileID: 8300000, guid: a7e876c875ced084e82340d1d910ee96, type: 3}
   _slowEffect: {fileID: 7417208525217431426}
   _stunEffect: {fileID: 1090811235946300176}
+  _waveSystem: {fileID: 0}
 --- !u!114 &3562794833485848733
 MonoBehaviour:
   m_ObjectHideFlags: 0

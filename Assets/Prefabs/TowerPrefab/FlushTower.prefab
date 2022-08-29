@@ -317,11 +317,11 @@ MonoBehaviour:
   - duration: 1
     chance: 30
   - duration: 1.5
-    chance: 30
+    chance: 40
   - duration: 2
-    chance: 30
+    chance: 50
   - duration: 3
-    chance: 30
+    chance: 70
   _specialStunAttributes:
   - duration: 1
     chance: 100
@@ -340,7 +340,7 @@ MonoBehaviour:
     chance: 80
   - rate: 600
     chance: 90
-  _specialRange: 0.4
+  _specialRange: 0.8
 --- !u!114 &-6331518988701908566
 MonoBehaviour:
   m_ObjectHideFlags: 0
