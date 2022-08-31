@@ -75,7 +75,7 @@ public class FullHouseTower : Tower
             StartCoroutine(ToggleIsSpecialBuffCoroutine());
             attackCount = 0;
 
-            SoundManager.instance.PlaySFX("Self Buff Sound");
+            SoundManager.instance.PlaySFX(SoundFileNameDictionary.selfBuffSound);
         }
     }
 

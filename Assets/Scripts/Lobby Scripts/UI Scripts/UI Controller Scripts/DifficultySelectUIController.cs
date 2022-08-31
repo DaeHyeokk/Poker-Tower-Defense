@@ -20,7 +20,6 @@ public class DifficultySelectUIController : MonoBehaviour
 
     public void UnlockDifficultyButton(int clearStage)
     {
-        Debug.Log(clearStage);
         switch(clearStage)
         {
             case (int)GameManager.StageDifficulty.Easy:

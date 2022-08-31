@@ -38,7 +38,7 @@ public class MissionTower : MonoBehaviour
     public void Setup()
     {
         if (_selectTowerType == SelectTowerType.선택안함)
-            _towerIndex = Random.Range(0, _towerBuilder.towerTypeNames.Length); // 0이상 타워타입의 개수 미만인 수 중에서 랜덤으로 추출.
+            _towerIndex = Random.Range(0, Tower.towerTypeNames.Length); // 0이상 타워타입의 개수 미만인 수 중에서 랜덤으로 추출.
         else
             _towerIndex = (int)_selectTowerType - 1;
 
@@ -82,10 +82,7 @@ public class MissionTower : MonoBehaviour
     private void SetTowerLevelImage()
     {
         for (int i = 0; i < _level; i++)
-        {
-            //Debug.Log("i: " + i.ToString() + " _level: " + _level.ToString());
             _levelImages[i].gameObject.SetActive(true);
-        }
     }
 
     public bool IsCompareTower(Tower tower)

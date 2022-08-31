@@ -5,9 +5,6 @@ using UnityEngine;
 
 public class TowerBuilder : MonoBehaviour
 {
-    public enum towerTypeEnum { 탑타워, 원페어타워, 투페어타워, 트리플타워, 스트레이트타워, 마운틴타워, 플러쉬타워, 풀하우스타워, 포카인드타워, 스티플타워 }
-    public readonly string[] towerTypeNames = { "탑타워", "원페어타워", "투페어타워", "트리플타워", "스트레이트타워", "마운틴타워", "플러쉬타워", "풀하우스타워", "포카인드타워", "스티플타워" };
-
     [SerializeField]
     private Sprite[] _towerSprites;
     [SerializeField]
@@ -47,7 +44,7 @@ public class TowerBuilder : MonoBehaviour
 
         _towerSpawnPoint.position += new Vector3(0f, 0f, -0.000001f);
 
-        SoundManager.instance.PlaySFX("Tower Build Sound");
+        SoundManager.instance.PlaySFX(SoundFileNameDictionary.towerBuildSound);
     }
 }
 

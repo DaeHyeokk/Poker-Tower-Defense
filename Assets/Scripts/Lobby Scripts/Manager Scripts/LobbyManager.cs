@@ -14,7 +14,6 @@ public class LobbyManager : MonoBehaviour
                 _instance = FindObjectOfType<LobbyManager>();
                 return _instance;
             }
-
             return _instance;
         }
     }
@@ -33,6 +32,11 @@ public class LobbyManager : MonoBehaviour
     }
 
     public void OnClickGameQuitButton()
+    {
+        QuitApplication();
+    }
+
+    private void QuitApplication()
     {
         Application.Quit();
     }

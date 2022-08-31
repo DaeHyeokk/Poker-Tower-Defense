@@ -74,7 +74,7 @@ public class TripleTower : Tower
             SpecialInflict(this);
             attackCount = 0;
 
-            SoundManager.instance.PlaySFX("Self Buff Sound");
+            SoundManager.instance.PlaySFX(SoundFileNameDictionary.selfBuffSound);
         }
     }
 

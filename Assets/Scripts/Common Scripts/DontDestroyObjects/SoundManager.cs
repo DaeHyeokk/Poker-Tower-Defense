@@ -128,7 +128,7 @@ public class SoundManager : MonoBehaviour
         if (_sfxPlayingAudioClipDict.Count > 0)
             _sfxPlayingAudioClipDict.Clear();
 
-        instance.PlayBGM("Main BGM");
+        instance.PlayBGM(SoundFileNameDictionary.mainBGM);
     }
 
     private void AddListenerAllButtonAndToggle()
@@ -146,53 +146,6 @@ public class SoundManager : MonoBehaviour
             toggle.onValueChanged.AddListener(PlayButtonToggleSound);
     }
 
-    /*
-    private void LoadSceneSoundResource()
-    {
-        AudioClip[] bgmAudioClips;
-        AudioClip[] sfxAudioClips;
-
-        _bgmAudioClipDict.Clear();
-        _sfxAudioClipDict.Clear();
-        _sfxPlayingAudioClipDict.Clear();
-
-        switch (SceneManager.GetActiveScene().name)
-        {
-            case "SingleStageScene":
-                bgmAudioClips = Resources.LoadAll<AudioClip>("Sounds/Stage/BGM");
-                sfxAudioClips = Resources.LoadAll<AudioClip>("Sounds/Stage/SFX");
-                break;
-
-            case "LobbyScene":
-                bgmAudioClips = Resources.LoadAll<AudioClip>("Sounds/Lobby/BGM");
-                sfxAudioClips = Resources.LoadAll<AudioClip>("Sounds/Lobby/SFX");
-                break;
-
-            default:
-                bgmAudioClips = null;
-                sfxAudioClips = null;
-                break;
-        }
-
-        foreach (AudioClip audioClip in bgmAudioClips)
-            _bgmAudioClipDict.Add(audioClip.name, audioClip);
-
-        foreach (AudioClip audioClip in sfxAudioClips)
-        {
-            _sfxAudioClipDict.Add(audioClip.name, audioClip);
-            _sfxPlayingAudioClipDict.Add(audioClip, new Queue<SFXAudioSource>());
-        }
-    }
-    */
-
-    // 앱을 닫거나 다른앱으로 전환하거나 종료될 때 호출.
-    private void OnApplicationPause(bool pause)
-    {
-        // 앱을 중지하는 경우 현재 사운드 설정값을 디스크에 저장한다.
-        if (pause)
-            SavePlayerPrefsSoundData();
-    }
-
     private void LoadPlayerPrefsSoundData()
     {
         // PlayerPrefs에서 키의 존재 여부를 확인하고 키가 존재하는 경우 저장된 값으로, 키가 존재하지 않는 경우 기본값으로 대입해준다.
@@ -203,6 +156,14 @@ public class SoundManager : MonoBehaviour
         // 따라서 키가 존재하지 않을 경우 GetString()의 반환값이 빈문자열이라는 특징을 이용해 "True"와 비교하여 값을 대입해주는 로직을 작성하였다.
         isBgmMuted = PlayerPrefs.GetString("IsBgmMuted") == "True" ? true : false;
         isSfxMuted = PlayerPrefs.GetString("IsSfxMuted") == "True" ? true : false;
+    }
+
+    // 앱을 닫거나 다른앱으로 전환하거나 종료될 때 호출.
+    private void OnApplicationPause(bool pause)
+    {
+        // 앱을 중지하는 경우 현재 사운드 설정값을 디스크에 저장한다.
+        if (pause)
+            SoundManager.instance.SavePlayerPrefsSoundData();
     }
 
     private void SavePlayerPrefsSoundData()

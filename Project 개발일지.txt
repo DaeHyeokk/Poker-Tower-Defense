@@ -519,3 +519,9 @@ Data: 2022/08/29 MON
     -> https://forum.unity.com/threads/android-build-project-freezes-after-5-minutes-with-playerloop-in-profiler-at-60-000-ms.863143/
 ☑ 플레이 스토어 배포를 위해 구상했던 인앱 광고, 상점, 멀티플레이 기능을 제외한 전체 게임 기능 구현 완료.
 ☑ 1차 타워 밸런싱 패치 진행.
+
+Data: 2022/08/31 WED
+☑ 스테이지에서 다시하기, 메인화면으로 돌아가기 버튼을 눌렀을 경우 플레이어가 잘못 터치하는 경우를 예방하기 위해 정말로 게임을 나갈 것인지 물어보는 Action Reconfirmation 오브젝트 추가.
+☑ 플레이어의 타워가 누적한 킬수 데이터를 관리하기 위한 PlayerDataManager 추가.
+☑ 플레이어가 게임을 플레이하면서 타워가 기록한 킬수가 누적됨에 따라 타워의 레벨업 기능 구현.
+☑ Lobby Scene에서 타워의 레벨 정보를 볼 수 있는 Player Tower Information 오브젝트 추가.

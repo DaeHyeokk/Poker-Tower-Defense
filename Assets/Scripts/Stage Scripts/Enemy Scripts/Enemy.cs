@@ -144,7 +144,7 @@ public abstract class Enemy : MonoBehaviour
             fromTower.AccumulateKillCount();
 
         ParticlePlayer.instance.PlayEnemyDie(_enemySprite.transform);
-        SoundManager.instance.PlaySFX("Enemy Die Sound");
+        SoundManager.instance.PlaySFX(SoundFileNameDictionary.enemyDieSound);
         GiveReward();
     }
 

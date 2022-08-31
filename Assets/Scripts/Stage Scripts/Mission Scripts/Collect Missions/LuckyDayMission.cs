@@ -35,7 +35,7 @@ public class LuckyDayMission : NonRepeatMission
         while(towerListNode != null)
         {
             // 만약 현재 탐색중인 타워가 스트레이트타워 이상의 등급이라면 towerCount 1 증가. 
-            if (towerListNode.Value.towerIndex >= (int)TowerBuilder.towerTypeEnum.스트레이트타워)
+            if (towerListNode.Value.towerIndex >= (int)Tower.towerTypeEnum.스트레이트타워)
                 towerCount++;
 
             towerListNode = towerListNode.Next;

@@ -35,7 +35,7 @@ public class BadLuckyDayMission : NonRepeatMission
         while (towerListNode != null)
         {
             // 만약 현재 탐색중인 타워가 탑타워라면 towerCount 1 증가. 
-            if (towerListNode.Value.towerIndex == (int)TowerBuilder.towerTypeEnum.탑타워)
+            if (towerListNode.Value.towerIndex == (int)Tower.towerTypeEnum.탑타워)
                 towerCount++;
 
             towerListNode = towerListNode.Next;

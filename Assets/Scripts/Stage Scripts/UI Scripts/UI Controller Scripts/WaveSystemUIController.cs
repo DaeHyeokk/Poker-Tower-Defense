@@ -14,6 +14,6 @@ public class WaveSystemUIController : MonoBehaviour
 
     public void SetWaveText(int wave) => _waveText.text = wave.ToString();
     public void SetMinuteText(int minute) => _minuteText.text = minute.ToString();
-    public void SetSecondText(int second) => _secondText.text = second.ToString();
+    public void SetSecondText(int second) => _secondText.text = second.ToString("D2");
 
 }

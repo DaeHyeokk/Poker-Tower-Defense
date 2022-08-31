@@ -8,6 +8,7 @@ public class TowerData : ScriptableObject
     public Sprite[] normalProjectileSprites;
     public Sprite[] specialProjectileSprites;
     public Weapon[] weapons;
+    public Levelup levelup;
 
     [System.Serializable]
     public struct Weapon
@@ -18,6 +19,17 @@ public class TowerData : ScriptableObject
         public float damage;
         public float rate;
         public float range;
+
+        public float upgradeDIP;    // DIP : 업그레이드 시 데미지 증가량
+        public float upgradeRIP;    // SIP : 업그레이드 시 공격속도 증가량
+
+    }
+
+    [System.Serializable]
+    public struct Levelup
+    {
+        public float damage;
+        public float rate;
 
         public float upgradeDIP;    // DIP : 업그레이드 시 데미지 증가량
         public float upgradeRIP;    // SIP : 업그레이드 시 공격속도 증가량

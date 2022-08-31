@@ -138,7 +138,7 @@ public class StraightTower : Tower
             StartCoroutine(ToggleIsSpecialBuffCoroutine());
             attackCount = 0;
 
-            SoundManager.instance.PlaySFX("Range Buff Sound");
+            SoundManager.instance.PlaySFX(SoundFileNameDictionary.rangeBuffSound);
         }
     }
 

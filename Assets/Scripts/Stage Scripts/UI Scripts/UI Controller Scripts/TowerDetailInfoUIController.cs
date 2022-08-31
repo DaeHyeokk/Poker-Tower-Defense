@@ -59,7 +59,7 @@ public class TowerDetailInfoUIController : MonoBehaviour
     {
         _popupUIAnimation.StartBiggerAnimation();
 
-        SoundManager.instance.PlaySFX("Tower Detail Info UI Show Sound");
+        SoundManager.instance.PlaySFX(SoundFileNameDictionary.towerDetailInfoUIShowSound);
 
         _hideTimerSlider.value = _hideTimerSlider.maxValue;
         _isHiding = false;
@@ -124,7 +124,7 @@ public class TowerDetailInfoUIController : MonoBehaviour
     {
         _popupUIAnimation.StartSmallerAnimation();
 
-        SoundManager.instance.PlaySFX("Tower Detail Info UI Hide Sound");
+        SoundManager.instance.PlaySFX(SoundFileNameDictionary.towerDetailInfoUIHideSound);
     }
 
     public void OnClickLockToggle(bool value)

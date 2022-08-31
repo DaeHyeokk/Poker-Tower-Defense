@@ -61,7 +61,7 @@ public class CardGambler : MonoBehaviour
         // 플레이어의 골드에서 100골드를 차감한다.
         StageManager.instance.gold -= 100;
         // 카드 뽑는 사운드 재생.
-        SoundManager.instance.PlaySFX("Card Gamble Sound");
+        SoundManager.instance.PlaySFX(SoundFileNameDictionary.cardGambleSound);
 
         if (gambleType == (int)GambleType.Tower)
         {
@@ -121,7 +121,7 @@ public class CardGambler : MonoBehaviour
         // 플레이어의 ChangeChance 횟수를 1 차감한다.
         StageManager.instance.changeChance--;
         // 카드 뽑는 사운드 재생.
-        SoundManager.instance.PlaySFX("Card Gamble Sound");
+        SoundManager.instance.PlaySFX(SoundFileNameDictionary.cardGambleSound);
         // 카드를 바꾼다.
         _cardDrawer.ChangeRandomCard(changeIndex);
 
@@ -177,7 +177,7 @@ public class CardGambler : MonoBehaviour
         // 조커카드 개수 1개 차감
         StageManager.instance.jokerCard--;
         // 카드 뽑는 사운드 재생.
-        SoundManager.instance.PlaySFX("Card Gamble Sound");
+        SoundManager.instance.PlaySFX(SoundFileNameDictionary.cardGambleSound);
 
         HideCardSelector();
         // 전달받은 카드 번호로 카드를 바꾼다.

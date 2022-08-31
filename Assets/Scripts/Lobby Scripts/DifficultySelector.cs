@@ -18,7 +18,6 @@ public class DifficultySelector : MonoBehaviour
         // 플레이어가 스테이지를 클리어한 기록이 저장되어 있는 경우 수행.
         if (PlayerPrefs.HasKey("Clear Stage"))
         {
-            Debug.Log("스테이지 기록 로딩");
             int clearStage = PlayerPrefs.GetInt("Clear Stage");
             _difficultySelectUIController.UnlockDifficultyButton(clearStage);
         }
@@ -51,12 +50,5 @@ public class DifficultySelector : MonoBehaviour
     public void OnClickBackButton()
     {
         _difficultySelectUIController.gameObject.SetActive(false);
-    }
-
-    public void OnClickDataResetButton()
-    {
-        PlayerPrefs.DeleteKey("Clear Stage");
-        PlayerPrefs.Save();
-        LoadPlayerPrefsStageClearData();
     }
 }

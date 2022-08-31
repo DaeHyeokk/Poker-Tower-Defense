@@ -56,7 +56,7 @@ public class MissionBossEnemy : FieldBossEnemy
         // 2웨이브동안 골드패널티를 부여한다.
         _goldPenalty.remainWave += 2;
         StageUIManager.instance.ShowSystemMessage(SystemMessage.MessageType.MissingBossPenalty);
-        SoundManager.instance.PlaySFX("Mission Boss Missing Sound");
+        SoundManager.instance.PlaySFX(SoundFileNameDictionary.missionBossMissingSound);
         ReturnObject();
     }
 

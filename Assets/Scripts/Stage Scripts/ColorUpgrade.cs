@@ -35,7 +35,7 @@ public class ColorUpgrade : MonoBehaviour
             return;
         }
 
-        SoundManager.instance.PlaySFX("Color Upgrade Sound");
+        SoundManager.instance.PlaySFX(SoundFileNameDictionary.colorUpgradeSound);
         StageManager.instance.mineral -= _colorUpgradeCosts[index];
 
         SetColorUpgradeCost(index, _colorUpgradeCosts[index] + _colorUpgradeCounts[index]);

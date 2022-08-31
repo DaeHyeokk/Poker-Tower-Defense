@@ -6,6 +6,11 @@ using System.Text;
 
 public abstract class Tower : MonoBehaviour
 {
+    public enum towerTypeEnum { 탑타워, 원페어타워, 투페어타워, 트리플타워, 스트레이트타워, 마운틴타워, 플러쉬타워, 풀하우스타워, 포카인드타워, 스티플타워 }
+    public static readonly string[] towerTypeNames = { "탑타워", "원페어타워", "투페어타워", "트리플타워", "스트레이트타워", "마운틴타워", "플러쉬타워", "풀하우스타워", "포카인드타워", "스티플타워" };
+
+    public static readonly int defaultLevelupKillCount = 500;
+
     // 타워 종류마다 킬수를 기록하기 위한 정적 변수.
     // _killCounts 배열을 private으로 선언하고 배열의 원소는 GetKillCount() 정적 메소드로 접근할 수 있도록 구현함으로써,
     // 외부에서 함부로 해당 배열의 데이터를 수정할 수 없도록 함.
@@ -41,6 +46,7 @@ public abstract class Tower : MonoBehaviour
     private ColorUpgrade _colorUpgrade;
     private Tile _onTile;
 
+    private int _playerTowerLevel;
     private float _attackRate;
     private float _maxAttackRate;
     private float _increaseAttackRate;
@@ -98,11 +104,12 @@ public abstract class Tower : MonoBehaviour
     public StringBuilder detailSpecialAttackInfo { get; set; } = new();
     public int upgradeCount => _colorUpgrade.colorUpgradeCounts[(int)towerColor.colorType];
     public int level => _towerLevel.level;
-    public float baseDamage => _towerData.weapons[level].damage;
-    public float upgradeDIP => _towerData.weapons[level].upgradeDIP;
+    public int playerTowerLevel => _playerTowerLevel;
+    public float baseDamage => _towerData.weapons[level].damage + (playerTowerLevel * _towerData.levelup.damage);
+    public float upgradeDIP => _towerData.weapons[level].upgradeDIP + (playerTowerLevel * _towerData.levelup.upgradeDIP);
     public float damage => (baseDamage + (upgradeDIP * upgradeCount)) * (1f + (increaseDamageRate * 0.01f));
-    public float baseAttackRate => _towerData.weapons[level].rate;
-    public float upgradeRIP => _towerData.weapons[level].upgradeRIP;
+    public float baseAttackRate => _towerData.weapons[level].rate - (playerTowerLevel * _towerData.levelup.rate);
+    public float upgradeRIP => _towerData.weapons[level].upgradeRIP + (playerTowerLevel * _towerData.levelup.upgradeRIP);
     public float attackRate 
     {
         get => _attackRate;
@@ -151,7 +158,7 @@ public abstract class Tower : MonoBehaviour
         }
     }
 
-    public string towerName => _towerBuilder.towerTypeNames[towerIndex];
+    public string towerName => towerTypeNames[towerIndex];
     public abstract int towerIndex { get; }
 
     protected virtual void Awake()
@@ -168,10 +175,10 @@ public abstract class Tower : MonoBehaviour
         _towerLevel = new TowerLevel(_levelLayout);
         _targetDetector = new TargetDetector(this, FindObjectOfType<EnemySpawner>());
 
+        _playerTowerLevel = PlayerDataManager.instance.towerDataDict[Tower.towerTypeNames[towerIndex]].Key;
+
         _maxAttackRate = 0.1f;
         specialAttackCount = 10;
-
-        StageManager.instance.onStageEnd += GameoverAction;
     }
 
     private void Update()
@@ -246,16 +253,16 @@ public abstract class Tower : MonoBehaviour
         if (_targetDetector.detectingMode == TargetDetector.DetectingMode.Single)
         {
             if (attackType == AttackType.Basic)
-                SoundManager.instance.PlaySFX("Single Target Tower Basic Attack Sound");
+                SoundManager.instance.PlaySFX(SoundFileNameDictionary.singleTargetTowerBasicAttackSound);
             else
-                SoundManager.instance.PlaySFX("Single Target Tower Special Attack Sound");
+                SoundManager.instance.PlaySFX(SoundFileNameDictionary.singleTargetTowerSpecialAttackSound);
         }
         else
         {
             if (attackType == AttackType.Basic)
-                SoundManager.instance.PlaySFX("Multiple Target Tower Basic Attack Sound");
+                SoundManager.instance.PlaySFX(SoundFileNameDictionary.multipleTargetTowerBasicAttackSound);
             else
-                SoundManager.instance.PlaySFX("Multiple Target Tower Special Attack Sound");
+                SoundManager.instance.PlaySFX(SoundFileNameDictionary.multipleTargetTowerSpecialAttackSound);
         }
     }
 
@@ -393,7 +400,7 @@ public abstract class Tower : MonoBehaviour
                 UpdateDetailInfo();
                 mergeTower.ReturnPool();
 
-                SoundManager.instance.PlaySFX("Tower Levelup Sound");
+                SoundManager.instance.PlaySFX(SoundFileNameDictionary.towerLevelupSound);
                 return true;
             }
         }
@@ -479,11 +486,6 @@ public abstract class Tower : MonoBehaviour
 
         _towerBuilder.towerList.Remove(_towerNode);
         _towerBuilder.towerPoolList[towerIndex].ReturnObject(this);
-    }
-
-    private void GameoverAction()
-    {
-        attackRate = Mathf.Infinity;
     }
 }
 

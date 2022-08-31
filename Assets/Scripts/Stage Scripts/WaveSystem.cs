@@ -80,54 +80,6 @@ public class WaveSystem : MonoBehaviour
         minute = 0;
         second = 10;
     }
-
-    /*
-    private IEnumerator StartWaveSystemCoroutine()
-    {
-        // 게임 시작 10초 경과 후 첫 웨이브가 시작된다.
-        minute = 0;
-        second = 10;
-        while (second >= 0)
-        {
-            yield return _waitOneSecond;
-
-            if (second == 0)
-                break;
-            else
-                second--;
-        }
-
-        while (wave < _finalWave)
-        {
-            // 보스 웨이브가 끝날 때 까지 보스를 못잡을 경우 실행.
-            if (_isBossWave && _enemySpawner.roundBossEnemy.gameObject.activeSelf)
-                _enemySpawner.roundBossEnemy.OnMissing();
-            else
-                IncreaseWave();
-
-            while (minute >= 0)
-            {
-                while (second >= 0)
-                {
-                    yield return _waitOneSecond;
-
-                    if (second == 0)
-                        break;
-                    else
-                        second--;
-                }
-
-                if (minute == 0)
-                    break;
-                else
-                {
-                    minute--;
-                    second = 59;
-                }
-            }
-        }
-    }
-    */
     
     private void Update()
     {
@@ -171,7 +123,7 @@ public class WaveSystem : MonoBehaviour
             return;
 
         // 웨이브 시작 시 웨이브 시작 사운드를 재생한다.
-        SoundManager.instance.PlaySFX("Wave Start Sound");
+        SoundManager.instance.PlaySFX(SoundFileNameDictionary.waveStartSound);
 
         // 현재 골드 패널티가 활성화 상태라면 남은 웨이브를 1 감소시킨다.
         if (_goldPenalty.gameObject.activeSelf)
@@ -191,7 +143,7 @@ public class WaveSystem : MonoBehaviour
             {
                 _isBossWave = false;
                 // 보스 웨이브 전용 BGM에서 메인 BGM으로 전환한다.
-                SoundManager.instance.PlayBGM("Main BGM");
+                SoundManager.instance.PlayBGM(SoundFileNameDictionary.mainBGM);
             }
             _enemySpawner.SpawnEnemy(wave);
 
@@ -206,7 +158,7 @@ public class WaveSystem : MonoBehaviour
                 onBossWaveStart();
 
             // 보스웨이브가 시작되면 보스 웨이브 전용 BGM을 재생한다.
-            SoundManager.instance.PlayBGM("Boss Wave BGM");
+            SoundManager.instance.PlayBGM(SoundFileNameDictionary.bossWaveBGM);
 
             _isBossWave = true;
             _enemySpawner.SpawnRoundBoss(wave);

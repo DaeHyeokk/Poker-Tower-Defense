@@ -45,7 +45,6 @@ public class GameManager : MonoBehaviour
     private void OnLoadScene(Scene scene, LoadSceneMode mode)
     {
         SetScreenResolution();
-        UIManager.instance.GameStartScreenCoverFadeOut();
     }
 
     // 해상도 설정하는 함수 //

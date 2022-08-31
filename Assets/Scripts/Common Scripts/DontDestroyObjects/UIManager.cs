@@ -19,7 +19,10 @@ public class UIManager : MonoBehaviour
 
     [SerializeField]
     private ScreenCover _screenCover;
+    public ActionReconfirmation _actionReconfirmation;
+
     public ScreenCover screenCover => _screenCover;
+    public ActionReconfirmation actionReconfirmation => _actionReconfirmation;
 
     private void Awake()
     {
@@ -45,6 +48,8 @@ public class UIManager : MonoBehaviour
 
     private void OnLoadScene(Scene scene, LoadSceneMode mode)
     {
+        // 새로 로드한 씬에서 ActionReconfirmation 오브젝트를 찾는다.
+        _actionReconfirmation = FindObjectOfType<ActionReconfirmation>(true);
         GameStartScreenCoverFadeOut();
     }
 

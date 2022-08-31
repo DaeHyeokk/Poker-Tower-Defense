@@ -91,7 +91,7 @@ public class StageUIManager : MonoBehaviour
             missionRewardText.StartAnimation();
 
             // 미션리워드를 화면에 표시함과 동시에 미션 완료 사운드 플레이.
-            SoundManager.instance.PlaySFX("Mission Complete Sound");
+            SoundManager.instance.PlaySFX(SoundFileNameDictionary.missionCompleteSound);
         }
     }
 

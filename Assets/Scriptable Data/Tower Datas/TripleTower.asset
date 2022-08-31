@@ -49,3 +49,8 @@ MonoBehaviour:
     range: 1.5
     upgradeDIP: 35
     upgradeRIP: 0.015
+  levelup:
+    damage: 5
+    rate: 0.003
+    upgradeDIP: 2
+    upgradeRIP: 0.001

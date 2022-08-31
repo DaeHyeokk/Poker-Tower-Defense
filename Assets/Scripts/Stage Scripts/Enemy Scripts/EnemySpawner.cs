@@ -53,21 +53,8 @@ public class EnemySpawner : MonoBehaviour
         MissionBossCooltimeSetup();
    
         StageManager.instance.onStageEnd += () => this.gameObject.SetActive(false);
+        StageManager.instance.onStageResumed += () => this.gameObject.SetActive(true);
     }
-
-    /*
-    private void InstantiateBossEnemy()
-    {
-        _roundBossEnemy = Instantiate(_roundBossEnemyPrefab).GetComponent<RoundBossEnemy>();
-        _roundBossEnemy.gameObject.SetActive(false);
-
-        for (int i = 0; i < 3; i++)
-        {
-            _missionBossEnemies[i] = Instantiate(_missionBossEnemyPrefabs[i]).GetComponent<MissionBossEnemy>();
-            _missionBossEnemies[i].gameObject.SetActive(false);
-        }
-    }
-    */
 
     private void MissionBossCooltimeSetup()
     {

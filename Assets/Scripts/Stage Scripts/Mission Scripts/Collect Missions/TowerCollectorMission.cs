@@ -25,7 +25,7 @@ public class TowerCollectorMission : NonRepeatMission
         _towerBuilder = FindObjectOfType<TowerBuilder>();
 
         for (int i = 0; i < _checkTowerCollectedes.Length; i++)
-            _checkTowerCollectedes[i] = new bool[_towerBuilder.towerTypeNames.Length];
+            _checkTowerCollectedes[i] = new bool[Tower.towerTypeNames.Length];
     }
 
     protected override void Update()
