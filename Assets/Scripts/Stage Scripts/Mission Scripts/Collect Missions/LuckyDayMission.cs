@@ -42,7 +42,7 @@ public class LuckyDayMission : NonRepeatMission
         }
 
         // 스트레이트타워 이상의 등급인 타워가 3개 이상 있을 경우 미션 클리어.
-        if (towerCount >= 4)
+        if (towerCount >= 3)
             CompleteMission();
     }
 }

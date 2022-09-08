@@ -15,40 +15,51 @@ public class DifficultySelector : MonoBehaviour
 
     private void LoadPlayerPrefsStageClearData()
     {
-        // 플레이어가 스테이지를 클리어한 기록이 저장되어 있는 경우 수행.
-        if (PlayerPrefs.HasKey("Clear Stage"))
+        PlayerGameData playerGameData = GameManager.instance.playerGameData;
+        // 플레이어가 스테이지를 클리어한 기록이 저장되어 있는 경우 수행. (가장 낮은 스테이지 클리어 횟수가 1이상일 경우)
+        if (playerGameData.playerStageDataList[(int)StageManager.StageDifficulty.Easy].clearCount > 0)
         {
-            int clearStage = PlayerPrefs.GetInt("Clear Stage");
+            int clearStage = (int)StageManager.StageDifficulty.Easy;
+
+            for (int i = 1; i < playerGameData.playerStageDataList.Capacity; i++)
+                if (playerGameData.playerStageDataList[i].clearCount > 0)
+                    clearStage = i;
+
             _difficultySelectUIController.UnlockDifficultyButton(clearStage);
         }
     }
-
+    
     public void OnClickEasyButton()
     {
-        GameManager.instance.SetStageDifficulty(GameManager.StageDifficulty.Easy);
-        SceneManager.LoadScene("SingleStageScene");
+        StageManager.stageDifficulty = StageManager.StageDifficulty.Easy;
+        LoadSingleStageScene();
     }
 
     public void OnClickNormalButton()
     {
-        GameManager.instance.SetStageDifficulty(GameManager.StageDifficulty.Normal);
-        SceneManager.LoadScene("SingleStageScene");
+        StageManager.stageDifficulty = StageManager.StageDifficulty.Normal;
+        LoadSingleStageScene();
     }
 
     public void OnClickHardButton()
     {
-        GameManager.instance.SetStageDifficulty(GameManager.StageDifficulty.Hard);
-        SceneManager.LoadScene("SingleStageScene");
+        StageManager.stageDifficulty = StageManager.StageDifficulty.Hard;
+        LoadSingleStageScene();
     }
 
     public void OnClickHellButton()
     {
-        GameManager.instance.SetStageDifficulty(GameManager.StageDifficulty.Hell);
-        SceneManager.LoadScene("SingleStageScene");
+        StageManager.stageDifficulty = StageManager.StageDifficulty.Hell;
+        LoadSingleStageScene();
     }
 
-    public void OnClickBackButton()
+    public void OnClickReturnButton()
     {
-        _difficultySelectUIController.gameObject.SetActive(false);
+        SoundManager.instance.PlaySFX(SoundFileNameDictionary.popupUIHideSound);
+    }
+
+    private void LoadSingleStageScene()
+    {
+        SceneManager.LoadScene("SingleStageScene");
     }
 }

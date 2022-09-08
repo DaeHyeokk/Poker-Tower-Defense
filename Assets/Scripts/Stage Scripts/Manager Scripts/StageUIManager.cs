@@ -50,6 +50,9 @@ public class StageUIManager : MonoBehaviour
     private GameObject _rewardTextPrefab;
     private ObjectPool<RewardText> _rewardTextPool;
 
+    [SerializeField]
+    private TextMeshProUGUI tempText;
+
     private Queue<RewardText> _missionRewardTextQueue = new();
     private bool _isReadyShowMissionReward = true;
 
@@ -139,7 +142,7 @@ public class StageUIManager : MonoBehaviour
         RewardText waveRewardText = _rewardTextPool.GetObject();
 
         waveRewardText.transform.localScale = new Vector3(2f, 2f, 2f);
-        waveRewardText.transform.position = new Vector3(0f, 0.8f, 0f);
+        waveRewardText.transform.position = new Vector3(0f, 0.5f, 0f);
         waveRewardText.textMeshPro.text = reward;
         waveRewardText.textObjectFadeAnimation.lerpSpeed = 1f;
         waveRewardText.movement2D.Move();

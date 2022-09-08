@@ -9,7 +9,27 @@ public abstract class Tower : MonoBehaviour
     public enum towerTypeEnum { 탑타워, 원페어타워, 투페어타워, 트리플타워, 스트레이트타워, 마운틴타워, 플러쉬타워, 풀하우스타워, 포카인드타워, 스티플타워 }
     public static readonly string[] towerTypeNames = { "탑타워", "원페어타워", "투페어타워", "트리플타워", "스트레이트타워", "마운틴타워", "플러쉬타워", "풀하우스타워", "포카인드타워", "스티플타워" };
 
-    public static readonly int defaultLevelupKillCount = 500;
+    public static readonly int defaultLevelupKillCount = 1000;
+
+    public static void AddPlayerTowerKillCount(int index, int addKillCount)
+    {
+        int level = GameManager.instance.playerGameData.playerTowerDataList[index].level;
+        int killCount = GameManager.instance.playerGameData.playerTowerDataList[index].killCount;
+        int nextLevelKillCount = level * defaultLevelupKillCount;
+
+        // 타워의 킬 카운트에 이번 스테이지에서 획득한 킬 카운트를 누적시킨다.
+        killCount += addKillCount;
+
+        // 만약 킬 카운트가 다음 레벨에 필요한 킬 카운트를 넘었다면 타워를 레벨업하고 킬수를 차감한다.
+        if (killCount >= nextLevelKillCount)
+        {
+            level++;
+            killCount -= nextLevelKillCount;
+        }
+
+        // 해당 타워의 플레이어 타워 데이터 값을 갱신한다.
+        GameManager.instance.playerGameData.playerTowerDataList[index] = new PlayerTowerData(level, killCount);
+    }
 
     // 타워 종류마다 킬수를 기록하기 위한 정적 변수.
     // _killCounts 배열을 private으로 선언하고 배열의 원소는 GetKillCount() 정적 메소드로 접근할 수 있도록 구현함으로써,
@@ -46,7 +66,6 @@ public abstract class Tower : MonoBehaviour
     private ColorUpgrade _colorUpgrade;
     private Tile _onTile;
 
-    private int _playerTowerLevel;
     private float _attackRate;
     private float _maxAttackRate;
     private float _increaseAttackRate;
@@ -104,7 +123,7 @@ public abstract class Tower : MonoBehaviour
     public StringBuilder detailSpecialAttackInfo { get; set; } = new();
     public int upgradeCount => _colorUpgrade.colorUpgradeCounts[(int)towerColor.colorType];
     public int level => _towerLevel.level;
-    public int playerTowerLevel => _playerTowerLevel;
+    public int playerTowerLevel => GameManager.instance.playerGameData.playerTowerDataList[towerIndex].level;
     public float baseDamage => _towerData.weapons[level].damage + (playerTowerLevel * _towerData.levelup.damage);
     public float upgradeDIP => _towerData.weapons[level].upgradeDIP + (playerTowerLevel * _towerData.levelup.upgradeDIP);
     public float damage => (baseDamage + (upgradeDIP * upgradeCount)) * (1f + (increaseDamageRate * 0.01f));
@@ -174,8 +193,6 @@ public abstract class Tower : MonoBehaviour
         _towerColor = new TowerColor(_towerRenderer);
         _towerLevel = new TowerLevel(_levelLayout);
         _targetDetector = new TargetDetector(this, FindObjectOfType<EnemySpawner>());
-
-        _playerTowerLevel = PlayerDataManager.instance.towerDataDict[Tower.towerTypeNames[towerIndex]].Key;
 
         _maxAttackRate = 0.1f;
         specialAttackCount = 10;

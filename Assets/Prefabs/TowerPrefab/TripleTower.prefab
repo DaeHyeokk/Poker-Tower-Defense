@@ -406,16 +406,16 @@ MonoBehaviour:
   _increaseDamageEffect: {fileID: 1438761565131965377}
   _increaseAttackRateEffect: {fileID: 6864677278422439088}
   _basicCritAttributes:
-  - rate: 300
+  - rate: 200
     chance: 30
-  - rate: 400
+  - rate: 300
     chance: 40
-  - rate: 600
+  - rate: 400
     chance: 50
-  - rate: 900
+  - rate: 500
     chance: 60
   _specialCritAttributes:
-  - rate: 500
+  - rate: 400
     chance: 60
   - rate: 600
     chance: 70

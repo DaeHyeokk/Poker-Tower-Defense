@@ -13,7 +13,8 @@ public class SystemMessage : FadeTextObject
         NotEnoughJokerCard, 
         AlreadyUsedJokerCard, 
         CompletionColorChange,
-        MissingBossPenalty
+        MissingBossPenalty,
+        GetJokerCardRewardedAd
     }
 
     [SerializeField]

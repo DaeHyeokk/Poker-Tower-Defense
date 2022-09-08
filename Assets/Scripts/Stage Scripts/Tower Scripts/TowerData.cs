@@ -22,7 +22,6 @@ public class TowerData : ScriptableObject
 
         public float upgradeDIP;    // DIP : 업그레이드 시 데미지 증가량
         public float upgradeRIP;    // SIP : 업그레이드 시 공격속도 증가량
-
     }
 
     [System.Serializable]

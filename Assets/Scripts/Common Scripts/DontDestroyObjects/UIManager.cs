@@ -50,12 +50,17 @@ public class UIManager : MonoBehaviour
     {
         // 새로 로드한 씬에서 ActionReconfirmation 오브젝트를 찾는다.
         _actionReconfirmation = FindObjectOfType<ActionReconfirmation>(true);
-        GameStartScreenCoverFadeOut();
     }
 
     public void GameStartScreenCoverFadeOut()
     {
         _screenCover.gameObject.SetActive(true);
         _screenCover.FadeOut(Color.black, 0.5f);
+    }
+
+    public void FillTheScreen()
+    {
+        _screenCover.gameObject.SetActive(true);
+        _screenCover.FillTheScreen();
     }
 }

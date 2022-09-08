@@ -16,5 +16,5 @@ MonoBehaviour:
   health: 300000
   moveSpeed: 0
   rewardGold: 500
-  rewardChangeChance: 5
+  rewardChangeChance: 4
   rewardJokerCard: 1

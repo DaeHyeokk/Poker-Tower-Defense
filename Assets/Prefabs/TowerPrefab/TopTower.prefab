@@ -323,18 +323,18 @@ MonoBehaviour:
     chance: 20
   - rate: 250
     chance: 30
-  - rate: 400
+  - rate: 300
     chance: 45
-  - rate: 600
+  - rate: 400
     chance: 60
   _specialCritAttributes:
-  - rate: 200
-    chance: 50
-  - rate: 250
-    chance: 60
   - rate: 400
-    chance: 70
+    chance: 50
+  - rate: 500
+    chance: 60
   - rate: 600
+    chance: 70
+  - rate: 800
     chance: 90
   _specialSlowingAttributes:
   - rate: 20

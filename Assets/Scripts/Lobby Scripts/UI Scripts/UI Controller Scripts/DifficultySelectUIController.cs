@@ -18,23 +18,25 @@ public class DifficultySelectUIController : MonoBehaviour
     [SerializeField]
     private GameObject _hellLockPanelObject;
 
+    private void OnEnable() => SoundManager.instance.PlaySFX(SoundFileNameDictionary.popupUIShowSound);
+
     public void UnlockDifficultyButton(int clearStage)
     {
         switch(clearStage)
         {
-            case (int)GameManager.StageDifficulty.Easy:
+            case (int)StageManager.StageDifficulty.Easy:
                 _normalButton.interactable = true;
                 _normalLockPanelObject.SetActive(false);
                 break;
 
-            case (int)GameManager.StageDifficulty.Normal:
+            case (int)StageManager.StageDifficulty.Normal:
                 _normalButton.interactable = true;
                 _normalLockPanelObject.SetActive(false);
                 _hardButton.interactable = true;
                 _hardLockPanelObject.SetActive(false);
                 break;
 
-            case (int)GameManager.StageDifficulty.Hard:
+            case (int)StageManager.StageDifficulty.Hard:
                 _normalButton.interactable = true;
                 _normalLockPanelObject.SetActive(false);
                 _hardButton.interactable = true;
@@ -43,7 +45,7 @@ public class DifficultySelectUIController : MonoBehaviour
                 _hellLockPanelObject.SetActive(false);
                 break;
 
-            case (int)GameManager.StageDifficulty.Hell:
+            case (int)StageManager.StageDifficulty.Hell:
                 _normalButton.interactable = true;
                 _normalLockPanelObject.SetActive(false);
                 _hardButton.interactable = true;

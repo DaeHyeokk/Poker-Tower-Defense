@@ -225,11 +225,11 @@ MonoBehaviour:
   _basicCriticalStrikeAttributes:
   - rate: 200
     chance: 50
-  - rate: 300
+  - rate: 250
     chance: 60
-  - rate: 500
+  - rate: 300
     chance: 75
-  - rate: 700
+  - rate: 400
     chance: 90
   _basicSlowingAttributes:
   - rate: 30
@@ -245,13 +245,13 @@ MonoBehaviour:
     duration: 4
     chance: 80
   _specialCriticalStrikeAttributes:
-  - rate: 400
+  - rate: 350
     chance: 60
-  - rate: 600
+  - rate: 400
     chance: 70
-  - rate: 800
+  - rate: 450
     chance: 85
-  - rate: 1000
+  - rate: 600
     chance: 100
   _specialSlowingAttributes:
   - rate: 50

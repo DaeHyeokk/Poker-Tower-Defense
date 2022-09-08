@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
-using System.Xml.Serialization;
 
 public class PlayerTowerInfoUIController : MonoBehaviour
 {
@@ -40,25 +39,21 @@ public class PlayerTowerInfoUIController : MonoBehaviour
     [SerializeField]
     private TowerData[] _towerDatas;
 
-    private void Awake()
-    {
-        SetPlayerTowerInfo();
-    }
-
     private void OnEnable()
     {
-        
+        SetPlayerTowerInfo();
+        SoundManager.instance.PlaySFX(SoundFileNameDictionary.popupUIShowSound);
     }
+    private void OnDisable() => SoundManager.instance.PlaySFX(SoundFileNameDictionary.popupUIHideSound);
+
     private void SetPlayerTowerInfo()
     {
-        Dictionary<string, KeyValuePair<int, int>> towerDataDict = PlayerDataManager.instance.towerDataDict;
-
         for(int i=0; i<Tower.towerTypeNames.Length; i++)
         {
-            string towerName = Tower.towerTypeNames[i];
+            PlayerTowerData playerTowerData = GameManager.instance.playerGameData.playerTowerDataList[i];
 
-            int level = towerDataDict[towerName].Key;
-            int killCount = towerDataDict[towerName].Value;
+            int level = playerTowerData.level;
+            int killCount = playerTowerData.killCount;
             int nextLevelKillCount = level * Tower.defaultLevelupKillCount;
 
             float increaseDamage = _towerDatas[i].levelup.damage;
@@ -94,6 +89,4 @@ public class PlayerTowerInfoUIController : MonoBehaviour
             _killCountSliders[i].value = killCount;
         }
     }
-
-
 }

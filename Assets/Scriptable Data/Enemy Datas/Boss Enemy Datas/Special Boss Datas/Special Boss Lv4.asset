@@ -15,6 +15,6 @@ MonoBehaviour:
   sprite: {fileID: 21300000, guid: 23f4d3112daf21446883ddd1ac9ca34e, type: 3}
   health: 2427500
   moveSpeed: 0
-  rewardGold: 500
+  rewardGold: 600
   rewardChangeChance: 5
-  rewardJokerCard: 1
+  rewardJokerCard: 2

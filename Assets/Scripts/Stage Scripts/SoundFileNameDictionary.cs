@@ -6,7 +6,11 @@ public class SoundFileNameDictionary
 {
 
     // Common //
+    // BGM //
     public static readonly string mainBGM = "Main BGM";
+    // SFX //
+    public static readonly string popupUIShowSound = "Popup UI Show Sound";
+    public static readonly string popupUIHideSound = "Popup UI Hide Sound";
     // Stage //
     // BGM //
     public static readonly string bossWaveBGM = "Boss Wave BGM";
@@ -23,9 +27,7 @@ public class SoundFileNameDictionary
     public static readonly string missionUIShowSound = "Mission UI Show Sound";
     public static readonly string multipleTargetTowerBasicAttackSound = "Multiple Target Tower Base Attack Sound";
     public static readonly string multipleTargetTowerSpecialAttackSound = "Multiple Target Tower Special Attack Sound";
-    public static readonly string popupUIHideSound = "Popup UI Hide Sound";
-    public static readonly string popupUIShowSound = "Popup UI Show Sound";
-    public static readonly string rangeBuffSound = "Randge Buff Sound";
+    public static readonly string rangeBuffSound = "Range Buff Sound";
     public static readonly string selfBuffSound = "Self Buff Sound";
     public static readonly string singleTargetTowerBasicAttackSound = "Single Target Tower Base Attack Sound";
     public static readonly string singleTargetTowerSpecialAttackSound = "Single Target Tower Special Attack Sound";

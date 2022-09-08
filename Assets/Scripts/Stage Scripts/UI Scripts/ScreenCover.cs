@@ -19,6 +19,17 @@ public class ScreenCover : MonoBehaviour
         _imageFadeAnimation.onCompletionFadeOut += () => gameObject.SetActive(false);
     }
 
+    public void FillTheScreen()
+    {
+        StartCoroutine(FillTheScreenCoroutine());
+    }
+
+    private IEnumerator FillTheScreenCoroutine()
+    {
+        _image.color = new Color(0f, 0f, 0f, 1f);
+        yield return new WaitForSeconds(0.05f);
+        gameObject.SetActive(false);
+    }
     public void FadeOut(Color color, float lerpSpeed)
     {
         _image.color = color;

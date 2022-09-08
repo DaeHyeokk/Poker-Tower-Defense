@@ -34,8 +34,6 @@ public class SoundManager : MonoBehaviour
     [SerializeField]
     private AudioClip _errorAudioClip;
 
-    private Scene _currentScene;
-
     private Dictionary<AudioClip, Queue<SFXAudioSource>> _sfxPlayingAudioClipDict = new();
 
     private float _bgmVolume;
@@ -109,12 +107,7 @@ public class SoundManager : MonoBehaviour
 
     private void OnLoadScene(Scene scene, LoadSceneMode mode)
     {
-        // 원래 씬과 새로 로드하는 씬이 서로 다른 씬일 경우에만 리소스 파일을 로딩한다.
-        if (instance._currentScene != scene)
-        {
-            instance.AddListenerAllButtonAndToggle();
-            instance._currentScene = scene;
-        }
+        instance.AddListenerAllButtonAndToggle();
 
         // 씬에서 SoundSettingUIController 오브젝트를 찾고, 씬에 존재할 경우 사운드 설정값을 동기화한다.
         SoundSettingUIController soundSettingUIController = FindObjectOfType<SoundSettingUIController>(true);
@@ -127,8 +120,6 @@ public class SoundManager : MonoBehaviour
 
         if (_sfxPlayingAudioClipDict.Count > 0)
             _sfxPlayingAudioClipDict.Clear();
-
-        instance.PlayBGM(SoundFileNameDictionary.mainBGM);
     }
 
     private void AddListenerAllButtonAndToggle()
