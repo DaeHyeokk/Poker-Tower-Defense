@@ -124,11 +124,11 @@ public abstract class Tower : MonoBehaviour
     public int upgradeCount => _colorUpgrade.colorUpgradeCounts[(int)towerColor.colorType];
     public int level => _towerLevel.level;
     public int playerTowerLevel => GameManager.instance.playerGameData.playerTowerDataList[towerIndex].level;
-    public float baseDamage => _towerData.weapons[level].damage + (playerTowerLevel * _towerData.levelup.damage);
-    public float upgradeDIP => _towerData.weapons[level].upgradeDIP + (playerTowerLevel * _towerData.levelup.upgradeDIP);
+    public float baseDamage => _towerData.weapons[level].damage + ((playerTowerLevel - 1) * _towerData.levelup.damage);
+    public float upgradeDIP => _towerData.weapons[level].upgradeDIP + ((playerTowerLevel - 1) * _towerData.levelup.upgradeDIP);
     public float damage => (baseDamage + (upgradeDIP * upgradeCount)) * (1f + (increaseDamageRate * 0.01f));
-    public float baseAttackRate => _towerData.weapons[level].rate - (playerTowerLevel * _towerData.levelup.rate);
-    public float upgradeRIP => _towerData.weapons[level].upgradeRIP + (playerTowerLevel * _towerData.levelup.upgradeRIP);
+    public float baseAttackRate => _towerData.weapons[level].rate - ((playerTowerLevel - 1) * _towerData.levelup.rate);
+    public float upgradeRIP => _towerData.weapons[level].upgradeRIP + ((playerTowerLevel - 1) * _towerData.levelup.upgradeRIP);
     public float attackRate 
     {
         get => _attackRate;

@@ -10,18 +10,12 @@ using GooglePlayGames.BasicApi.SavedGame;
 [Serializable]
 public class PlayerGameData
 {
-    public bool isPurchasedRemoveAds;
-    public bool isPurchasedPremiumTicket;
-    public bool isPurchased3xSpeed;
     public bool isBonusRewardActived;
     public List<PlayerStageData> playerStageDataList;
     public List<PlayerTowerData> playerTowerDataList;
 
     public PlayerGameData()
     {
-        isPurchasedRemoveAds = false;
-        isPurchasedPremiumTicket = false;
-        isPurchased3xSpeed = false;
         isBonusRewardActived = false;
         playerStageDataList = new(4); // Easy, Normal, Hard, Hell
         playerTowerDataList = new(Tower.towerTypeNames.Length);
@@ -48,9 +42,6 @@ public class PlayerGameData
 
     public void SetDefaultValue()
     {
-        isPurchasedRemoveAds = false;
-        isPurchasedPremiumTicket = false;
-        isPurchased3xSpeed = false;
         isBonusRewardActived = false;
 
         for (int i = 0; i < playerStageDataList.Capacity; i++)
@@ -253,6 +244,7 @@ public class GameManager : MonoBehaviour
             Debug.Log("½Ã³À¼¦ ºÒ·¯¿À±â ½ÇÆÐ");
             Debug.Log(status.ToString());
             // ½º³À¼¦ ºÒ·¯¿À±â ½ÇÆÐ.
+            if (onFailed != null) onFailed();
         }
     }
     #endregion

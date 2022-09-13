@@ -3,7 +3,7 @@
     "m_SelectedPackage": {
         "deviceId": "R3CMB0D8TVP",
         "name": "com.devdduck.pokertowerdefense",
-        "processId": 32645,
+        "processId": 8653,
         "exited": false
     },
     "m_SelectedPriority": 0,
@@ -66,6 +66,60 @@
             "deviceId": "R3CMB0D8TVP",
             "name": "com.devdduck.pokertowerdefense",
             "processId": 32645,
+            "exited": false
+        },
+        {
+            "deviceId": "R3CMB0D8TVP",
+            "name": "com.devdduck.pokertowerdefense",
+            "processId": 19495,
+            "exited": false
+        },
+        {
+            "deviceId": "R3CMB0D8TVP",
+            "name": "com.devdduck.pokertowerdefense",
+            "processId": 1658,
+            "exited": false
+        },
+        {
+            "deviceId": "R3CMB0D8TVP",
+            "name": "com.devdduck.pokertowerdefense",
+            "processId": 4484,
+            "exited": false
+        },
+        {
+            "deviceId": "R3CMB0D8TVP",
+            "name": "com.devdduck.pokertowerdefense",
+            "processId": 29943,
+            "exited": false
+        },
+        {
+            "deviceId": "R3CMB0D8TVP",
+            "name": "com.devdduck.pokertowerdefense",
+            "processId": 8544,
+            "exited": false
+        },
+        {
+            "deviceId": "R3CMB0D8TVP",
+            "name": "com.devdduck.pokertowerdefense",
+            "processId": 12242,
+            "exited": false
+        },
+        {
+            "deviceId": "R3CMB0D8TVP",
+            "name": "com.devdduck.pokertowerdefense",
+            "processId": 13198,
+            "exited": false
+        },
+        {
+            "deviceId": "R3CMB0D8TVP",
+            "name": "com.devdduck.pokertowerdefense",
+            "processId": 7804,
+            "exited": false
+        },
+        {
+            "deviceId": "R3CMB0D8TVP",
+            "name": "com.devdduck.pokertowerdefense",
+            "processId": 8653,
             "exited": false
         }
     ],

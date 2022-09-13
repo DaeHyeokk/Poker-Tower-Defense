@@ -31,13 +31,12 @@ public class GoogleAdsManager : MonoBehaviour
     // Delay가 0보다 작거나 같을 경우 True, 클 경우 False 리턴.
     private bool _isInterstitialDelayRemained => _interstitialAdRemainDelay > 0f;
 
-    public BannerView bannerView => _bannerView;
     public InterstitialAd interstitialAd
     {
         get
         {
-            // 전면광고가 딜레이가 남아있다면 null값을 리턴한다.
-            if (_isInterstitialDelayRemained)
+            // 플레이어가 광고 제거 상품을 구매했거나, 전면광고가 딜레이가 남아있다면 null값을 리턴한다.
+            if (IAPManager.instance.HadPurchashed(IAPManager.instance.productAdsRemove) || _isInterstitialDelayRemained)
                 return null;
             else
                 return _interstitialAd;
@@ -61,7 +60,10 @@ public class GoogleAdsManager : MonoBehaviour
 
     private void Update()
     {
-        if(_isInterstitialDelayRemained)
+        if (IAPManager.instance.HadPurchashed(IAPManager.instance.productAdsRemove))
+            return;
+
+        if (_isInterstitialDelayRemained)
             _interstitialAdRemainDelay -= Time.unscaledDeltaTime;
     }
 

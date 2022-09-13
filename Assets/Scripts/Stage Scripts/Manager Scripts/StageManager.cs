@@ -116,6 +116,13 @@ public class StageManager : MonoBehaviour
             _gameSpeed = value;
 
             if (_gameSpeed > _maxGameSpeed)
+            {
+                if (_maxGameSpeed == 2)
+                    _gameSpeed = 1f;
+                else
+                    _gameSpeed = 0.5f;
+            }
+            else if (_gameSpeed == 1.5f)
                 _gameSpeed = 1f;
 
             Time.timeScale = _gameSpeed;
@@ -132,6 +139,8 @@ public class StageManager : MonoBehaviour
     public float enemyHpPercentage => _enemyHpPercentages[(int)stageDifficulty];
     public float enemySpeedPercentage => _enemySpeedPercentages[(int)stageDifficulty];
 
+    public GameObject loadingUIPanelObject => _loadingUIPanelObject;
+
     private void Awake()
     {
         if (instance != this)
@@ -142,7 +151,15 @@ public class StageManager : MonoBehaviour
         changeChance = 5;
         jokerCard = 2;
 
-        _maxGameSpeed = GameManager.instance.playerGameData.isPurchased3xSpeed ? 3 : 2;
+        // 플레이어가 프리미엄패스를 구입한 경우 카드교환권 5장, 조커카드 2장을 추가 지급.
+        if (IAPManager.instance.HadPurchashed(IAPManager.instance.productPremiumPass))
+        {
+            changeChance += 5;
+            jokerCard += 3;
+        }
+
+        // 플레이어가 추가 배속 상품을 구입한 경우 최대 게임 스피드를 3으로 한다.
+        _maxGameSpeed = IAPManager.instance.HadPurchashed(IAPManager.instance.productExtraGameSpeed) ? 3 : 2;
         _backupGameSpeed = 1f;
         gameSpeed = 1f;
 
@@ -213,8 +230,7 @@ public class StageManager : MonoBehaviour
     public void OnClickSpeedUpButton()
     {
         gameSpeed++;
-        Time.timeScale = gameSpeed;
-        _stageDataUIController.SetGameSpeedText(_gameSpeed);
+        _stageDataUIController.SetGameSpeedText(gameSpeed);
     }
 
     public void ShowPauseUIPanel()

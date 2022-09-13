@@ -25,7 +25,7 @@ public abstract class Mission : MonoBehaviour
     {
         _rewardStringBuilder.Set(_rewardGold, _rewardChangeChance, _rewardJokerCard);
 
-        _rewardGoldText.text = _rewardGold.ToString();
+        _rewardGoldText.text = _rewardGold.ToString() + 'G';
         _rewardChangeChanceText.text = _rewardChangeChance.ToString();
         _rewardJokerCardText.text = _rewardJokerCard.ToString();
     }
