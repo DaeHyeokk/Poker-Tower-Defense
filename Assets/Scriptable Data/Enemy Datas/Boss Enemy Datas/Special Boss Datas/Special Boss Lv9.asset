@@ -13,8 +13,7 @@ MonoBehaviour:
   m_Name: Special Boss Lv9
   m_EditorClassIdentifier: 
   sprite: {fileID: 21300000, guid: 9345ee7accbad8c47920bd9fb064b9a2, type: 3}
-  health: 140000000
+  health: 100000000
   moveSpeed: 0
   rewardGold: 900
-  rewardChangeChance: 9
-  rewardJokerCard: 3
+  rewardChangeChance: 40

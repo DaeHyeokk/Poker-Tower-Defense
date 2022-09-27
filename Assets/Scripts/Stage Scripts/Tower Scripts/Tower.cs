@@ -21,10 +21,11 @@ public abstract class Tower : MonoBehaviour
         killCount += addKillCount;
 
         // 만약 킬 카운트가 다음 레벨에 필요한 킬 카운트를 넘었다면 타워를 레벨업하고 킬수를 차감한다.
-        if (killCount >= nextLevelKillCount)
+        while (killCount >= nextLevelKillCount)
         {
             level++;
             killCount -= nextLevelKillCount;
+            nextLevelKillCount = level * defaultLevelupKillCount;
         }
 
         // 해당 타워의 플레이어 타워 데이터 값을 갱신한다.
@@ -128,7 +129,6 @@ public abstract class Tower : MonoBehaviour
     public float upgradeDIP => _towerData.weapons[level].upgradeDIP + ((playerTowerLevel - 1) * _towerData.levelup.upgradeDIP);
     public float damage => (baseDamage + (upgradeDIP * upgradeCount)) * (1f + (increaseDamageRate * 0.01f));
     public float baseAttackRate => _towerData.weapons[level].rate - ((playerTowerLevel - 1) * _towerData.levelup.rate);
-    public float upgradeRIP => _towerData.weapons[level].upgradeRIP + ((playerTowerLevel - 1) * _towerData.levelup.upgradeRIP);
     public float attackRate 
     {
         get => _attackRate;
@@ -210,7 +210,7 @@ public abstract class Tower : MonoBehaviour
         }
     }
 
-    private void UpdateAttackRate() => attackRate = (baseAttackRate - (upgradeRIP * upgradeCount)) / (1 + increaseAttackRate * 0.01f);
+    private void UpdateAttackRate() => attackRate = baseAttackRate / (1 + increaseAttackRate * 0.01f);
 
     protected virtual void RotateTower()
     {

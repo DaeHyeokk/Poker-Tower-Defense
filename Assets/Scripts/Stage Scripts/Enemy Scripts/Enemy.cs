@@ -12,18 +12,14 @@ public abstract class Enemy : MonoBehaviour
     private SpriteRenderer _healthbarGauge;
     [SerializeField]
     private SpriteRenderer _increaseReceiveDamageSprite;
+
     // Enemy를 잡을 경우 플레이어에게 지급되는 골드
-    [SerializeField]
     protected int _rewardGold;
     // Enemy를 잡을 경우 플레이어에게 지급되는 카드교환권
-    [SerializeField]
     protected int _rewardChangeChance;
-    // Enemy를 잡을 경우 플레이어에게 지급되는 조커카드
-    [SerializeField]
-    protected int _rewardJokerCard;
 
-    private float _maxHealth;  // Enemy의 최대 체력
-    private float _health;     // Enemy의 현재 체력
+    protected float _maxHealth;  // Enemy의 최대 체력
+    protected float _health;     // Enemy의 현재 체력
     private float _increaseReceiveDamageRate; // Enemy가 공격 당할 때 받는 피해량
 
     protected RewardStringBuilder _rewardStringBuilder;
@@ -64,11 +60,6 @@ public abstract class Enemy : MonoBehaviour
 
     public virtual void Setup(EnemyData enemyData)
     {
-        // 생성할 Enemy의 체력 설정 (현재 스테이지 난이도에 비례)
-        _maxHealth = enemyData.health * StageManager.instance.enemyHpPercentage;
-        _health = _maxHealth;
-        _enemyHealthbar.maxHealth = _maxHealth;
-        _enemyHealthbar.health = _maxHealth;
         // 생성할 Enemy의 스프라이트 설정 및 색깔 초기화
         _enemySprite.sprite = enemyData.sprite;
         _enemySprite.color = Color.white;
@@ -79,7 +70,7 @@ public abstract class Enemy : MonoBehaviour
 
     private IEnumerator SpawnAnimationCoroutine()
     {
-        float lerpSpeed = 9f;
+        float lerpSpeed = 20f;
         float currentTime = 0f;
         float percent = 0f;
 
@@ -154,9 +145,6 @@ public abstract class Enemy : MonoBehaviour
 
         if (_rewardChangeChance > 0)
             StageManager.instance.changeChance += _rewardChangeChance;
-
-        if (_rewardJokerCard > 0)
-            StageManager.instance.jokerCard += _rewardJokerCard;
 
         StageUIManager.instance.ShowEnemyDieRewardText(_rewardStringBuilder.ToString(), this.transform);
     }

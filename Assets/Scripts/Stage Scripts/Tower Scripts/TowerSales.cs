@@ -24,7 +24,7 @@ public class TowerSales : MonoBehaviour
     {
         _tower = tower;
         _salesGoldText.text = tower.salesGold.ToString() + 'G';
-        _rewardStringBuilder.Set(tower.salesGold, 0, 0);
+        _rewardStringBuilder.Set(tower.salesGold, 0);
 
         if (tower.level >= 3)
             _randomTowerRewardText.gameObject.SetActive(true);

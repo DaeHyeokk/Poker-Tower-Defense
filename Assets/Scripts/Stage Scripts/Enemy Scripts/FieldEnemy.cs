@@ -59,12 +59,18 @@ public abstract class FieldEnemy : Enemy
         base.Awake();
         _enemyMovement = GetComponent<EnemyMovement>();
 
-        _rewardStringBuilder.Set(_rewardGold, _rewardChangeChance, _rewardJokerCard);
+        _rewardStringBuilder.Set(_rewardGold, _rewardChangeChance);
     }
 
     public override void Setup(EnemyData enemyData)
     {
         base.Setup(enemyData);
+
+        // 생성할 Enemy의 체력 설정 (현재 스테이지 난이도에 비례)
+        _maxHealth = enemyData.health * StageManager.instance.enemyHpPercentage;
+        _health = _maxHealth;
+        _enemyHealthbar.maxHealth = _maxHealth;
+        _enemyHealthbar.health = _maxHealth;
 
         // 생성할 Enemy의 이동속도 (현재 스테이지 난이도에 비례), 이동정보 설정
         _enemyMovement.moveSpeed = enemyData.moveSpeed * StageManager.instance.enemySpeedPercentage;

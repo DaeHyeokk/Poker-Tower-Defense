@@ -9,12 +9,11 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8e61bb01788e6b742b78dd0066b02575, type: 3}
-  m_Name: Lv2MissionBoss
+  m_Script: {fileID: 11500000, guid: bae1fc952a4f5ae4ab0e3aae03a07732, type: 3}
+  m_Name: 10 Round Boss Data
   m_EditorClassIdentifier: 
-  sprite: {fileID: 21300000, guid: bb77043d6e6fe1a44a0ce0cb0d20d75e, type: 3}
-  health: 30000
-  moveSpeed: 1.2
+  sprite: {fileID: 21300000, guid: 56438e4ef030b914cbc2c28ddde43297, type: 3}
+  health: 22350
+  moveSpeed: 1
   rewardGold: 300
-  rewardChangeChance: 3
-  rewardJokerCard: 0
+  rewardChangeChance: 10

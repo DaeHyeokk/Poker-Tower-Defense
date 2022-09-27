@@ -27,7 +27,10 @@ public class UIManager : MonoBehaviour
     private void Awake()
     {
         if (instance != this)
+        {
             Destroy(gameObject);
+            return;
+        }
         else
         {
             // UIManager가 최초 생성되는 경우.

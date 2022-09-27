@@ -12,6 +12,8 @@ public class CardDrawer
     // 카드가 총 52장이기 때문에 64bit 자료형인 long 을 사용함.
     private long _drawCardsMasking;
 
+    // 조커카드가 뽑힐 확률
+    private int _jokerPickPercentage;
 
     // 뽑은 카드들의 무늬 및 숫자 정보를 저장하는 변수.
     // 플레이어의 화면에 뽑은 순서대로 카드를 보여주기 위한 Card[] 배열.
@@ -22,6 +24,12 @@ public class CardDrawer
 
     public CardDrawer()
     {
+        // 조커카드가 뽑힐 확률 설정. 프리미엄 패스를 구입한 경우 5%, 그렇지 않은 경우 3%
+        if (IAPManager.instance.HadPurchashed(IAPManager.instance.productPremiumPass))
+            _jokerPickPercentage = 5;
+        else
+            _jokerPickPercentage = 3;
+
         _drawCardsMasking = 0;
         _drawCards = new Card[StageManager.instance.pokerCount];
 
@@ -35,7 +43,7 @@ public class CardDrawer
     {
         // 카드를 7장 뽑는다.
         for (int drawed = 0; drawed < StageManager.instance.pokerCount; drawed++)
-            DrawCard(drawed);
+            DrawCard(drawed, true);
 
         // 족보 정보를 업데이트 한다.
         UpdateHandInfo();
@@ -47,7 +55,7 @@ public class CardDrawer
         int changeBitIndex = _drawCards[changeIndex].index;
 
         // 새로운 카드를 뽑는다.
-        DrawCard(changeIndex);
+        DrawCard(changeIndex, true);
 
         // 임시로 저장해놓은 index를 이용해 마스킹한 비트를 끈다.
         // 뽑은 이후에 수행하는 이유는 바꾸려고 하는 카드가 다시 뽑히는 일이 없도록 하기 위함.
@@ -59,8 +67,6 @@ public class CardDrawer
 
     public void ChangeSelectCard(int changeIndex, int cardIndex)
     {
-        // 바꾸고자 하는 카드의 index번째 비트를 끈다.
-        _drawCardsMasking &= ~((long)1 << _drawCards[changeIndex].index);
         // 새로 바꾼 카드의 index번째 비트를 켠다.
         _drawCardsMasking |= ((long)1 << cardIndex);
 
@@ -71,14 +77,32 @@ public class CardDrawer
         UpdateHandInfo();
     }
 
-    private void DrawCard(int index)
+    private void DrawCard(int index, bool isFirst)
     {
+        if(isFirst)
+        {
+            // 0~99의 숫자중 랜덤으로 하나를 뽑고, 뽑은 숫자가 조커를 뽑을 확률보다 낮은 숫자라면,
+            // 현재 뽑은 카드를 조커카드로 바꾸고 함수를 리턴한다.
+            int randomNumber = Random.Range(0, 100);
+            bool isJoker = (randomNumber < _jokerPickPercentage);
+            if (isJoker)
+            {
+                // 컬러조커와 흑백조커 둘중 하나로 설정.
+                if (Random.Range(0, 2) == 0)
+                    _drawCards[index].SetCard(Card.COLOR_JOKER_INDEX);
+                else
+                    _drawCards[index].SetCard(Card.MONOCHROME_JOKER_INDEX);
+
+                return;
+            }
+        }
+
         // 0~51의 숫자중 랜덤으로 하나를 선택.
         int drawCardIndex = Random.Range(0, Card.MAX_COUNT);
 
         // 만약 지금 뽑은 카드가 이미 뽑았던 카드일 경우 다시 뽑는다.
         if (_drawCardsMasking == (_drawCardsMasking | ((long)1 << drawCardIndex)))
-            DrawCard(index);
+            DrawCard(index, false);
         else
         {
             // 뽑은 카드의 index번째 비트를 켠다.

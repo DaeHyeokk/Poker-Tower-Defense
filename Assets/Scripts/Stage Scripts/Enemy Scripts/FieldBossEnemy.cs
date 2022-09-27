@@ -7,6 +7,14 @@ public abstract class FieldBossEnemy : FieldEnemy
 {
     public event Action onDie;
 
+    public virtual void Setup(BossEnemyData enemyData)
+    {
+        base.Setup(enemyData);
+
+        _rewardGold = enemyData.rewardGold;
+        _rewardChangeChance = enemyData.rewardChangeChance;
+    }
+
     protected override void Die(Tower fromTower)
     {
         base.Die(fromTower);

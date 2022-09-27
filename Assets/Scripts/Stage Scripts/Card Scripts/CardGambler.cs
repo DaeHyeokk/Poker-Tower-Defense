@@ -5,7 +5,6 @@ using UnityEngine;
 public class CardGambler : MonoBehaviour
 {
     public enum GambleType { Tower, Mineral }
-    public enum ButtonFunctionType { CardChange, JokerCard }
 
     [SerializeField]
     private GambleUIController _gambleUIController;
@@ -18,32 +17,35 @@ public class CardGambler : MonoBehaviour
     private CardDrawer _cardDrawer;
     // 무엇을 위해(타워짓기, 미네랄뽑기) 카드를 뽑는지를 나타내는 변수
     private GambleType _gambleType;
-    // 화면에서 카드 UI 밑의 버튼을 눌렀을 때 수행하는 기능을 나타내는 변수 (초기 설정값은 Card Change 기능)
-    private ButtonFunctionType _buttonFunctionType = ButtonFunctionType.CardChange;
+
     private int _changeIndex;
-    private bool _isSelectChanged;
     private bool _isGambled;
+    private bool _isJokerCardPicked;
 
     public int drawCardCount => _cardDrawer.drawCards.Length;
     public Card[] drawCards => _cardDrawer.drawCards;
     public PokerHand drawHand => _cardDrawer.drawHand;
     public GambleType gambleType => _gambleType;
-    public ButtonFunctionType buttonFunctionType
+    public int[] mineralGambleAmounts => _mineralGambleAmounts;
+
+    public bool isJokerCardPicked
     {
-        get => _buttonFunctionType;
+        get => _isJokerCardPicked;
         set
-        { 
-            _buttonFunctionType = value;
-            _gambleUIController.ToggleFunctionImage();
+        {
+            _isJokerCardPicked = value;
+
+            if (value)
+                PlayerPrefs.SetString("IsJokerCardPicked", "True");
         }
     }
-    public int[] mineralGambleAmounts => _mineralGambleAmounts;
 
     private void Awake()
     {
         _towerBuilder = FindObjectOfType<TowerBuilder>();
         _cardDrawer = new CardDrawer();
         _isGambled = false;
+        _isJokerCardPicked = (PlayerPrefs.GetString("IsJokerCardPicked") == "True");
     }
 
     public void StartGamble(int gambleType)
@@ -85,29 +87,12 @@ public class CardGambler : MonoBehaviour
 
         // 플레이어 화면에 새로 뽑은 카드를 보여준다.
         _gambleUIController.AllReverseCardFrontUI();
-        // 카드 바꾸기 기능과 조커카드 기능 버튼을 활성화 한다.
-        _gambleUIController.ShowFunctionToggle();
+
         // 뽑은 카드 결과값 갱신.
         _gambleUIController.ShowResultUI();
     }
 
-    public void ToggleButtonFunction()
-    {
-        if (buttonFunctionType == ButtonFunctionType.CardChange)
-            buttonFunctionType = ButtonFunctionType.JokerCard;
-        else
-            buttonFunctionType = ButtonFunctionType.CardChange;
-
-        //SoundManager.instance.PlaySFX("Button Toggle Sound");
-    }
-
-    public void ExecuteButtonFunction(int changeIndex)
-    {
-        if (_buttonFunctionType == ButtonFunctionType.CardChange)
-            CardRandomChange(changeIndex);
-        else
-            ShowCardSelector(changeIndex);
-    }
+    public void OnClickCardChangeButton(int changeIndex) => CardRandomChange(changeIndex);
 
     private void CardRandomChange(int changeIndex)
     {
@@ -131,8 +116,9 @@ public class CardGambler : MonoBehaviour
         _gambleUIController.ShowResultUI();
     }
 
-    private void ShowCardSelector(int changeIndex)
+    public void ShowCardSelector(int changeIndex, CardSelector.JokerType jokerType)
     {
+        /*
         // 플레이어의 JokerCard 개수가 0개 이하라면 수행하지 않는다.
         if (StageManager.instance.jokerCard <= 0)
         {
@@ -145,6 +131,7 @@ public class CardGambler : MonoBehaviour
             StageUIManager.instance.ShowSystemMessage(SystemMessage.MessageType.AlreadyUsedJokerCard);
             return;
         }
+        
 
         // 이미 Card Selector가 활성화 되어있는 경우 바꿀 카드의 index만 바꾼다.
         if (_cardSelector.gameObject.activeSelf)
@@ -163,19 +150,58 @@ public class CardGambler : MonoBehaviour
             _gambleUIController.DisableFunctionToggle();
             _cardSelector.gameObject.SetActive(true);
         }
+        */
+
+        /*
+        // 이미 Card Selector가 활성화 되어있는 경우 바꿀 카드의 index만 바꾼다.
+        if (_cardSelector.gameObject.activeSelf)
+        {
+            _gambleUIController.MarkCancelChangeCard(_changeIndex);
+
+            _changeIndex = changeIndex;
+
+            _gambleUIController.MarkChangeCard(_changeIndex);
+
+        }
+        else
+        {
+            _changeIndex = changeIndex;
+            _gambleUIController.MarkChangeCard(_changeIndex);
+            _gambleUIController.DisableCardChangeButton();
+            _cardSelector.gameObject.SetActive(true);
+        }
+        */
+
+        _cardSelector.jokerType = jokerType;
+
+        // 이미 Card Selector가 활성화 되어있는 경우 바꿀 카드의 index만 바꾼다.
+        if (_cardSelector.gameObject.activeSelf)
+        {
+            _gambleUIController.MarkCancelChangeCard(_changeIndex);
+
+            _changeIndex = changeIndex;
+
+            _gambleUIController.MarkChangeCard(_changeIndex);
+
+        }
+        else
+        {
+            _changeIndex = changeIndex;
+            _gambleUIController.MarkChangeCard(_changeIndex);
+            _gambleUIController.DisableCardChangeButton();
+            _cardSelector.gameObject.SetActive(true);
+        }
     }
     
     public void HideCardSelector()
     {
         _gambleUIController.MarkCancelChangeCard(_changeIndex);
-        _gambleUIController.EnableFunctionToggle();
+        _gambleUIController.EnableCardChangeButton();
         _cardSelector.gameObject.SetActive(false);
     }
 
     public void CardSelectChange(int cardIndex)
     {
-        // 조커카드 개수 1개 차감
-        StageManager.instance.jokerCard--;
         // 카드 뽑는 사운드 재생.
         SoundManager.instance.PlaySFX(SoundFileNameDictionary.cardGambleSound);
 
@@ -186,8 +212,6 @@ public class CardGambler : MonoBehaviour
         _gambleUIController.ReverseCardFrountUI(_changeIndex);
         // 뽑은 카드 결과값 갱신.
         _gambleUIController.ShowResultUI();
-
-        _isSelectChanged = true;
     }
 
     public void GetResult()
@@ -202,7 +226,6 @@ public class CardGambler : MonoBehaviour
 
     public void ResetGambler()
     {
-        _isSelectChanged = false;
         _isGambled = false;
         _cardDrawer.ResetDrawer();
         _gambleUIController.ResetGambleUI();

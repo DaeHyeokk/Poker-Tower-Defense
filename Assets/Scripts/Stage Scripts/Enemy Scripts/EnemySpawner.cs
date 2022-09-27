@@ -13,12 +13,18 @@ public class EnemySpawner : MonoBehaviour
     private EnemyData[] _roundEnemyDatas;
     [SerializeField]
     private GameObject _roundEnemyPrefab;
+    private int _roundEnemyIndex;
+
+    [Header("Round Boss Enemy")]
+    [SerializeField]
+    private BossEnemyData[] _roundBossEnemyDatas;
     [SerializeField]
     private RoundBossEnemy _roundBossEnemy;
+    private int _roundBossEnemyIndex;
 
     [Header("Mission Boss")]
     [SerializeField]
-    private EnemyData[] _missionBossEnemyDatas;
+    private BossEnemyData[] _missionBossEnemyDatas;
     [SerializeField]
     private MissionBossEnemy[] _missionBossEnemies;
     [SerializeField]
@@ -28,7 +34,7 @@ public class EnemySpawner : MonoBehaviour
 
     [Header("Special Boss")]
     [SerializeField]
-    private SpecialBossData[] _specialBossDatas;
+    private BossEnemyData[] _specialBossDatas;
     [SerializeField]
     private SpecialBossEnemy _specialBossEnemy;
     [SerializeField]
@@ -64,15 +70,16 @@ public class EnemySpawner : MonoBehaviour
 
 
 
-    public void SpawnEnemy(int wave)
+    public void SpawnEnemy()
     {
-        // 오브젝트가 비활성화된 상태라면 건너뛴다.
-        if (!this.gameObject.activeSelf) return;
-
-        StartCoroutine(SpawnEnemyCoroutine(wave));
+        // 오브젝트가 비활성화된 상태거나, 현재 가리키고 있는 Index가 Round Enemy 배열의 범위를 넘었다면 수행하지 않는다.
+        if (!this.gameObject.activeSelf || _roundEnemyIndex >= _roundEnemyDatas.Length) 
+            return;
+        
+        StartCoroutine(SpawnEnemyCoroutine());
     }
 
-    private IEnumerator SpawnEnemyCoroutine(int wave)
+    private IEnumerator SpawnEnemyCoroutine()
     {
         int spawnEnemy = 0;
 
@@ -82,16 +89,23 @@ public class EnemySpawner : MonoBehaviour
 
             _enemy.transform.position = _wayPoints[0].position;
             // Enemy Setup() 메소드의 매개변수로 enemyData 정보를 전달.
-            _enemy.Setup(_roundEnemyDatas[wave - 1]);
+            _enemy.Setup(_roundEnemyDatas[_roundEnemyIndex]);
             // _roundEnemyList 리스트에 _enemy가 가지고 있는 노드를 추가함 -> 필드 위에 생성되어 있는 Enemy를 참조하기 위함.
             _roundEnemyList.AddLast(_enemy.roundEnemyNode);
 
             yield return _waitForOneSeconds;
         }
+
+        // Round Enemy Index를 1 증가시킨다.
+        _roundEnemyIndex++;
     }
 
-    public void SpawnRoundBoss(int wave)
+    public void SpawnRoundBoss()
     {
+        // 오브젝트가 비활성화된 상태거나, 현재 가리키고 있는 Index가 Round Boss Enemy 배열의 범위를 넘었다면 수행하지 않는다.
+        if (!this.gameObject.activeSelf || _roundBossEnemyIndex >= _roundBossEnemyDatas.Length) 
+            return;
+
         // 보스가 필드에 이미 소환된 상태면 소환하지 않는다.
         // 혹시모를 중복 소환 버그, 치팅 방지
         if (_roundBossEnemy.gameObject.activeSelf)
@@ -99,7 +113,10 @@ public class EnemySpawner : MonoBehaviour
 
         _roundBossEnemy.gameObject.SetActive(true);
         _roundBossEnemy.transform.position = _wayPoints[0].position;
-        _roundBossEnemy.Setup(_roundEnemyDatas[wave - 1]);
+        _roundBossEnemy.Setup(_roundBossEnemyDatas[_roundBossEnemyIndex]);
+
+        // Round Boss Enemy Index를 1 증가시킨다.
+        _roundBossEnemyIndex++;
     }
 
     public void SpawnMissionBoss(int bossLevel)

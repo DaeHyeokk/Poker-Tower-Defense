@@ -5,6 +5,7 @@ using UnityEngine;
 public class CardSelector : MonoBehaviour
 {
     public enum Number { Ace, Two, Three, Four, Five, Six, Seven, Eight, Nine, Ten, Jack, Queen, King, None }
+    public enum JokerType { Color, Monochrome }
 
     [SerializeField]
     private GambleUIController _gambleUIController;
@@ -13,6 +14,7 @@ public class CardSelector : MonoBehaviour
 
     private Card.Pattern _patternIndex;
     private Number _numberIndex;
+    private JokerType _jokerType;
 
     public Card.Pattern patternIndex
     {
@@ -34,8 +36,26 @@ public class CardSelector : MonoBehaviour
             _numberIndex = value;
         }
     }
+    
+    public JokerType jokerType
+    {
+        get => _jokerType;
+        set
+        {
+            _jokerType = value;
 
-    private void OnEnable() => patternIndex = Card.Pattern.Clover;
+            if (value == JokerType.Color)
+            {
+                patternIndex = Card.Pattern.Diamond;
+                _gambleUIController.SetCardPattern(JokerType.Color);
+            }
+            else
+            {
+                patternIndex = Card.Pattern.Clover;
+                _gambleUIController.SetCardPattern(JokerType.Monochrome);
+            }
+        }
+    }
 
     public void OnClickChangePattern(int patternIndex)
     {

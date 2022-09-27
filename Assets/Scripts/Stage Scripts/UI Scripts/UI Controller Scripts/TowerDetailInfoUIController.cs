@@ -24,8 +24,6 @@ public class TowerDetailInfoUIController : MonoBehaviour
     [SerializeField]
     private TextMeshProUGUI _attackRateText;
     [SerializeField]
-    private TextMeshProUGUI _upgradeRIPText;
-    [SerializeField]
     private TextMeshProUGUI _baseAttackDetailText;
     [SerializeField]
     private TextMeshProUGUI _specialAttackDetailText;
@@ -104,12 +102,10 @@ public class TowerDetailInfoUIController : MonoBehaviour
         _damage = tower.damage;
         _attackRate = tower.attackRate;
         _upgradeDIP = tower.upgradeDIP;
-        _upgradeRIP = tower.upgradeRIP;
 
         _damageText.text = Mathf.Round(_damage).ToString();
         _attackRateText.text = Math.Round(_attackRate, 2).ToString();
         _upgradeDIPText.text = _upgradeDIP.ToString();
-        _upgradeRIPText.text = _upgradeRIP.ToString();
 
         _baseAttackDetailText.text = tower.detailBaseAttackInfo.ToString();
         _specialAttackDetailText.text = tower.detailSpecialAttackInfo.ToString();

@@ -228,21 +228,21 @@ MonoBehaviour:
   - rate: 250
     chance: 60
   - rate: 300
-    chance: 75
+    chance: 70
   - rate: 400
-    chance: 90
+    chance: 80
   _basicSlowingAttributes:
   - rate: 30
     duration: 2
     chance: 60
   - rate: 40
-    duration: 2.5
+    duration: 2
     chance: 65
   - rate: 55
-    duration: 3
+    duration: 2
     chance: 70
   - rate: 70
-    duration: 4
+    duration: 2
     chance: 80
   _specialCriticalStrikeAttributes:
   - rate: 350
@@ -250,23 +250,23 @@ MonoBehaviour:
   - rate: 400
     chance: 70
   - rate: 450
-    chance: 85
+    chance: 80
   - rate: 600
-    chance: 100
+    chance: 90
   _specialSlowingAttributes:
   - rate: 50
-    duration: 2
+    duration: 2.5
     chance: 70
   - rate: 60
     duration: 2.5
     chance: 75
   - rate: 75
-    duration: 3
+    duration: 2.5
     chance: 80
   - rate: 90
-    duration: 4
+    duration: 2.5
     chance: 90
-  _basicRange: 0.5
+  _basicRange: 0.65
   _specialRange: 0.8
 --- !u!65 &-6758310859523100175
 BoxCollider:

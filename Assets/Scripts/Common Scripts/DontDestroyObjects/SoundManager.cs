@@ -84,7 +84,10 @@ public class SoundManager : MonoBehaviour
     private void Awake()
     {
         if (instance != this)
+        {
             Destroy(gameObject);
+            return;
+        }
         else
         {
             // SoundManager가 최초 생성되는 경우.
@@ -163,8 +166,6 @@ public class SoundManager : MonoBehaviour
         PlayerPrefs.SetFloat("SfxVolume", _commonSfxAudioSource.volume);
         PlayerPrefs.SetString("IsBgmMuted", _bgmAudioSource.mute.ToString());
         PlayerPrefs.SetString("IsSfxMuted", _commonSfxAudioSource.mute.ToString());
-
-        PlayerPrefs.Save();
     }
 
     public void PlayBGM(string audioClipName)

@@ -18,16 +18,21 @@ public class SpecialBossEnemy : Enemy
         enemySpawner.LevelupSpecialBoss();
     }
 
-    public void Setup(SpecialBossData enemyData)
+    public void Setup(BossEnemyData enemyData)
     {
         base.Setup(enemyData);
         //UpdateHealthText();
 
+        // 생성할 Enemy의 체력 설정
+        _maxHealth = enemyData.health;
+        _health = _maxHealth;
+        _enemyHealthbar.maxHealth = _maxHealth;
+        _enemyHealthbar.health = _maxHealth;
+
         _rewardGold = enemyData.rewardGold;
         _rewardChangeChance = enemyData.rewardChangeChance;
-        _rewardJokerCard = enemyData.rewardJokerCard;
 
-        _rewardStringBuilder.Set(_rewardGold, _rewardChangeChance, _rewardJokerCard);
+        _rewardStringBuilder.Set(_rewardGold, _rewardChangeChance);
         _healthText.text = ((int)Mathf.Round(maxHealth)).ToString();
         _levelText.text = "Lv " + level.ToString();
     }

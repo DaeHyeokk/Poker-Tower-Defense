@@ -35,8 +35,8 @@ public class Projectile : MonoBehaviour
         // _target 오브젝트가 씬에 활성화된 상태라면 _target을 계속 추적한다.
         if (_target.gameObject.activeSelf)
         {
-            // target과의 거리가 0.4f 이하라면 충돌했다고 판정한다.
-            if (Vector2.Distance(this.transform.position, _target.transform.position) <= 0.4f)
+            // target과의 거리가 0.37f 이하라면 충돌했다고 판정한다.
+            if (Vector2.Distance(this.transform.position, _target.transform.position) <= 0.37f)
             {
                 ParticlePlayer.instance.PlayCollisionProjectile(this.transform, (int)_fromTower.towerColor.colorType);
 

@@ -428,9 +428,9 @@ MonoBehaviour:
     duration: 5
   - rate: 30
     duration: 6
-  - rate: 50
+  - rate: 40
     duration: 7
-  - rate: 70
+  - rate: 50
     duration: 8
   _specialIncreaseAttackRateAttributes:
   - rate: 30
@@ -439,7 +439,7 @@ MonoBehaviour:
     duration: 6
   - rate: 50
     duration: 7
-  - rate: 70
+  - rate: 60
     duration: 8
 --- !u!65 &4807052944266994545
 BoxCollider:

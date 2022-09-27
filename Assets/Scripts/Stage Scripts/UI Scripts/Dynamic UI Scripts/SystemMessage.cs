@@ -10,8 +10,6 @@ public class SystemMessage : FadeTextObject
         NotEnoughGold, 
         NotEnoughMineral, 
         NotEnoughChangeChance, 
-        NotEnoughJokerCard, 
-        AlreadyUsedJokerCard, 
         CompletionColorChange,
         MissingBossPenalty,
         GetJokerCardRewardedAd
@@ -27,8 +25,6 @@ public class SystemMessage : FadeTextObject
     private readonly string _notEnoughGoldString = "골드가 부족합니다.";
     private readonly string _notEnoughMineralString = "미네랄이 부족합니다.";
     private readonly string _notEnoughChangeChanceString = "카드교환권이 부족합니다.";
-    private readonly string _notEnoughJokerCard = "조커카드가 부족합니다.";
-    private readonly string _alreadyUsedJokerCard = "조커카드를 이미 사용하셨습니다.";
     private readonly string _completionColorChangeString = "색 변경 완료!";
     private readonly string _missingBossPenaltyString = "보스를 놓치셨습니다.\n라운드 보상 획득이 제한됩니다.";
 
@@ -57,20 +53,6 @@ public class SystemMessage : FadeTextObject
                 this.transform.position = Vector3.zero;
                 textMeshPro.color = Color.red;
                 textMeshPro.text = _notEnoughChangeChanceString;
-                SoundManager.instance.PlayErrorSound();
-                break;
-
-            case SystemMessage.MessageType.NotEnoughJokerCard:
-                this.transform.position = Vector3.zero;
-                textMeshPro.color = Color.red;
-                textMeshPro.text = _notEnoughJokerCard;
-                SoundManager.instance.PlayErrorSound();
-                break;
-
-            case SystemMessage.MessageType.AlreadyUsedJokerCard:
-                this.transform.position = Vector3.zero;
-                textMeshPro.color = Color.red;
-                textMeshPro.text = _alreadyUsedJokerCard;
                 SoundManager.instance.PlayErrorSound();
                 break;
 

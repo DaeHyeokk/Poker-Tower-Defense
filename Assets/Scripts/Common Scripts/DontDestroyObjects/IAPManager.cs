@@ -71,7 +71,10 @@ public class IAPManager : MonoBehaviour, IStoreListener
     private void Awake()
     {
         if (instance != this)
+        {
             Destroy(gameObject);
+            return;
+        }
         else
         {
             // IAPManager가 최초 생성되는 경우.

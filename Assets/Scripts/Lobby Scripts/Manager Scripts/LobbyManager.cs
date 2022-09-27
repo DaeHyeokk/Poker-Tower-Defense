@@ -49,14 +49,6 @@ public class LobbyManager : MonoBehaviour
 
         UIManager.instance.GameStartScreenCoverFadeOut();
         SoundManager.instance.PlayBGM(SoundFileNameDictionary.mainBGM);
-        LoadGoogleAds();
-    }
-
-    public void LoadGoogleAds()
-    {
-
-        // 하단에 구글 배너 광고를 띄움.
-        GoogleAdsManager.instance.LoadBanner(GoogleAdsManager.BannerAdSizeType.Standard);
     }
 
     public void OnClickLoginButton()

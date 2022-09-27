@@ -25,11 +25,6 @@ public class PlayerTowerInfoUIController : MonoBehaviour
     private TextMeshProUGUI[] _increaseAttackRateTexts;
 
     [SerializeField]
-    private TextMeshProUGUI[] _upgradeRIPTexts;
-    [SerializeField]
-    private TextMeshProUGUI[] _increaseUpgradeRIPTexts;
-
-    [SerializeField]
     private TextMeshProUGUI[] _killCountTexts;
     [SerializeField]
     private TextMeshProUGUI[] _nextLevelKillCountTexts;
@@ -57,16 +52,13 @@ public class PlayerTowerInfoUIController : MonoBehaviour
             int nextLevelKillCount = level * Tower.defaultLevelupKillCount;
 
             float increaseDamage = _towerDatas[i].levelup.damage;
-            float damage = _towerDatas[i].weapons[0].damage + (increaseDamage * (level - 1));
+            float damage = increaseDamage * (level - 1);
 
             float increaseUpgradeDIP = _towerDatas[i].levelup.upgradeDIP;
-            float upgradeDIP = _towerDatas[i].weapons[0].upgradeDIP + (increaseUpgradeDIP * (level - 1));
+            float upgradeDIP = increaseUpgradeDIP * (level - 1);
 
             float increaseAttackRate = _towerDatas[i].levelup.rate;
-            float attackRate = _towerDatas[i].weapons[0].rate + (increaseAttackRate * (level - 1));
-
-            float increaseUpgradeRIP = _towerDatas[i].levelup.upgradeRIP;
-            float upgradeRIP = _towerDatas[i].weapons[0].upgradeRIP + (increaseUpgradeRIP * (level - 1));
+            float attackRate = increaseAttackRate * (level - 1);
 
             _levelTexts[i].text = "Lv " + level.ToString();
 
@@ -77,10 +69,7 @@ public class PlayerTowerInfoUIController : MonoBehaviour
             _increaseUpgradeDIPTexts[i].text = "+" + increaseUpgradeDIP.ToString();
 
             _attackRateTexts[i].text = attackRate.ToString();
-            _increaseAttackRateTexts[i].text = "-" + increaseAttackRate.ToString();
-
-            _upgradeRIPTexts[i].text = upgradeRIP.ToString();
-            _increaseUpgradeRIPTexts[i].text = "-" + increaseUpgradeRIP.ToString();
+            _increaseAttackRateTexts[i].text = "+" + increaseAttackRate.ToString();
 
             _killCountTexts[i].text = killCount.ToString();
             _nextLevelKillCountTexts[i].text = nextLevelKillCount.ToString();

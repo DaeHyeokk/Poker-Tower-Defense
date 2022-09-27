@@ -43,8 +43,8 @@ public class StageManager : MonoBehaviour
     [SerializeField]
     private GameObject _saveFailedPanelObject;
 
-    private readonly float[] _enemyHpPercentages = new float[] { 0.5f, 1f, 1.5f, 3f };
-    private readonly float[] _enemySpeedPercentages = new float[] { 0.8f, 1f, 1.2f, 1.5f };
+    private readonly float[] _enemyHpPercentages = new float[] { 1f, 2f, 3f, 4f };
+    private readonly float[] _enemySpeedPercentages = new float[] { 0.85f, 1f, 1.15f, 1.3f };
 
     private int _gold = 400;
     private int _mineral = 100;
@@ -148,15 +148,10 @@ public class StageManager : MonoBehaviour
 
         _gold = 400;
         _mineral = 100;
-        changeChance = 5;
-        jokerCard = 2;
-
-        // 플레이어가 프리미엄패스를 구입한 경우 카드교환권 5장, 조커카드 2장을 추가 지급.
+        changeChance = 10;
+        // 플레이어가 프리미엄패스를 구입한 경우 카드교환권 10장을 추가 지급.
         if (IAPManager.instance.HadPurchashed(IAPManager.instance.productPremiumPass))
-        {
-            changeChance += 5;
-            jokerCard += 3;
-        }
+            changeChance += 10;
 
         // 플레이어가 추가 배속 상품을 구입한 경우 최대 게임 스피드를 3으로 한다.
         _maxGameSpeed = IAPManager.instance.HadPurchashed(IAPManager.instance.productExtraGameSpeed) ? 3 : 2;
@@ -206,7 +201,7 @@ public class StageManager : MonoBehaviour
         // GoogleAdsManager로부터 interstitialAd 객체를 가져옴.
         InterstitialAd interstitialAd = GoogleAdsManager.instance.interstitialAd;
 
-        // interstitialAd의 값이 null이 아니라면 수행.
+        // interstitialAd의 값이 null이 아니라면 수행
         if (interstitialAd != null)
         {
             // BGM과 게임을 멈추고 플레이어에게 광고를 보여준다.
@@ -221,10 +216,6 @@ public class StageManager : MonoBehaviour
             else
                 GoogleAdsManager.instance.ReloadInterstitialAd();
         }
-
-        // 하단에 구글 배너 광고를 띄움
-        GoogleAdsManager.instance.LoadBanner(GoogleAdsManager.BannerAdSizeType.Standard);
-
     }
 
     public void OnClickSpeedUpButton()

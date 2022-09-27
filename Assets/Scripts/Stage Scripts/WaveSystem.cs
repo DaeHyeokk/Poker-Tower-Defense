@@ -74,7 +74,7 @@ public class WaveSystem : MonoBehaviour
     private void Awake()
     {
         wave = 0;
-        _waveRewardStringBuilder.Set(200, 0, 0);
+        _waveRewardStringBuilder.Set(200, 0);
 
         // 게임 시작 10초 경과 후 첫 웨이브가 시작된다.
         minute = 0;
@@ -145,7 +145,7 @@ public class WaveSystem : MonoBehaviour
                 // 보스 웨이브 전용 BGM에서 메인 BGM으로 전환한다.
                 SoundManager.instance.PlayBGM(SoundFileNameDictionary.mainBGM);
             }
-            _enemySpawner.SpawnEnemy(wave);
+            _enemySpawner.SpawnEnemy();
 
             minute = _defaultLimitMinute;
             second = _defaultLimitSecond;
@@ -161,7 +161,7 @@ public class WaveSystem : MonoBehaviour
             SoundManager.instance.PlayBGM(SoundFileNameDictionary.bossWaveBGM);
 
             _isBossWave = true;
-            _enemySpawner.SpawnRoundBoss(wave);
+            _enemySpawner.SpawnRoundBoss();
 
             minute = _bossLimitMinute;
             second = _bossLimitSecond;

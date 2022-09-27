@@ -23,34 +23,29 @@ MonoBehaviour:
   weapons:
   - salesGold: 240
     maxTargetCount: 1
-    damage: 60
-    rate: 1.7
+    damage: 300
+    rate: 1.5
     range: 1.2
-    upgradeDIP: 10
-    upgradeRIP: 0.006
+    upgradeDIP: 40
   - salesGold: 480
     maxTargetCount: 1
-    damage: 120
-    rate: 1.5
+    damage: 450
+    rate: 1.2
     range: 1.3
-    upgradeDIP: 15
-    upgradeRIP: 0.007
+    upgradeDIP: 70
   - salesGold: 960
     maxTargetCount: 1
-    damage: 200
-    rate: 1.3
+    damage: 600
+    rate: 0.9
     range: 1.4
-    upgradeDIP: 25
-    upgradeRIP: 0.008
+    upgradeDIP: 100
   - salesGold: 1920
     maxTargetCount: 1
-    damage: 300
-    rate: 1
+    damage: 800
+    rate: 0.6
     range: 1.5
-    upgradeDIP: 40
-    upgradeRIP: 0.01
+    upgradeDIP: 150
   levelup:
-    damage: 3
-    rate: 0.003
-    upgradeDIP: 1
-    upgradeRIP: 0.002
+    damage: 150
+    rate: 0.01
+    upgradeDIP: 30

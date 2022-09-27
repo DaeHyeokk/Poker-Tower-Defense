@@ -27,8 +27,8 @@ public class AllKillMission : RepeatMission
         // 해당 라운드에 미션을 이미 완료한 경우 건너뛴다.
         if (_isCompleted) return;
 
-        // 보스웨이브가 아니며 현재 웨이브의 남은 시간이 10초일 때 필드 위에 라운드 몬스터가 0마리라면 미션 성공.
-        if (!_waveSystem.isBossWave && _waveSystem.minute == 0 && _waveSystem.second == 10 && _enemyCounter.roundEnemyCount == 0)
+        // 보스웨이브가 아니며 현재 웨이브의 남은 시간이 5초일 때 필드 위에 라운드 몬스터가 0마리라면 미션 성공.
+        if (!_waveSystem.isBossWave && _waveSystem.minute == 0 && _waveSystem.second == 5 && _enemyCounter.roundEnemyCount == 0)
         {
             CompleteMission();
             _isCompleted = true;

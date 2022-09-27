@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -28,11 +29,12 @@ public class GameDataLoader : MonoBehaviour
     public void CheckNetworkReachable()
     {
         _loadingUIController.loadingTypeString = "네트워크 상태 확인 중";
-        GameManager.instance.CheckNetworkReachable(
-            // 인터넷 연결이 확인되면 Login을 시도함.
-            () => Login(),
-            () => _networkNotReachablePanelObject.SetActive(true)
-            );
+
+        // 인터넷에 연결되어 있다면 로그인 시도.
+        if (GameManager.instance.CheckNetworkReachable())
+            Invoke("Login", 2.5f);
+        else
+            _networkNotReachablePanelObject.SetActive(true);
     }
 
     public void Login()
@@ -42,30 +44,46 @@ public class GameDataLoader : MonoBehaviour
             // Login이 성공하면 구글 클라우드에서 데이터 로드를 시도함.
             () => 
             {
-                GameManager.instance.isLogin = true;
                 Load(); 
             },
-            () => _playGamesLoginFailedPanelObject.SetActive(true)
-            );
-
+            () =>
+            {
+                _playGamesLoginFailedPanelObject.SetActive(true);
+            });
     }
+
+    private bool _isLoading;
 
     public void Load()
     {
+        _isLoading = true;
         _loadingUIController.loadingTypeString = "데이터 불러오기 중";
 
         GameManager.instance.Load(
             // 데이터 로딩이 성공하면 로비씬을 로드함.
-            () =>SceneManager.LoadScene("LobbyScene"),
-            () => _dataLoadFailedPanelObject.SetActive(true)
-            );
+            () => 
+            {
+                SceneManager.LoadScene("LobbyScene");
+            },
+            () =>
+            {
+                _dataLoadFailedPanelObject.SetActive(true);
+            });
+    }
+
+    private void OnApplicationPause(bool pause)
+    {
+        // 데이터를 로딩중에 앱을 벗어날 경우 데이터 로드 콜백 메세지를 못받았을 확률이 높으므로,
+        // 로드 실패 판넬을 활성화 하여 다시 로드하도록 한다.
+        if (pause && _isLoading)
+        {
+            _dataLoadFailedPanelObject.SetActive(true);
+        }
     }
 
     public void OnClickOfflineStartButton()
     {
         GameManager.instance.playerGameData.SetDefaultValue();
-        GameManager.instance.isLogin = false;
-
         SceneManager.LoadScene("LobbyScene");
     }
 

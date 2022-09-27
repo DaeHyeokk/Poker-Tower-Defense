@@ -9,7 +9,7 @@ public class RewardStringBuilder
 
     public override string ToString() => _rewardStringBuilder.ToString();
 
-    public void Set(int gold, int cardChangeChance, int jokerCard)
+    public void Set(int gold, int cardChangeChance)
     {
         if (_rewardStringBuilder != null)
             _rewardStringBuilder.Clear();
@@ -31,17 +31,6 @@ public class RewardStringBuilder
             _rewardStringBuilder.Append("<color=\"white\">");
             _rewardStringBuilder.Append('+');
             _rewardStringBuilder.Append(cardChangeChance.ToString());
-            _rewardStringBuilder.Append("</color>");
-        }
-
-        if (jokerCard > 0)
-        {
-            _rewardStringBuilder.Append('\n');
-            _rewardStringBuilder.Append("<color=\"orange\">");
-            _rewardStringBuilder.Append("조커카드");
-            _rewardStringBuilder.Append("<color=\"white\">");
-            _rewardStringBuilder.Append('+');
-            _rewardStringBuilder.Append(jokerCard.ToString());
             _rewardStringBuilder.Append("</color>");
         }
     }

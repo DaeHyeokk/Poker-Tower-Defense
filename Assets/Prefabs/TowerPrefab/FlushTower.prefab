@@ -313,23 +313,32 @@ MonoBehaviour:
   _spawnPoint: {fileID: 6189546571691864872}
   _increaseDamageEffect: {fileID: 430954142561917222}
   _increaseAttackRateEffect: {fileID: 8131155966352738137}
+  _basicCritAttributes:
+  - rate: 150
+    chance: 40
+  - rate: 200
+    chance: 50
+  - rate: 300
+    chance: 60
+  - rate: 400
+    chance: 70
   _basicStunAttributes:
-  - duration: 1
+  - duration: 2
+    chance: 20
+  - duration: 2
     chance: 30
-  - duration: 1.5
+  - duration: 2
     chance: 40
   - duration: 2
     chance: 50
-  - duration: 3
-    chance: 70
   _specialStunAttributes:
-  - duration: 1
-    chance: 100
-  - duration: 1.5
+  - duration: 2
     chance: 100
   - duration: 2
     chance: 100
-  - duration: 3
+  - duration: 2
+    chance: 100
+  - duration: 2
     chance: 100
   _specialCritAttributes:
   - rate: 200
@@ -340,6 +349,7 @@ MonoBehaviour:
     chance: 80
   - rate: 600
     chance: 90
+  _basicRange: 0.65
   _specialRange: 0.8
 --- !u!114 &-6331518988701908566
 MonoBehaviour:

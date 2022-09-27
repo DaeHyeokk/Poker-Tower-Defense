@@ -9,12 +9,11 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8e61bb01788e6b742b78dd0066b02575, type: 3}
-  m_Name: Lv3MissionBoss
+  m_Script: {fileID: 11500000, guid: bae1fc952a4f5ae4ab0e3aae03a07732, type: 3}
+  m_Name: Lv1MissionBoss
   m_EditorClassIdentifier: 
-  sprite: {fileID: 21300000, guid: dc41d81e2acf12a4193632cc312a1da6, type: 3}
-  health: 175000
-  moveSpeed: 1.3
-  rewardGold: 500
+  sprite: {fileID: 21300000, guid: ce961f40e9b066d499f00c53deeea018, type: 3}
+  health: 4000
+  moveSpeed: 1
+  rewardGold: 100
   rewardChangeChance: 5
-  rewardJokerCard: 0

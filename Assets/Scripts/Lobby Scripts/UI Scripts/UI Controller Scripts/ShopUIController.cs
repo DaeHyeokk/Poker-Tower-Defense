@@ -31,29 +31,24 @@ public class ShopUIController : MonoBehaviour
 
     private void Awake()
     {
+        /*
         // 플레이어가 로그인 하지 않은 경우 모든 인앱 상품 버튼을 비활성화 한다.
         if(!Social.localUser.authenticated)
             for (int i = 0; i < _disablePanels.Length; i++)
                 DisablePurchashingButton((IAPManager.ProductName)i, false);
-        else
+        */
+
+        // 유니티 IAP가 성공적으로 초기화 된 경우에만 수행.
+        if (IsIAPInit())
         {
-            // 유니티 IAP가 성공적으로 초기화 된 경우에만 수행.
-            if (IsIAPInit())
-            {
+            if (IAPManager.instance.HadPurchashed(IAPManager.instance.productAdsRemove))
+                DisablePurchashingButton(IAPManager.ProductName.AdsRemove, true);
 
-                // 플레이어가 로그인 한 경우 플레이어가 구매한 인앱 상품 버튼을 비활성화 한다.
-                if (Social.localUser.authenticated)
-                {
-                    if (IAPManager.instance.HadPurchashed(IAPManager.instance.productAdsRemove))
-                        DisablePurchashingButton(IAPManager.ProductName.AdsRemove, true);
+            if (IAPManager.instance.HadPurchashed(IAPManager.instance.productExtraGameSpeed))
+                DisablePurchashingButton(IAPManager.ProductName.ExtraGameSpeed, true);
 
-                    if (IAPManager.instance.HadPurchashed(IAPManager.instance.productExtraGameSpeed))
-                        DisablePurchashingButton(IAPManager.ProductName.ExtraGameSpeed, true);
-
-                    if (IAPManager.instance.HadPurchashed(IAPManager.instance.productPremiumPass))
-                        DisablePurchashingButton(IAPManager.ProductName.PremiumPass, true);
-                }
-            }
+            if (IAPManager.instance.HadPurchashed(IAPManager.instance.productPremiumPass))
+                DisablePurchashingButton(IAPManager.ProductName.PremiumPass, true);
         }
     }
 
@@ -62,19 +57,14 @@ public class ShopUIController : MonoBehaviour
         // 유니티 IAP가 성공적으로 초기화 된 경우에만 수행.
         if (IsIAPInit())
         {
+            if (IAPManager.instance.HadPurchashed(IAPManager.instance.productAdsRemove))
+                DisablePurchashingButton(IAPManager.ProductName.AdsRemove, true);
 
-            // 플레이어가 로그인 한 경우 플레이어가 구매한 인앱 상품 버튼을 비활성화 한다.
-            if (Social.localUser.authenticated)
-            {
-                if (IAPManager.instance.HadPurchashed(IAPManager.instance.productAdsRemove))
-                    DisablePurchashingButton(IAPManager.ProductName.AdsRemove, true);
+            if (IAPManager.instance.HadPurchashed(IAPManager.instance.productExtraGameSpeed))
+                DisablePurchashingButton(IAPManager.ProductName.ExtraGameSpeed, true);
 
-                if (IAPManager.instance.HadPurchashed(IAPManager.instance.productExtraGameSpeed))
-                    DisablePurchashingButton(IAPManager.ProductName.ExtraGameSpeed, true);
-
-                if (IAPManager.instance.HadPurchashed(IAPManager.instance.productPremiumPass))
-                    DisablePurchashingButton(IAPManager.ProductName.PremiumPass, true);
-            }
+            if (IAPManager.instance.HadPurchashed(IAPManager.instance.productPremiumPass))
+                DisablePurchashingButton(IAPManager.ProductName.PremiumPass, true);
         }
     }
 

@@ -117,7 +117,7 @@ public class StageUIManager : MonoBehaviour
     {
         DamageTakenText damageTakenText = _damageTakenTextPool.GetObject();
 
-        damageTakenText.transform.position = target.position + new Vector3(0f, 0.15f, 0f);
+        damageTakenText.transform.position = target.position + new Vector3(0f, 0.2f, 0f);
         damageTakenText.textMeshPro.text = Mathf.Round(damage).ToString();
         damageTakenText.damageTakenType = damageTakenType;
 

@@ -4,6 +4,10 @@ using UnityEngine;
 
 public class FlushTower : Tower
 {
+    [Header("Basic Critical Strike")]
+    [SerializeField]
+    private CriticalStrike.Attribute[] _basicCritAttributes;
+
     [Header("Basic Stun")]
     [SerializeField]
     private Stun.Attribute[] _basicStunAttributes;
@@ -18,6 +22,8 @@ public class FlushTower : Tower
 
     [Header("Inflict Range")]
     [SerializeField]
+    private float _basicRange;
+    [SerializeField]
     private float _specialRange;
 
     public override int towerIndex => 6;
@@ -27,8 +33,8 @@ public class FlushTower : Tower
         base.Awake();
         targetDetector.detectingMode = TargetDetector.DetectingMode.Single;
 
-        BasicAttack basicAttack = new(this);
-        baseEnemyInflictorList.Add(basicAttack);
+        CriticalStrike basicCriticalStrike = new(this, _basicCritAttributes);
+        baseEnemyInflictorList.Add(basicCriticalStrike);
 
         Stun basicStun = new(this, _basicStunAttributes);
         baseEnemyInflictorList.Add(basicStun);
@@ -43,7 +49,7 @@ public class FlushTower : Tower
     protected override void UpdateDetailInfo()
     {
         base.UpdateDetailInfo();
-
+        detailBaseAttackInfo.Insert(0, "[범위 공격]\n");
         detailSpecialAttackInfo.Insert(0, "[범위 공격]\n");
     }
 
@@ -52,7 +58,7 @@ public class FlushTower : Tower
         if (attackType == AttackType.Basic)
         {
             Projectile projectile = projectileSpawner.SpawnProjectile(this, spawnPoint, target, normalProjectileSprite);
-            projectile.actionOnCollision += () => BaseInflict(target);
+            projectile.actionOnCollision += () => BaseInflict(target, _basicRange);
         }
         else // (attackType == AttackType.Special)
         {

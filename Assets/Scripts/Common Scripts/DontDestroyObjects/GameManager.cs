@@ -105,16 +105,18 @@ public class GameManager : MonoBehaviour
         }
     }
 
-    public PlayerGameData playerGameData { get; set; } = new();
-    public bool isLogin { get; set; }
-
     private event Action onSuccessed;
     private event Action onFailed;
+
+    public PlayerGameData playerGameData { get; set; } = new();
 
     private void Awake()
     {
         if (instance != this)
+        {
             Destroy(gameObject);
+            return;
+        }
         else
         {
             // GameManager가 최초 생성되는 경우.
@@ -128,24 +130,16 @@ public class GameManager : MonoBehaviour
         PlayGamesPlatform.Activate();
     }
 
-    private void OnApplicationPause()
+    private void OnApplicationPause(bool pause)
     {
-        if(isLogin)
+        if (pause && Social.localUser.authenticated)
             Save();
+
+        PlayerPrefs.Save();
     }
 
-    public void CheckNetworkReachable(Action onSuccessed = null, Action onFailed = null)
-    {
-        if (this.onSuccessed != null)
-            this.onSuccessed = null;
-        this.onSuccessed += onSuccessed;
-
-        if (this.onFailed != null)
-            this.onFailed = null;
-        this.onFailed += onFailed;
-
-        StartCoroutine(CheckNetworkReachableCoroutine());
-    }
+    // 인터넷에 연결되어 있을 경우 true 안되어 있을 경우 false 반환.
+    public bool CheckNetworkReachable() => !(Application.internetReachability == NetworkReachability.NotReachable);
 
     private IEnumerator CheckNetworkReachableCoroutine()
     {
@@ -174,6 +168,9 @@ public class GameManager : MonoBehaviour
 
     public void Login(Action onSuccessed = null, Action onFailed = null)
     {
+        // 이미 로그인 된 사용자라면 건너뛴다.
+        if (Social.localUser.authenticated) return;
+
         if (this.onSuccessed != null)
             this.onSuccessed = null;
         this.onSuccessed += onSuccessed;

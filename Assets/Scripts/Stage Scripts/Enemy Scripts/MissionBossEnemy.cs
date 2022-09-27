@@ -22,9 +22,10 @@ public class MissionBossEnemy : FieldBossEnemy
         _goldPenalty = FindObjectOfType<WaveSystem>().goldPenalty;
     }
 
-    public override void Setup(EnemyData enemyData)
+    public override void Setup(BossEnemyData enemyData)
     {
         base.Setup(enemyData);
+
         StartCoroutine(LimitTimerCoroutine());
     }
 

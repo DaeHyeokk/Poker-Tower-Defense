@@ -11,9 +11,9 @@ public class GambleUIController : MonoBehaviour
     [SerializeField]
     private Image[] _cardImages;
     [SerializeField]
-    private Button[] _functionButtons;
+    private Button[] _jokerCardButtons;
     [SerializeField]
-    private Image[] _functionButtonImages;
+    private Button[] _cardChangeButtons;
     [SerializeField]
     private Toggle _functionToggle;
     [SerializeField]
@@ -21,14 +21,16 @@ public class GambleUIController : MonoBehaviour
     [SerializeField]
     private Sprite _cardChangeSprite;
     [SerializeField]
-    private Sprite _jokerCardSprite;
-    [SerializeField]
     private TextMeshProUGUI _handText;
     [SerializeField]
     private Sprite _cardBackSprite;
     // Index로 원하는 스프라이트에 접근하기 때문에 배열에 등록하는 순서 중요!
     [SerializeField]
     private Sprite[] _cardSprites;
+    [SerializeField]
+    private Sprite _colorJokerSprite;
+    [SerializeField]
+    private Sprite _monochromeJokerSprite;
 
     [Header("Gamble Button UI")]
     [SerializeField]
@@ -54,15 +56,50 @@ public class GambleUIController : MonoBehaviour
     [SerializeField]
     private Button _changeButton;
 
-    public void ReverseCardFrountUI(int index) => _cardImages[index].sprite = _cardSprites[_cardGambler.drawCards[index].index];
+    [SerializeField]
+    private GameObject _jokerCardUsingInfoPanelObject;
+
+    public void ReverseCardFrountUI(int index)
+    {
+        int cardIndex = _cardGambler.drawCards[index].index;
+
+        // 보여줄 카드가 조커카드가 아닐 경우 카드 바꾸기 버튼을 활성화 하고, 조커 카드 버튼을 비활성화 한다.
+        if (cardIndex != Card.COLOR_JOKER_INDEX && cardIndex != Card.MONOCHROME_JOKER_INDEX)
+        {
+            ShowCardChangeButton(index);
+            _cardImages[index].sprite = _cardSprites[_cardGambler.drawCards[index].index];
+            _jokerCardButtons[index].interactable = false;
+        }
+        // 보여줄 카드가 조커카드일 경우 카드 바꾸기 버튼을 비활성화 하고, 조커 카드 버튼을 활성화 한다.
+        // 조커 카드를 게임 설치 이후 처음 뽑았을 경우 조커 카드 사용법을 알려주는 오브젝트를 활성화 한다.
+        else
+        {
+            if (cardIndex == Card.COLOR_JOKER_INDEX)
+            {
+                _cardImages[index].sprite = _colorJokerSprite;
+                _jokerCardButtons[index].onClick.RemoveAllListeners();
+                _jokerCardButtons[index].onClick.AddListener(() => _cardGambler.ShowCardSelector(index, CardSelector.JokerType.Color));
+                _jokerCardButtons[index].interactable = true;
+            }
+            else
+            {
+                _cardImages[index].sprite = _monochromeJokerSprite;
+                _jokerCardButtons[index].onClick.RemoveAllListeners();
+                _jokerCardButtons[index].onClick.AddListener(() => _cardGambler.ShowCardSelector(index, CardSelector.JokerType.Monochrome));
+                _jokerCardButtons[index].interactable = true;
+            }
+
+            HideCardChangeButton(index);
+
+            if (!_cardGambler.isJokerCardPicked)
+                ShowJokerCardUsingInfoPanel();
+        }
+    }
 
     public void AllReverseCardFrontUI()
     {
         for (int index = 0; index < _cardGambler.drawCardCount; index++)
-        {
             ReverseCardFrountUI(index);
-            ShowFunctionButton(index);
-        }
     }
 
     public void ReverseCardBackUI(int index) => _cardImages[index].sprite = _cardBackSprite;
@@ -72,7 +109,7 @@ public class GambleUIController : MonoBehaviour
         for (int index = 0; index < _cardGambler.drawCardCount; index++)
         {
             ReverseCardBackUI(index);
-            HideFunctionButton(index);
+            HideCardChangeButton(index);
         }
     }
 
@@ -88,33 +125,19 @@ public class GambleUIController : MonoBehaviour
         ShowGetButtonUI();
     }
 
-    public void ShowFunctionButton(int index) => _functionButtons[index].gameObject.SetActive(true);
-    public void HideFunctionButton(int index) => _functionButtons[index].gameObject.SetActive(false);
+    public void ShowCardChangeButton(int index) => _cardChangeButtons[index].gameObject.SetActive(true);
+    public void HideCardChangeButton(int index) => _cardChangeButtons[index].gameObject.SetActive(false);
 
-    public void ShowFunctionToggle() => _functionToggle.gameObject.SetActive(true);
-    public void HideFunctionToggle() => _functionToggle.gameObject.SetActive(false);
-
-    public void EnableFunctionToggle() => _functionToggle.interactable = true;
-    public void DisableFunctionToggle() => _functionToggle.interactable = false;
-
-    public void ToggleFunctionImage()
+    public void EnableCardChangeButton()
     {
-        if (_cardGambler.buttonFunctionType == CardGambler.ButtonFunctionType.CardChange)
-            _functionToggleImage.sprite = _jokerCardSprite;
-        else
-            _functionToggleImage.sprite = _cardChangeSprite;
-
-        ToggleFunctionButtonImage();
+        for (int index = 0; index < _cardGambler.drawCardCount; index++)
+            _cardChangeButtons[index].interactable = true;
     }
-    private void ToggleFunctionButtonImage()
+
+    public void DisableCardChangeButton()
     {
-        for (int i = 0; i < _functionButtons.Length; i++)
-        {
-            if (_cardGambler.buttonFunctionType == CardGambler.ButtonFunctionType.CardChange)
-                _functionButtonImages[i].sprite = _cardChangeSprite;
-            else
-                _functionButtonImages[i].sprite = _jokerCardSprite;
-        }
+        for (int index = 0; index < _cardGambler.drawCardCount; index++)
+            _cardChangeButtons[index].interactable = false;
     }
 
     public void SetHandUI(PokerHand drawHand)
@@ -174,17 +197,33 @@ public class GambleUIController : MonoBehaviour
 
         // 카드를 모두 뒤집는다.
         AllReverseCardBackUI();
-        // 카드 바꾸기 기능과 조커카드 기능 버튼을 비활성화 한다.
-        HideFunctionToggle();
+
         // 타워를 Get 하는 버튼을 비활성화 한다.
         HideGetButtonUI();
+
         // Gamble 버튼을 화면에 나타낸다.
         ShowGambleButtonUI();
     }
 
     public void MarkChangeCard(int changeIndex) => _cardImages[changeIndex].color = Color.yellow;
     public void MarkCancelChangeCard(int changeIndex) => _cardImages[changeIndex].color = Color.white;
-
+    public void SetCardPattern(CardSelector.JokerType jokerType)
+    {
+        if(jokerType == CardSelector.JokerType.Color)
+        {
+            _patternButtons[(int)Card.Pattern.Clover].gameObject.SetActive(false);
+            _patternButtons[(int)Card.Pattern.Diamond].gameObject.SetActive(true);
+            _patternButtons[(int)Card.Pattern.Heart].gameObject.SetActive(true);
+            _patternButtons[(int)Card.Pattern.Spade].gameObject.SetActive(false);
+        }
+        else
+        {
+            _patternButtons[(int)Card.Pattern.Clover].gameObject.SetActive(true);
+            _patternButtons[(int)Card.Pattern.Diamond].gameObject.SetActive(false);
+            _patternButtons[(int)Card.Pattern.Heart].gameObject.SetActive(false);
+            _patternButtons[(int)Card.Pattern.Spade].gameObject.SetActive(true);
+        }
+    }
     public void ChangeSelectCardPattern(Card.Pattern oldPattern, Card.Pattern newPattern)
     {
         _patternButtons[(int)oldPattern].interactable = true;
@@ -209,9 +248,13 @@ public class GambleUIController : MonoBehaviour
     private void DisableCardButton(Card.Pattern newPattern)
     {
         // 이미 뽑은 카드들이 있다면 비활성화 한다.
-        for(int i=0; i<_cardGambler.drawCards.Length; i++)
+        for (int i = 0; i < _cardGambler.drawCards.Length; i++)
         {
-            if((int)_cardGambler.drawCards[i].pattern == (int)newPattern)
+            // 뽑은 카드가 조커카드라면 건너뛴다.
+            if (_cardGambler.drawCards[i].isJoker)
+                continue;
+
+            if ((int)_cardGambler.drawCards[i].pattern == (int)newPattern)
             {
                 int numberIndex = (int)_cardGambler.drawCards[i].number;
                 _cardButtons[numberIndex].interactable = false;
@@ -233,6 +276,11 @@ public class GambleUIController : MonoBehaviour
             _changeButton.interactable = false;
     }
     
+    public void ShowJokerCardUsingInfoPanel()
+    {
+        _cardGambler.isJokerCardPicked = true;
+        _jokerCardUsingInfoPanelObject.SetActive(true);
+    }
 }
 
 

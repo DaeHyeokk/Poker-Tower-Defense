@@ -5118,29 +5118,29 @@ MonoBehaviour:
   - rate: 40
     duration: 2
     chance: 60
-  - rate: 60
+  - rate: 50
     duration: 2
     chance: 70
-  - rate: 80
+  - rate: 60
     duration: 2
     chance: 80
   _specialIARateAttributes:
-  - rate: 10
-    duration: 2
-  - rate: 20
-    duration: 2
-  - rate: 35
-    duration: 2
+  - rate: 30
+    duration: 3
+  - rate: 40
+    duration: 3
   - rate: 50
-    duration: 2
+    duration: 3
+  - rate: 60
+    duration: 3
   _specialCritAttributes:
   - rate: 200
     chance: 40
   - rate: 250
     chance: 50
-  - rate: 350
+  - rate: 300
     chance: 60
-  - rate: 500
+  - rate: 400
     chance: 80
   _specialAttackRange: 0.8
   _specialBuffRanges:
