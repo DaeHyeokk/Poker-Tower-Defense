@@ -53,8 +53,8 @@ public class StageUIManager : MonoBehaviour
     [SerializeField]
     private TextMeshProUGUI tempText;
 
-    private Queue<RewardText> _missionRewardTextQueue = new();
-    private bool _isReadyShowMissionReward = true;
+    private Queue<RewardText> _screenCenterRewardTextQueue = new();
+    private bool _isReadyShowScreenCenterReward = true;
 
     /**************************** 언젠가 쓰이게 될 수도 있음 **********************************************
     public ScreenCover screenCover => _screenCover;
@@ -84,17 +84,17 @@ public class StageUIManager : MonoBehaviour
 
     private void Update()
     {
-        RewardText missionRewardText;
+        RewardText screenCenterRewardText;
 
-        // 미션리워드를 화면에 띄울 준비가 되어 있고, 큐에 대기중인 미션리워드가 있는 경우 수행.
-        if (_isReadyShowMissionReward && _missionRewardTextQueue.TryDequeue(out missionRewardText))
+        // 화면 중앙에 리워드를 띄울 준비가 되어 있고, 큐에 대기중인 리워드가 있는 경우 수행.
+        if (_isReadyShowScreenCenterReward && _screenCenterRewardTextQueue.TryDequeue(out screenCenterRewardText))
         {
-            _isReadyShowMissionReward = false;
-            missionRewardText.gameObject.SetActive(true);
-            missionRewardText.StartAnimation();
+            _isReadyShowScreenCenterReward = false;
+            screenCenterRewardText.gameObject.SetActive(true);
+            screenCenterRewardText.StartAnimation();
 
             // 미션리워드를 화면에 표시함과 동시에 미션 완료 사운드 플레이.
-            SoundManager.instance.PlaySFX(SoundFileNameDictionary.missionCompleteSound);
+            SoundManager.instance.PlaySFX(SoundFileNameDictionary.screenCenterRewardShowSound);
         }
     }
 
@@ -117,7 +117,7 @@ public class StageUIManager : MonoBehaviour
     {
         DamageTakenText damageTakenText = _damageTakenTextPool.GetObject();
 
-        damageTakenText.transform.position = target.position + new Vector3(0f, 0.2f, 0f);
+        damageTakenText.transform.position = target.position + new Vector3(0f, 0.42f, 0f);
         damageTakenText.textMeshPro.text = Mathf.Round(damage).ToString();
         damageTakenText.damageTakenType = damageTakenType;
 
@@ -163,23 +163,23 @@ public class StageUIManager : MonoBehaviour
         towerSalesRewardText.StartAnimation();
     }
 
-    public void reservateMissionReward(string reward)
+    public void ReservateScreenCenterReward(string reward)
     {
-        RewardText missionRewardText = _rewardTextPool.GetObject();
+        RewardText rewardText = _rewardTextPool.GetObject();
 
-        missionRewardText.transform.localScale = new Vector3(1.7f, 1.7f, 1.7f);
-        missionRewardText.transform.position = Vector3.zero;
-        missionRewardText.textMeshPro.text = reward;
-        missionRewardText.textObjectFadeAnimation.lerpSpeed = 0.4f;
-        missionRewardText.movement2D.Stop();
-        missionRewardText.gameObject.SetActive(false);
+        rewardText.transform.localScale = new Vector3(1.7f, 1.7f, 1.7f);
+        rewardText.transform.position = Vector3.zero;
+        rewardText.textMeshPro.text = reward;
+        rewardText.textObjectFadeAnimation.lerpSpeed = 0.4f;
+        rewardText.movement2D.Stop();
+        rewardText.gameObject.SetActive(false);
 
-        _missionRewardTextQueue.Enqueue(missionRewardText);
+        _screenCenterRewardTextQueue.Enqueue(rewardText);
     }
 
     public void ReturnMissionRewardText(RewardText missionRewardText)
     {
-        _isReadyShowMissionReward = true;
+        _isReadyShowScreenCenterReward = true;
         _rewardTextPool.ReturnObject(missionRewardText);
     }
 

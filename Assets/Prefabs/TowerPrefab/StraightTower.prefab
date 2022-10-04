@@ -5129,20 +5129,19 @@ MonoBehaviour:
     duration: 3
   - rate: 40
     duration: 3
-  - rate: 50
-    duration: 3
   - rate: 60
+    duration: 3
+  - rate: 80
     duration: 3
   _specialCritAttributes:
   - rate: 200
     chance: 40
-  - rate: 250
-    chance: 50
   - rate: 300
+    chance: 50
+  - rate: 500
     chance: 60
-  - rate: 400
+  - rate: 700
     chance: 80
-  _specialAttackRange: 0.8
   _specialBuffRanges:
   - 0.55
   - 0.75

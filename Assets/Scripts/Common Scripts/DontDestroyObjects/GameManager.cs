@@ -22,13 +22,11 @@ public class PlayerGameData
 
         for(int i=0; i<playerStageDataList.Capacity; i++)
         {
-            int bestRecord;
-            int clearCount;
+            int clearCount = 0;
+            int bestRoundRecord = 0;
+            float bestBossKilledTakenTimeRecord = PlayerStageData.DEFAULT_TAKEN_TIME;
 
-            bestRecord = 0;
-            clearCount = 0;
-
-            playerStageDataList.Add(new(bestRecord, clearCount));
+            playerStageDataList.Add(new(clearCount, bestRoundRecord, bestBossKilledTakenTimeRecord));
         }
         
         for(int i=0; i<playerTowerDataList.Capacity; i++)
@@ -46,13 +44,11 @@ public class PlayerGameData
 
         for (int i = 0; i < playerStageDataList.Capacity; i++)
         {
-            int bestRecord;
-            int clearCount;
+            int clearCount = 0;
+            int bestRoundRecord = 0;
+            float bestBossKilledTakenTimeRecord = PlayerStageData.DEFAULT_TAKEN_TIME;
 
-            bestRecord = 0;
-            clearCount = 0;
-
-            playerStageDataList[i] = new(bestRecord, clearCount);
+            playerStageDataList[i] = new(clearCount, bestRoundRecord, bestBossKilledTakenTimeRecord);
         }
 
         for (int i = 0; i < playerTowerDataList.Capacity; i++)
@@ -68,13 +64,17 @@ public class PlayerGameData
 [Serializable]
 public struct PlayerStageData
 {
-    public int bestRecord;
-    public int clearCount;
+    public const float DEFAULT_TAKEN_TIME = 99999f;
 
-    public PlayerStageData(int bestRecord, int clearCount)
+    public int clearCount;
+    public int bestRoundRecord;
+    public float bestBossKilledTakenTimeRecord;
+
+    public PlayerStageData(int clearCount, int bestRoundRecord, float bestBossKilledTakenTimeRecord)
     {
-        this.bestRecord = bestRecord;
         this.clearCount = clearCount;
+        this.bestRoundRecord = bestRoundRecord;
+        this.bestBossKilledTakenTimeRecord = bestBossKilledTakenTimeRecord;
     }
 }
 
@@ -134,7 +134,7 @@ public class GameManager : MonoBehaviour
     {
         if (pause && Social.localUser.authenticated)
             Save();
-
+        
         PlayerPrefs.Save();
     }
 
@@ -149,7 +149,7 @@ public class GameManager : MonoBehaviour
         yield return new WaitForSeconds(1f);
 
         // 인터넷에 연결되지 않았고 waitDelay가 3초 미만일 경우 수행 
-        while (Application.internetReachability == NetworkReachability.NotReachable && waitDelay < maximumDelay)
+        while (!CheckNetworkReachable() && waitDelay < maximumDelay)
         {
             yield return null;
             waitDelay += Time.deltaTime;
@@ -277,7 +277,7 @@ public class GameManager : MonoBehaviour
             string myGameDataString = Encoding.UTF8.GetString(loadedData);
 
             // gameDataString 문자열이 빈 문자열이라면 (저장된 데이터가 없다면)
-            // 기본생성자를 호출하여 기본값으로 설정한다.
+            // 기본값으로 설정한다.
             if (myGameDataString == "")
                 playerGameData.SetDefaultValue();
             // 저장된 데이터가 있다면 데이터 값을 대입한다.
@@ -330,6 +330,38 @@ public class GameManager : MonoBehaviour
         {
             if (onFailed != null) onFailed();
         }
+    }
+    #endregion
+
+    #region 리더보드
+    public void ReportBossKilledTakenTime(StageManager.StageDifficulty stageDifficulty, float bossKilledtakenTime)
+    {
+        if (stageDifficulty == StageManager.StageDifficulty.Easy)
+            PlayGamesPlatform.Instance.ReportScore((long)(bossKilledtakenTime * 1000), GPGSIds.leaderboard_easy_mode_boss_killed_taken_time, (bool success) => { });
+
+        else if(stageDifficulty == StageManager.StageDifficulty.Normal)
+            PlayGamesPlatform.Instance.ReportScore((long)(bossKilledtakenTime * 1000), GPGSIds.leaderboard_normal_mode_boss_killed_taken_time, (bool success) => { });
+
+        else if (stageDifficulty == StageManager.StageDifficulty.Hard)
+            PlayGamesPlatform.Instance.ReportScore((long)(bossKilledtakenTime * 1000), GPGSIds.leaderboard_hard_mode_boss_killed_taken_time, (bool success) => { });
+
+        else if (stageDifficulty == StageManager.StageDifficulty.Hell)
+            PlayGamesPlatform.Instance.ReportScore((long)(bossKilledtakenTime * 1000), GPGSIds.leaderboard_hell_mode_boss_killed_taken_time, (bool success) => { });
+    }
+
+    public void ShowBossKilledTakenTimeLeaderboard(StageManager.StageDifficulty stageDifficulty)
+    {
+        if (stageDifficulty == StageManager.StageDifficulty.Easy)
+            PlayGamesPlatform.Instance.ShowLeaderboardUI(GPGSIds.leaderboard_easy_mode_boss_killed_taken_time);
+
+        else if (stageDifficulty == StageManager.StageDifficulty.Normal)
+            PlayGamesPlatform.Instance.ShowLeaderboardUI(GPGSIds.leaderboard_normal_mode_boss_killed_taken_time);
+
+        else if (stageDifficulty == StageManager.StageDifficulty.Hard)
+            PlayGamesPlatform.Instance.ShowLeaderboardUI(GPGSIds.leaderboard_hard_mode_boss_killed_taken_time);
+
+        else if (stageDifficulty == StageManager.StageDifficulty.Hell)
+            PlayGamesPlatform.Instance.ShowLeaderboardUI(GPGSIds.leaderboard_hell_mode_boss_killed_taken_time);
     }
     #endregion
 

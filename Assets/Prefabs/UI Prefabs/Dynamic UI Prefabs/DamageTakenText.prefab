@@ -71,13 +71,13 @@ MonoBehaviour:
   _textMeshPro: {fileID: 4791661860645922614}
   _textObjectFadeAnimation: {fileID: 306553780866840651}
   _movement2D: {fileID: 6295824775307201331}
-  _normalDamageFontSize: 2.3
-  _normalhighlightFontSize: 3.3
+  _normalDamageFontSize: 2.1
+  _normalhighlightFontSize: 3.1
   _normalDamageColor: {r: 1, g: 1, b: 1, a: 1}
-  _critDamageFontSize: 2.7
-  _crithighlightFontSize: 4
+  _critDamageFontSize: 2.5
+  _crithighlightFontSize: 3.8
   _critDamageColor: {r: 1, g: 0, b: 0, a: 1}
-  _highlightSpeed: 13
+  _highlightSpeed: 20
 --- !u!114 &306553780866840651
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -91,7 +91,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _deltaTimeMode: 0
-  _lerpSpeed: 2.4
+  _lerpSpeed: 3.5
   _text: {fileID: 4791661860645922614}
 --- !u!23 &6664996395323854646
 MeshRenderer:

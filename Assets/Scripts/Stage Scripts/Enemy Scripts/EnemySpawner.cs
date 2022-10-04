@@ -14,7 +14,7 @@ public class EnemySpawner : MonoBehaviour
     [SerializeField]
     private GameObject _roundEnemyPrefab;
     private int _roundEnemyIndex;
-
+    
     [Header("Round Boss Enemy")]
     [SerializeField]
     private BossEnemyData[] _roundBossEnemyDatas;
@@ -51,6 +51,9 @@ public class EnemySpawner : MonoBehaviour
     public MissionBossEnemy[] missionBossEnemies => _missionBossEnemies;
     public RoundBossEnemy roundBossEnemy => _roundBossEnemy;
     public SpecialBossEnemy specialBossEnemy => _specialBossEnemy;
+    public BossEnemyData[] roundBossEnemyDatas => _roundBossEnemyDatas;
+    public BossEnemyData[] missionBossEnemyDatas => _missionBossEnemyDatas;
+    public BossEnemyData[] specialBossEnemyDatas => _specialBossDatas;
 
     private void Awake()
     {

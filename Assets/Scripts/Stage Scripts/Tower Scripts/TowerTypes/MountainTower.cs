@@ -16,6 +16,10 @@ public class MountainTower : Tower
     [SerializeField]
     private IncreaseDamageRate.Attribute[] _specialIDRateAttributes;
 
+    [Header("Special Critical Strike")]
+    [SerializeField]
+    private CriticalStrike.Attribute[] _specialCritAttributes;
+
     [Header("Inflict Range")]
     [SerializeField]
     private float[] _specialBuffRanges;
@@ -24,6 +28,7 @@ public class MountainTower : Tower
 
     private BasicAttack _basicAttack;
     private IncreaseReceivedDamageRate _baseIRDRate;
+    private CriticalStrike _specialCriticalStrike;
     private IncreaseDamageRate _specialIDRate;
 
 
@@ -57,11 +62,13 @@ public class MountainTower : Tower
 
         _basicAttack = new(this);
         baseEnemyInflictorList.Add(_basicAttack);
-        specialEnemyInflictorList.Add(_basicAttack);
 
         _baseIRDRate = new(this, _basicIRDRateAttributes);
         baseEnemyInflictorList.Add(_baseIRDRate);
 
+        _specialCriticalStrike = new(this, _specialCritAttributes);
+        specialEnemyInflictorList.Add(_specialCriticalStrike);
+        
         _specialIDRate = new(this, _specialIDRateAttributes);
         specialTowerInflictorList.Add(_specialIDRate);
 

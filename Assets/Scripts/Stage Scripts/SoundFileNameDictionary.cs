@@ -22,7 +22,7 @@ public class SoundFileNameDictionary
     public static readonly string goldIncreaseSound = "Gold Increase Sound";
     public static readonly string mineralIncreaseSound = "Mineral Increase Sound";
     public static readonly string missionBossMissingSound = "Mission Boss Missing Sound";
-    public static readonly string missionCompleteSound = "Mission Complete Sound";
+    public static readonly string screenCenterRewardShowSound = "Screen Center Reward Show Sound";
     public static readonly string missionUIHideSound = "Mission UI Hide Sound";
     public static readonly string missionUIShowSound = "Mission UI Show Sound";
     public static readonly string multipleTargetTowerBasicAttackSound = "Multiple Target Tower Base Attack Sound";

@@ -9,7 +9,10 @@ public class SpecialBossEnemy : Enemy
     private TextMeshProUGUI _healthText;
     [SerializeField]
     private TextMeshProUGUI _levelText;
+    [SerializeField]
+    private TowerBuilder _towerBuilder;
 
+    private int _rewardTowerLevel;
     public int level { get; set; }
 
     protected override void Awake()
@@ -24,19 +27,21 @@ public class SpecialBossEnemy : Enemy
         //UpdateHealthText();
 
         // 생성할 Enemy의 체력 설정
-        _maxHealth = enemyData.health;
+        _maxHealth = enemyData.health * StageManager.instance.specialBossHpPercentage;
         _health = _maxHealth;
         _enemyHealthbar.maxHealth = _maxHealth;
         _enemyHealthbar.health = _maxHealth;
 
         _rewardGold = enemyData.rewardGold;
         _rewardChangeChance = enemyData.rewardChangeChance;
+        _rewardTowerLevel = enemyData.rewardTowerLevel;
 
-        _rewardStringBuilder.Set(_rewardGold, _rewardChangeChance);
+        _rewardStringBuilder.Set(_rewardGold, _rewardChangeChance, _rewardTowerLevel);
+
         _healthText.text = ((int)Mathf.Round(maxHealth)).ToString();
         _levelText.text = "Lv " + level.ToString();
     }
-
+ 
     private void UpdateHealthText()
     {
         float healthPercent = _enemyHealthbar.healthPercent;
@@ -70,7 +75,23 @@ public class SpecialBossEnemy : Enemy
     protected override void Die(Tower fromTower)
     {
         base.Die(fromTower);
+
         Respawn();
+    }
+    protected override void GiveReward()
+    {
+        StageManager.instance.gold += _rewardGold;
+
+        if (_rewardChangeChance > 0)
+            StageManager.instance.changeChance += _rewardChangeChance;
+
+        // 스폐셜보스 레벨에 비례하는 레벨의 랜덤 타워를 플레이어에게 지급한다.
+        int towerIndex = Random.Range(0, 10);
+        _towerBuilder.BuildTower(towerIndex, _rewardTowerLevel);
+
+        StageUIManager.instance.ReservateScreenCenterReward("<color=\"red\">행성파괴 보상!</color>\n" + _rewardStringBuilder.ToString());
+
+        //StageUIManager.instance.ShowEnemyDieRewardText(_rewardStringBuilder.ToString(), this.transform);
     }
 
     private void Respawn()

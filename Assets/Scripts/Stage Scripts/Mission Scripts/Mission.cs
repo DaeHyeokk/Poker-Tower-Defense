@@ -32,7 +32,7 @@ public abstract class Mission : MonoBehaviour
         if (_rewardChangeChance > 0)
             StageManager.instance.changeChance += _rewardChangeChance;
 
-        StageUIManager.instance.reservateMissionReward("<color=\"red\">미션클리어!</color>\n" + missionCompletionString + _rewardStringBuilder.ToString());
+        StageUIManager.instance.ReservateScreenCenterReward("<color=\"red\">미션클리어!</color>\n" + missionCompletionString + _rewardStringBuilder.ToString());
     }
 
     protected abstract void Update();

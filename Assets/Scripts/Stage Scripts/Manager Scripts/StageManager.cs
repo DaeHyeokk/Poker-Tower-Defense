@@ -4,7 +4,6 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using GoogleMobileAds.Api;
-using TMPro;
 
 public class StageManager : MonoBehaviour
 {
@@ -33,6 +32,8 @@ public class StageManager : MonoBehaviour
     [SerializeField]
     private WaveSystem _waveSystem;
     [SerializeField]
+    private GameObject _tutorialObject;
+    [SerializeField]
     private GameObject _stageMenuPanelObject;
     [SerializeField]
     private GameObject _stageClearPanelObject;
@@ -43,21 +44,22 @@ public class StageManager : MonoBehaviour
     [SerializeField]
     private GameObject _saveFailedPanelObject;
 
-    private readonly float[] _enemyHpPercentages = new float[] { 1f, 2f, 3f, 4f };
+    private readonly float[] _roundEnemyHpPercentages = new float[] { 1f, 2f, 4f, 8f };
+    private readonly float[] _bossEnemyHpPercentages = new float[] { 0.5f, 1f, 2f, 4f };
+    private readonly float[] _specialBossHpPercentages = new float[] { 0.85f, 1f, 1.15f, 1.3f };
     private readonly float[] _enemySpeedPercentages = new float[] { 0.85f, 1f, 1.15f, 1.3f };
 
     private int _gold = 400;
     private int _mineral = 100;
     private int _changeChance;
     private int _jokerCard;
-    private int _clearCount;
-    private int _bestRoundRecord;
     private float _gameSpeed;
     private float _backupGameSpeed;
     private float _maxGameSpeed;
     private bool _isPaused;
     private bool _isEnd;
     private bool _isInterstitialShowed;
+    
     public event Action onStagePaused;
     public event Action onStageResumed;
     public event Action onStageEnd;
@@ -134,9 +136,12 @@ public class StageManager : MonoBehaviour
 
     public bool isEnd => _isEnd;
     public int pokerCount => _pokerCount;
-    public int clearCount => _clearCount;
-    public int bestRoundRecord => _bestRoundRecord;
-    public float enemyHpPercentage => _enemyHpPercentages[(int)stageDifficulty];
+    public int bestRoundRecord => _playerGameData.playerStageDataList[(int)stageDifficulty].bestRoundRecord;
+    public float bestBossKilledTakenTimeRecord => _playerGameData.playerStageDataList[(int)stageDifficulty].bestBossKilledTakenTimeRecord;
+    public float bossKilledTakenTime { get; set; }
+    public float roundEnemyHpPercentage => _roundEnemyHpPercentages[(int)stageDifficulty];
+    public float bossEnemyHpPercentage => _bossEnemyHpPercentages[(int)stageDifficulty];
+    public float specialBossHpPercentage => _specialBossHpPercentages[(int)stageDifficulty];
     public float enemySpeedPercentage => _enemySpeedPercentages[(int)stageDifficulty];
 
     public GameObject loadingUIPanelObject => _loadingUIPanelObject;
@@ -145,35 +150,35 @@ public class StageManager : MonoBehaviour
     {
         if (instance != this)
             Destroy(gameObject);
+        else
+        {
+            _gold = 400;
+            _mineral = 100;
 
-        _gold = 400;
-        _mineral = 100;
-        changeChance = 10;
-        // 플레이어가 프리미엄패스를 구입한 경우 카드교환권 10장을 추가 지급.
-        if (IAPManager.instance.HadPurchashed(IAPManager.instance.productPremiumPass))
-            changeChance += 10;
+            _stageDataUIController.SetGoldAmountText(_gold);
+            _stageDataUIController.SetMineralAmountText(_mineral);
 
-        // 플레이어가 추가 배속 상품을 구입한 경우 최대 게임 스피드를 3으로 한다.
-        _maxGameSpeed = IAPManager.instance.HadPurchashed(IAPManager.instance.productExtraGameSpeed) ? 3 : 2;
-        _backupGameSpeed = 1f;
-        gameSpeed = 1f;
+            changeChance = 10;
+            // 플레이어가 프리미엄패스를 구입한 경우 카드교환권 10장을 추가 지급.
+            if (IAPManager.instance.HadPurchashed(IAPManager.instance.productPremiumPass))
+                changeChance += 10;
 
-        _stageDataUIController.SetGoldAmountText(_gold);
-        _stageDataUIController.SetMineralAmountText(_mineral);
-        
-        _clearCount = _playerGameData.playerStageDataList[(int)stageDifficulty].clearCount;
-        _bestRoundRecord = _playerGameData.playerStageDataList[(int)stageDifficulty].bestRecord;
+            // 플레이어가 추가 배속 상품을 구입한 경우 최대 게임 스피드를 3으로 한다.
+            _maxGameSpeed = IAPManager.instance.HadPurchashed(IAPManager.instance.productExtraGameSpeed) ? 3 : 2;
+            _backupGameSpeed = 1f;
+            gameSpeed = 1f;
 
-        // 타워가 이전 스테이지에서 기록했던 킬수를 초기화 한다.
-        Tower.ResetTowerKillCount();
+            // 타워가 이전 스테이지에서 기록했던 킬수를 초기화 한다.
+            Tower.ResetTowerKillCount();
 
-        UIManager.instance.GameStartScreenCoverFadeOut();
-        SoundManager.instance.PlayBGM(SoundFileNameDictionary.mainBGM);
-        GameManager.instance.SetScreenResolution();
+            UIManager.instance.GameStartScreenCoverFadeOut();
+            SoundManager.instance.PlayBGM(SoundFileNameDictionary.mainBGM);
+            GameManager.instance.SetScreenResolution();
 
-        Screen.sleepTimeout = SleepTimeout.NeverSleep;
+            Screen.sleepTimeout = SleepTimeout.NeverSleep;
 
-        LoadGoogleAds();
+            LoadGoogleAds();
+        }
     }
 
     private void OnApplicationPause(bool pause)
@@ -314,15 +319,11 @@ public class StageManager : MonoBehaviour
         _isEnd = true;
         _backupGameSpeed = gameSpeed;
         gameSpeed = 0f;
-        _clearCount++;
         _stageClearPanelObject.SetActive(true);
 
         // 플레이어가 로그인을 했을 경우에만 데이터를 저장한다.
         if (Social.localUser.authenticated)
         {
-            // 현재 난이도를 처음 클리어 했다면 최대 라운드도 저장한다.
-            if (_clearCount == 1)
-                SaveBestRecordData();
             SaveClearStageData();
             AddPlayerTowerKillCountData(true);
             // 중요한 데이터이므로 바로 저장한다.
@@ -343,12 +344,13 @@ public class StageManager : MonoBehaviour
         // 플레이어가 로그인을 했을 경우에만 데이터를 저장한다.
         if (Social.localUser.authenticated)
         {
-            if (_waveSystem.wave > _bestRoundRecord)
+            if (_waveSystem.wave > bestRoundRecord)
                 SaveBestRecordData();
             AddPlayerTowerKillCountData(false);
             // 중요한 데이터이므로 바로 저장한다.
             SaveGoogleCloud();
         }
+
         SoundManager.instance.PauseBGM();
         SoundManager.instance.PlaySFX(SoundFileNameDictionary.stageDefeatSound);
     }
@@ -356,14 +358,24 @@ public class StageManager : MonoBehaviour
     private void SaveClearStageData()
     {
         PlayerStageData playerStageData = _playerGameData.playerStageDataList[(int)stageDifficulty];
-        playerStageData.clearCount = this.clearCount;
-        _playerGameData.playerStageDataList[(int)stageDifficulty] = playerStageData;
+        // 최고 기록보다 더 빠르게 보스를 잡았다면 최고 기록을 갱신하고, 리더보드에 등록한다.
+        if (playerStageData.bestBossKilledTakenTimeRecord > bossKilledTakenTime)
+        {
+            if(playerStageData.clearCount == 0)
+                SaveBestRecordData();
+
+            playerStageData.clearCount++;
+            playerStageData.bestBossKilledTakenTimeRecord = bossKilledTakenTime;
+            _playerGameData.playerStageDataList[(int)stageDifficulty] = playerStageData;
+            // 리더보드 등록 메소드 호출.
+            GameManager.instance.ReportBossKilledTakenTime(stageDifficulty, bossKilledTakenTime);
+        }
     }
 
     private void SaveBestRecordData()
     {
         PlayerStageData playerStageData = _playerGameData.playerStageDataList[(int)stageDifficulty];
-        playerStageData.bestRecord = _waveSystem.wave;
+        playerStageData.bestRoundRecord = _waveSystem.wave;
         _playerGameData.playerStageDataList[(int)stageDifficulty] = playerStageData;
     }
 
@@ -371,16 +383,7 @@ public class StageManager : MonoBehaviour
     {
         for(int i=0; i<Tower.towerTypeNames.Length; i++)
         {
-            // 게임을 클리어한 경우 타워가 기록한 킬수를 두배로 한다.
-            int stageKillsCount;
-            if (isClear)
-                stageKillsCount = Tower.GetKillCount(i) * 2;
-            else
-                stageKillsCount = Tower.GetKillCount(i);
-
-            // 추가보상이 활성화 되어있는 경우 기록한 킬수를 두배로 한다.
-            stageKillsCount = Tower.GetKillCount(i) * (GameManager.instance.playerGameData.isBonusRewardActived ? 2 : 1);
-
+            int stageKillsCount = GetStageTowerKillCount(i, isClear);
             Tower.AddPlayerTowerKillCount(i, stageKillsCount);
         }
 
@@ -397,6 +400,21 @@ public class StageManager : MonoBehaviour
         // 보너스 보상이 활성화된 상태였다면 비활성화 상태로 되돌린다.
         if (_playerGameData.isBonusRewardActived)
             _playerGameData.isBonusRewardActived = false;
+    }
+
+    public int GetStageTowerKillCount(int towerIndex, bool isClear)
+    {
+        // 게임을 클리어한 경우 타워가 기록한 킬수를 두배로 한다.
+        int stageKillsCount;
+        if (isClear)
+            stageKillsCount = Tower.GetKillCount(towerIndex) * 2;
+        else
+            stageKillsCount = Tower.GetKillCount(towerIndex);
+
+        // 추가보상이 활성화 되어있는 경우 기록한 킬수를 두배로 한다.
+        stageKillsCount *= (GameManager.instance.playerGameData.isBonusRewardActived ? 2 : 1);
+
+        return stageKillsCount;
     }
 
     public void SaveGoogleCloud()

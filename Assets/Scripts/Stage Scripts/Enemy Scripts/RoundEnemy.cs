@@ -14,6 +14,17 @@ public class RoundEnemy : FieldEnemy
         _roundEnemyNode = new(this);
     }
 
+    public override void Setup(EnemyData enemyData)
+    {
+        base.Setup(enemyData);
+
+        // 생성할 Enemy의 체력 설정 (현재 스테이지 난이도에 비례)
+        _maxHealth = enemyData.health * StageManager.instance.roundEnemyHpPercentage;
+        _health = _maxHealth;
+        _enemyHealthbar.maxHealth = _maxHealth;
+        _enemyHealthbar.health = _maxHealth;
+    }
+
     protected override void GiveReward()
     {
         // 일반 몬스터는 보상을 주지 않음.

@@ -97,7 +97,12 @@ public class FullHouseTower : Tower
     {
         _isSpecialBuff = true;
 
-        yield return new WaitForSeconds(_specialBuffDuration);
+        float specialBuffDuration = _specialBuffDuration;
+        while(specialBuffDuration > 0f)
+        {
+            specialBuffDuration -= Time.deltaTime;
+            yield return null;
+        }
 
         _isSpecialBuff = false;
     }

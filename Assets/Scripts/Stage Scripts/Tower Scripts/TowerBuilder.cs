@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class TowerBuilder : MonoBehaviour
 {
@@ -13,6 +14,8 @@ public class TowerBuilder : MonoBehaviour
     private GameObject _followTowerPrefab;
     [SerializeField]
     private Transform _towerSpawnPoint;
+    [SerializeField]
+    private Button[] _towerSelectSpawnButtons;
 
     private LinkedList<Tower> _towerList = new();
     private List<ObjectPool<Tower>> _towerPoolList = new();
@@ -31,6 +34,12 @@ public class TowerBuilder : MonoBehaviour
 
         _followTower = Instantiate(_followTowerPrefab).GetComponent<FollowTower>();
         _followTower.gameObject.SetActive(false);
+
+        for (int i = 0; i < _towerSelectSpawnButtons.Length; i++) 
+        {
+            int towerIndex = i;
+            _towerSelectSpawnButtons[i].onClick.AddListener(() => BuildTower(towerIndex, 2));
+        }
     }
 
     public void BuildTower(int towerIndex)
@@ -41,6 +50,20 @@ public class TowerBuilder : MonoBehaviour
         // 타워는 화면의 정중앙에서 생성 된다.
         tower.transform.position = _towerSpawnPoint.position;
         tower.Setup();
+
+        _towerSpawnPoint.position += new Vector3(0f, 0f, -0.000001f);
+
+        SoundManager.instance.PlaySFX(SoundFileNameDictionary.towerBuildSound);
+    }
+
+    public void BuildTower(int towerIndex, int towerLevel)
+    {
+        Tower tower = _towerPoolList[towerIndex].GetObject();
+        _towerList.AddLast(tower.towerNode);
+
+        // 타워는 화면의 정중앙에서 생성 된다.
+        tower.transform.position = _towerSpawnPoint.position;
+        tower.Setup(towerLevel);
 
         _towerSpawnPoint.position += new Vector3(0f, 0f, -0.000001f);
 

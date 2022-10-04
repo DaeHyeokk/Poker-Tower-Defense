@@ -17,7 +17,7 @@ public class TowerLevel
     {
         _levelLayout = levelLayout;
 
-        _levelImages = new Image[3];
+        _levelImages = new Image[_maxLevel];
         _levelImages = _levelLayout.GetComponentsInChildren<Image>(true);
 
         _level = 0;
@@ -45,10 +45,43 @@ public class TowerLevel
         return true;
     }
 
+    public void HideLevelImage()
+    {
+        /*
+        int levelImageIndex = 0;
+
+        while (levelImageIndex < _level)
+        {
+            _levelImages[levelImageIndex].gameObject.SetActive(false);
+            levelImageIndex++;
+        }
+        */
+        _levelLayout.gameObject.SetActive(false);
+    }
+
+    public void ShowLevelImage()
+    {
+        /*
+        int levelImageIndex = 0;
+
+        while (levelImageIndex < _level)
+        {
+            _levelImages[levelImageIndex].gameObject.SetActive(true);
+            levelImageIndex++;
+        }
+        */
+        _levelLayout.gameObject.SetActive(true);
+    }
+
     private void UpdateLevelImage()
     {
-        // 등급을 나타내는 이미지 한개를 활성화 시킨다
-        _levelImages[_level - 1].gameObject.SetActive(true);
+        int levelImageIndex = 0;
+
+        while (levelImageIndex < _level)
+        {
+            _levelImages[levelImageIndex].gameObject.SetActive(true);
+            levelImageIndex++;
+        }
     }
 }
 

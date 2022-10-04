@@ -74,7 +74,7 @@ public class StageDefeatUIController : MonoBehaviour
     {
         for (int towerIndex = 0; towerIndex < _towerKillCountTexts.Length; towerIndex++)
         {
-            int towerKillsCount = Tower.GetKillCount(towerIndex) * (GameManager.instance.playerGameData.isBonusRewardActived ? 2 : 1);
+            int towerKillsCount = StageManager.instance.GetStageTowerKillCount(towerIndex, false);
             _towerKillCountTexts[towerIndex].text = towerKillsCount.ToString() + "킬";
         }
     }

@@ -15,5 +15,7 @@ MonoBehaviour:
   sprite: {fileID: 21300000, guid: a6c938ccfcf52d546a4a7e76719277a0, type: 3}
   health: 10000000
   moveSpeed: 0
-  rewardGold: 600
-  rewardChangeChance: 20
+  bossName: "Lv6 \uD589\uC131\uBCF4\uC2A4"
+  rewardGold: 500
+  rewardChangeChance: 10
+  rewardTowerLevel: 2

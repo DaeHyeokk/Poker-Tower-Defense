@@ -4,8 +4,9 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
-using GoogleMobileAds.Api;
 using TMPro;
+
+
 public class LobbyManager : MonoBehaviour
 {
     private static LobbyManager _instance;
@@ -35,18 +36,22 @@ public class LobbyManager : MonoBehaviour
     {
         if (instance != this)
             Destroy(gameObject);
-
-        Time.timeScale = 1f;
-
-        if (Social.localUser.authenticated)
-            _loginText.text = "로그아웃";
         else
-            _loginText.text = "로그인";
+        {
+            Screen.sleepTimeout = SleepTimeout.SystemSetting;
+
+            Time.timeScale = 1f;
+            Time.fixedDeltaTime = 0.02f;
+
+            if (Social.localUser.authenticated)
+                _loginText.text = "로그아웃";
+            else
+                _loginText.text = "로그인";
+        }
     }
 
     private void Start()
     {
-
         UIManager.instance.GameStartScreenCoverFadeOut();
         SoundManager.instance.PlayBGM(SoundFileNameDictionary.mainBGM);
     }

@@ -22,8 +22,6 @@ public class StraightTower : Tower
 
     [Header("Inflict Range")]
     [SerializeField]
-    private float _specialAttackRange;
-    [SerializeField]
     private float[] _specialBuffRanges;
     [SerializeField]
     private Particle _buffRangeParticle;
@@ -103,8 +101,6 @@ public class StraightTower : Tower
         detailBaseAttackInfo.Append(_basicSlowing.inflictorInfo.ToString());
 
         detailSpecialAttackInfo.Clear();
-        detailSpecialAttackInfo.Append("[범위 공격]");
-        detailSpecialAttackInfo.Append('\n');
         detailSpecialAttackInfo.Append(maxTargetCount.ToString());
         detailSpecialAttackInfo.Append("명의 적을 공격");
         detailSpecialAttackInfo.Append('\n');
@@ -152,7 +148,7 @@ public class StraightTower : Tower
         else // (attackType == AttackType.Special)
         {
             Projectile projectile = projectileSpawner.SpawnProjectile(this, spawnPoint, target, specialProjectileSprite);
-            projectile.actionOnCollision += () => SpecialInflict(target, _specialAttackRange);
+            projectile.actionOnCollision += () => SpecialInflict(target);
         }
     }
 

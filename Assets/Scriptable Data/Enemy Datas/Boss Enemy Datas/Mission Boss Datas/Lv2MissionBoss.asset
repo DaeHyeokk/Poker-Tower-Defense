@@ -13,7 +13,9 @@ MonoBehaviour:
   m_Name: Lv2MissionBoss
   m_EditorClassIdentifier: 
   sprite: {fileID: 21300000, guid: bb77043d6e6fe1a44a0ce0cb0d20d75e, type: 3}
-  health: 30000
+  health: 50000
   moveSpeed: 1.2
+  bossName: "Lv2 \uBBF8\uC158\uBCF4\uC2A4"
   rewardGold: 300
-  rewardChangeChance: 10
+  rewardChangeChance: 5
+  rewardTowerLevel: -1

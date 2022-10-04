@@ -66,7 +66,7 @@ MonoBehaviour:
   - rate: 50
     duration: 3
     chance: 50
-  - rate: 60
+  - rate: 70
     duration: 3
     chance: 60
   _specialIDRateAttributes:
@@ -74,10 +74,19 @@ MonoBehaviour:
     duration: 3
   - rate: 40
     duration: 3
-  - rate: 50
-    duration: 3
   - rate: 60
     duration: 3
+  - rate: 80
+    duration: 3
+  _specialCritAttributes:
+  - rate: 300
+    chance: 50
+  - rate: 400
+    chance: 60
+  - rate: 600
+    chance: 70
+  - rate: 800
+    chance: 80
   _specialBuffRanges:
   - 0.55
   - 0.75

@@ -244,6 +244,18 @@ public abstract class Tower : MonoBehaviour
         UpdateDetailInfo();
     }
 
+    public void Setup(int level)
+    {
+        this.Setup();
+
+        while(level > 0)
+        {
+            _towerLevel.LevelUp();
+            LevelUpAction();
+            level--;
+        }
+    }
+
     protected virtual void AttackTarget()
     {
         attackCount++;
@@ -411,12 +423,8 @@ public abstract class Tower : MonoBehaviour
         {
             if (_towerLevel.LevelUp())
             {
-                // 타워 레벨업 시 타워의 컬러를 랜덤으로 변경한다.
-                _towerColor.ChangeRandomColor();
-                // 타워 레벨업 시 타워의 상세 정보 StringBuilder를 업데이트 한다.
-                UpdateDetailInfo();
+                LevelUpAction();
                 mergeTower.ReturnPool();
-
                 SoundManager.instance.PlaySFX(SoundFileNameDictionary.towerLevelupSound);
                 return true;
             }
@@ -425,6 +433,13 @@ public abstract class Tower : MonoBehaviour
         return false;
     }
 
+    public void LevelUpAction()
+    {
+        // 타워 레벨업 시 타워의 컬러를 랜덤으로 변경한다.
+        _towerColor.ChangeRandomColor();
+        // 타워 레벨업 시 타워의 상세 정보 StringBuilder를 업데이트 한다.
+        UpdateDetailInfo();
+    }
     protected virtual void UpdateDetailInfo()
     {
         UpdateDetailInflictorInfo();
@@ -480,6 +495,9 @@ public abstract class Tower : MonoBehaviour
         color.a = onTile != null ? 0.3f : 0f;
         _towerRenderer.color = color;
 
+        if (onTile == null)
+            _towerLevel.HideLevelImage();
+
         StageUIManager.instance.ShowTowerInfo(this);
     }
 
@@ -492,6 +510,8 @@ public abstract class Tower : MonoBehaviour
         Color color = _towerRenderer.color;
         color.a = 1f;
         _towerRenderer.color = color;
+
+        _towerLevel.ShowLevelImage();
 
         StageUIManager.instance.HideTowerInfo();
     }

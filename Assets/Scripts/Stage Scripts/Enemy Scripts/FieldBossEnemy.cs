@@ -11,8 +11,16 @@ public abstract class FieldBossEnemy : FieldEnemy
     {
         base.Setup(enemyData);
 
+        // 생성할 Enemy의 체력 설정 (현재 스테이지 난이도에 비례)
+        _maxHealth = enemyData.health * StageManager.instance.bossEnemyHpPercentage;
+        _health = _maxHealth;
+        _enemyHealthbar.maxHealth = _maxHealth;
+        _enemyHealthbar.health = _maxHealth;
+
         _rewardGold = enemyData.rewardGold;
         _rewardChangeChance = enemyData.rewardChangeChance;
+
+        _rewardStringBuilder.Set(_rewardGold, _rewardChangeChance);
     }
 
     protected override void Die(Tower fromTower)

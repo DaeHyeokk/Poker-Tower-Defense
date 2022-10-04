@@ -26,7 +26,7 @@ public class WaveSystem : MonoBehaviour
     private int _minute;
     private int _second;
     private int _finalWave = 40;
-
+    private int _waveRewardGold = 100;
     private float _oneSecond = 1f;
 
     private bool _isBossWave;
@@ -68,13 +68,14 @@ public class WaveSystem : MonoBehaviour
         }
     }
 
+    public bool isWaveStopped { get; set; }
     public bool isBossWave => _isBossWave;
     public bool isFinalWave => _finalWave == _wave ? true : false;
 
     private void Awake()
     {
         wave = 0;
-        _waveRewardStringBuilder.Set(200, 0);
+        _waveRewardStringBuilder.Set(_waveRewardGold, 0);
 
         // 게임 시작 10초 경과 후 첫 웨이브가 시작된다.
         minute = 0;
@@ -83,7 +84,7 @@ public class WaveSystem : MonoBehaviour
     
     private void Update()
     {
-        // 웨이브가 최종 웨이브를 넘어서면 아무 동작도 수행하지 않는다.
+        // 웨이브가 최종 웨이브를 넘어섰다면 아무 동작도 수행하지 않는다.
         if (_wave > _finalWave)
             return;
 
@@ -116,11 +117,11 @@ public class WaveSystem : MonoBehaviour
     
     private void IncreaseWave()
     {
-        wave++;
-
-        // 웨이브가 최종 웨이브를 넘어서면 아무 동작도 수행하지 않는다.
-        if (_wave > _finalWave)
+        // 웨이브가 최종 웨이브에 도달했다면 건너뛴다.
+        if (isFinalWave)
             return;
+
+        wave++;
 
         // 웨이브 시작 시 웨이브 시작 사운드를 재생한다.
         SoundManager.instance.PlaySFX(SoundFileNameDictionary.waveStartSound);
@@ -137,6 +138,8 @@ public class WaveSystem : MonoBehaviour
             // 웨이브가 시작됐음을 알리는 메세지를 보낸다.(?)
             if (onWaveStart != null)
                 onWaveStart();
+
+            onWaveStart?.Invoke();
 
             // 이전 웨이브가 보스웨이브였을 경우 수행.
             if (_isBossWave)
@@ -173,7 +176,7 @@ public class WaveSystem : MonoBehaviour
     private void GiveWaveReward()
     {
         // 200골드 지급
-        StageManager.instance.gold += 200;
+        StageManager.instance.gold += _waveRewardGold;
         StageUIManager.instance.ShowWaveRewardText(_waveRewardString + _waveRewardStringBuilder.ToString());
     }
 }

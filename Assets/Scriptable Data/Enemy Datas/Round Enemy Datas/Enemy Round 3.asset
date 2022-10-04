@@ -13,5 +13,5 @@ MonoBehaviour:
   m_Name: Enemy Round 3
   m_EditorClassIdentifier: 
   sprite: {fileID: 21300000, guid: bda209fcfb9a240479d4380b9d50a5ca, type: 3}
-  health: 156
+  health: 244
   moveSpeed: 1

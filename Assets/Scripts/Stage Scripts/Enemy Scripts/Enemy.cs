@@ -17,17 +17,16 @@ public abstract class Enemy : MonoBehaviour
     protected int _rewardGold;
     // Enemy를 잡을 경우 플레이어에게 지급되는 카드교환권
     protected int _rewardChangeChance;
+    protected RewardStringBuilder _rewardStringBuilder;
 
     protected float _maxHealth;  // Enemy의 최대 체력
     protected float _health;     // Enemy의 현재 체력
     private float _increaseReceiveDamageRate; // Enemy가 공격 당할 때 받는 피해량
-
-    protected RewardStringBuilder _rewardStringBuilder;
+    private IEnumerator _increaseReceivedDamageCoroutine;
     protected EnemySpawner _enemySpawner;
     protected EnemyHealthbar _enemyHealthbar;
 
     private readonly WaitForSeconds _takeDamageAnimationDelay = new(0.05f);
-    private readonly WaitForSeconds _waitForPointFiveSeconds = new(0.5f);
 
     protected float maxHealth => _maxHealth;  // Enemy의 최대 체력
     protected float health => _health;  // Enemy의 현재 체력
@@ -47,7 +46,6 @@ public abstract class Enemy : MonoBehaviour
         }
     }
 
-    protected WaitForSeconds waitForPointFiveSeconds => _waitForPointFiveSeconds;
 
     public EnemySpawner enemySpawner => _enemySpawner;
 
@@ -107,13 +105,27 @@ public abstract class Enemy : MonoBehaviour
         _enemySprite.color = Color.white;
     }
 
-    public void TakeIncreaseReceivedDamage(float increaseReceivedDamageRate, float duration)
+    public void TakeIncreaseReceivedDamage(float increaseReceiveDamageRate, float duration)
     {
-        StartCoroutine(IncreaseReceivedDamageCoroutine(increaseReceivedDamageRate, duration));
+        // 몬스터가 이미 받는 피해량 증가 디버프를 받고 있을 경우 수행.
+        if (this.increaseReceiveDamageRate != 0f)
+        {
+            // 더 큰 값의 받는 피해량 증가 디버프를 적용받고 있을 경우 건너뛴다. 
+            if (this.increaseReceiveDamageRate > increaseReceiveDamageRate)
+                return;
+            // 더 큰 값의 받는 피해량 증가 디버프를 적용하는 경우, 이전에 받고 있던 디버프를 제거한다.
+            else
+                StopCoroutine(_increaseReceivedDamageCoroutine);
+        }
+
+        // 디버프 적용.
+        _increaseReceivedDamageCoroutine = IncreaseReceivedDamageCoroutine(increaseReceiveDamageRate, duration);
+        StartCoroutine(_increaseReceivedDamageCoroutine);
     }
+
     private IEnumerator IncreaseReceivedDamageCoroutine(float IRDRate, float duration)
     {
-        this.increaseReceiveDamageRate += IRDRate;
+        this.increaseReceiveDamageRate = IRDRate;
 
         // duration만큼 지연
         while (duration > 0)
@@ -122,7 +134,7 @@ public abstract class Enemy : MonoBehaviour
             duration -= Time.deltaTime;
         }
 
-        this.increaseReceiveDamageRate -= IRDRate;
+        this.increaseReceiveDamageRate = 0f;
     }
 
     public abstract void TakeStun(float duration);

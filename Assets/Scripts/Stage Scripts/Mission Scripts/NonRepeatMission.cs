@@ -20,7 +20,6 @@ public abstract class NonRepeatMission : Mission
 
         _completionPanel.SetActive(true);
         _missionPanel.transform.SetAsLastSibling();
-
         isEnd = true;
     }
 

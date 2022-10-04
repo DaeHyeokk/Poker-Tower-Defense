@@ -13,7 +13,9 @@ MonoBehaviour:
   m_Name: 10 Round Boss Data
   m_EditorClassIdentifier: 
   sprite: {fileID: 21300000, guid: 56438e4ef030b914cbc2c28ddde43297, type: 3}
-  health: 22350
+  health: 50000
   moveSpeed: 1
+  bossName: "10\uC6E8\uC774\uBE0C \uBCF4\uC2A4"
   rewardGold: 300
-  rewardChangeChance: 10
+  rewardChangeChance: 5
+  rewardTowerLevel: -1

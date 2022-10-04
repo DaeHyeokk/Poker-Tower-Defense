@@ -24,11 +24,11 @@ public class CardDrawer
 
     public CardDrawer()
     {
-        // 조커카드가 뽑힐 확률 설정. 프리미엄 패스를 구입한 경우 5%, 그렇지 않은 경우 3%
+        // 조커카드가 뽑힐 확률 설정. 프리미엄 패스를 구입한 경우 3%, 그렇지 않은 경우 1%
         if (IAPManager.instance.HadPurchashed(IAPManager.instance.productPremiumPass))
-            _jokerPickPercentage = 5;
-        else
             _jokerPickPercentage = 3;
+        else
+            _jokerPickPercentage = 1;
 
         _drawCardsMasking = 0;
         _drawCards = new Card[StageManager.instance.pokerCount];
@@ -179,9 +179,9 @@ public class CardDrawer
         }
 
         // Ace부터 2,3,4,5,6,7 .... J,Q,K 까지 확인하고 나왔을 때,
-        // straightCount가 4일 경우 10, J, Q, K 가 연속 됐음을 알 수 있다.
+        // straightCount가 4 이상일 경우 10, J, Q, K 가 연속 됐음을 알 수 있다.
         // 따라서 마운틴의 가능성이 있으므로 체크한다.
-        if (straightCount == 4)
+        if (straightCount >= 4)
         {
             for (int pattern = 0; pattern < Card.MAX_PATTERN; pattern++)
                 if ((((long)1 << (pattern * Card.MAX_NUMBER)) & _drawCardsMasking) != 0)
@@ -215,8 +215,8 @@ public class CardDrawer
             // Ace,2,3,4 ... K 까지 탐색한 결과 카드카운트가 5 이상이라면 플러쉬이다.
             if (cardCount >= 5)
             {
-                // 만약 스트레이트 카운트가 4 라면 마운틴의 가능성이 있으므로 Ace를 확인한다.
-                if (straightCount == 4)
+                // 만약 스트레이트 카운트가 4 이상이라면 마운틴의 가능성이 있으므로 Ace를 확인한다.
+                if (straightCount >= 4)
                     if ((((long)1 << (pattern * Card.MAX_NUMBER)) & _drawCardsMasking) != 0)
                         straightCount++;
 

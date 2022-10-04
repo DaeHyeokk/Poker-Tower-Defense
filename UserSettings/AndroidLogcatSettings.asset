@@ -3,7 +3,7 @@
     "m_SelectedPackage": {
         "deviceId": "R3CMB0D8TVP",
         "name": "com.devdduck.pokertowerdefense",
-        "processId": 11319,
+        "processId": 29622,
         "exited": false
     },
     "m_SelectedPriority": 0,
@@ -11,79 +11,49 @@
         {
             "deviceId": "R3CMB0D8TVP",
             "name": "com.devdduck.pokertowerdefense",
-            "processId": 14824,
+            "processId": 17981,
             "exited": true
         },
         {
             "deviceId": "R3CMB0D8TVP",
             "name": "com.devdduck.pokertowerdefense",
-            "processId": 31908,
+            "processId": 24083,
             "exited": true
         },
         {
             "deviceId": "R3CMB0D8TVP",
             "name": "com.devdduck.pokertowerdefense",
-            "processId": 5928,
-            "exited": true
-        },
-        {
-            "deviceId": "R3CMB0D8TVP",
-            "name": "com.sec.android.app.launcher",
-            "processId": 1963,
-            "exited": false
-        },
-        {
-            "deviceId": "R3CMB0D8TVP",
-            "name": "com.devdduck.pokertowerdefense",
-            "processId": 10918,
+            "processId": 14995,
             "exited": true
         },
         {
             "deviceId": "R3CMB0D8TVP",
             "name": "com.devdduck.pokertowerdefense",
-            "processId": 18089,
+            "processId": 18150,
             "exited": true
         },
         {
             "deviceId": "R3CMB0D8TVP",
             "name": "com.devdduck.pokertowerdefense",
-            "processId": 32011,
+            "processId": 19946,
+            "exited": true
+        },
+        {
+            "deviceId": "R3CMB0D8TVP",
+            "name": "com.devdduck.pokertowerdefense",
+            "processId": 24687,
             "exited": false
         },
         {
             "deviceId": "R3CMB0D8TVP",
             "name": "com.devdduck.pokertowerdefense",
-            "processId": 10981,
+            "processId": 27490,
             "exited": false
         },
         {
             "deviceId": "R3CMB0D8TVP",
             "name": "com.devdduck.pokertowerdefense",
-            "processId": 25878,
-            "exited": false
-        },
-        {
-            "deviceId": "R3CMB0D8TVP",
-            "name": "com.devdduck.pokertowerdefense",
-            "processId": 28137,
-            "exited": false
-        },
-        {
-            "deviceId": "R3CMB0D8TVP",
-            "name": "com.devdduck.pokertowerdefense",
-            "processId": 4550,
-            "exited": false
-        },
-        {
-            "deviceId": "R3CMB0D8TVP",
-            "name": "com.devdduck.pokertowerdefense",
-            "processId": 6529,
-            "exited": false
-        },
-        {
-            "deviceId": "R3CMB0D8TVP",
-            "name": "com.devdduck.pokertowerdefense",
-            "processId": 11319,
+            "processId": 29622,
             "exited": false
         }
     ],

@@ -252,7 +252,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 100%
+  m_text: 9999999
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: c27648327498a3c4c9e2017ef243d285, type: 2}
   m_sharedMaterial: {fileID: 2071185503278793172, guid: c27648327498a3c4c9e2017ef243d285, type: 2}
@@ -274,18 +274,18 @@ MonoBehaviour:
   m_spriteAsset: {fileID: 0}
   m_tintAllSprites: 0
   m_StyleSheet: {fileID: 0}
-  m_TextStyleHashCode: 97690656
+  m_TextStyleHashCode: -1183493901
   m_overrideHtmlColors: 0
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 0.3
+  m_fontSize: 0.4
   m_fontSizeBase: 0.2
   m_fontWeight: 400
   m_enableAutoSizing: 1
   m_fontSizeMin: 0.1
   m_fontSizeMax: 1
-  m_fontStyle: 0
+  m_fontStyle: 1
   m_HorizontalAlignment: 2
   m_VerticalAlignment: 512
   m_textAlignment: 65535
@@ -792,9 +792,6 @@ MonoBehaviour:
   _enemySprite: {fileID: 4824518791374353399}
   _healthbarGauge: {fileID: 8222324669636291856}
   _increaseReceiveDamageSprite: {fileID: 7355868118590182024}
-  _rewardGold: 500
-  _rewardChangeChance: 5
-  _rewardJokerCard: 0
-  _enemyDieAudioClip: {fileID: 8300000, guid: a7e876c875ced084e82340d1d910ee96, type: 3}
   _healthText: {fileID: 8659097594074557786}
   _levelText: {fileID: 1961273391272353077}
+  _towerBuilder: {fileID: 0}

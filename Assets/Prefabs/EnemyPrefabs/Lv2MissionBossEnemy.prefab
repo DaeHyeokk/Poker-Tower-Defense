@@ -290,7 +290,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 11
+  m_SortingOrder: 16
   m_Sprite: {fileID: 7482667652216324306, guid: 311925a002f4447b3a28927169b83ea6, type: 3}
   m_Color: {r: 1, g: 0, b: 0, a: 1}
   m_FlipX: 0
@@ -557,16 +557,11 @@ MonoBehaviour:
   _enemySprite: {fileID: 4824518791374353399}
   _healthbarGauge: {fileID: 3761682297916734414}
   _increaseReceiveDamageSprite: {fileID: 456735693975385301}
-  _rewardGold: 300
-  _rewardChangeChance: 3
-  _rewardJokerCard: 0
-  _enemyDieAudioClip: {fileID: 8300000, guid: a7e876c875ced084e82340d1d910ee96, type: 3}
   _slowEffect: {fileID: 6501566481586478859}
   _stunEffect: {fileID: 428374124611268082}
   _bossLevel: 2
   _limitTime: 60
   _limitTimeText: {fileID: 103101691756550027}
-  _missingAudioClip: {fileID: 8300000, guid: 5fdb13d3756c84fecac96f5a2d124370, type: 3}
 --- !u!114 &9145736281003819642
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -651,7 +646,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 10
+  m_SortingOrder: 15
   m_Sprite: {fileID: 7482667652216324306, guid: 311925a002f4447b3a28927169b83ea6, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0

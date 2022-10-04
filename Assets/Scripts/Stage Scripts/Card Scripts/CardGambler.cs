@@ -118,60 +118,6 @@ public class CardGambler : MonoBehaviour
 
     public void ShowCardSelector(int changeIndex, CardSelector.JokerType jokerType)
     {
-        /*
-        // 플레이어의 JokerCard 개수가 0개 이하라면 수행하지 않는다.
-        if (StageManager.instance.jokerCard <= 0)
-        {
-            StageUIManager.instance.ShowSystemMessage(SystemMessage.MessageType.NotEnoughJokerCard);
-            return;
-        }
-        // 플레이어가 JokerCard를 이미 사용한 상태라면 수행하지 않는다.
-        else if(_isSelectChanged)
-        {
-            StageUIManager.instance.ShowSystemMessage(SystemMessage.MessageType.AlreadyUsedJokerCard);
-            return;
-        }
-        
-
-        // 이미 Card Selector가 활성화 되어있는 경우 바꿀 카드의 index만 바꾼다.
-        if (_cardSelector.gameObject.activeSelf)
-        {
-            _gambleUIController.MarkCancelChangeCard(_changeIndex);
-
-            _changeIndex = changeIndex;
-
-            _gambleUIController.MarkChangeCard(_changeIndex);
-
-        }
-        else
-        {
-            _changeIndex = changeIndex;
-            _gambleUIController.MarkChangeCard(_changeIndex);
-            _gambleUIController.DisableFunctionToggle();
-            _cardSelector.gameObject.SetActive(true);
-        }
-        */
-
-        /*
-        // 이미 Card Selector가 활성화 되어있는 경우 바꿀 카드의 index만 바꾼다.
-        if (_cardSelector.gameObject.activeSelf)
-        {
-            _gambleUIController.MarkCancelChangeCard(_changeIndex);
-
-            _changeIndex = changeIndex;
-
-            _gambleUIController.MarkChangeCard(_changeIndex);
-
-        }
-        else
-        {
-            _changeIndex = changeIndex;
-            _gambleUIController.MarkChangeCard(_changeIndex);
-            _gambleUIController.DisableCardChangeButton();
-            _cardSelector.gameObject.SetActive(true);
-        }
-        */
-
         _cardSelector.jokerType = jokerType;
 
         // 이미 Card Selector가 활성화 되어있는 경우 바꿀 카드의 index만 바꾼다.
