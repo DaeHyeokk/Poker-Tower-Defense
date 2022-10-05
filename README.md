@@ -1,6 +1,2 @@
-# Poker Tower Defense (포타디 - 포커 타워 디펜스)
-```C#
-public void Test(Test t)
-{
-  t = (Test)50;
-}
+# 포타디 - 포커 타워 디펜스
+## Google Play 출시를 목표로 시작한 모바일 타워디펜스 프로젝트.
