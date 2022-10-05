@@ -6,15 +6,15 @@ using UnityEngine.UI;
 
 public class SoundManager : MonoBehaviour
 {
-    private static SoundManager _instance;
+    private static SoundManager s_instance;
     public static SoundManager instance
     {
         get
         {
-            if (_instance == null)
-                _instance = FindObjectOfType<SoundManager>();
+            if (s_instance == null)
+                s_instance = FindObjectOfType<SoundManager>();
 
-            return _instance;
+            return s_instance;
         }
     }
 

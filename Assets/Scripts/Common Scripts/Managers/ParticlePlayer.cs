@@ -4,18 +4,18 @@ using UnityEngine;
 
 public class ParticlePlayer : MonoBehaviour
 {
-    private static ParticlePlayer _instance;
+    private static ParticlePlayer s_instance;
     public static ParticlePlayer instance
     {
         get
         {
-            if (_instance == null)
+            if (s_instance == null)
             {
-                _instance = FindObjectOfType<ParticlePlayer>();
-                return _instance;
+                s_instance = FindObjectOfType<ParticlePlayer>();
+                return s_instance;
             }
 
-            return _instance;
+            return s_instance;
         }
     }
 

@@ -1136,7 +1136,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
   m_AnchoredPosition: {x: 0, y: 20}
-  m_SizeDelta: {x: -280, y: -60}
+  m_SizeDelta: {x: -200, y: -60}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &31551083
 MonoBehaviour:
@@ -6272,8 +6272,8 @@ MonoBehaviour:
   - {fileID: 8300000, guid: d2bdca082fbef3e4fb8bbed30f5d03d8, type: 3}
   - {fileID: 8300000, guid: 9aa189379be298a4b8b5dfd333ff814d, type: 3}
   - {fileID: 8300000, guid: d514fa6f1691e0446867a010d9904ecc, type: 3}
-  - {fileID: 8300000, guid: 39e58ece35424454295644cc6ab7778c, type: 3}
-  - {fileID: 8300000, guid: bb0b90a86e364544c9d22537631249e8, type: 3}
+  - {fileID: 8300000, guid: 3665b12d419e69243942e39336378b28, type: 3}
+  - {fileID: 8300000, guid: f00a83872b107734a8ae3d073decd55d, type: 3}
   - {fileID: 8300000, guid: 8ce14858148c08a459f93602337335eb, type: 3}
   - {fileID: 8300000, guid: b1b9c1f0ea1fcae439ed1a4d44ff05fd, type: 3}
   - {fileID: 8300000, guid: 4310474905e266640852f43bd609a1a4, type: 3}
@@ -12045,7 +12045,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: -20, y: -20}
+  m_SizeDelta: {x: -90, y: -10}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &264685631
 MonoBehaviour:
@@ -18225,6 +18225,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Lv1MissionBossEnemy
       objectReference: {fileID: 0}
+    - target: {fileID: 8062379368528844627, guid: fdf88a7c287f5ca49b593b1f923016e2, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 8062379368528844629, guid: fdf88a7c287f5ca49b593b1f923016e2, type: 3}
       propertyPath: m_RootOrder
       value: 9
@@ -20877,7 +20881,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: -20, y: -20}
+  m_SizeDelta: {x: -10, y: -10}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &469505752
 CanvasRenderer:
@@ -20909,8 +20913,8 @@ MonoBehaviour:
       m_Calls: []
   m_text: +500M
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
-  m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: c27648327498a3c4c9e2017ef243d285, type: 2}
+  m_sharedMaterial: {fileID: 2071185503278793172, guid: c27648327498a3c4c9e2017ef243d285, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -20929,18 +20933,18 @@ MonoBehaviour:
   m_spriteAsset: {fileID: 0}
   m_tintAllSprites: 0
   m_StyleSheet: {fileID: 0}
-  m_TextStyleHashCode: 97690656
+  m_TextStyleHashCode: -1183493901
   m_overrideHtmlColors: 0
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 26.6
+  m_fontSize: 58.5
   m_fontSizeBase: 40
   m_fontWeight: 400
   m_enableAutoSizing: 1
   m_fontSizeMin: 18
-  m_fontSizeMax: 50
-  m_fontStyle: 0
+  m_fontSizeMax: 100
+  m_fontStyle: 1
   m_HorizontalAlignment: 2
   m_VerticalAlignment: 512
   m_textAlignment: 65535
@@ -45469,10 +45473,18 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 3043666094203191719, guid: 41a86616936e9df42a7a32118a01e23c, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 4624995105575712863, guid: 41a86616936e9df42a7a32118a01e23c, type: 3}
       propertyPath: _towerBuilder
       value: 
       objectReference: {fileID: 275253620}
+    - target: {fileID: 7135952117393919436, guid: 41a86616936e9df42a7a32118a01e23c, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 8062379368528844627, guid: 41a86616936e9df42a7a32118a01e23c, type: 3}
       propertyPath: m_Name
       value: SpecialBossEnemy
@@ -55780,7 +55792,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _cardChangeAmountText: {fileID: 59039704}
-  _jokerCardAmountText: {fileID: 0}
   _goldAmountText: {fileID: 1118050766}
   _mineralAmountText: {fileID: 497315169}
   _gameSpeedText: {fileID: 255479790}
@@ -63015,7 +63026,7 @@ MonoBehaviour:
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
   m_fontSizeMax: 72
-  m_fontStyle: 0
+  m_fontStyle: 1
   m_HorizontalAlignment: 2
   m_VerticalAlignment: 512
   m_textAlignment: 65535

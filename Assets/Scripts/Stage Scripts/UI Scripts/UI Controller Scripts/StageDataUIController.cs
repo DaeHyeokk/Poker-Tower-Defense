@@ -8,8 +8,6 @@ public class StageDataUIController : MonoBehaviour
     [SerializeField]
     private TextMeshProUGUI _cardChangeAmountText;
     [SerializeField]
-    private TextMeshProUGUI _jokerCardAmountText;
-    [SerializeField]
     private TextMeshProUGUI _goldAmountText;
     [SerializeField]
     private TextMeshProUGUI _mineralAmountText;
@@ -17,7 +15,6 @@ public class StageDataUIController : MonoBehaviour
     private TextMeshProUGUI _gameSpeedText;
 
     public void SetCardChangeAmountText(int amount) => _cardChangeAmountText.text = amount.ToString();
-    public void SetJokerCardAmountText(int amount) => _jokerCardAmountText.text = amount.ToString();
     public void SetGoldAmountText(int amount) => _goldAmountText.text = amount.ToString();
     public void SetMineralAmountText(int amount) => _mineralAmountText.text = amount.ToString();
     public void SetGameSpeedText(float speed) => _gameSpeedText.text = 'x' + speed.ToString();

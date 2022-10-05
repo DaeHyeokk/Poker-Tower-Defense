@@ -6,15 +6,15 @@ using UnityEngine.Purchasing;
 
 public class IAPManager : MonoBehaviour, IStoreListener
 {
-    private static IAPManager _instance;
+    private static IAPManager s_instance;
     public static IAPManager instance
     {
         get
         {
-            if (_instance == null)
-                _instance = FindObjectOfType<IAPManager>();
+            if (s_instance == null)
+                s_instance = FindObjectOfType<IAPManager>();
 
-            return _instance;
+            return s_instance;
         }
     }
 
@@ -141,20 +141,6 @@ public class IAPManager : MonoBehaviour, IStoreListener
         if(_OnPurchashingSuccessed != null)
             _OnPurchashingSuccessed();
 
-        /*
-        if (purchaseProductId == productAdsRemove)
-        {
-            if (OnPurchashingSuccessed != null) OnPurchashingSuccessed(productAdsRemove);
-            AdsRemoveReward();
-        }
-        else if (purchaseProductId == productExtraGameSpeed)
-        {
-            ExtraGameSpeedReward();
-        }
-        else if (purchaseProductId == productPremiumPass)
-            PremiumPassReward();
-        */
-
         return PurchaseProcessingResult.Complete;
     }
 
@@ -205,12 +191,7 @@ public class IAPManager : MonoBehaviour, IStoreListener
 
         // product가 존재하고, 사용 가능한 상태라면 구매 시도
         if (product != null && product.availableToPurchase)
-        {
-            Debug.Log("구매시도");
             _storeController.InitiatePurchase(product);
-        }
-        else
-            Debug.Log("구매 시도 불가");
     }
 
     // Apple 스토어 구현할 때 꼭 들어가야 하는 메서드. (구매 복구)

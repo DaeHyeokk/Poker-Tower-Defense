@@ -93,15 +93,15 @@ public struct PlayerTowerData
 
 public class GameManager : MonoBehaviour
 {
-    private static GameManager _instance;
+    private static GameManager s_instance;
     public static GameManager instance
     {
         get
         {
-            if (_instance == null)
-                _instance = FindObjectOfType<GameManager>();
+            if (s_instance == null)
+                s_instance = FindObjectOfType<GameManager>();
 
-            return _instance;
+            return s_instance;
         }
     }
 

@@ -8,16 +8,16 @@ using GoogleMobileAds.Api;
 public class GoogleAdsManager : MonoBehaviour
 {
     public enum BannerAdSizeType { Standard, Adaptive }
-    private static GoogleAdsManager _instance;
+    private static GoogleAdsManager s_instance;
     public static GoogleAdsManager instance
     {
         get
         {
-            if (_instance == null)
-                _instance = FindObjectOfType<GoogleAdsManager>();
+            if (s_instance == null)
+                s_instance = FindObjectOfType<GoogleAdsManager>();
             
 
-            return _instance;
+            return s_instance;
         }
     }
 

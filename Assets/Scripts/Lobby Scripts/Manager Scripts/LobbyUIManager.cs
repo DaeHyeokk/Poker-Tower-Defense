@@ -5,15 +5,15 @@ using UnityEngine.UI;
 
 public class LobbyUIManager : MonoBehaviour
 {
-    private static LobbyUIManager _instance;
+    private static LobbyUIManager s_instance;
     public static LobbyUIManager instance
     {
         get
         {
-            if (_instance == null)
-                _instance = FindObjectOfType<LobbyUIManager>();
+            if (s_instance == null)
+                s_instance = FindObjectOfType<LobbyUIManager>();
 
-            return _instance;
+            return s_instance;
         }
     }
 

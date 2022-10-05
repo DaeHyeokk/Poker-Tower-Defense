@@ -32,30 +32,26 @@ public class TowerDetailInfoUIController : MonoBehaviour
     [SerializeField]
     private float _hideDelay;
 
-    private PopupUIAnimation _popupUIAnimation;
+    private TowerDetailInfoUIAnimation _towerDetailInfoUIAnimation;
     private Tower _tower;
     private float _damage;
     private float _attackRate;
     private float _upgradeDIP;
-    private float _upgradeRIP;
     private bool _isLocking;
     private bool _isHiding;
 
-    public PopupUIAnimation popupUIAnimation => _popupUIAnimation;
-
     private void Awake()
     {
-        _popupUIAnimation = GetComponent<PopupUIAnimation>();
-        // 팝업 애니메이션 중 점점 작아지는 메소드가 완료된 후 수행할 작업 구독. (오브젝트 비활성화)
-        //_popupUIAnimation.onCompletionSmaller += () => StageUIManager.instance.HideTowerDetailInfo();
-        _popupUIAnimation.onCompletionSmaller += () => this.gameObject.SetActive(false);
+        _towerDetailInfoUIAnimation = GetComponent<TowerDetailInfoUIAnimation>();
+        // 점점 작아지는 애니메이션이 완료된 후 수행할 작업 구독. (오브젝트 비활성화)
+        _towerDetailInfoUIAnimation.onCompletionSmaller += () => this.gameObject.SetActive(false);
 
         _hideTimerSlider.maxValue = _hideDelay;
     }
 
     private void OnEnable()
     {
-        _popupUIAnimation.StartBiggerAnimation();
+        _towerDetailInfoUIAnimation.StartBiggerAnimation();
 
         SoundManager.instance.PlaySFX(SoundFileNameDictionary.towerDetailInfoUIShowSound);
 
@@ -118,7 +114,7 @@ public class TowerDetailInfoUIController : MonoBehaviour
 
     public void HideObject()
     {
-        _popupUIAnimation.StartSmallerAnimation();
+        _towerDetailInfoUIAnimation.StartSmallerAnimation();
 
         SoundManager.instance.PlaySFX(SoundFileNameDictionary.towerDetailInfoUIHideSound);
     }

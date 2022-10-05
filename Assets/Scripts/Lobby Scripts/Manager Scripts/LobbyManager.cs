@@ -9,17 +9,17 @@ using TMPro;
 
 public class LobbyManager : MonoBehaviour
 {
-    private static LobbyManager _instance;
+    private static LobbyManager s_instance;
     public static LobbyManager instance
     {
         get
         {
-            if (_instance == null)
+            if (s_instance == null)
             {
-                _instance = FindObjectOfType<LobbyManager>();
-                return _instance;
+                s_instance = FindObjectOfType<LobbyManager>();
+                return s_instance;
             }
-            return _instance;
+            return s_instance;
         }
     }
 

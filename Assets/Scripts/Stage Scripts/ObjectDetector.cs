@@ -66,6 +66,7 @@ public class ObjectDetector : MonoBehaviour
         // 마우스 왼쪽 버튼을 눌렀을 때
         if (Input.GetMouseButtonDown(0))
         {
+            /*
             // 이미 타워를 움직이고 있는 상태라면 건너뛴다.
             if (_clickTower != null)
             {
@@ -73,6 +74,7 @@ public class ObjectDetector : MonoBehaviour
                 _clickTower.StopTower();
                 _clickTower = null;
             }
+            */
 
             // Tower Detail Info UI 또는 Card Selector UI가 화면에 활성화 되어 있는 상태라면 오브젝트 클릭을 입력받지 않는다.
             if (_towerDetailInfoUIController.gameObject.activeSelf 

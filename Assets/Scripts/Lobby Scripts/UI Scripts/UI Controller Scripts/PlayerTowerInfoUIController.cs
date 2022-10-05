@@ -37,9 +37,7 @@ public class PlayerTowerInfoUIController : MonoBehaviour
     private void OnEnable()
     {
         SetPlayerTowerInfo();
-        SoundManager.instance.PlaySFX(SoundFileNameDictionary.popupUIShowSound);
     }
-    private void OnDisable() => SoundManager.instance.PlaySFX(SoundFileNameDictionary.popupUIHideSound);
 
     private void SetPlayerTowerInfo()
     {

@@ -5,15 +5,15 @@ using UnityEngine.SceneManagement;
 
 public class UIManager : MonoBehaviour
 {
-    private static UIManager _instance;
+    private static UIManager s_instance;
     public static UIManager instance
     {
         get
         {
-            if (_instance == null)
-                _instance = FindObjectOfType<UIManager>();
+            if (s_instance == null)
+                s_instance = FindObjectOfType<UIManager>();
 
-            return _instance;
+            return s_instance;
         }
     }
 

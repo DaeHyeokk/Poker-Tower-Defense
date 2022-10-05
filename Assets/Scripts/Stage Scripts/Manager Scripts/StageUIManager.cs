@@ -8,18 +8,18 @@ using TMPro;
 
 public class StageUIManager : MonoBehaviour
 { 
-    private static StageUIManager _instance;
+    private static StageUIManager s_instance;
     public static StageUIManager instance
     {
         get
         {
-            if (_instance == null)
+            if (s_instance == null)
             {
                 // 씬에서 StageUIManager 오브젝트를 찾아 할당
-                _instance = FindObjectOfType<StageUIManager>();
+                s_instance = FindObjectOfType<StageUIManager>();
             }
 
-            return _instance;
+            return s_instance;
         }
     }
 

@@ -10,18 +10,18 @@ public class StageManager : MonoBehaviour
     public enum StageDifficulty { Easy, Normal, Hard, Hell }
     public static StageDifficulty stageDifficulty { get; set; }
 
-    private static StageManager _instance;
+    private static StageManager ss_instance;
     public static StageManager instance
     {
         get
         {
-            if (_instance == null)
+            if (ss_instance == null)
             {
-                _instance = FindObjectOfType<StageManager>();
-                return _instance;
+                ss_instance = FindObjectOfType<StageManager>();
+                return ss_instance;
             }
 
-            return _instance;
+            return ss_instance;
         }
     }
 
@@ -52,7 +52,6 @@ public class StageManager : MonoBehaviour
     private int _gold = 400;
     private int _mineral = 100;
     private int _changeChance;
-    private int _jokerCard;
     private float _gameSpeed;
     private float _backupGameSpeed;
     private float _maxGameSpeed;
@@ -97,16 +96,6 @@ public class StageManager : MonoBehaviour
         {
             _changeChance = value;
             _stageDataUIController.SetCardChangeAmountText(_changeChance);
-        }
-    }
-
-    public int jokerCard
-    {
-        get => _jokerCard;
-        set
-        {
-            _jokerCard = value;
-            _stageDataUIController.SetJokerCardAmountText(_jokerCard);
         }
     }
 

@@ -4,18 +4,18 @@ using UnityEngine;
 
 public class AudioClipManager : MonoBehaviour
 {
-    private static AudioClipManager _instance;
+    private static AudioClipManager s_instance;
     public static AudioClipManager instance
     {
         get
         {
-            if (_instance == null)
+            if (s_instance == null)
             {
                 // 씬에서 StageUIManager 오브젝트를 찾아 할당
-                _instance = FindObjectOfType<AudioClipManager>();
+                s_instance = FindObjectOfType<AudioClipManager>();
             }
 
-            return _instance;
+            return s_instance;
         }
     }
 

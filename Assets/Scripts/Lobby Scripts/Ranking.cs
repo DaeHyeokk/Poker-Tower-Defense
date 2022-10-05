@@ -10,7 +10,7 @@ public class Ranking : MonoBehaviour
 
     private void OnEnable()
     {
-        for(int i=0; i< _bestTakenTimeRecordTexts.Length; i++)
+        for (int i=0; i< _bestTakenTimeRecordTexts.Length; i++)
         {
             float bestBossKilledTakenTimeRecord = GameManager.instance.playerGameData.playerStageDataList[i].bestBossKilledTakenTimeRecord;
             if (bestBossKilledTakenTimeRecord != PlayerStageData.DEFAULT_TAKEN_TIME)

@@ -18,8 +18,6 @@ public class DifficultySelectUIController : MonoBehaviour
     [SerializeField]
     private GameObject _hellLockPanelObject;
 
-    private void OnEnable() => SoundManager.instance.PlaySFX(SoundFileNameDictionary.popupUIShowSound);
-
     public void UnlockDifficultyButton(int clearStage)
     {
         switch(clearStage)

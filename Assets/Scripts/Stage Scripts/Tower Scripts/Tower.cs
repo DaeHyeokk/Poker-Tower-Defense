@@ -6,7 +6,7 @@ using System.Text;
 
 public abstract class Tower : MonoBehaviour
 {
-    public enum towerTypeEnum { 탑타워, 원페어타워, 투페어타워, 트리플타워, 스트레이트타워, 마운틴타워, 플러쉬타워, 풀하우스타워, 포카인드타워, 스티플타워 }
+    public enum TowerTypeEnum { 탑타워, 원페어타워, 투페어타워, 트리플타워, 스트레이트타워, 마운틴타워, 플러쉬타워, 풀하우스타워, 포카인드타워, 스티플타워 }
     public static readonly string[] towerTypeNames = { "탑타워", "원페어타워", "투페어타워", "트리플타워", "스트레이트타워", "마운틴타워", "플러쉬타워", "풀하우스타워", "포카인드타워", "스티플타워" };
 
     public static readonly int defaultLevelupKillCount = 1000;
@@ -35,14 +35,14 @@ public abstract class Tower : MonoBehaviour
     // 타워 종류마다 킬수를 기록하기 위한 정적 변수.
     // _killCounts 배열을 private으로 선언하고 배열의 원소는 GetKillCount() 정적 메소드로 접근할 수 있도록 구현함으로써,
     // 외부에서 함부로 해당 배열의 데이터를 수정할 수 없도록 함.
-    private static int[] _killCounts = new int[10];
-    public static int GetKillCount(int index) => _killCounts[index];
+    private static int[] s_killCounts = new int[10];
+    public static int GetKillCount(int index) => s_killCounts[index];
     public static void ResetTowerKillCount()
     {
-        for (int i = 0; i < _killCounts.Length; i++)
-            _killCounts[i] = 0;
+        for (int i = 0; i < s_killCounts.Length; i++)
+            s_killCounts[i] = 0;
     }
-    public void AccumulateKillCount() => _killCounts[towerIndex]++;
+    public void AccumulateKillCount() => s_killCounts[towerIndex]++;
 
     public enum AttackType { Basic, Special }
 
