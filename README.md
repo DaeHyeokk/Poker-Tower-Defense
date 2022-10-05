@@ -1,6 +1,6 @@
 # 포타디 - 포커 타워 디펜스
 Google Play 출시를 목표로 시작한 모바일 타워디펜스 프로젝트.\
-Play 스토어 링크: https://play.google.com/store/apps/details?id=com.devdduck.pokertowerdefense
+Play 스토어 링크: https://play.google.com/store/apps/details?id=com.devdduck.pokertowerdefense \
 
 ## 프로젝트 목표
 + C# naming rule에 맞춰 스크립트를 작성하여 누구나 읽기 쉬운 코드를 작성할 것 \
