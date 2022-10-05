@@ -12,18 +12,11 @@ public class ShopUIController : MonoBehaviour
         public GameObject panelCanvasObject;
         public TextMeshProUGUI buyResultText;
     }
-    [System.Serializable]
-    private struct DisablePanel
-    {
-        public GameObject panelObject;
-        public GameObject lockImageObject;
-        public TextMeshProUGUI disableTypeText;
-    }
 
     [SerializeField]
     private BuyResultPanel _buyResultPanel;
     [SerializeField]
-    private DisablePanel[] _disablePanels;
+    private GameObject[] _completionPanels;
     [SerializeField]
     private Button[] _inAppProductButtons;
     [SerializeField]
@@ -31,24 +24,17 @@ public class ShopUIController : MonoBehaviour
 
     private void Awake()
     {
-        /*
-        // 플레이어가 로그인 하지 않은 경우 모든 인앱 상품 버튼을 비활성화 한다.
-        if(!Social.localUser.authenticated)
-            for (int i = 0; i < _disablePanels.Length; i++)
-                DisablePurchashingButton((IAPManager.ProductName)i, false);
-        */
-
         // 유니티 IAP가 성공적으로 초기화 된 경우에만 수행.
         if (IsIAPInit())
         {
             if (IAPManager.instance.HadPurchashed(IAPManager.instance.productAdsRemove))
-                DisablePurchashingButton(IAPManager.ProductName.AdsRemove, true);
+                DisablePurchashingButton(IAPManager.ProductName.AdsRemove);
 
             if (IAPManager.instance.HadPurchashed(IAPManager.instance.productExtraGameSpeed))
-                DisablePurchashingButton(IAPManager.ProductName.ExtraGameSpeed, true);
+                DisablePurchashingButton(IAPManager.ProductName.ExtraGameSpeed);
 
             if (IAPManager.instance.HadPurchashed(IAPManager.instance.productPremiumPass))
-                DisablePurchashingButton(IAPManager.ProductName.PremiumPass, true);
+                DisablePurchashingButton(IAPManager.ProductName.PremiumPass);
         }
     }
 
@@ -58,13 +44,13 @@ public class ShopUIController : MonoBehaviour
         if (IsIAPInit())
         {
             if (IAPManager.instance.HadPurchashed(IAPManager.instance.productAdsRemove))
-                DisablePurchashingButton(IAPManager.ProductName.AdsRemove, true);
+                DisablePurchashingButton(IAPManager.ProductName.AdsRemove);
 
             if (IAPManager.instance.HadPurchashed(IAPManager.instance.productExtraGameSpeed))
-                DisablePurchashingButton(IAPManager.ProductName.ExtraGameSpeed, true);
+                DisablePurchashingButton(IAPManager.ProductName.ExtraGameSpeed);
 
             if (IAPManager.instance.HadPurchashed(IAPManager.instance.productPremiumPass))
-                DisablePurchashingButton(IAPManager.ProductName.PremiumPass, true);
+                DisablePurchashingButton(IAPManager.ProductName.PremiumPass);
         }
     }
 
@@ -93,28 +79,11 @@ public class ShopUIController : MonoBehaviour
         _buyResultPanel.panelCanvasObject.SetActive(true);
     }
 
-    public void DisablePurchashingButton(IAPManager.ProductName productType, bool isBuying)
+    private void DisablePurchashingButton(IAPManager.ProductName productType)
     {
         _inAppProductButtons[(int)productType].interactable = false;
 
-        DisablePanel disablePanel = _disablePanels[(int)productType];
-
-        // disable Panel 오브젝트 활성화.
-        disablePanel.panelObject.SetActive(true);
-
-        if (isBuying)
-        {
-            // Lock Image를 비활성화 하고 텍스트를 "구매 완료", 색깔은 초록색으로 설정.
-            disablePanel.lockImageObject.SetActive(false);
-            disablePanel.disableTypeText.text = "구매 완료";
-            disablePanel.disableTypeText.color = Color.green;
-        }
-        else
-        {
-            // Lock Image를 활성화 하고 텍스트를 "로그인 후 구매 가능", 색깔은 빨간색으로 설정.
-            disablePanel.lockImageObject.SetActive(true);
-            disablePanel.disableTypeText.text = "로그인 후 구매 가능";
-            disablePanel.disableTypeText.color = Color.red;
-        }
+        // Completion Panel 오브젝트 활성화.
+        _completionPanels[(int)productType].SetActive(true);
     }
 }

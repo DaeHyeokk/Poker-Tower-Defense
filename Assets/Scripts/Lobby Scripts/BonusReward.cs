@@ -89,8 +89,8 @@ public class BonusReward : MonoBehaviour
 
             while (!rewardedAd.IsLoaded() && !isLoadFailed)
             {
-                yield return new WaitForSeconds(0.1f);
-                timeOutDelay += 0.1f;
+                yield return null;
+                timeOutDelay += Time.deltaTime;
 
                 if (timeOutDelay >= 3f)
                     isLoadFailed = true;
