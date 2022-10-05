@@ -2,5 +2,5 @@
 ```C#
 public void Test(Test t)
 {
-t = 50;
+  t = (Test)50;
 }
