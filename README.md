@@ -8,4 +8,4 @@
 + 클래스를 꼼꼼히 설계하여 클래스끼리 최대한 약한 결합을 가지고, 코드의 중복을 최소화 할 것.
 + Play 스토어에 내놓아도 부끄럽지 않은 게임다운 게임을 만들 것.
 
-https://github.com/DaeHyeokk/Poker-Tower-Defense/blob/eca7923da46e6a7940441742775378abe7053577/Assets/Scripts/Lobby%20Scripts/DifficultySelector.cs#L16
+https://github.com/DaeHyeokk/Poker-Tower-Defense/blob/eca7923da46e6a7940441742775378abe7053577/Assets/Scripts/Lobby%20Scripts/DifficultySelector.cs#L16-L30
