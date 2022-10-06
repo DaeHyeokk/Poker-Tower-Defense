@@ -1,5 +1,5 @@
 # 포타디 - 포커 타워 디펜스
-![Poker Tower Defense Logo_small](https://user-images.githubusercontent.com/63538183/194304386-344da7a8-1c64-4851-806b-3ef5c7bdc07f.png)
+<center>![Poker Tower Defense Logo_small](https://user-images.githubusercontent.com/63538183/194304386-344da7a8-1c64-4851-806b-3ef5c7bdc07f.png)</center>
 + Google Play 출시를 목표로 시작한 모바일 타워디펜스 프로젝트.
 + Play 스토어 링크: https://play.google.com/store/apps/details?id=com.devdduck.pokertowerdefense
 
