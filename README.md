@@ -1,5 +1,7 @@
 # 포타디 - 포커 타워 디펜스
-![Poker Tower Defense Logo_small](https://user-images.githubusercontent.com/63538183/194304386-344da7a8-1c64-4851-806b-3ef5c7bdc07f.png)  
+![Poker Tower Defense Logo_small](https://user-images.githubusercontent.com/63538183/194304386-344da7a8-1c64-4851-806b-3ef5c7bdc07f.png)
+![Poker Tower Defense Logo_small](https://user-images.githubusercontent.com/63538183/194304386-344da7a8-1c64-4851-806b-3ef5c7bdc07f.png)
+![Poker Tower Defense Logo_small](https://user-images.githubusercontent.com/63538183/194304386-344da7a8-1c64-4851-806b-3ef5c7bdc07f.png)
 + Google Play 출시를 목표로 시작한 모바일 타워 디펜스 프로젝트.
 + Play 스토어 링크: https://play.google.com/store/apps/details?id=com.devdduck.pokertowerdefense
 
@@ -10,3 +12,5 @@
 + 더 효율적인 방식으로 코딩하여 성능을 최적화 할 것.
 + Play 스토어에 내놓아도 부끄럽지 않은 게임다운 게임을 만들 것.
 
+## 게임 특징
++ 포커의 특성을 이용하여 랜덤 요소가 추가된 
