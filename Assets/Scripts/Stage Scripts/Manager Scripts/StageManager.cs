@@ -58,10 +58,6 @@ public class StageManager : MonoBehaviour
     private bool _isPaused;
     private bool _isEnd;
     private bool _isInterstitialShowed;
-    
-    public event Action onStagePaused;
-    public event Action onStageResumed;
-    public event Action onStageEnd;
 
     public int gold
     {
@@ -274,7 +270,6 @@ public class StageManager : MonoBehaviour
     {
         if(!_isPaused)
         { 
-            onStagePaused();
             _isPaused = true;
             _backupGameSpeed = gameSpeed;
             gameSpeed = 0f;
@@ -285,7 +280,6 @@ public class StageManager : MonoBehaviour
     {
         if (_isPaused)
         {
-            onStageResumed();
             _isPaused = false;
             gameSpeed = _backupGameSpeed;
         }
@@ -303,7 +297,6 @@ public class StageManager : MonoBehaviour
 
     public void ClearGame()
     {
-        onStageEnd();
         _isPaused = true;
         _isEnd = true;
         _backupGameSpeed = gameSpeed;
@@ -324,7 +317,6 @@ public class StageManager : MonoBehaviour
 
     public void DefeatGame()
     {
-        onStageEnd();
         _isPaused = true;
         _isEnd = true;
         gameSpeed = 0f;

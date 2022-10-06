@@ -3,7 +3,7 @@
     "m_SelectedPackage": {
         "deviceId": "R3CMB0D8TVP",
         "name": "com.devdduck.pokertowerdefense",
-        "processId": 29622,
+        "processId": 23354,
         "exited": false
     },
     "m_SelectedPriority": 0,
@@ -54,6 +54,30 @@
             "deviceId": "R3CMB0D8TVP",
             "name": "com.devdduck.pokertowerdefense",
             "processId": 29622,
+            "exited": false
+        },
+        {
+            "deviceId": "R3CMB0D8TVP",
+            "name": "com.devdduck.pokertowerdefense",
+            "processId": 2615,
+            "exited": false
+        },
+        {
+            "deviceId": "R3CMB0D8TVP",
+            "name": "com.devdduck.pokertowerdefense",
+            "processId": 12510,
+            "exited": false
+        },
+        {
+            "deviceId": "R3CMB0D8TVP",
+            "name": "com.devdduck.pokertowerdefense",
+            "processId": 15470,
+            "exited": false
+        },
+        {
+            "deviceId": "R3CMB0D8TVP",
+            "name": "com.devdduck.pokertowerdefense",
+            "processId": 23354,
             "exited": false
         }
     ],

@@ -60,9 +60,6 @@ public class EnemySpawner : MonoBehaviour
         _roundEnemyPool = new ObjectPool<RoundEnemy>(_roundEnemyPrefab, 80);
         //InstantiateBossEnemy();
         MissionBossCooltimeSetup();
-   
-        StageManager.instance.onStageEnd += () => this.gameObject.SetActive(false);
-        StageManager.instance.onStageResumed += () => this.gameObject.SetActive(true);
     }
 
     private void MissionBossCooltimeSetup()

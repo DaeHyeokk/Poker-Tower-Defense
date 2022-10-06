@@ -15652,7 +15652,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1928316226}
+      - m_Target: {fileID: 1928316230}
         m_TargetAssemblyTypeName: ActionReconfirmation, Assembly-CSharp
         m_MethodName: OnClickYesButton
         m_Mode: 1
@@ -16207,6 +16207,7 @@ GameObject:
   m_Component:
   - component: {fileID: 375077798}
   - component: {fileID: 375077799}
+  - component: {fileID: 375077800}
   m_Layer: 5
   m_Name: StageClearPanel
   m_TagString: Untagged
@@ -16271,6 +16272,18 @@ MonoBehaviour:
   - {fileID: 803653514}
   - {fileID: 1476568131}
   _rewardBonusTextObject: {fileID: 227365872}
+--- !u!114 &375077800
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 375077797}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 27e5c43f5e93fe1469a88729519c291c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &375137465
 GameObject:
   m_ObjectHideFlags: 0
@@ -17603,7 +17616,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a80bc55303d77be4e9dc7294934442eb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _cardSelector: {fileID: 1752169452}
   _towerColorChanger: {fileID: 147016004}
   _towerSales: {fileID: 428484041}
   _towerDetailInfo: {fileID: 447131541}
@@ -27493,6 +27505,7 @@ GameObject:
   m_Component:
   - component: {fileID: 608458076}
   - component: {fileID: 608458080}
+  - component: {fileID: 608458081}
   m_Layer: 5
   m_Name: StageMenuPanel
   m_TagString: Untagged
@@ -27538,6 +27551,18 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _difficultyText: {fileID: 2117491423}
+--- !u!114 &608458081
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 608458075}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 27e5c43f5e93fe1469a88729519c291c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &609955553
 GameObject:
   m_ObjectHideFlags: 0
@@ -38831,6 +38856,7 @@ GameObject:
   - component: {fileID: 883955054}
   - component: {fileID: 883955053}
   - component: {fileID: 883955055}
+  - component: {fileID: 883955056}
   m_Layer: 5
   m_Name: Boss Info Panel
   m_TagString: Untagged
@@ -38950,6 +38976,18 @@ MonoBehaviour:
     bossMaxHealthText: {fileID: 1161818822}
     bossRewardText: {fileID: 1453590400}
   _enemySpawner: {fileID: 1821786458}
+--- !u!114 &883955056
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 883955050}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 27e5c43f5e93fe1469a88729519c291c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &896322994
 GameObject:
   m_ObjectHideFlags: 0
@@ -46393,6 +46431,7 @@ GameObject:
   - component: {fileID: 1073024936}
   - component: {fileID: 1073024934}
   - component: {fileID: 1073024938}
+  - component: {fileID: 1073024939}
   m_Layer: 5
   m_Name: MissionDetailInfo
   m_TagString: TowerDetailInfoUI
@@ -46491,6 +46530,18 @@ MonoBehaviour:
   _killMissionButton: {fileID: 1467324620}
   _collectMissionScrollView: {fileID: 1018137498}
   _killMissionScrollView: {fileID: 896322996}
+--- !u!114 &1073024939
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1073024931}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 27e5c43f5e93fe1469a88729519c291c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1073426210
 GameObject:
   m_ObjectHideFlags: 0
@@ -68384,6 +68435,7 @@ GameObject:
   - component: {fileID: 1606523040}
   - component: {fileID: 1606523043}
   - component: {fileID: 1606523042}
+  - component: {fileID: 1606523044}
   m_Layer: 5
   m_Name: Action Reconfirmation Panel
   m_TagString: Untagged
@@ -68452,6 +68504,18 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1606523039}
   m_CullTransparentMesh: 1
+--- !u!114 &1606523044
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1606523039}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 27e5c43f5e93fe1469a88729519c291c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1614068920
 GameObject:
   m_ObjectHideFlags: 0
@@ -72764,6 +72828,7 @@ GameObject:
   - component: {fileID: 1752169448}
   - component: {fileID: 1752169447}
   - component: {fileID: 1752169452}
+  - component: {fileID: 1752169453}
   m_Layer: 5
   m_Name: Card Select Canvas
   m_TagString: Untagged
@@ -72908,6 +72973,18 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _gambleUIController: {fileID: 199597545}
   _cardGambler: {fileID: 199597546}
+--- !u!114 &1752169453
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1752169445}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 27e5c43f5e93fe1469a88729519c291c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1752424001
 GameObject:
   m_ObjectHideFlags: 0
@@ -80072,7 +80149,7 @@ GameObject:
   - component: {fileID: 1928316229}
   - component: {fileID: 1928316228}
   - component: {fileID: 1928316227}
-  - component: {fileID: 1928316226}
+  - component: {fileID: 1928316230}
   m_Layer: 5
   m_Name: Action Reconfirmation Canvas
   m_TagString: Untagged
@@ -80102,19 +80179,6 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 1440, y: 3200}
   m_Pivot: {x: 0.5, y: 0.5}
---- !u!114 &1928316226
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1928316224}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: abb64bc25289fd241bdeadc978684e88, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _actionReconfirmationText: {fileID: 422600201}
 --- !u!114 &1928316227
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -80176,6 +80240,19 @@ Canvas:
   m_SortingLayerID: 0
   m_SortingOrder: 2
   m_TargetDisplay: 0
+--- !u!114 &1928316230
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1928316224}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: abb64bc25289fd241bdeadc978684e88, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _actionReconfirmationText: {fileID: 422600201}
 --- !u!1 &1933914824
 GameObject:
   m_ObjectHideFlags: 0
@@ -82662,6 +82739,7 @@ GameObject:
   - component: {fileID: 1990357128}
   - component: {fileID: 1990357130}
   - component: {fileID: 1990357129}
+  - component: {fileID: 1990357131}
   m_Layer: 5
   m_Name: JokerCard Using Info Panel
   m_TagString: Untagged
@@ -82729,6 +82807,18 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1990357127}
   m_CullTransparentMesh: 1
+--- !u!114 &1990357131
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1990357127}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 27e5c43f5e93fe1469a88729519c291c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1991353700
 GameObject:
   m_ObjectHideFlags: 0
@@ -83406,6 +83496,7 @@ GameObject:
   - component: {fileID: 2013325344}
   - component: {fileID: 2013325342}
   - component: {fileID: 2013325343}
+  - component: {fileID: 2013325349}
   m_Layer: 5
   m_Name: TowerDetailInfoCanvas
   m_TagString: TowerDetailInfoUI
@@ -83460,7 +83551,7 @@ MonoBehaviour:
   _baseAttackDetailText: {fileID: 1597401673}
   _specialAttackDetailText: {fileID: 40417859}
   _hideTimerSlider: {fileID: 640482487}
-  _hideDelay: 3
+  _hideDelay: 5
 --- !u!114 &2013325343
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -83576,6 +83667,18 @@ Canvas:
   m_SortingLayerID: 0
   m_SortingOrder: 0
   m_TargetDisplay: 0
+--- !u!114 &2013325349
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2013325340}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 27e5c43f5e93fe1469a88729519c291c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &2014289234
 GameObject:
   m_ObjectHideFlags: 0
@@ -86873,6 +86976,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2113286739}
   - component: {fileID: 2113286740}
+  - component: {fileID: 2113286741}
   m_Layer: 5
   m_Name: StageDefeatPanel
   m_TagString: Untagged
@@ -86933,6 +87037,18 @@ MonoBehaviour:
   - {fileID: 30749877}
   - {fileID: 311554358}
   _rewardBonusTextObject: {fileID: 1104139016}
+--- !u!114 &2113286741
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2113286738}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 27e5c43f5e93fe1469a88729519c291c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &2117491422
 GameObject:
   m_ObjectHideFlags: 0

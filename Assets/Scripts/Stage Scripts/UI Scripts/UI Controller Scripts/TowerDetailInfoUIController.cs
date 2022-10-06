@@ -2,10 +2,11 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.UI;
 using TMPro;
 
-public class TowerDetailInfoUIController : MonoBehaviour
+public class TowerDetailInfoUIController : MonoBehaviour, IPointerClickHandler
 {
     [SerializeField]
     private Image _towerImage;
@@ -121,7 +122,7 @@ public class TowerDetailInfoUIController : MonoBehaviour
 
     public void OnClickLockToggle(bool value)
     {
-        if(_isLocking)
+        if (_isLocking)
         {
             ResetHideDelay();
             _isLocking = false;
@@ -133,5 +134,12 @@ public class TowerDetailInfoUIController : MonoBehaviour
             _isLocking = true;
             _lockImage.sprite = _lockSprite;
         }
+    }
+
+    // 오브젝트 터치 이벤트 발생 시 HideDelay를 초기화 한다.
+    public void OnPointerClick(PointerEventData eventData)
+    {
+        if (_isLocking) return;
+        else ResetHideDelay();
     }
 }
