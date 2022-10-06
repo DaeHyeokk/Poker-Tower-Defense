@@ -28,7 +28,10 @@
       - https://github.com/DaeHyeokk/Poker-Tower-Defense/blob/1be6187baa6c908859b848800ecc820f57108907/Assets/Scripts/Stage%20Scripts/Card%20Scripts/CardDrawer.cs#L80-L236  
    - **카드 변경**
       - 랜덤으로 카드를 뽑은 다음 카드의 인덱스에 해당하는 비트를 켰을 때 키기 전 마스킹 변수와 값을 비교하여 값이 같을 경우 이미 뽑힌 카드를 뽑은 것이므로 다시 뽑고, 값이 다를 경우 바꿀 카드의 인덱스에 해당하는 비트를 끄는 로직으로 카드 변경을 구현하였다.  
-      바꿀 카드의 인덱스에 해당하는 비트를 마지막에 끄는 이유는 이미 뽑힌 카드를 중복으로 뽑지 않도록 하기 위함이다.
+      바꿀 카드의 인덱스에 해당하는 비트를 마지막에 끄는 이유는 이미 뽑힌 카드가 중복으로 뽑히지 않도록 하기 위함이다.  
+      - https://github.com/DaeHyeokk/Poker-Tower-Defense/blob/b66d7a91b37c93b3e7960b6c117fa64669fac160/Assets/Scripts/Stage%20Scripts/Card%20Scripts/CardDrawer.cs#L52-L66  
+   - **조커 카드**
+      - 
    
 ### 2. 카드
    - 룰
