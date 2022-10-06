@@ -26,9 +26,8 @@
    카드의 존재 유무를 확인하는 작업을 뽑은 카드 배열을 순회할 필요 없이 **비트 연산으로 O(1) 시간에 확인할 수 있어 매우 빠르게 족보를 판별할 수 있다는 장점**이 있다.  
       - 마스킹 변수를 marking, 뽑은 카드의 인덱스를 index라고 할 때 index에 해당하는 비트를 켜는 방법은 **marking |= (1 << index)**,  
       존재 유무를 확인하고자 하는 카드의 인덱스를 index라고 할 때 카드의 존재 유무를 확인하는 방법은 **if((marking & (1 << index) != 0)** 결과가 참인지 거짓인지 확인하면 알 수 있다.
-      - https://github.com/DaeHyeokk/Poker-Tower-Defense/blob/1be6187baa6c908859b848800ecc820f57108907/Assets/Scripts/Stage%20Scripts/Card%20Scripts/CardDrawer.cs#L80-L236
+      - https://github.com/DaeHyeokk/Poker-Tower-Defense/blob/1be6187baa6c908859b848800ecc820f57108907/Assets/Scripts/Stage%20Scripts/Card%20Scripts/CardDrawer.cs#L80-L236  
    - **카드 변경**
-      - 
    
 ### 2. 카드
    - 룰
