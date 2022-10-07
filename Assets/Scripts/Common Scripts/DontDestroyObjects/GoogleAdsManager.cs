@@ -56,9 +56,12 @@ public class GoogleAdsManager : MonoBehaviour
 
         MobileAds.Initialize(initStatus => { });
 
-        // 플레이어가 광고제거 아이템을 구매하지 않았다면 전면광고를 로드한다.
+        // 플레이어가 광고제거 아이템을 구매하지 않았다면 전면광고와 배너광고를 로드한다.
         if (!IAPManager.instance.HadPurchashed(IAPManager.instance.productAdsRemove))
+        {
             CreateAndLoadInterstitialAd();
+            LoadBanner();
+        }
 
         CreateAndLoadRewardedAd();
     }
@@ -70,6 +73,7 @@ public class GoogleAdsManager : MonoBehaviour
             // 플레이어가 광고 제거를 구매했는데 현재 배너광고가 로드된 상태라면 제거한다.
             if (_bannerView != null)
             {
+                _bannerView.Hide();
                 _bannerView.Destroy();
                 _bannerView = null;
             }
@@ -99,10 +103,9 @@ public class GoogleAdsManager : MonoBehaviour
 
     private void OnLoadScene(Scene scene, LoadSceneMode mode)
     {
-        // 새로운 씬이 시작되면 배너 광고를 로드한다.
-        // 플레이어가 광고제거 아이템을 구매하지 않은 경우일 때만 배너 광고를 로드한다.
-        if (!IAPManager.instance.HadPurchashed(IAPManager.instance.productAdsRemove))
-            LoadBanner();
+        // 새로운 씬이 시작되면 배너 광고를 활성화 한다.
+        if(_bannerView != null) 
+            _bannerView.Show();
     }
 
     private void LoadBanner()
