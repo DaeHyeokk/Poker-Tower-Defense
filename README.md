@@ -78,8 +78,8 @@
       - **발사체 생성**
         - 타워는 **사거리 내 적 탐색**을 통해 적을 찾고, Attack Delay가 0이 되면 [ProjectileSpawner](https://github.com/DaeHyeokk/Poker-Tower-Defense/blob/main/Assets/Scripts/Stage%20Scripts/ProjectileSpawner.cs)의 SpawnProjectile() 함수를 호출하여 적을 추격하는 발사체를 생성한다.
         <details>
-   <summary>코드 접기/펼치기</summary>
+        <summary>코드 접기/펼치기</summary>
    
         - https://github.com/DaeHyeokk/Poker-Tower-Defense/blob/612d96a888002a10f0fca286f2d94d8b4da738aa/Assets/Scripts/Stage%20Scripts/Tower%20Scripts/Tower.cs#L201-L230
-   </details>  
+        </details>  
    
