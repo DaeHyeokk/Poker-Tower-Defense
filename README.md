@@ -58,4 +58,4 @@
       </details>  
       
 ### 2. 타워 관련 로직
-   - [타워 클래스다이어그램](https://user-images.githubusercontent.com/63538183/194636587-ad9508f1-5ba7-47df-a2b1-9392e3a015c6.png)
+   - [타워 클래스다이어그램](https://user-images.githubusercontent.com/63538183/194636802-e6f68cca-33a6-4e8a-867e-66b1c622ff92.png)
