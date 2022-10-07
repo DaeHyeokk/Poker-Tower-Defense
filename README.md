@@ -64,11 +64,11 @@
    - 타워의 기능 중 사거리 내의 적을 찾는 기능은 [TargetDetector](https://github.com/DaeHyeokk/Poker-Tower-Defense/blob/main/Assets/Scripts/Stage%20Scripts/Tower%20Scripts/TargetDetector.cs), 타워 색상과 관련된 기능은 [TowerColor](https://github.com/DaeHyeokk/Poker-Tower-Defense/blob/main/Assets/Scripts/Stage%20Scripts/Tower%20Scripts/TowerColor.cs), 타워의 레벨과 관련된 기능은 [TowerLevel](https://github.com/DaeHyeokk/Poker-Tower-Defense/blob/main/Assets/Scripts/Stage%20Scripts/Tower%20Scripts/TowerLevel.cs) 클래스로 세분화 하였다.  
    - **타워의 공격**  
       - 타워의 공격은 사거리 내 적 탐색 -> 발사체 생성 -> 발사체 충돌 -> 충돌한 대상 또는 대상 주변에 피해를 입힘 순으로 이루어진다.  
-      - **사거리 내 적 탐색**  
-       - Tower가 타일에 배치 되면 Update() 함수를 통해 매 프레임마다 TargetDetector의 SearchTarget() 함수를 호출하여 사거리 내의 적을 탐색하게 된다.  
-       - Vector2.Distance() 함수를 통해 타워와 적의 거리를 계산하고 사거리보다 가까울 경우 적을 Target List에 추가한다.  
-          Target List에 추가된 적의 수가 타워의 Max Target Count와 같아지
-       - 가장 먼저 사거리 내 활성화 된 보스몬스터가 있는지 체크함으로써 보스를 우선 타격하도록 구현하였으며, 
+      - **사거리 내 적 탐색**
+            - Tower가 타일에 배치 되면 Update() 함수를 통해 매 프레임마다 TargetDetector의 SearchTarget() 함수를 호출하여 사거리 내의 적을 탐색하게 된다.  
+            - Vector2.Distance() 함수를 통해 타워와 적의 거리를 계산하고 사거리보다 가까울 경우 적을 Target List에 추가한다.  
+              Target List에 추가된 적의 수가 타워의 Max Target Count와 같아지
+            - 가장 먼저 사거리 내 활성화 된 보스몬스터가 있는지 체크함으로써 보스를 우선 타격하도록 구현하였으며, 
            
       2. 모양
       3. 오옹
