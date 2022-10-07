@@ -36,6 +36,7 @@
       - https://github.com/DaeHyeokk/Poker-Tower-Defense/blob/b66d7a91b37c93b3e7960b6c117fa64669fac160/Assets/Scripts/Stage%20Scripts/Card%20Scripts/CardDrawer.cs#L52-L66  
    - **카드 선택 변경**
       - 플레이어가 [Card Selector](https://github.com/DaeHyeokk/Poker-Tower-Defense/blob/main/Assets/Scripts/Stage%20Scripts/Card%20Scripts/CardSelector.cs)를 통해 선택한 카드의 인덱스에 해당하는 비트를 켜고, 바꿀 카드의 인덱스에 해당하는 비트는 끄는 방식으로 구현하였다.  
+      - https://github.com/DaeHyeokk/Poker-Tower-Defense/blob/cbf37600c0b00a3f076daea51de6dfd6acb89894/Assets/Scripts/Stage%20Scripts/Card%20Scripts/CardDrawer.cs#L68-L78  
    
 ### 2. 카드
    - 룰
