@@ -57,7 +57,7 @@
       - https://github.com/DaeHyeokk/Poker-Tower-Defense/blob/cbf37600c0b00a3f076daea51de6dfd6acb89894/Assets/Scripts/Stage%20Scripts/Card%20Scripts/CardDrawer.cs#L68-L78  
       </details>  
       
-### 2. 카드
+### 2. 타워 관련 로직
    - 룰
    - 설명
    - ㅎㅎㅎ
