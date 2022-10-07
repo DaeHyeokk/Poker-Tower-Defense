@@ -48,7 +48,7 @@
       - https://github.com/DaeHyeokk/Poker-Tower-Defense/blob/cbf37600c0b00a3f076daea51de6dfd6acb89894/Assets/Scripts/Stage%20Scripts/Card%20Scripts/CardDrawer.cs#L68-L78  
       </details>  
       
-      - **족보 판별**  
+   - **족보 판별**  
       - 먼저 각 숫자마다 몇 개씩 존재하는지 검사하여 원페어, 투페어, 트리플, 풀하우스, 포카인드 조건을 검사하고, 연속되는 숫자를 카운팅하여 스트레이트, 마운틴 조건을 검사한다.  
       그 다음 각 무늬마다 몇 개씩 존재하는지 검사하여 플러쉬 조건을 검사하고, 연속되는 숫자를 카운팅하여 스트레이트 플러쉬 조건을 검사하는 방식으로 구현하였다.  
       <details>
