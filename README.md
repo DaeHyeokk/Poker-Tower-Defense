@@ -61,7 +61,11 @@
    - [타워 클래스 다이어그램](https://user-images.githubusercontent.com/63538183/194644398-d17f904d-1d06-4251-bca5-3b1fc86e439e.png)  
    - 추상클래스 [Tower](https://github.com/DaeHyeokk/Poker-Tower-Defense/blob/main/Assets/Scripts/Stage%20Scripts/Tower%20Scripts/Tower.cs)를 정의하고 Tower를 상속받는 여러 종류의 타워 클래스를 구현하였다.  
    - 모든 타워가 공통으로 가지는 변수, 메소드를 Tower 클래스에 정의하고, 공통으로 가지고 있지만 다르게 동작하는 프로퍼티나 메소드를 abstract 또는 virtual로 선언함으로써 코드의 중복을 최소화 하고 관리 및 유지보수가 용이하도록 구현하였다.  
-   - 타워의 기능 중 사거리 내의 적을 찾는 기능은 [TargetDetector](https://github.com/DaeHyeokk/Poker-Tower-Defense/blob/main/Assets/Scripts/Stage%20Scripts/Tower%20Scripts/TargetDetector.cs), 타워 색상과 관련된 기능은 [TowerColor](https://github.com/DaeHyeokk/Poker-Tower-Defense/blob/main/Assets/Scripts/Stage%20Scripts/Tower%20Scripts/TowerColor.cs), 타워의 레벨과 관련된 기능은 [TowerLevel](https://github.com/DaeHyeokk/Poker-Tower-Defense/blob/main/Assets/Scripts/Stage%20Scripts/Tower%20Scripts/TowerLevel.cs) 클래스로 세분화 하였다.  
+   - 타워의 기능 중 사거리 내의 적을 찾는 기능은 [Target Detector](https://github.com/DaeHyeokk/Poker-Tower-Defense/blob/main/Assets/Scripts/Stage%20Scripts/Tower%20Scripts/TargetDetector.cs), 타워 색상과 관련된 기능은 [Tower Color](https://github.com/DaeHyeokk/Poker-Tower-Defense/blob/main/Assets/Scripts/Stage%20Scripts/Tower%20Scripts/TowerColor.cs), 타워의 레벨과 관련된 기능은 [Tower Level](https://github.com/DaeHyeokk/Poker-Tower-Defense/blob/main/Assets/Scripts/Stage%20Scripts/Tower%20Scripts/TowerLevel.cs) 클래스로 세분화 하였다.  
+   - **타워 생성**
+      - 타워는 [Tower Builder](https://github.com/DaeHyeokk/Poker-Tower-Defense/blob/main/Assets/Scripts/Stage%20Scripts/Tower%20Scripts/TowerBuilder.cs) 오브젝트에서 생성 된다.  
+      - 타워 합치기, 타워 판매 기능으로 인해 자주 생성되고 파괴될 것으로 예상되는 오브젝트임으로 [ObjectPool](https://github.com/DaeHyeokk/Poker-Tower-Defense/blob/main/Assets/Scripts/Common%20Scripts/ObjectPool.cs)을 통해 생성 및 파괴 되도록 구현하여 효율성을 높였다.  
+      - TowerBuilder의 멤버변수 
    - **타워의 공격**  
       - 타워의 공격은 사거리 내 적 탐색 -> 발사체 생성 -> 발사체 충돌 -> 충돌한 대상 또는 대상 주변에 피해를 입힘 순으로 이루어진다.  
       - **사거리 내 적 탐색**  
@@ -86,3 +90,5 @@
         - https://github.com/DaeHyeokk/Poker-Tower-Defense/blob/612d96a888002a10f0fca286f2d94d8b4da738aa/Assets/Scripts/Stage%20Scripts/Tower%20Scripts/Tower.cs#L259-L298  
         </details>  
    
+      - **발사체 충돌**
+        - 발
