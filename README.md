@@ -90,7 +90,7 @@
         - https://github.com/DaeHyeokk/Poker-Tower-Defense/blob/9b94d91eed95fc8a78f671560cdb89df383e96c3/Assets/Scripts/Stage%20Scripts/Tower%20Scripts/TargetDetector.cs#L30-L157
         </details>  
       - **발사체 생성**
-        - 타워는 **사거리 내 적 탐색**을 통해 적을 찾고, Attack Delay가 0이 되면 [ProjectileSpawner](https://github.com/DaeHyeokk/Poker-Tower-Defense/blob/main/Assets/Scripts/Stage%20Scripts/ProjectileSpawner.cs)의 SpawnProjectile() 함수를 호출하여 적을 추격하는 발사체를 생성한다.  
+        - 타워는 **사거리 내 적 탐색**을 통해 적을 찾고, Attack Delay가 0이 되면 [Projectile Spawner](https://github.com/DaeHyeokk/Poker-Tower-Defense/blob/main/Assets/Scripts/Stage%20Scripts/ProjectileSpawner.cs)의 SpawnProjectile() 함수를 호출하여 적을 추격하는 발사체를 생성한다.  
         - 자주 생성되고 파괴되는 오브젝트임으로 [Object Pool](https://github.com/DaeHyeokk/Poker-Tower-Defense/blob/main/Assets/Scripts/Common%20Scripts/ObjectPool.cs)을 통해 활성화 및 비활성화 되도록 구현하여 효율성을 높였다.  
         - 발사체를 생성 할 때마다 AttackCount를 1씩 증가시키고 AttackCount가 10이 되면 더 강한 효과를 가진 발사체를 생성하도록 함으로써 타워의 특수 공격 기능을 구현하였다. 
         - 발사체를 생성하는 ShotProjectile() 함수를 가상함수로 선언함으로써 다른 특성의 발사체를 생성하는 타워들도 함수 오버라이딩을 통해 동일한 함수명으로 호출할 수 있도록 하였다.
