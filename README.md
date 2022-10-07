@@ -50,7 +50,7 @@
       </details>
    
    - **카드 선택 변경**
-      - 플레이어가 [Card Selector](https://github.com/DaeHyeokk/Poker-Tower-Defense/blob/main/Assets/Scripts/Stage%20Scripts/Card%20Scripts/CardSelector.cs)를 통해 선택한 카드의 인덱스에 해당하는 비트를 켜고, 바꿀 카드의 인덱스에 해당하는 비트는 끄는 방식으로 구현하였다.  
+      - 플레이어가 [Card Selector](https://github.com/DaeHyeokk/Poker-Tower-Defense/blob/main/Assets/Scripts/Stage%20Scripts/Card%20Scripts/CardSelector.cs)를 통해 선택한 카드의 인덱스에 해당하는 비트를 켜는 방식으로 구현하였다.
       <details>
       <summary>코드 접기/펼치기</summary>
    
