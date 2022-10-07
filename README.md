@@ -79,7 +79,7 @@
    - **타워의 공격**  
       - 타워의 공격은 사거리 내 적 탐색 -> 발사체 생성 -> 발사체 충돌 -> 충돌한 대상 또는 대상 주변에 피해를 입힘 순으로 이루어진다.  
       - **사거리 내 적 탐색**  
-        - Tower가 타일에 배치 되면 Update() 함수를 통해 매 프레임마다 TargetDetector의 SearchTarget() 함수를 호출하여 사거리 내의 적을 탐색하게 된다.  
+        - Tower가 타일에 배치 되면 Update() 함수를 통해 매 프레임마다 Target Detector의 SearchTarget() 함수를 호출하여 사거리 내의 적을 탐색하게 된다.  
         - Vector2.Distance() 함수를 통해 타워와 적의 거리를 계산하고 사거리보다 가까울 경우 적을 Target List에 추가한다.  
           Target List에 추가된 적의 수가 타워의 Max Target Count와 같아지면 탐색을 종료한다.  
         - 이전 탐색에서 Target List에 추가된 적이 있을 경우 해당 적이 아직 사거리 내에 있는지 확인하여 있으면 유지하고 없애면 리스트에서 꺼냄으로써 한번 타겟으로 정한 적이 사거리를 벗어나기 전까지 계속해서 공격하도록 구현하였다.  
@@ -91,6 +91,7 @@
         </details>  
       - **발사체 생성**
         - 타워는 **사거리 내 적 탐색**을 통해 적을 찾고, Attack Delay가 0이 되면 [ProjectileSpawner](https://github.com/DaeHyeokk/Poker-Tower-Defense/blob/main/Assets/Scripts/Stage%20Scripts/ProjectileSpawner.cs)의 SpawnProjectile() 함수를 호출하여 적을 추격하는 발사체를 생성한다.  
+        - 자주 생성되고 파괴되는 오브젝트임으로 [Object Pool](https://github.com/DaeHyeokk/Poker-Tower-Defense/blob/main/Assets/Scripts/Common%20Scripts/ObjectPool.cs)을 통해 활성화 및 비활성화 되도록 구현하여 효율성을 높였다.  
         - 발사체를 생성 할 때마다 AttackCount를 1씩 증가시키고 AttackCount가 10이 되면 더 강한 효과를 가진 발사체를 생성하도록 함으로써 타워의 특수 공격 기능을 구현하였다. 
         - 발사체를 생성하는 ShotProjectile() 함수를 가상함수로 선언함으로써 다른 특성의 발사체를 생성하는 타워들도 함수 오버라이딩을 통해 동일한 함수명으로 호출할 수 있도록 하였다.
         <details>
