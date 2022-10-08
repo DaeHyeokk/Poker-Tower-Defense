@@ -107,7 +107,7 @@
         - https://github.com/DaeHyeokk/Poker-Tower-Defense/blob/612d96a888002a10f0fca286f2d94d8b4da738aa/Assets/Scripts/Stage%20Scripts/Tower%20Scripts/Tower.cs#L259-L298  
         </details>  
    
-      - **발사체 충돌**
+      - **발사체 충돌 & 적에게 피해를 줌**
         - 발사체는 Update() 함수를 통해 매 프레임마다 추격하는 적을 향해 이동하며, 일정 거리 이하로 가까워지면 충돌한다.  
         - 충돌 시 actionOnCollision 대리자를 호출하여 비동기적으로 적에게 피해를 입히도록 구현하였다.  
         <details>
@@ -116,5 +116,6 @@
         - https://github.com/DaeHyeokk/Poker-Tower-Defense/blob/3f4f46c29d7543a7178b0b9316b9cb465d5f14b0/Assets/Scripts/Stage%20Scripts/Tower%20Scripts/Projectile.cs#L33-L65  
         </details>
         
-        
-   
+   - **Enemy, Tower와의 상호작용**
+      - 타워는 IInflictable 인터페이스를 상속받는 여러가지 객체를 사용하여 적에게 피해를 입히거나 상태이상 디버프를 걸고, 타워의 능력치를 상승 시키는 등의 기능을 수행한다.
+      - 
