@@ -295,79 +295,99 @@ public abstract class Tower : MonoBehaviour
         }
     }
 
-    protected abstract void ShotProjectile(Enemy target, AttackType attackType);
-
-    protected virtual void BaseInflict(Enemy target)
+    protected virtual void ShotProjectile(Enemy target, AttackType attackType)
     {
-        for (int i = 0; i < baseEnemyInflictorList.Count; i++)
-            if (target.gameObject.activeSelf)
-                baseEnemyInflictorList[i].Inflict(target);
-    }
-    protected virtual void BaseInflict(Tower target)
-    {
-        for (int i = 0; i < baseTowerInflictorList.Count; i++)
-            if (target.gameObject.activeSelf)
-                baseTowerInflictorList[i].Inflict(target);
-    }
-
-    protected virtual void BaseInflict(Enemy target, float range)
-    {
-        ParticlePlayer.instance.PlayRangeAttack(target.transform, range, (int)_towerColor.colorType);
-
-        targetDetector.SearchTargetWithinRange(target.transform, range);
-
-        for (int i = 0; i < targetDetector.targetWithinRangeList.Count; i++)
-            for (int j = 0; j < baseEnemyInflictorList.Count; j++)
-                if (targetDetector.targetWithinRangeList[i].gameObject.activeSelf)
-                    baseEnemyInflictorList[j].Inflict(targetDetector.targetWithinRangeList[i]);
-
-        targetDetector.targetWithinRangeList.Clear();
+        if (attackType == AttackType.Basic)
+        {
+            Projectile projectile = projectileSpawner.SpawnProjectile(this, spawnPoint, target, normalProjectileSprite);
+            projectile.actionOnCollision += () => BaseInflict(target);
+        }
+        else // (attackType == AttackType.Special)
+        {
+            Projectile projectile = projectileSpawner.SpawnProjectile(this, spawnPoint, target, specialProjectileSprite);
+            projectile.actionOnCollision += () => SpecialInflict(target);
+        }
     }
 
-    protected virtual void BaseInflict(Tower target, float range)
+    protected virtual void BaseInflict(Enemy target, float range = 0f)
     {
-        Collider[] collider = Physics.OverlapSphere(target.transform.position, range * 0.5f);
+        if (range == 0f)
+        {
+            for (int i = 0; i < baseEnemyInflictorList.Count; i++)
+                if (target.gameObject.activeSelf)
+                    baseEnemyInflictorList[i].Inflict(target);
+        }
+        else
+        {
+            ParticlePlayer.instance.PlayRangeAttack(target.transform, range, (int)_towerColor.colorType);
 
-        for (int i = 0; i < collider.Length; i++)
-            for (int j = 0; j < baseEnemyInflictorList.Count; j++)
-                if (collider[i].gameObject.activeSelf)
-                    baseTowerInflictorList[j].Inflict(collider[i].GetComponent<Tower>());
+            targetDetector.SearchTargetWithinRange(target.transform, range);
+
+            for (int i = 0; i < targetDetector.targetWithinRangeList.Count; i++)
+                for (int j = 0; j < baseEnemyInflictorList.Count; j++)
+                    if (targetDetector.targetWithinRangeList[i].gameObject.activeSelf)
+                        baseEnemyInflictorList[j].Inflict(targetDetector.targetWithinRangeList[i]);
+
+            targetDetector.targetWithinRangeList.Clear();
+        }
+    }
+    protected virtual void BaseInflict(Tower target, float range = 0f)
+    {
+        if (range == 0f)
+        {
+            for (int i = 0; i < baseTowerInflictorList.Count; i++)
+                if (target.gameObject.activeSelf)
+                    baseTowerInflictorList[i].Inflict(target);
+        }
+        else
+        {
+            Collider[] collider = Physics.OverlapSphere(target.transform.position, range * 0.5f);
+
+            for (int i = 0; i < collider.Length; i++)
+                for (int j = 0; j < baseEnemyInflictorList.Count; j++)
+                    if (collider[i].gameObject.activeSelf)
+                        baseTowerInflictorList[j].Inflict(collider[i].GetComponent<Tower>());
+        }
     }
 
-    protected virtual void SpecialInflict(Enemy target)
+    protected virtual void SpecialInflict(Enemy target, float range = 0f)
     {
-        for (int i = 0; i < specialEnemyInflictorList.Count; i++)
-            if (target.gameObject.activeSelf)
-                specialEnemyInflictorList[i].Inflict(target);
+        if (range == 0f)
+        {
+            for (int i = 0; i < specialEnemyInflictorList.Count; i++)
+                if (target.gameObject.activeSelf)
+                    specialEnemyInflictorList[i].Inflict(target);
+        }
+        else
+        {
+            ParticlePlayer.instance.PlayRangeAttack(target.transform, range, (int)_towerColor.colorType);
+
+            targetDetector.SearchTargetWithinRange(target.transform, range);
+
+            for (int i = 0; i < targetDetector.targetWithinRangeList.Count; i++)
+                for (int j = 0; j < specialEnemyInflictorList.Count; j++)
+                    if (targetDetector.targetWithinRangeList[i].gameObject.activeSelf)
+                        specialEnemyInflictorList[j].Inflict(targetDetector.targetWithinRangeList[i]);
+        }
     }
 
-    protected virtual void SpecialInflict(Tower target)
+    protected virtual void SpecialInflict(Tower target, float range = 0f)
     {
-        for (int i = 0; i < specialTowerInflictorList.Count; i++)
-            if (target.gameObject.activeSelf)
-                specialTowerInflictorList[i].Inflict(target);
-    }
+        if (range == 0f)
+        {
+            for (int i = 0; i < specialTowerInflictorList.Count; i++)
+                if (target.gameObject.activeSelf)
+                    specialTowerInflictorList[i].Inflict(target);
+        }
+        else
+        {
+            Collider[] collider = Physics.OverlapSphere(target.transform.position, range * 0.5f);
 
-    protected virtual void SpecialInflict(Enemy target, float range)
-    {
-        ParticlePlayer.instance.PlayRangeAttack(target.transform, range, (int)_towerColor.colorType);
-
-        targetDetector.SearchTargetWithinRange(target.transform, range);
-
-        for (int i = 0; i < targetDetector.targetWithinRangeList.Count; i++)
-            for (int j = 0; j < specialEnemyInflictorList.Count; j++)
-                if (targetDetector.targetWithinRangeList[i].gameObject.activeSelf)
-                    specialEnemyInflictorList[j].Inflict(targetDetector.targetWithinRangeList[i]);
-    }
-
-    protected virtual void SpecialInflict(Tower target, float range)
-    {
-        Collider[] collider = Physics.OverlapSphere(target.transform.position, range * 0.5f);
-
-        for (int i = 0; i < collider.Length; i++)
-            for (int j = 0; j < specialEnemyInflictorList.Count; j++)
-                if (collider[i].gameObject.activeSelf)
-                    specialTowerInflictorList[j].Inflict(collider[i].GetComponent<Tower>());
+            for (int i = 0; i < collider.Length; i++)
+                for (int j = 0; j < specialEnemyInflictorList.Count; j++)
+                    if (collider[i].gameObject.activeSelf)
+                        specialTowerInflictorList[j].Inflict(collider[i].GetComponent<Tower>());
+        }
     }
 
     public void TakeIncreaseAttackRate(float increaseAttackRate, float duration)

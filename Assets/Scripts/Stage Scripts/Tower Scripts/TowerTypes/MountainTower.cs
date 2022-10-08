@@ -26,12 +26,6 @@ public class MountainTower : Tower
     [SerializeField]
     private Particle _buffRangeParticle;
 
-    private BasicAttack _basicAttack;
-    private IncreaseReceivedDamageRate _baseIRDRate;
-    private CriticalStrike _specialCriticalStrike;
-    private IncreaseDamageRate _specialIDRate;
-
-
     private bool _isSpecialBuff;
     private float _specialBuffDuration => _specialIDRateAttributes[level].duration;
     private float specialBuffRange => _specialBuffRanges[level];
@@ -60,17 +54,17 @@ public class MountainTower : Tower
         base.Awake();
         targetDetector.detectingMode = TargetDetector.DetectingMode.Multiple;
 
-        _basicAttack = new(this);
-        baseEnemyInflictorList.Add(_basicAttack);
+        BasicAttack basicAttack = new(this);
+        baseEnemyInflictorList.Add(basicAttack);
 
-        _baseIRDRate = new(this, _basicIRDRateAttributes);
-        baseEnemyInflictorList.Add(_baseIRDRate);
+        IncreaseReceivedDamageRate basicIRDRate = new(this, _basicIRDRateAttributes);
+        baseEnemyInflictorList.Add(basicIRDRate);
 
-        _specialCriticalStrike = new(this, _specialCritAttributes);
-        specialEnemyInflictorList.Add(_specialCriticalStrike);
+        CriticalStrike specialCriticalStrike = new(this, _specialCritAttributes);
+        specialEnemyInflictorList.Add(specialCriticalStrike);
         
-        _specialIDRate = new(this, _specialIDRateAttributes);
-        specialTowerInflictorList.Add(_specialIDRate);
+        IncreaseDamageRate specialIDRate = new(this, _specialIDRateAttributes);
+        specialTowerInflictorList.Add(specialIDRate);
 
         SetBuffRangeParticleScale();
     }
@@ -97,18 +91,32 @@ public class MountainTower : Tower
         detailBaseAttackInfo.Append(maxTargetCount.ToString());
         detailBaseAttackInfo.Append("명의 적을 공격");
         detailBaseAttackInfo.Append('\n');
-        detailBaseAttackInfo.Append(_basicAttack.inflictorInfo.ToString());
-        detailBaseAttackInfo.Append('\n');
-        detailBaseAttackInfo.Append(_baseIRDRate.inflictorInfo.ToString());
-        
+        for (int i = 0; i < baseEnemyInflictorList.Count; i++)
+        {
+            detailBaseAttackInfo.Append(baseEnemyInflictorList[i].inflictorInfo.ToString());
+            detailBaseAttackInfo.Append('\n');
+        }
+        for (int i = 0; i < baseTowerInflictorList.Count; i++)
+        {
+            detailBaseAttackInfo.Append(baseTowerInflictorList[i].inflictorInfo.ToString());
+            detailBaseAttackInfo.Append('\n');
+        }
+
         detailSpecialAttackInfo.Clear();
         detailSpecialAttackInfo.Append(maxTargetCount.ToString());
         detailSpecialAttackInfo.Append("명의 적을 공격");
         detailSpecialAttackInfo.Append('\n');
-        detailSpecialAttackInfo.Append(_basicAttack.inflictorInfo.ToString());
-        detailSpecialAttackInfo.Append('\n');
+        for (int i = 0; i < specialEnemyInflictorList.Count; i++)
+        {
+            detailSpecialAttackInfo.Append(specialEnemyInflictorList[i].inflictorInfo.ToString());
+            detailSpecialAttackInfo.Append('\n');
+        }
         detailSpecialAttackInfo.Append("자신과 주변 타워 ");
-        detailSpecialAttackInfo.Append(_specialIDRate.inflictorInfo.ToString());
+        for (int i = 0; i < specialTowerInflictorList.Count; i++)
+        {
+            detailSpecialAttackInfo.Append(specialTowerInflictorList[i].inflictorInfo.ToString());
+            detailSpecialAttackInfo.Append('\n');
+        }
     }
 
     protected override void AttackTarget()
@@ -136,20 +144,6 @@ public class MountainTower : Tower
             attackCount = 0;
 
             SoundManager.instance.PlaySFX(SoundFileNameDictionary.rangeBuffSound);
-        }
-    }
-
-    protected override void ShotProjectile(Enemy target, AttackType attackType)
-    {
-        if (attackType == AttackType.Basic)
-        {
-            Projectile projectile = projectileSpawner.SpawnProjectile(this, spawnPoint, target, normalProjectileSprite);
-            projectile.actionOnCollision += () => BaseInflict(target);
-        }
-        else // (attackType == AttackType.Special)
-        {
-            Projectile projectile = projectileSpawner.SpawnProjectile(this, spawnPoint, target, normalProjectileSprite);
-            projectile.actionOnCollision += () => SpecialInflict(target);
         }
     }
 

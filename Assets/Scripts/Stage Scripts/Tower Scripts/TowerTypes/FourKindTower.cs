@@ -79,20 +79,6 @@ public class FourKindTower : Tower
         }
     }
 
-    protected override void ShotProjectile(Enemy target, AttackType attackType)
-    {
-        if (attackType == AttackType.Basic)
-        {
-            Projectile projectile = projectileSpawner.SpawnProjectile(this, spawnPoint, target, normalProjectileSprite);
-            projectile.actionOnCollision += () => BaseInflict(target);
-        }
-        else // (attackType == AttackType.Special)
-        {
-            Projectile projectile = projectileSpawner.SpawnProjectile(this, spawnPoint, target, specialProjectileSprite);
-            projectile.actionOnCollision += () => SpecialInflict(target);
-        }
-    }
-
     private IEnumerator ToggleIsSpecialBuffCoroutine()
     {
         _isSpecialBuff = true;
