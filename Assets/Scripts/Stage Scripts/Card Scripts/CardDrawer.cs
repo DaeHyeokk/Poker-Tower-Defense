@@ -222,7 +222,7 @@ public class CardDrawer
                     if ((((long)1 << (pattern * Card.MAX_NUMBER)) & _drawCardsMasking) != 0)
                         isStraight = true;
 
-                // 만약 isStraight가 true라면 스트레이트 플러쉬이다.
+                // 만약 플러쉬와 스트레이트를 모두 만족한다면 스트레이트 플러쉬이다.
                 if (isStraight)
                     UpdateHand(PokerHand.스트레이트플러쉬);
                 else
