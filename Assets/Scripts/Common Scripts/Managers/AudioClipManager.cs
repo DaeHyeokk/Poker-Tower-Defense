@@ -30,7 +30,10 @@ public class AudioClipManager : MonoBehaviour
     private void Awake()
     {
         if (instance != this)
+        {
             Destroy(gameObject);    // 자신을 파괴
+            return;
+        }
 
         foreach (AudioClip bgmAudioClip in _bgmAudioClips)
             _bgmAudioClipDict.Add(bgmAudioClip.name, bgmAudioClip);
