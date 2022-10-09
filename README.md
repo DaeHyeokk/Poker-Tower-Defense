@@ -123,7 +123,7 @@
       - IInflictable의 UpdateInflictorInfo() 함수를 통해 Attributes에 할당된 값에 따라 동적으로 Inflictable의 inflictorInfo 문자열이 갱신되도록 하여 추후 값 변경에 용이하도록 구현하였다.  
       - inflictorInfo 문자열은 길이가 길고 여러 문자열이 결합된 형태로 이루어져 있기 때문에 Garbage 생성을 최소화 하기 위해 StringBuilder를 사용하여 구현하였다.  
       - <details>
-        <summary>코드 접기/펼치기</summary>
+        <summary>코드 보기/숨기기</summary>
    
         https://github.com/DaeHyeokk/Poker-Tower-Defense/blob/54e72f783991b9373f7816fe910ef2a6259eb657/Assets/Scripts/Stage%20Scripts/Tower%20Scripts/Tower.cs#L312-L391  
         </details>
@@ -146,8 +146,14 @@
          - [Tower Detail Info](https://github.com/DaeHyeokk/Poker-Tower-Defense/blob/main/Assets/Scripts/Stage%20Scripts/Tower%20Scripts/Tower%20Function%20Scripts/TowerDetailInfo.cs)  
       
       - <details>
-        <summary>코드 접기/펼치기</summary>
+        <summary>코드 보기/숨기기</summary>
    
         https://github.com/DaeHyeokk/Poker-Tower-Defense/blob/472502f47071761127922feffc28a640af6e1342/Assets/Scripts/Stage%20Scripts/Tower%20Scripts/Tower%20Function%20Scripts/ObjectDetector.cs#L37-L157  
         </details>  
-     
+        
+  ### 2. 몬스터 관련 로직
+  + [Enemy Class Diagram](https://user-images.githubusercontent.com/63538183/194780733-cd43bd44-9d9b-4838-9a2f-4d37eb80edff.png)
+  
+  
+     - **타워 생성**
+  
