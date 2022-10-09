@@ -123,9 +123,9 @@
       - IInflictable의 UpdateInflictorInfo() 함수를 통해 Attributes에 할당된 값에 따라 동적으로 Inflictable의 inflictorInfo 문자열이 갱신되도록 하여 추후 값 변경에 용이하도록 구현하였다.  
       - inflictorInfo 문자열은 길이가 길고 여러 문자열이 결합된 형태로 이루어져 있기 때문에 Garbage 생성을 최소화 하기 위해 StringBuilder를 사용하여 구현하였다.  
       <details>
-      <summary><b>코드 접기/펼치기</b></summary>
+      <summary>코드 접기/펼치기</summary>
    
-      ㅇㅇㅇ
+      - https://github.com/DaeHyeokk/Poker-Tower-Defense/blob/54e72f783991b9373f7816fe910ef2a6259eb657/Assets/Scripts/Stage%20Scripts/Tower%20Scripts/Tower.cs#L312-L391  
       </details>
       
    - **타워 드래그 앤 드롭 기능**
