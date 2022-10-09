@@ -123,10 +123,21 @@
       - IInflictable의 UpdateInflictorInfo() 함수를 통해 Attributes에 할당된 값에 따라 동적으로 Inflictable의 inflictorInfo 문자열이 갱신되도록 하여 추후 값 변경에 용이하도록 구현하였다.  
       - inflictorInfo 문자열은 길이가 길고 여러 문자열이 결합된 형태로 이루어져 있기 때문에 Garbage 생성을 최소화 하기 위해 StringBuilder를 사용하여 구현하였다.  
       
-   - **타워의 드래그 앤 드롭 기능**
+   - **타워 드래그 앤 드롭 기능**
       - [Object Detector](https://github.com/DaeHyeokk/Poker-Tower-Defense/blob/main/Assets/Scripts/Stage%20Scripts/ObjectDetector.cs)에서 플레이어의 타워 터치 입력을 감지하여 타워의 이동, 합치기, 색 변환, 판매, 상세 정보 보기 기능을 수행한다.  
       - Scene에서 [PopupUI](https://github.com/DaeHyeokk/Poker-Tower-Defense/blob/1f181372f5f5c20711aa79cf49cd2bd427d528ae/Assets/Scripts/Stage%20Scripts/PopupUI.cs) 컴포넌트를 가진 오브젝트가 활성화 되면 Object Detector의 popupUICount 변수가 1 증가하고, 비활성화 되면 다시 1 감소 시키는 방식으로 화면에 Popup UI가 활성화 되어 있는 경우(popupUiCount가 1 이상일 경우) 플레이어의 터치 입력을 받지 않도록 구현하였다.  
+      - 플레이어가 타워를 터치하면 마우스 포인터를 따라다니는 FollowTower 오브젝트를 활성화 시켜 타워 드래그 기능을 구현하였다.
+      - 플레이어가 손을 떼면 FollowTower 오브젝트를 비활성화 하고, 플레이어가 손을 뗀 좌표에서 Ray를 생성하여 타워 드롭 기능을 구현하였다.
       - **타워의 이동**  
-         - 플레이어가 타워를 터치하면 해당 타워의 MoveTower() 함수가 호출되어 마우스 포인터를 따라다니는 FollowTower 오브젝트를 활성화 한다.  
-         - 플레이어가 손을 떼면 타워의 StopTower() 함수가 호출되어 FollowTower 오브젝트를 비활성화 하고, 플레이어가 손을 뗀 지점이 비어있는 타일이라면 해당 타일로 타워를 이동시킨다.  
-         - 
+         - Ray가 Tile 오브젝트와 충돌했을 때 해당 Tile에 배치된 타워가 없다면 Tile의 좌표로 타워를 이동시킨다.  
+      - **타워 합치기**  
+         - Ray가 Tile 오브젝트와 충돌했을 때 해당 Tile에 배치된 타워가 있다면 배치된 타워와 합치기를 시도한다.  
+      - **색 변환, 판매, 상세 정보 보기**  
+         - Ray가 Tile 오브젝트와 충돌하지 않았을 경우 GraphicRaycaster.Raycast() 함수를 호출하여 캔버스 영역에 존재하는 UI 오브젝트와 충돌하는 Ray를 생성한다.  
+         - Ray가 충돌한 UI 오브젝트의 Tag를 검사하여 각각의 기능을 수행하게 된다.
+      
+      <details>
+      <summary>코드 접기/펼치기</summary>
+   
+      - https://github.com/DaeHyeokk/Poker-Tower-Defense/blob/612d96a888002a10f0fca286f2d94d8b4da738aa/Assets/Scripts/Stage%20Scripts/Tower%20Scripts/Tower.cs#L201-L230  
+      </details>  
