@@ -127,7 +127,6 @@
       - [Object Detector](https://github.com/DaeHyeokk/Poker-Tower-Defense/blob/main/Assets/Scripts/Stage%20Scripts/ObjectDetector.cs)에서 플레이어의 타워 터치 입력을 감지하여 타워의 이동, 합치기, 색 변환, 판매, 상세 정보 보기 기능을 수행한다.  
       - Scene에서 [PopupUI](https://github.com/DaeHyeokk/Poker-Tower-Defense/blob/1f181372f5f5c20711aa79cf49cd2bd427d528ae/Assets/Scripts/Stage%20Scripts/PopupUI.cs) 컴포넌트를 가진 오브젝트가 활성화 되면 Object Detector의 popupUICount 변수가 1 증가하고, 비활성화 되면 다시 1 감소 시키는 방식으로 화면에 Popup UI가 활성화 되어 있는 경우(popupUiCount가 1 이상일 경우) 플레이어의 터치 입력을 받지 않도록 구현하였다.  
       - **타워의 이동**  
-         - 플레이어가 화면을 터치하면 MainCamera.ScreenPointToRay(Vector3) 함수를 통해 터치한 지점에서 오브젝트와 충돌하는 Ray를 생성한다.  
-         - Ray가 Tower 오브젝트와 충돌하면 해당 Tower 오브젝트의 MoveTower() 함수를 호출하고, MoveTower() 함수는 마우스 포인터를 따라다니는 FollowTower 오브젝트를 생성한다.  
-         - 플레이어가 화면에서 손을 떼면(?) 
-            - ㅇㅇㅇㅋㅋ
+         - 플레이어가 타워를 터치하면 해당 타워의 MoveTower() 함수가 호출되어 마우스 포인터를 따라다니는 FollowTower 오브젝트를 활성화 한다.  
+         - 플레이어가 손을 떼면 타워의 StopTower() 함수가 호출되어 FollowTower 오브젝트를 비활성화 하고, 플레이어가 손을 뗀 지점이 비어있는 타일이라면 해당 타일로 타워를 이동시킨다.  
+         - 
