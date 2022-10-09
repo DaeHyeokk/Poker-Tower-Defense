@@ -31,7 +31,6 @@ public class ObjectDetector : MonoBehaviour
         // 'MainCamera' 태그를 가지고 있는 오브젝트를 탐색 후 Camera 컴포넌트 정보 전달
         _mainCamera = Camera.main;
         _pointerEventData = new(null);
-        _resultList = new List<RaycastResult>();
         _clickTower = null;
     }
 
@@ -65,23 +64,11 @@ public class ObjectDetector : MonoBehaviour
             _ray = _mainCamera.ScreenPointToRay(Input.mousePosition);
             _hits = Physics.RaycastAll(_ray, Mathf.Infinity);
 
-            for (int i = 0; i < _hits.Length; i++)
-            {
-                // 광선에 부딪힌 타겟이 Tile일 때 수행. (타워만 타겟으로 할 경우 레이가 제대로 적중하지 않는 이슈가 있기 때문에 타일까지 타겟으로 함)
-                if (_hits[i].transform.CompareTag("Tile"))
-                {
-                    Tile tile = _hits[i].transform.GetComponent<Tile>();
-                    Tower tower = tile.collocationTower;
 
-                    // 타워가 배치된 타일이라면 배치된 타워를 _clickTower에 저장하고 반복문을 빠져나온다.
-                    if (tower != null)
-                    {
-                        _clickTower = tower;
-                        break;
-                    }
-                }
+            for (int i = 0; i < _hits.Length; i++)
+            {              
                 // 광선에 부딪힌 타겟이 타워일 때 수행.
-                else if (_hits[i].transform.CompareTag("Tower"))
+                if (_hits[i].transform.CompareTag("Tower"))
                 {
                     // 아직 광선에 맞은 타워가 없거나 이미 할당된 _clickTower의 포지션보다 z값이 작을 경우(스크린 상 위에 위치하는 타워일 경우) _clickTower에 할당한다.
                     if (_clickTower == null || _clickTower.transform.position.z > _hits[i].transform.position.z)
