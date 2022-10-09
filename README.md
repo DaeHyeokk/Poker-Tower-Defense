@@ -64,7 +64,7 @@
       
 ### 2. 타워 관련 로직
    - [Tower Class Diagram](https://user-images.githubusercontent.com/63538183/194644398-d17f904d-1d06-4251-bca5-3b1fc86e439e.png)  
-   - 추상클래스 [Tower](https://github.com/DaeHyeokk/Poker-Tower-Defense/blob/main/Assets/Scripts/Stage%20Scripts/Tower%20Scripts/Tower.cs)를 정의하고 Tower를 상속받는 여러 종류의 타워 클래스를 구현하였다.  
+   - 추상 클래스 [Tower](https://github.com/DaeHyeokk/Poker-Tower-Defense/blob/main/Assets/Scripts/Stage%20Scripts/Tower%20Scripts/Tower.cs)를 정의하고 Tower를 상속받는 여러 종류의 타워 클래스를 정의 하였다.  
    - 모든 타워가 공통으로 가지는 변수, 메소드를 Tower 클래스에 정의하고, 공통으로 가지고 있지만 다르게 동작하는 프로퍼티나 메소드를 abstract 또는 virtual로 선언함으로써 코드의 중복을 최소화 하고 관리 및 유지보수가 용이하도록 구현하였다.  
    - 타워의 기능 중 사거리 내의 적을 찾는 기능은 [Target Detector](https://github.com/DaeHyeokk/Poker-Tower-Defense/blob/main/Assets/Scripts/Stage%20Scripts/Tower%20Scripts/TargetDetector.cs), 타워 색상과 관련된 기능은 [Tower Color](https://github.com/DaeHyeokk/Poker-Tower-Defense/blob/main/Assets/Scripts/Stage%20Scripts/Tower%20Scripts/TowerColor.cs), 타워의 레벨과 관련된 기능은 [Tower Level](https://github.com/DaeHyeokk/Poker-Tower-Defense/blob/main/Assets/Scripts/Stage%20Scripts/Tower%20Scripts/TowerLevel.cs) 클래스로 세분화 하였다.  
    - **타워 생성**
@@ -150,9 +150,12 @@
         https://github.com/DaeHyeokk/Poker-Tower-Defense/blob/472502f47071761127922feffc28a640af6e1342/Assets/Scripts/Stage%20Scripts/Tower%20Scripts/Tower%20Function%20Scripts/ObjectDetector.cs#L37-L157  
         </details>  
         
-  ### 2. 몬스터 관련 로직
-  + [Enemy Class Diagram](https://user-images.githubusercontent.com/63538183/194780733-cd43bd44-9d9b-4838-9a2f-4d37eb80edff.png)
-  
-  
-     - **타워 생성**
-  
+### 2. 몬스터 관련 로직
+   - [Enemy Class Diagram](https://user-images.githubusercontent.com/63538183/194780733-cd43bd44-9d9b-4838-9a2f-4d37eb80edff.png)
+   - 추상클래스 [Enemy](https://github.com/DaeHyeokk/Poker-Tower-Defense/blob/main/Assets/Scripts/Stage%20Scripts/Enemy%20Scripts/Enemy.cs)를 정의하고, 움직이는지 여부에 따라 Enemy를 상속 받는 추상 클래스 [Field Enemy]와 기본 클래스 [Special Boss Enemy]를 정의하였다.  
+     그리고, 보스 몬스터인지 여부에 따라 Field Enemy를 상속 받는 추상 클래스 [Field Boss Enemy]와 기본 클래스 [Round Enemy]를 정의하였다.  
+     마지막으로, 보스 몬스터 종류에 따라 Field Boss Enemy를 상속 받는 [Round Boss Enemy]와 [Mission Boss Enemy]
+   -  
+   - 모든 몬스터가 공통으로 가지는 변수, 메소드를 Tower 클래스에 정의하고, 공통으로 가지고 있지만 다르게 동작하는 프로퍼티나 메소드를 abstract 또는 virtual로 선언함으로써 코드의 중복을 최소화 하고 관리 및 유지보수가 용이하도록 구현하였다.  
+   - **몬스터 생성**
+      -
