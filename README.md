@@ -57,7 +57,7 @@
    - **카드 선택 변경**
       - 플레이어가 [Card Selector](https://github.com/DaeHyeokk/Poker-Tower-Defense/blob/main/Assets/Scripts/Stage%20Scripts/Card%20Scripts/CardSelector.cs)를 통해 선택한 카드의 인덱스에 해당하는 비트를 켜는 방식으로 구현하였다.
       - <details>
-        <summary>코드 접기/펼치기</summary>
+        <summary>코드 보기/숨기기</summary>
    
         https://github.com/DaeHyeokk/Poker-Tower-Defense/blob/11ecd87d756b2c837c9664faea20d6a0e1572099/Assets/Scripts/Stage%20Scripts/Card%20Scripts/CardDrawer.cs#L68-L78  
         </details>  
@@ -76,10 +76,10 @@
       - 타워가 생성되는 Spawn Point 좌표가 동일한 경우 여러개의 타워가 겹쳐서 생성 되었을 때 나중에 생성된 타워가 가장 위쪽에 배치되지 않는 경우가 종종 발생하였다.  
         이를 해결하기 위해 타워를 생성할 때마다 Spawn Point의 Z값에 0.00001f 만큼 작은 값을 빼줌으로써 나중에 생성한 타워일수록 가장 위쪽에 배치되도록 구현하였다.
       - <details>
-        <summary>코드 접기/펼치기</summary>
+        <summary>코드 보기/숨기기</summary>
    
-        - https://github.com/DaeHyeokk/Poker-Tower-Defense/blob/467e3225f95ec4320cf6fe0b2760f75b7d9b0ce8/Assets/Scripts/Stage%20Scripts/Tower%20Scripts/TowerBuilder.cs#L45-L71  
-        - https://github.com/DaeHyeokk/Poker-Tower-Defense/blob/32fb7abb2728e3909b6eb8ec99ef3c0dce747680/Assets/Scripts/Stage%20Scripts/Tower%20Scripts/Tower.cs#L232-L257  
+        https://github.com/DaeHyeokk/Poker-Tower-Defense/blob/467e3225f95ec4320cf6fe0b2760f75b7d9b0ce8/Assets/Scripts/Stage%20Scripts/Tower%20Scripts/TowerBuilder.cs#L45-L71  
+        https://github.com/DaeHyeokk/Poker-Tower-Defense/blob/32fb7abb2728e3909b6eb8ec99ef3c0dce747680/Assets/Scripts/Stage%20Scripts/Tower%20Scripts/Tower.cs#L232-L257  
         </details>  
       
    - **타워의 공격**  
@@ -90,43 +90,43 @@
           Target List에 추가된 적의 수가 타워의 Max Target Count와 같아지면 탐색을 종료한다.  
         - 이전 탐색에서 Target List에 추가된 적이 있을 경우 해당 적이 아직 사거리 내에 있는지 확인하여 있으면 유지하고 없으면 리스트에서 꺼냄으로써 한번 타겟으로 정한 적이 사거리를 벗어나기 전까지 계속해서 공격하도록 구현하였다.  
         - 가장 먼저 사거리 내 활성화 된 보스몬스터가 있는지 체크함으로써 보스를 우선 타격하도록 구현하였으며, 보스 중에서도 Special Boss(행성 보스)를 가장 먼저 체크해서 최우선으로 타격하도록 구현하였다.
-        <details>
-        <summary>코드 접기/펼치기</summary>
+        - <details>
+          <summary>코드 보기/숨기기</summary>
    
-        - https://github.com/DaeHyeokk/Poker-Tower-Defense/blob/9b94d91eed95fc8a78f671560cdb89df383e96c3/Assets/Scripts/Stage%20Scripts/Tower%20Scripts/TargetDetector.cs#L30-L157
-        </details>  
+          https://github.com/DaeHyeokk/Poker-Tower-Defense/blob/9b94d91eed95fc8a78f671560cdb89df383e96c3/Assets/Scripts/Stage%20Scripts/Tower%20Scripts/TargetDetector.cs#L30-L157
+          </details>  
         
       - **발사체 생성**
         - 타워는 Target List에 적이 존재할 때 Attack Delay가 0이 되면 ShotProjectile() 함수를 호출하여 적을 추격하는 발사체를 생성하고, [Projectile](https://github.com/DaeHyeokk/Poker-Tower-Defense/blob/main/Assets/Scripts/Stage%20Scripts/Projectile%20Scripts/Projectile.cs)의 actionOnCollision 대리자에 이벤트 발생 시 수행할 작업을 추가한다.
         - 자주 생성되고 파괴되는 오브젝트임으로 [Object Pool](https://github.com/DaeHyeokk/Poker-Tower-Defense/blob/main/Assets/Scripts/Common%20Scripts/ObjectPool.cs)을 통해 활성화 및 비활성화 되도록 구현하여 효율성을 높였다.  
         - 발사체를 생성 할 때마다 타워의 AttackCount를 1씩 증가시키고 AttackCount가 10이 되면 더 강한 효과를 가진 발사체를 생성하도록 함으로써 타워의 특수 공격 기능을 구현하였다. 
         - 발사체를 생성하는 ShotProjectile() 함수를 가상함수로 선언함으로써 다른 특성의 발사체를 생성하는 타워들도 함수 오버라이딩을 통해 동일한 함수명으로 호출할 수 있도록 구현하였다.
-        <details>
-        <summary>코드 접기/펼치기</summary>
+        - <details>
+          <summary>코드 보기/숨기기</summary>
    
-        - https://github.com/DaeHyeokk/Poker-Tower-Defense/blob/612d96a888002a10f0fca286f2d94d8b4da738aa/Assets/Scripts/Stage%20Scripts/Tower%20Scripts/Tower.cs#L201-L230  
-        - https://github.com/DaeHyeokk/Poker-Tower-Defense/blob/899f6010601e98a6fda6ed3b721d635c4b93f171/Assets/Scripts/Stage%20Scripts/Tower%20Scripts/Tower.cs#L259-L310  
-        </details>  
+          https://github.com/DaeHyeokk/Poker-Tower-Defense/blob/612d96a888002a10f0fca286f2d94d8b4da738aa/Assets/Scripts/Stage%20Scripts/Tower%20Scripts/Tower.cs#L201-L230  
+          https://github.com/DaeHyeokk/Poker-Tower-Defense/blob/899f6010601e98a6fda6ed3b721d635c4b93f171/Assets/Scripts/Stage%20Scripts/Tower%20Scripts/Tower.cs#L259-L310  
+          </details>  
    
       - **발사체 충돌 & 적에게 피해를 입힘**
         - 발사체는 Update() 함수를 통해 매 프레임마다 추격하는 적을 향해 이동하며, 일정 거리 이하로 가까워지면 충돌한다.  
         - 충돌 시 actionOnCollision 대리자를 호출하여 비동기적으로 적에게 피해를 입히도록 구현하였다.  
-        <details>
-        <summary>코드 접기/펼치기</summary>
+        - <details>
+          <summary>코드 보기/숨기기</summary>
    
-        - https://github.com/DaeHyeokk/Poker-Tower-Defense/blob/3f4f46c29d7543a7178b0b9316b9cb465d5f14b0/Assets/Scripts/Stage%20Scripts/Tower%20Scripts/Projectile.cs#L33-L65  
-        </details>
+          https://github.com/DaeHyeokk/Poker-Tower-Defense/blob/3f4f46c29d7543a7178b0b9316b9cb465d5f14b0/Assets/Scripts/Stage%20Scripts/Tower%20Scripts/Projectile.cs#L33-L65  
+          </details>
         
    - **Enemy, Tower와의 상호작용**
       - [IInflictable Class Diagram](https://user-images.githubusercontent.com/63538183/194687301-c6ed417a-6cec-43b1-8129-23fa28292d09.png)  
       - 타워는 [IInflictable](https://github.com/DaeHyeokk/Poker-Tower-Defense/blob/main/Assets/Scripts/Stage%20Scripts/Tower%20Scripts/Inflictors/IInflictable.cs) 인터페이스를 상속받는 여러가지 객체를 사용하여 적에게 피해를 입히거나 상태이상 디버프를 걸고, 타워의 능력치를 상승 시키는 등의 기능을 수행한다.
       - IInflictable의 UpdateInflictorInfo() 함수를 통해 Attributes에 할당된 값에 따라 동적으로 Inflictable의 inflictorInfo 문자열이 갱신되도록 하여 추후 값 변경에 용이하도록 구현하였다.  
       - inflictorInfo 문자열은 길이가 길고 여러 문자열이 결합된 형태로 이루어져 있기 때문에 Garbage 생성을 최소화 하기 위해 StringBuilder를 사용하여 구현하였다.  
-      <details>
-      <summary>코드 접기/펼치기</summary>
+      - <details>
+        <summary>코드 접기/펼치기</summary>
    
-      - https://github.com/DaeHyeokk/Poker-Tower-Defense/blob/54e72f783991b9373f7816fe910ef2a6259eb657/Assets/Scripts/Stage%20Scripts/Tower%20Scripts/Tower.cs#L312-L391  
-      </details>
+        https://github.com/DaeHyeokk/Poker-Tower-Defense/blob/54e72f783991b9373f7816fe910ef2a6259eb657/Assets/Scripts/Stage%20Scripts/Tower%20Scripts/Tower.cs#L312-L391  
+        </details>
       
    - **타워 드래그 앤 드롭 기능**
       - [Object Detector](https://github.com/DaeHyeokk/Poker-Tower-Defense/blob/main/Assets/Scripts/Stage%20Scripts/Tower%20Scripts/Tower%20Function%20Scripts/ObjectDetector.cs)에서 플레이어의 타워 터치 입력을 감지하여 타워의 이동, 합치기, 색 변경, 판매, 상세 정보 보기 기능을 수행한다.  
@@ -145,9 +145,9 @@
          - [Tower Sales](https://github.com/DaeHyeokk/Poker-Tower-Defense/blob/main/Assets/Scripts/Stage%20Scripts/Tower%20Scripts/Tower%20Function%20Scripts/TowerSales.cs)  
          - [Tower Detail Info](https://github.com/DaeHyeokk/Poker-Tower-Defense/blob/main/Assets/Scripts/Stage%20Scripts/Tower%20Scripts/Tower%20Function%20Scripts/TowerDetailInfo.cs)  
       
-      <details>
-      <summary>코드 접기/펼치기</summary>
+      - <details>
+        <summary>코드 접기/펼치기</summary>
    
-      - https://github.com/DaeHyeokk/Poker-Tower-Defense/blob/472502f47071761127922feffc28a640af6e1342/Assets/Scripts/Stage%20Scripts/Tower%20Scripts/Tower%20Function%20Scripts/ObjectDetector.cs#L37-L157  
-      </details>  
+        https://github.com/DaeHyeokk/Poker-Tower-Defense/blob/472502f47071761127922feffc28a640af6e1342/Assets/Scripts/Stage%20Scripts/Tower%20Scripts/Tower%20Function%20Scripts/ObjectDetector.cs#L37-L157  
+        </details>  
      
