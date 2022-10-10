@@ -3,6 +3,7 @@ using System.Text;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using GooglePlayGames;
 using GooglePlayGames.BasicApi;
 using GooglePlayGames.BasicApi.SavedGame;
@@ -10,12 +11,14 @@ using GooglePlayGames.BasicApi.SavedGame;
 [Serializable]
 public class PlayerGameData
 {
+    public bool isDataRestored;
     public bool isBonusRewardActived;
     public List<PlayerStageData> playerStageDataList;
     public List<PlayerTowerData> playerTowerDataList;
 
     public PlayerGameData()
     {
+        isDataRestored = false;
         isBonusRewardActived = false;
         playerStageDataList = new(4); // Easy, Normal, Hard, Hell
         playerTowerDataList = new(Tower.towerTypeNames.Length);
@@ -132,9 +135,10 @@ public class GameManager : MonoBehaviour
 
     private void OnApplicationPause(bool pause)
     {
-        if (pause && Social.localUser.authenticated)
+
+        if (pause && Social.localUser.authenticated && SceneManager.GetActiveScene().name != "GameLoadingScene")
             Save();
-        
+
         PlayerPrefs.Save();
     }
 
@@ -223,7 +227,6 @@ public class GameManager : MonoBehaviour
 
     private void OnSavedGameOpened(SavedGameRequestStatus status, ISavedGameMetadata game)
     {
-        Debug.LogFormat("OnSavedGameOpened?:?{0},?{1}", status, _isSaving);
         // 스냅샷을 여는데 성공했을 경우 수행
         if (status == SavedGameRequestStatus.Success)
         {
@@ -238,8 +241,6 @@ public class GameManager : MonoBehaviour
         }
         else
         {
-            Debug.Log("시냅샷 불러오기 실패");
-            Debug.Log(status.ToString());
             // 스냅샷 불러오기 실패.
             if (onFailed != null) onFailed();
         }

@@ -115,6 +115,10 @@ public class TowerDetailInfoUIController : MonoBehaviour, IPointerClickHandler
 
     public void HideObject()
     {
+        // 만약 tower Detail Info UI가 점점 커지거나 점점 작아지는 연산을 실행중이라면 건너뛴다.
+        if (_towerDetailInfoUIAnimation.isBigger || _towerDetailInfoUIAnimation.isSmaller)
+            return;
+
         _towerDetailInfoUIAnimation.StartSmallerAnimation();
 
         SoundManager.instance.PlaySFX(SoundFileNameDictionary.towerDetailInfoUIHideSound);

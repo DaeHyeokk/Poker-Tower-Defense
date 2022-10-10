@@ -653,3 +653,7 @@ Data: 2022/10/03 MON
 
 Data: 2022/10/05 WED
 ☑ 간혹가다 타워가 터치되지 않는 오류 수정.
+
+Data: 2022/10/10 MON
+☑ Game Manager의 예외 처리 문제로 인해 게임을 플레이 하는 유저의 데이터가 초기화 되는 문제가 발생하였음.
+    -> 유저의 데이터를 복구시켜주는 UserDataRestore.cs 를 생성하고, GameManager.cs 로직 수정.

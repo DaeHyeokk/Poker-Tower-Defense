@@ -10,18 +10,18 @@ public class StageManager : MonoBehaviour
     public enum StageDifficulty { Easy, Normal, Hard, Hell }
     public static StageDifficulty stageDifficulty { get; set; }
 
-    private static StageManager ss_instance;
+    private static StageManager s_instance;
     public static StageManager instance
     {
         get
         {
-            if (ss_instance == null)
+            if (s_instance == null)
             {
-                ss_instance = FindObjectOfType<StageManager>();
-                return ss_instance;
+                s_instance = FindObjectOfType<StageManager>();
+                return s_instance;
             }
 
-            return ss_instance;
+            return s_instance;
         }
     }
 
@@ -339,13 +339,14 @@ public class StageManager : MonoBehaviour
     private void SaveClearStageData()
     {
         PlayerStageData playerStageData = _playerGameData.playerStageDataList[(int)stageDifficulty];
+
+        if (playerStageData.clearCount == 0)
+            SaveBestRecordData();
+        playerStageData.clearCount++;
+
         // 최고 기록보다 더 빠르게 보스를 잡았다면 최고 기록을 갱신하고, 리더보드에 등록한다.
         if (playerStageData.bestBossKilledTakenTimeRecord > bossKilledTakenTime)
         {
-            if(playerStageData.clearCount == 0)
-                SaveBestRecordData();
-
-            playerStageData.clearCount++;
             playerStageData.bestBossKilledTakenTimeRecord = bossKilledTakenTime;
             _playerGameData.playerStageDataList[(int)stageDifficulty] = playerStageData;
             // 리더보드 등록 메소드 호출.
@@ -366,16 +367,6 @@ public class StageManager : MonoBehaviour
         {
             int stageKillsCount = GetStageTowerKillCount(i, isClear);
             Tower.AddPlayerTowerKillCount(i, stageKillsCount);
-        }
-
-        // 타워의 킬수를 모두 누적시켰다면 데이터를 저장한다.
-        for (int i = 0; i < Tower.towerTypeNames.Length; i++)
-        {
-            PlayerTowerData playerTowerData = GameManager.instance.playerGameData.playerTowerDataList[i];
-            int level = playerTowerData.level;
-            int killCount = playerTowerData.killCount;
-
-            _playerGameData.playerTowerDataList[i] = new(level, killCount);
         }
 
         // 보너스 보상이 활성화된 상태였다면 비활성화 상태로 되돌린다.

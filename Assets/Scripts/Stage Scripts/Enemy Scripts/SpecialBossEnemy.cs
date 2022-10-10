@@ -27,10 +27,8 @@ public class SpecialBossEnemy : Enemy
         //UpdateHealthText();
 
         // 생성할 Enemy의 체력 설정
-        _maxHealth = enemyData.health * StageManager.instance.specialBossHpPercentage;
-        _health = _maxHealth;
-        _enemyHealthbar.maxHealth = _maxHealth;
-        _enemyHealthbar.health = _maxHealth;
+        maxHealth = enemyData.health * StageManager.instance.specialBossHpPercentage;
+        health = maxHealth;
 
         _rewardGold = enemyData.rewardGold;
         _rewardChangeChance = enemyData.rewardChangeChance;

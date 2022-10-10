@@ -19,18 +19,28 @@ public abstract class Enemy : MonoBehaviour
     protected int _rewardChangeChance;
     protected RewardStringBuilder _rewardStringBuilder;
 
-    protected float _maxHealth;  // Enemy의 최대 체력
-    protected float _health;     // Enemy의 현재 체력
-    private float _increaseReceiveDamageRate; // Enemy가 공격 당할 때 받는 피해량
+    // Enemy가 공격 당할 때 받는 피해량
+    private float _increaseReceiveDamageRate;
     private IEnumerator _increaseReceivedDamageCoroutine;
-    protected EnemySpawner _enemySpawner;
     protected EnemyHealthbar _enemyHealthbar;
+    protected EnemySpawner _enemySpawner;
 
     private readonly WaitForSeconds _takeDamageAnimationDelay = new(0.05f);
 
-    protected float maxHealth => _maxHealth;  // Enemy의 최대 체력
-    protected float health => _health;  // Enemy의 현재 체력
-    private float increaseReceiveDamageRate
+    // Enemy의 최대 체력
+    protected float maxHealth 
+    {
+        get => _enemyHealthbar.maxHealth; 
+        set => _enemyHealthbar.maxHealth = value;
+    }
+
+    // Enemy의 현재 체력
+    protected float health
+    {
+        get => _enemyHealthbar.health; 
+        set => _enemyHealthbar.health = value;
+    }
+        private float increaseReceiveDamageRate
     {
         get => _increaseReceiveDamageRate;
         set
@@ -86,12 +96,11 @@ public abstract class Enemy : MonoBehaviour
     public virtual void TakeDamage(Tower fromTower, float damage, DamageTakenType damageTakenType)
     {
         damage *= 1f + (increaseReceiveDamageRate * 0.01f);
-        _health -= damage;
-        _enemyHealthbar.health -= damage;
+        health -= damage;
 
         StageUIManager.instance.ShowDamageTakenText(damage, this.transform, damageTakenType);
 
-        if (_health <= 0)
+        if (health <= 0)
             Die(fromTower);
         else
             StartCoroutine(EnemyTakeDamageAnimationCoroutine());

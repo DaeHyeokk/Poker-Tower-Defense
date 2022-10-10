@@ -5,13 +5,14 @@ using UnityEngine;
 
 public class EnemyHealthbar
 {
-    private SpriteRenderer _healthbarGauge;   
-    private float _maxHealth;
-    private float _health;
+    private SpriteRenderer _healthbarGauge;
+    private float _maxHealth;  // Enemy의 최대 체력
+    private float _health;     // Enemy의 현재 체력
     private float _healthRatio;
 
     public float maxHealth
     {
+        get => _maxHealth;
         set => _maxHealth = value;
     }
 

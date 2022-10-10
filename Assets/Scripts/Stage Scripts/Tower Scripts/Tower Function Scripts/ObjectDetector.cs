@@ -22,7 +22,7 @@ public class ObjectDetector : MonoBehaviour
     private PointerEventData _pointerEventData;
     private Ray _ray;
     private RaycastHit[] _hits;
-    private List<RaycastResult> _resultList;
+    private List<RaycastResult> _resultList = new();
 
     public int popupUICount { get; set; }
 

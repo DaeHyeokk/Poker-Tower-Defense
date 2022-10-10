@@ -14,6 +14,9 @@ public class TowerDetailInfoUIAnimation : MonoBehaviour
     public event Action onCompletionBigger;
     public event Action onCompletionSmaller;
 
+    public bool isBigger => _isBigger;
+    public bool isSmaller => _isSmaller;
+
     public void StartBiggerAnimation()
     {
         this.transform.localScale = Vector3.zero;
@@ -53,10 +56,6 @@ public class TowerDetailInfoUIAnimation : MonoBehaviour
 
     public void StartSmallerAnimation()
     {
-        // 만약 팝업UI가 점점 커지거나 점점 작아지는 연산을 실행중이라면 건너뛴다.
-        if (_isBigger || _isSmaller)
-            return;
-
         _scale = 1f;
         StartCoroutine(SmallerAnimationCoroutine());
     }

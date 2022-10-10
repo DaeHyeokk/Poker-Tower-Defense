@@ -327,8 +327,6 @@ public abstract class Tower : MonoBehaviour
                 for (int j = 0; j < baseEnemyInflictorList.Count; j++)
                     if (targetDetector.targetWithinRangeList[i].gameObject.activeSelf)
                         baseEnemyInflictorList[j].Inflict(targetDetector.targetWithinRangeList[i]);
-
-            targetDetector.targetWithinRangeList.Clear();
         }
     }
     protected virtual void BaseInflict(Tower target, float range = 0f)
