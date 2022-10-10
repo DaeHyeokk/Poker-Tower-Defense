@@ -193,7 +193,7 @@
       - **몬스터 피격**
          - 몬스터가 데미지를 받게 되면 체력이 감소하고 [Stage UI Manager](https://github.com/DaeHyeokk/Poker-Tower-Defense/blob/a2d22a6b713ac10c1a7ee226d654f2d42d5bfd26/Assets/Scripts/Stage%20Scripts/Manager%20Scripts/StageUIManager.cs)의 ShowDamageTakenText() 함수를 호출하여 받은 데미지를 나타내는 [Damage Taken Text](https://github.com/DaeHyeokk/Poker-Tower-Defense/blob/main/Assets/Scripts/Stage%20Scripts/UI%20Scripts/Dynamic%20UI%20Scripts/DamageTakenText.cs)를 생성 한다.
          - Damage Taken Text는 매우 자주 생성되고 파괴되는 오브젝트이므로 Object Pool을 통해 활성화 및 비활성화 되도록 구현하여 효율성을 높였고, 커졌다 작아진 다음 빠르게 올라가며 사라지는 애니메이션을 추가하여 타격감과 생동감을 느낄 수 있도록 구현하였다.
-         - 몬스터 체력바는 Slider 오브젝트로 구현하였을 때 Enemy Prefab에 포함시킬 경우 Draw Call 한번에 하나의 Slider만 그리게 되어 오버헤드가 증가하는 문제가 있었기 때문에 Square 오브젝트 두 개로 구현하여 Draw Call을 최적화 하였다.
+         - 몬스터 체력바는 Slider 오브젝트로 구현하였을 때 Enemy Prefab에 포함시킬 경우 Draw Call 한번에 하나의 Slider만 그리게 되어 오버헤드가 증가하는 문제가 있었기 때문에 Square 오브젝트로 구현하여 Draw Call을 최적화 하였다.
          - <details>
            <summary>코드 보기/숨기기</summary>
    
