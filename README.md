@@ -157,5 +157,5 @@
       - [Field Enemy](https://github.com/DaeHyeokk/Poker-Tower-Defense/blob/main/Assets/Scripts/Stage%20Scripts/Enemy%20Scripts/FieldEnemy.cs), [Special Boss Enemy](https://github.com/DaeHyeokk/Poker-Tower-Defense/blob/main/Assets/Scripts/Stage%20Scripts/Enemy%20Scripts/SpecialBossEnemy.cs): 움직이는지 여부에 따라 Enemy를 상속 받는 추상 클래스와 기본 클래스  
       - [Field Boss Enemy](https://github.com/DaeHyeokk/Poker-Tower-Defense/blob/main/Assets/Scripts/Stage%20Scripts/Enemy%20Scripts/FieldBossEnemy.cs), [Round Enemy](https://github.com/DaeHyeokk/Poker-Tower-Defense/blob/main/Assets/Scripts/Stage%20Scripts/Enemy%20Scripts/RoundEnemy.cs): 보스 몬스터인지 여부에 따라 Field Enemy를 상속 받는 추상 클래스와 기본 클래스  
       - [Round Boss Enemy](https://github.com/DaeHyeokk/Poker-Tower-Defense/blob/main/Assets/Scripts/Stage%20Scripts/Enemy%20Scripts/RoundBossEnemy.cs), [Mission Boss Enemy](https://github.com/DaeHyeokk/Poker-Tower-Defense/blob/main/Assets/Scripts/Stage%20Scripts/Enemy%20Scripts/MissionBossEnemy.cs): 보스 종류에 따라 Field Boss Enemy를 상속 받는 기본 클래스  
-      - Draw Call 최적화를 위해 
+   - Draw Call 최적화를 위해 몬스터의 체력바가 동시에 그려지도록 Slider 컴포넌트가 아닌 Square 오브젝트 두 개를 이용하여 구현하였다.
    - **몬스터 생성**
