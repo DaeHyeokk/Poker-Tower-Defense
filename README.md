@@ -202,11 +202,23 @@
 
       - **몬스터 스턴**
          - Field Enemy가 스턴 공격을 받게 되면 공격 받은 스턴의 지속 시간동안 이동을 멈추고 Stun 파티클을 활성화 한다.
-         - 지속 시간이 감소하는 로직은 코루틴을 이용하였으며, 현재 남아있는 지속 시간보다 더 짧은 지속 시간의 스턴 공격을 받게 되는 상황과 같이 스턴 공격을 중첩해서 받는 경우에 대한 예외 처리 로직을 간단하게 구현하기 위해 Reference Counting 기법을 참고하여 스턴 공격을 받게 되면 stunCount를 증가 시키고, 지속 시간이 종료되면 stunCount를 다시 감소시키는 방식으로 구현하였다.
+         - 지속 시간이 감소하는 로직은 코루틴을 이용하였으며, 현재 남아있는 지속 시간보다 더 짧은 지속 시간의 스턴 공격을 받게 되는 상황과 같이 스턴 공격을 중첩해서 받는 경우에 대한 예외 처리 로직을 간단하게 구현하기 위해 Reference Counting 기법을 참고하여 스턴 공격을 받게 되면 stunCount를 증가 시키고, 지속 시간이 종료 되면 stunCount를 다시 감소시키는 방식으로 구현하였다.
          - stunCount 값이 1 이상이 되면 이동을 멈추고 stun 파티클을 활성화 하며, 0이 되면 이동을 재게하고 stun 파티클을 비활성화 하는 로직을 프로퍼티로 구현하였다.
          - <details>
            <summary>코드 보기/숨기기</summary>
    
            https://github.com/DaeHyeokk/Poker-Tower-Defense/blob/a2d22a6b713ac10c1a7ee226d654f2d42d5bfd26/Assets/Scripts/Stage%20Scripts/Enemy%20Scripts/FieldEnemy.cs#L16-L39  
            https://github.com/DaeHyeokk/Poker-Tower-Defense/blob/a2d22a6b713ac10c1a7ee226d654f2d42d5bfd26/Assets/Scripts/Stage%20Scripts/Enemy%20Scripts/FieldEnemy.cs#L76-L94  
+           </details>
+           
+      - **몬스터 슬로우**
+         - Field Enemy가 슬로우 공격을 받게 되면 공격 받은 슬로우의 지속 시간동안 슬로우 공격의 둔화율 만큼 이동 속도가 감소하고 slow 파티클을 활성화 한다.
+         - 슬로우 공격은 중첩 가능하도록 구현하였으며, 원래 이동 속도를 기준으로 둔화율을 계산하는 것이 아닌 감소된 이동 속도를 기준으로 둔화율을 계산함으로써 슬로우가 여러번 중첩 되더라도 이동 속도가 0이 되지 않도록 구현하였다.
+         - 지속 시간이 감소하는 로직은 코루틴을 이용하였으며, 로직을 간단하게 하기 위해 Reference Counting 기법을 참고하여 슬로우 공격을 받게 되면 slowCount를 증가 시키고, 지속 시간이 종료 되면 slowCount를 다시 감소시키는 방식으로 구현하였다.
+         - slowCount 값이 1 이상이 되면 이동을 멈추고 slow 파티클을 활성화 하며, 0이 되면 이동을 재게하고 slow 파티클을 비활성화 하는 로직을 프로퍼티로 구현하였다.
+         - <details>
+           <summary>코드 보기/숨기기</summary>
+   
+           https://github.com/DaeHyeokk/Poker-Tower-Defense/blob/a2d22a6b713ac10c1a7ee226d654f2d42d5bfd26/Assets/Scripts/Stage%20Scripts/Enemy%20Scripts/FieldEnemy.cs#L41-L55  
+           https://github.com/DaeHyeokk/Poker-Tower-Defense/blob/a2d22a6b713ac10c1a7ee226d654f2d42d5bfd26/Assets/Scripts/Stage%20Scripts/Enemy%20Scripts/FieldEnemy.cs#L97-L123  
            </details>
