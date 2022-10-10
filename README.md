@@ -1,11 +1,11 @@
 # 포타디 - 포커 타워 디펜스
 ![Poker Tower Defense Logo_small](https://user-images.githubusercontent.com/63538183/194304386-344da7a8-1c64-4851-806b-3ef5c7bdc07f.png)  
-+ Google Play 출시를 목표로 시작한 모바일 타워 디펜스 프로젝트.
++ Google Play 출시를 목표로 시작한 모바일 타워 디펜스 프로젝트.  
 
 ## 프로젝트 개요  
-+ [Play 스토어 링크](https://play.google.com/store/apps/details?id=com.devdduck.pokertowerdefense)
-+ 제작 기간: 2022/04/20 ~ 2022/09/03 (계속 업데이트 중)
-+ 제작 인원: 1명 (개인 프로젝트)
++ [Play 스토어 링크](https://play.google.com/store/apps/details?id=com.devdduck.pokertowerdefense)  
++ 제작 기간: 2022/04/20 ~ 2022/09/03 (계속 업데이트 중)  
++ 제작 인원: 1명 (개인 프로젝트)  
 + 사용한 프로그램: Unity, Visual Studio 2022  
 
 ## 프로젝트 목표
