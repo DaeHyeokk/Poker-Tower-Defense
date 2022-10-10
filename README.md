@@ -182,4 +182,6 @@
            <summary>코드 보기/숨기기</summary>
    
            https://github.com/DaeHyeokk/Poker-Tower-Defense/blob/a2d22a6b713ac10c1a7ee226d654f2d42d5bfd26/Assets/Scripts/Stage%20Scripts/Enemy%20Scripts/Enemy.cs#L96-L115  
+           https://github.com/DaeHyeokk/Poker-Tower-Defense/blob/816bb38391d16d0ecb006ece6895e63f94026efb/Assets/Scripts/Stage%20Scripts/Manager%20Scripts/StageUIManager.cs#L116-L125  
+           https://github.com/DaeHyeokk/Poker-Tower-Defense/blob/816bb38391d16d0ecb006ece6895e63f94026efb/Assets/Scripts/Stage%20Scripts/UI%20Scripts/Dynamic%20UI%20Scripts/DamageTakenText.cs#L50-L85  
            </details>
