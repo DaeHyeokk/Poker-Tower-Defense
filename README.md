@@ -140,6 +140,7 @@
       - **색 변환, 판매, 상세 정보 보기**
          - Ray가 Tile 오브젝트와 충돌하지 않았을 경우 GraphicRaycaster.Raycast() 함수를 호출하여 캔버스 영역에 존재하는 UI 오브젝트와 충돌하는 Ray를 생성하고, Ray가 충돌한 UI 오브젝트의 Tag를 검사하여 각각의 기능을 수행하게 된다.
          - 상세 정보 문자열은 길이가 길고 여러 문자열이 결합된 형태로 이루어져 있기 때문에 Garbage 생성을 최소화 하기 위해 StringBuilder를 사용하여 구현하였다.
+         - 타워를 판매하여 얻은 보상은 [Reward Text](https://github.com/DaeHyeokk/Poker-Tower-Defense/blob/a2d22a6b713ac10c1a7ee226d654f2d42d5bfd26/Assets/Scripts/Stage%20Scripts/UI%20Scripts/Dynamic%20UI%20Scripts/RewardText.cs) 오브젝트를 통해 화면에 나타나게 되며, [Stage UI Manager](https://github.com/DaeHyeokk/Poker-Tower-Defense/blob/a2d22a6b713ac10c1a7ee226d654f2d42d5bfd26/Assets/Scripts/Stage%20Scripts/Manager%20Scripts/StageUIManager.cs) 오브젝트에서 오브젝트풀로 관리하여 코드의 중복을 줄이고 효율성을 높였다.
          - [Tower Color Changer](https://github.com/DaeHyeokk/Poker-Tower-Defense/blob/main/Assets/Scripts/Stage%20Scripts/Tower%20Scripts/Tower%20Function%20Scripts/TowerColorChanger.cs)
          - [Tower Sales](https://github.com/DaeHyeokk/Poker-Tower-Defense/blob/main/Assets/Scripts/Stage%20Scripts/Tower%20Scripts/Tower%20Function%20Scripts/TowerSales.cs)
          - [Tower Detail Info](https://github.com/DaeHyeokk/Poker-Tower-Defense/blob/main/Assets/Scripts/Stage%20Scripts/Tower%20Scripts/Tower%20Function%20Scripts/TowerDetailInfo.cs)
@@ -192,6 +193,7 @@
       - **몬스터 피격**
          - 몬스터가 데미지를 받게 되면 체력이 감소하고 [Stage UI Manager](https://github.com/DaeHyeokk/Poker-Tower-Defense/blob/a2d22a6b713ac10c1a7ee226d654f2d42d5bfd26/Assets/Scripts/Stage%20Scripts/Manager%20Scripts/StageUIManager.cs)의 ShowDamageTakenText() 함수를 호출하여 받은 데미지를 나타내는 [Damage Taken Text](https://github.com/DaeHyeokk/Poker-Tower-Defense/blob/main/Assets/Scripts/Stage%20Scripts/UI%20Scripts/Dynamic%20UI%20Scripts/DamageTakenText.cs)를 생성 한다.
          - Damage Taken Text는 매우 자주 생성되고 파괴되는 오브젝트이므로 Object Pool을 통해 활성화 및 비활성화 되도록 구현하여 효율성을 높였고, 커졌다 작아진 다음 빠르게 올라가며 사라지는 애니메이션을 추가하여 타격감과 생동감을 느낄 수 있도록 구현하였다.
+         - 몬스터 체력바는 Slider 오브젝트로 구현하였을 때 Enemy Prefab에 포함시킬 경우 Draw Call 한번에 하나의 Slider만 그리게 되어 오버헤드가 증가하는 문제가 있었기 때문에 Square 오브젝트 두 개로 구현 Draw Call을 최적화 하였다.
          - <details>
            <summary>코드 보기/숨기기</summary>
    
@@ -234,3 +236,13 @@
            https://github.com/DaeHyeokk/Poker-Tower-Defense/blob/a2d22a6b713ac10c1a7ee226d654f2d42d5bfd26/Assets/Scripts/Stage%20Scripts/Enemy%20Scripts/Enemy.cs#L117-L147  
            </details>
            
+      - **몬스터 처치 보상 지급**
+         - Field Boss Enemy와 Special Boss Enemy를 처치할 경우 플레이어에게 골드와 카드 교환권을 지급하며 Special Boss Enemy의 경우 보스 레벨에 따라 랜덤 타워를 추가로 지급한다.
+         - 보스 몬스터를 처치하여 얻은 보상은 [Reward Text](https://github.com/DaeHyeokk/Poker-Tower-Defense/blob/a2d22a6b713ac10c1a7ee226d654f2d42d5bfd26/Assets/Scripts/Stage%20Scripts/UI%20Scripts/Dynamic%20UI%20Scripts/RewardText.cs) 오브젝트를 통해 화면에 나타나게 되며, [Stage UI Manager](https://github.com/DaeHyeokk/Poker-Tower-Defense/blob/a2d22a6b713ac10c1a7ee226d654f2d42d5bfd26/Assets/Scripts/Stage%20Scripts/Manager%20Scripts/StageUIManager.cs) 오브젝트에서 오브젝트풀로 관리하여 코드의 중복을 줄이고 효율성을 높였다.
+         - Special Boss Enemy를 처치하여 얻는 보상은 화면 정중앙에서 사운드와 함께 크게 나타나도록 구현하였고, 미션 클리어 시 얻는 보상과 같은 위치에서 동일한 애니메이션으로 나타나기 때문에 화면에 바로 나타내지 않고 Stage UI Manager에서 Queue 객체를 통해 한 번에 하나씩 차례대로 나타내도록 구현하였다.
+         - <details>
+           <summary>코드 보기/숨기기</summary>
+   
+           https://github.com/DaeHyeokk/Poker-Tower-Defense/blob/a2d22a6b713ac10c1a7ee226d654f2d42d5bfd26/Assets/Scripts/Stage%20Scripts/Enemy%20Scripts/Enemy.cs#L163-L171  
+           https://github.com/DaeHyeokk/Poker-Tower-Defense/blob/a2d22a6b713ac10c1a7ee226d654f2d42d5bfd26/Assets/Scripts/Stage%20Scripts/Enemy%20Scripts/SpecialBossEnemy.cs#L79-L93  
+           </details>
