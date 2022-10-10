@@ -201,6 +201,12 @@
            </details>
 
       - **몬스터 스턴**
-         - 몬스터가 스턴 공격을 받게 되면 공격 받은 스턴의 지속 시간동안 이동을 멈춘다.
-         - 스턴 공격을 중첩해서 맞을 때, 이전에 맞았던 스턴 지속 시간을 초기화하고 새로운 스턴 지속 시간을 대입할 경우 이전에 맞았던 스턴 지속 시간이 더 길게 남아있는
-         - stunCount 값을 증감 시키면서 값이 1 이상이 되면 stun 파티클을 활성화 하고, 0이 되면 비활성화 하는 로직을 프로퍼티로 구현하였다.
+         - Field Enemy가 스턴 공격을 받게 되면 공격 받은 스턴의 지속 시간동안 이동을 멈춘다.
+         - 지속 시간이 감소하는 로직은 코루틴을 이용하였으며, 현재 남아있는 지속 시간보다 더 짧은 지속 시간의 스턴 공격을 받게 되는 상황과 같이 스턴 공격을 중첩해서 받는 경우에 대한 예외 처리 로직을 간단하게 구현하기 위해 Reference Counting 기법을 참고하여 스턴 공격을 받게 되면 stunCount를 증가 시키고, 지속 시간이 종료되면 stunCount를 다시 감소시키는 방식으로 구현하였다.
+         - stunCount 값이 1 이상이 되면 이동을 멈추고 stun 파티클을 활성화 하며, 0이 되면 이동을 재게하고 stun 파티클을 비활성화 하는 로직을 프로퍼티로 구현하였다.
+         - <details>
+           <summary>코드 보기/숨기기</summary>
+   
+           https://github.com/DaeHyeokk/Poker-Tower-Defense/blob/a2d22a6b713ac10c1a7ee226d654f2d42d5bfd26/Assets/Scripts/Stage%20Scripts/Enemy%20Scripts/FieldEnemy.cs#L16-L39  
+           https://github.com/DaeHyeokk/Poker-Tower-Defense/blob/a2d22a6b713ac10c1a7ee226d654f2d42d5bfd26/Assets/Scripts/Stage%20Scripts/Enemy%20Scripts/FieldEnemy.cs#L76-L94  
+           </details>
