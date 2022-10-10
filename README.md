@@ -34,7 +34,7 @@
         <summary>코드 보기/숨기기</summary>
    
         https://github.com/DaeHyeokk/Poker-Tower-Defense/blob/11ecd87d756b2c837c9664faea20d6a0e1572099/Assets/Scripts/Stage%20Scripts/Card%20Scripts/CardDrawer.cs#L115-L238  
-        </details>  
+        </details>
       
    - **카드 뽑기**
       - 랜덤으로 카드를 뽑은 다음 카드의 인덱스에 해당하는 비트를 켰을 때 키기 전 마스킹 변수와 값을 비교하여 값이 같을 경우 이미 뽑힌 카드를 뽑은 것이므로 다시 뽑는 방식으로 카드를 중복해서 뽑지 않도록 구현하였다.
@@ -60,7 +60,7 @@
         <summary>코드 보기/숨기기</summary>
    
         https://github.com/DaeHyeokk/Poker-Tower-Defense/blob/11ecd87d756b2c837c9664faea20d6a0e1572099/Assets/Scripts/Stage%20Scripts/Card%20Scripts/CardDrawer.cs#L68-L78  
-        </details>  
+        </details>
       
 ### 2. 타워 관련 로직
    - [Tower 클래스 다이어그램](https://user-images.githubusercontent.com/63538183/194644398-d17f904d-1d06-4251-bca5-3b1fc86e439e.png)  
@@ -94,7 +94,7 @@
           <summary>코드 보기/숨기기</summary>
    
           https://github.com/DaeHyeokk/Poker-Tower-Defense/blob/9b94d91eed95fc8a78f671560cdb89df383e96c3/Assets/Scripts/Stage%20Scripts/Tower%20Scripts/TargetDetector.cs#L30-L157
-          </details>  
+          </details>
         
       - **발사체 생성**
         - 타워는 Target List에 적이 존재할 때 Attack Delay가 0이 되면 ShotProjectile() 함수를 호출하여 적을 추격하는 발사체를 생성하고, [Projectile](https://github.com/DaeHyeokk/Poker-Tower-Defense/blob/main/Assets/Scripts/Stage%20Scripts/Projectile%20Scripts/Projectile.cs)의 actionOnCollision 대리자에 이벤트 발생 시 수행할 작업을 추가한다.
@@ -148,7 +148,7 @@
         <summary>코드 보기/숨기기</summary>
    
         https://github.com/DaeHyeokk/Poker-Tower-Defense/blob/472502f47071761127922feffc28a640af6e1342/Assets/Scripts/Stage%20Scripts/Tower%20Scripts/Tower%20Function%20Scripts/ObjectDetector.cs#L37-L157  
-        </details>  
+        </details>
 
    - **타워 성장 기능**  
       - 타워는 멤버 함수 AccumulateKillCount()를 통해 몬스터를 처치할 때마다 킬 카운트를 획득한다.  
@@ -161,10 +161,10 @@
         https://github.com/DaeHyeokk/Poker-Tower-Defense/blob/a2d22a6b713ac10c1a7ee226d654f2d42d5bfd26/Assets/Scripts/Stage%20Scripts/Tower%20Scripts/Tower.cs#L12-L45  
         https://github.com/DaeHyeokk/Poker-Tower-Defense/blob/a2d22a6b713ac10c1a7ee226d654f2d42d5bfd26/Assets/Scripts/Stage%20Scripts/Manager%20Scripts/StageManager.cs#L298-L403  
         https://github.com/DaeHyeokk/Poker-Tower-Defense/blob/a2d22a6b713ac10c1a7ee226d654f2d42d5bfd26/Assets/Scripts/Common%20Scripts/DontDestroyObjects/GameManager.cs#L217-L335  
-        </details>  
+        </details>
         
 ### 2. 몬스터 관련 로직
-   - [Enemy 클래스 다이어그램](https://user-images.githubusercontent.com/63538183/194795302-425230a6-1722-4a45-abbc-c847af091bf5.png)
+   - [Enemy 클래스 다이어그램](https://user-images.githubusercontent.com/63538183/194795302-425230a6-1722-4a45-abbc-c847af091bf5.png)  
    - Enemy 클래스를 몬스터 각각의 특징에 따라 하위 클래스로 세분화 함으로써 코드의 중복을 최소화 하고 관리 및 유지보수가 용이하도록 구현하였다.  
       - [Enemy](https://github.com/DaeHyeokk/Poker-Tower-Defense/blob/main/Assets/Scripts/Stage%20Scripts/Enemy%20Scripts/Enemy.cs): 최상위 추상 클래스  
       - [Field Enemy](https://github.com/DaeHyeokk/Poker-Tower-Defense/blob/main/Assets/Scripts/Stage%20Scripts/Enemy%20Scripts/FieldEnemy.cs), [Special Boss Enemy](https://github.com/DaeHyeokk/Poker-Tower-Defense/blob/main/Assets/Scripts/Stage%20Scripts/Enemy%20Scripts/SpecialBossEnemy.cs): 움직이는지 여부에 따라 Enemy를 상속 받는 추상 클래스와 기본 클래스  
@@ -185,10 +185,11 @@
         <summary>코드 보기/숨기기</summary>
    
         https://github.com/DaeHyeokk/Poker-Tower-Defense/blob/d66a4e9eca3197299f5bf40d522c3500a18414f6/Assets/Scripts/Stage%20Scripts/Enemy%20Scripts/EnemyMovement.cs#L29-L74  
-        </details>  
+        </details>
+        
    - **몬스터 피격 및 디버프**  
       - 몬스터는 타워로부터 데미지를 받거나 스턴, 슬로우, 방어력 감소 디버프를 받는다.
-      - **몬스터 피격 기능**
+      - **몬스터 피격**
          - 몬스터가 데미지를 받게 되면 체력이 감소하고 [Stage UI Manager](https://github.com/DaeHyeokk/Poker-Tower-Defense/blob/a2d22a6b713ac10c1a7ee226d654f2d42d5bfd26/Assets/Scripts/Stage%20Scripts/Manager%20Scripts/StageUIManager.cs)의 ShowDamageTakenText() 함수를 호출하여 받은 데미지를 나타내는 [Damage Taken Text](https://github.com/DaeHyeokk/Poker-Tower-Defense/blob/main/Assets/Scripts/Stage%20Scripts/UI%20Scripts/Dynamic%20UI%20Scripts/DamageTakenText.cs)를 생성 한다.  
          - Damage Taken Text는 매우 자주 생성되고 파괴되는 오브젝트이므로 Object Pool을 통해 활성화 및 비활성화 되도록 구현하여 효율성을 높였고, 커졌다 작아진 다음 빠르게 올라가며 사라지는 애니메이션을 추가하여 타격감과 생동감을 느낄 수 있도록 구현하였다.
          - <details>
@@ -198,3 +199,7 @@
            https://github.com/DaeHyeokk/Poker-Tower-Defense/blob/816bb38391d16d0ecb006ece6895e63f94026efb/Assets/Scripts/Stage%20Scripts/Manager%20Scripts/StageUIManager.cs#L116-L125  
            https://github.com/DaeHyeokk/Poker-Tower-Defense/blob/816bb38391d16d0ecb006ece6895e63f94026efb/Assets/Scripts/Stage%20Scripts/UI%20Scripts/Dynamic%20UI%20Scripts/DamageTakenText.cs#L50-L85  
            </details>
+
+      - **몬스터 스턴**
+         - 몬스터가 스턴 공격을 받게 되면 공격 받은 스턴의 지속 시간동안 이동을 멈춘다.  
+         - stunCount 값을 증감 시키면서 값이 1 이상이 되면 stun 파티클을 활성화 하고, 0이 되면 비활성화 하는 로직을 프로퍼티로 구현하였다.
