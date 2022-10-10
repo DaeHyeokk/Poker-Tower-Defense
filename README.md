@@ -139,7 +139,7 @@
          - Ray가 Tile 오브젝트와 충돌했을 때 해당 Tile에 배치된 타워가 있다면 배치된 타워와 합치기를 시도한다.  
       - **색 변환, 판매, 상세 정보 보기**  
          - Ray가 Tile 오브젝트와 충돌하지 않았을 경우 GraphicRaycaster.Raycast() 함수를 호출하여 캔버스 영역에 존재하는 UI 오브젝트와 충돌하는 Ray를 생성하고, Ray가 충돌한 UI 오브젝트의 Tag를 검사하여 각각의 기능을 수행하게 된다.  
-         - 상세 정보 문자열은 길이가 길고 여러 문자열이 결합된 형태로 이루어져 있기 때문에 Garbage 생성을 최소화 하기 위해 StringBuilde를 사용하여 구현하였다.  
+         - 상세 정보 문자열은 길이가 길고 여러 문자열이 결합된 형태로 이루어져 있기 때문에 Garbage 생성을 최소화 하기 위해 StringBuilder를 사용하여 구현하였다.  
          - [Tower Color Changer](https://github.com/DaeHyeokk/Poker-Tower-Defense/blob/main/Assets/Scripts/Stage%20Scripts/Tower%20Scripts/Tower%20Function%20Scripts/TowerColorChanger.cs)  
          - [Tower Sales](https://github.com/DaeHyeokk/Poker-Tower-Defense/blob/main/Assets/Scripts/Stage%20Scripts/Tower%20Scripts/Tower%20Function%20Scripts/TowerSales.cs)  
          - [Tower Detail Info](https://github.com/DaeHyeokk/Poker-Tower-Defense/blob/main/Assets/Scripts/Stage%20Scripts/Tower%20Scripts/Tower%20Function%20Scripts/TowerDetailInfo.cs)  
@@ -176,7 +176,7 @@
    - **몬스터 피격 및 디버프**  
       - 몬스터는 타워로부터 데미지를 받거나 스턴, 슬로우, 방어력 감소 디버프를 받는다.
       - **몬스터 피격 기능**
-         - 몬스터가 데미지를 받게 되면 체력이 감소하고 [Stage UI Manager]의 ShowDamageTakenText() 함수를 호출하여 받은 데미지를 나타내는 [Damage Taken Text](https://github.com/DaeHyeokk/Poker-Tower-Defense/blob/main/Assets/Scripts/Stage%20Scripts/UI%20Scripts/Dynamic%20UI%20Scripts/DamageTakenText.cs)를 생성 한다.  
+         - 몬스터가 데미지를 받게 되면 체력이 감소하고 [Stage UI Manager](https://github.com/DaeHyeokk/Poker-Tower-Defense/blob/a2d22a6b713ac10c1a7ee226d654f2d42d5bfd26/Assets/Scripts/Stage%20Scripts/Manager%20Scripts/StageUIManager.cs)의 ShowDamageTakenText() 함수를 호출하여 받은 데미지를 나타내는 [Damage Taken Text](https://github.com/DaeHyeokk/Poker-Tower-Defense/blob/main/Assets/Scripts/Stage%20Scripts/UI%20Scripts/Dynamic%20UI%20Scripts/DamageTakenText.cs)를 생성 한다.  
          - Damage Taken Text는 매우 자주 생성되고 파괴되는 오브젝트이므로 Object Pool을 통해 활성화 및 비활성화 되도록 구현하여 효율성을 높였고, 커졌다 작아진 다음 빠르게 올라가며 사라지는 애니메이션을 추가하여 타격감과 생동감을 느낄 수 있도록 구현하였다.
          - <details>
            <summary>코드 보기/숨기기</summary>
