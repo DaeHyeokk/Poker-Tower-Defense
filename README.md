@@ -3,7 +3,7 @@
 
 ## 프로젝트 개요  
 + [Play 스토어 링크](https://play.google.com/store/apps/details?id=com.devdduck.pokertowerdefense)
-+ 포트폴리오와 Google Play 출시를 목표로 시작한 모바일 타워 디펜스 프로젝트.
++ Google Play 출시를 목표로 시작한 모바일 타워 디펜스 프로젝트.
 + 제작 기간: 2022/04/20 ~ 2022/09/03 (계속 업데이트 중)
 + 제작 인원: 1명 (개인 프로젝트)
 + 사용한 프로그램: Unity, Visual Studio 2022
