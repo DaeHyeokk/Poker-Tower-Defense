@@ -176,7 +176,7 @@
       - 몬스터 중에서 Round Enemy는 자주 생성되고 파괴되는 오브젝트이므로 [Object Pool](https://github.com/DaeHyeokk/Poker-Tower-Defense/blob/main/Assets/Scripts/Common%20Scripts/ObjectPool.cs)을 통해 활성화 및 비활성화 되도록 구현하여 효율성을 높였다.  
       - Round Enemy가 생성되면 Enemy Spawner의 멤버 변수인 Round Enemy List에 담기게 된다.  
         Round Enemy List는 필드 위에 활성화 된 Round Enemy를 참조하거나 활성화 된 Round Enemy가 총 몇 마리인지 확인하기 위한 용도로 사용되는데,  
-        List의 맨 앞에서부터 뒤로 탐색하는 로직만 수행하기 때문에 **List의 원소에 인덱스로 직접 접근할 일이 없고** Enemy의 Die() 함수로 인해 **List의 중간 원소를 삭제할 일이 많기 때문에** List가 아닌 **LinkedList**에 Round Enemy를 담도록 구현하여 효율성을 높였다.  
+        List의 맨 앞에서부터 뒤로 탐색하는 로직만 수행하기 때문에 **List의 원소에 인덱스로 직접 접근할 일이 없고** Enemy의 Die() 함수로 인해 **List의 중간 원소를 삭제할 일이 많기 때문에** List가 아닌 **LinkedList**에 Round Enemy를 담도록 구현하여 효율성을 높였다.
    - **몬스터 이동**
       - 몬스터 중에서 Field Enemy는 [Enemy Movement](https://github.com/DaeHyeokk/Poker-Tower-Defense/blob/main/Assets/Scripts/Stage%20Scripts/Enemy%20Scripts/EnemyMovement.cs) 객체를 통해 4개의 Way Point를 순환한다.  
       - 몬스터는 매 프레임마다 Way Point를 향해 이동하는데, 만약 이동할 거리가 Way Point와의 거리보다 클 경우 초과한 거리만큼 다음 Way Point가 위치한 방향으로 이동 시키는 방식으로 몬스터가 Way Point 경로를 이탈하지 않도록 구현하였다.
