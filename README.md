@@ -157,6 +157,7 @@
       - 플레이어의 데이터는 GPGS에서 제공하는 데이터 Save, Load 기능을 통해 구글 클라우드에서 안전하게 관리되도록 구현하였으며, Player Game Data클래스를 JsonUtility를 사용하여 Json 문자열로 변환하고 이를 byte 배열로 인코딩하여 변조하기 어려운 암호화된 데이터로 저장 및 로드한다.
       - <details>
         <summary>코드 보기/숨기기</summary>
+   
         https://github.com/DaeHyeokk/Poker-Tower-Defense/blob/a2d22a6b713ac10c1a7ee226d654f2d42d5bfd26/Assets/Scripts/Stage%20Scripts/Tower%20Scripts/Tower.cs#L12-L45  
         https://github.com/DaeHyeokk/Poker-Tower-Defense/blob/a2d22a6b713ac10c1a7ee226d654f2d42d5bfd26/Assets/Scripts/Stage%20Scripts/Manager%20Scripts/StageManager.cs#L298-L403  
         https://github.com/DaeHyeokk/Poker-Tower-Defense/blob/a2d22a6b713ac10c1a7ee226d654f2d42d5bfd26/Assets/Scripts/Common%20Scripts/DontDestroyObjects/GameManager.cs#L217-L335  
