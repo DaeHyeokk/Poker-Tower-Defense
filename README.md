@@ -171,13 +171,13 @@
       - [Field Boss Enemy](https://github.com/DaeHyeokk/Poker-Tower-Defense/blob/main/Assets/Scripts/Stage%20Scripts/Enemy%20Scripts/FieldBossEnemy.cs), [Round Enemy](https://github.com/DaeHyeokk/Poker-Tower-Defense/blob/main/Assets/Scripts/Stage%20Scripts/Enemy%20Scripts/RoundEnemy.cs): 보스 몬스터인지 여부에 따라 Field Enemy를 상속 받는 추상 클래스와 기본 클래스
       - [Round Boss Enemy](https://github.com/DaeHyeokk/Poker-Tower-Defense/blob/main/Assets/Scripts/Stage%20Scripts/Enemy%20Scripts/RoundBossEnemy.cs), [Mission Boss Enemy](https://github.com/DaeHyeokk/Poker-Tower-Defense/blob/main/Assets/Scripts/Stage%20Scripts/Enemy%20Scripts/MissionBossEnemy.cs): 보스 종류에 따라 Field Boss Enemy를 상속 받는 기본 클래스
    - Draw Call 최적화를 위해 몬스터의 체력바가 동시에 그려지도록 Slider 컴포넌트가 아닌 Square 오브젝트 두 개를 이용하여 구현하였다.
-   - **몬스터 생성**  
+   - **몬스터 생성**
       - 몬스터는 [Enemy Spawner](https://github.com/DaeHyeokk/Poker-Tower-Defense/blob/main/Assets/Scripts/Stage%20Scripts/Enemy%20Scripts/EnemySpawner.cs) 오브젝트에서 생성 된다.
       - 몬스터 중에서 Round Enemy는 자주 생성되고 파괴되는 오브젝트이므로 [Object Pool](https://github.com/DaeHyeokk/Poker-Tower-Defense/blob/main/Assets/Scripts/Common%20Scripts/ObjectPool.cs)을 통해 활성화 및 비활성화 되도록 구현하여 효율성을 높였다.
       - Round Enemy가 생성되면 Enemy Spawner의 멤버 변수인 Round Enemy List에 담기게 된다.  
-        Round Enemy List는 필드 위에 활성화 된 Round Enemy를 참조하거나 활성화 된 Round Enemy가 총 몇 마리인지 확인하기 위한 용도로 사용되는데,  
-        List의 맨 앞에서부터 뒤로 탐색하는 로직만 수행하기 때문에 **List의 원소에 인덱스로 직접 접근할 일이 없고** Enemy의 Die() 함수로 인해 **List의 중간 원소를 삭제할 일이 많기 때문에** List가 아닌 **LinkedList**에 Round Enemy를 담도록 구현하여 효율성을 높였다.
-   - **몬스터 이동**  
+      Round Enemy List는 필드 위에 활성화 된 Round Enemy를 참조하거나 활성화 된 Round Enemy가 총 몇 마리인지 확인하기 위한 용도로 사용되는데,  
+      List의 맨 앞에서부터 뒤로 탐색하는 로직만 수행하기 때문에 **List의 원소에 인덱스로 직접 접근할 일이 없고** Enemy의 Die() 함수로 인해 **List의 중간 원소를 삭제할 일이 많기 때문에** List가 아닌 **LinkedList**에 Round Enemy를 담도록 구현하여 효율성을 높였다.
+   - **몬스터 이동**
       - 몬스터 중에서 Field Enemy는 [Enemy Movement](https://github.com/DaeHyeokk/Poker-Tower-Defense/blob/main/Assets/Scripts/Stage%20Scripts/Enemy%20Scripts/EnemyMovement.cs) 객체를 통해 4개의 Way Point를 순환한다.
       - 몬스터는 매 프레임마다 Way Point를 향해 이동하는데, 만약 이동할 거리가 Way Point와의 거리보다 클 경우 초과한 거리만큼 다음 Way Point가 위치한 방향으로 이동 시키는 방식으로 몬스터가 Way Point 경로를 이탈하지 않도록 구현하였다.
       - 구현 참고: [고박사의 유니티 노트 - [Unity 2D Game] Tower Defense #01 - 맵 배치, 적 생성 및 이동](https://www.youtube.com/watch?v=Qu_JVnwWn7w&list=PLC2Tit6NyVicvqMTDJl8e-2IB4v_I7ddd&index=9)
@@ -202,4 +202,5 @@
 
       - **몬스터 스턴**
          - 몬스터가 스턴 공격을 받게 되면 공격 받은 스턴의 지속 시간동안 이동을 멈춘다.
+         - 스턴 공격을 중첩해서 맞을 때, 이전에 맞았던 스턴 지속 시간을 초기화하고 새로운 스턴 지속 시간을 대입할 경우 이전에 맞았던 스턴 지속 시간이 더 길게 남아있는
          - stunCount 값을 증감 시키면서 값이 1 이상이 되면 stun 파티클을 활성화 하고, 0이 되면 비활성화 하는 로직을 프로퍼티로 구현하였다.
