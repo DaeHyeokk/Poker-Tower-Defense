@@ -4,7 +4,7 @@
 
 ## 프로젝트 개요  
 + [Play 스토어 링크](https://play.google.com/store/apps/details?id=com.devdduck.pokertowerdefense)
-+ 제작 기간: 2022/04/20 ~ 2022/09/13 (계속 업데이트 중)
++ 제작 기간: 2022/04/20 ~ 2022/09/03 (계속 업데이트 중)
 + 제작 인원: 1명 (개인 프로젝트)
 + 사용한 프로그램: Unity, Visual Studio 2022  
 
@@ -157,5 +157,6 @@
       - [Field Enemy](https://github.com/DaeHyeokk/Poker-Tower-Defense/blob/main/Assets/Scripts/Stage%20Scripts/Enemy%20Scripts/FieldEnemy.cs), [Special Boss Enemy](https://github.com/DaeHyeokk/Poker-Tower-Defense/blob/main/Assets/Scripts/Stage%20Scripts/Enemy%20Scripts/SpecialBossEnemy.cs): 움직이는지 여부에 따라 Enemy를 상속 받는 추상 클래스와 기본 클래스  
       - [Field Boss Enemy](https://github.com/DaeHyeokk/Poker-Tower-Defense/blob/main/Assets/Scripts/Stage%20Scripts/Enemy%20Scripts/FieldBossEnemy.cs), [Round Enemy](https://github.com/DaeHyeokk/Poker-Tower-Defense/blob/main/Assets/Scripts/Stage%20Scripts/Enemy%20Scripts/RoundEnemy.cs): 보스 몬스터인지 여부에 따라 Field Enemy를 상속 받는 추상 클래스와 기본 클래스  
       - [Round Boss Enemy](https://github.com/DaeHyeokk/Poker-Tower-Defense/blob/main/Assets/Scripts/Stage%20Scripts/Enemy%20Scripts/RoundBossEnemy.cs), [Mission Boss Enemy](https://github.com/DaeHyeokk/Poker-Tower-Defense/blob/main/Assets/Scripts/Stage%20Scripts/Enemy%20Scripts/MissionBossEnemy.cs): 보스 종류에 따라 Field Boss Enemy를 상속 받는 기본 클래스  
+      - Draw Call 최적화를 위해 
    - **몬스터 생성**
       - 
