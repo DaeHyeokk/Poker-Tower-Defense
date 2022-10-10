@@ -118,7 +118,7 @@
           </details>
         
    - **Enemy, Tower와의 상호작용**
-      - [IInflictable Class Diagram](https://user-images.githubusercontent.com/63538183/194687301-c6ed417a-6cec-43b1-8129-23fa28292d09.png)  
+      - ![IInflictable Class Diagram](https://user-images.githubusercontent.com/63538183/194687301-c6ed417a-6cec-43b1-8129-23fa28292d09.png)  
       - 타워는 [IInflictable](https://github.com/DaeHyeokk/Poker-Tower-Defense/blob/main/Assets/Scripts/Stage%20Scripts/Tower%20Scripts/Inflictors/IInflictable.cs) 인터페이스를 상속받는 여러가지 객체를 사용하여 적에게 피해를 입히거나 상태이상 디버프를 걸고, 타워의 능력치를 상승 시키는 등의 기능을 수행한다.
       - IInflictable의 UpdateInflictorInfo() 함수를 통해 Attributes에 할당된 값에 따라 동적으로 Inflictable의 inflictorInfo 문자열이 갱신되도록 하여 추후 값 변경에 용이하도록 구현하였다.  
       - inflictorInfo 문자열은 길이가 길고 여러 문자열이 결합된 형태로 이루어져 있기 때문에 Garbage 생성을 최소화 하기 위해 StringBuilder를 사용하여 구현하였다.  
@@ -151,7 +151,7 @@
         </details>  
         
 ### 2. 몬스터 관련 로직
-   - ![Enemy Class Diagram](https://user-images.githubusercontent.com/63538183/194795302-425230a6-1722-4a45-abbc-c847af091bf5.png)
+   - [Enemy Class Diagram](https://user-images.githubusercontent.com/63538183/194795302-425230a6-1722-4a45-abbc-c847af091bf5.png)
    - Enemy 클래스를 몬스터 각각의 특징에 따라 하위 클래스로 세분화 함으로써 코드의 중복을 최소화 하고 관리 및 유지보수가 용이하도록 구현하였다.  
       - [Enemy](https://github.com/DaeHyeokk/Poker-Tower-Defense/blob/main/Assets/Scripts/Stage%20Scripts/Enemy%20Scripts/Enemy.cs): 최상위 추상 클래스  
       - [Field Enemy](https://github.com/DaeHyeokk/Poker-Tower-Defense/blob/main/Assets/Scripts/Stage%20Scripts/Enemy%20Scripts/FieldEnemy.cs), [Special Boss Enemy](https://github.com/DaeHyeokk/Poker-Tower-Defense/blob/main/Assets/Scripts/Stage%20Scripts/Enemy%20Scripts/SpecialBossEnemy.cs): 움직이는지 여부에 따라 Enemy를 상속 받는 추상 클래스와 기본 클래스  
