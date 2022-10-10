@@ -168,4 +168,9 @@
       - 몬스터 중에서 Field Enemy는 [Enemy Movement](https://github.com/DaeHyeokk/Poker-Tower-Defense/blob/main/Assets/Scripts/Stage%20Scripts/Enemy%20Scripts/EnemyMovement.cs) 객체를 통해 4개의 Way Point를 순환한다.  
       - 몬스터는 매 프레임마다 Way Point를 향해 이동하는데, 만약 이동할 거리가 Way Point와의 거리보다 클 경우 초과한 거리만큼 다음 Way Point가 위치한 방향으로 이동 시키는 방식으로 몬스터가 Way Point 경로를 이탈하지 않도록 구현하였다.
       - 구현 참고: [고박사의 유니티 노트 - [Unity 2D Game] Tower Defense #01 - 맵 배치, 적 생성 및 이동](https://www.youtube.com/watch?v=Qu_JVnwWn7w&list=PLC2Tit6NyVicvqMTDJl8e-2IB4v_I7ddd&index=9)  
+      - <details>
+        <summary>코드 보기/숨기기</summary>
+   
+        https://github.com/DaeHyeokk/Poker-Tower-Defense/blob/d66a4e9eca3197299f5bf40d522c3500a18414f6/Assets/Scripts/Stage%20Scripts/Enemy%20Scripts/EnemyMovement.cs#L29-L74  
+        </details>  
       
