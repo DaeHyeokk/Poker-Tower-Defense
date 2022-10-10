@@ -160,7 +160,7 @@
    - Draw Call 최적화를 위해 몬스터의 체력바가 동시에 그려지도록 Slider 컴포넌트가 아닌 Square 오브젝트 두 개를 이용하여 구현하였다.
    - **몬스터 생성**
       - 몬스터는 [Enemy Spawner](https://github.com/DaeHyeokk/Poker-Tower-Defense/blob/main/Assets/Scripts/Stage%20Scripts/Enemy%20Scripts/EnemySpawner.cs) 오브젝트에서 생성 된다.  
-      - 몬스터 중에서 Round Enemy는 자주 생성되고 파괴되는 오브젝트임으로 [Object Pool](https://github.com/DaeHyeokk/Poker-Tower-Defense/blob/main/Assets/Scripts/Common%20Scripts/ObjectPool.cs)을 통해 활성화 및 비활성화 되도록 구현하여 효율성을 높였다.  
+      - 몬스터 중에서 Round Enemy는 자주 생성되고 파괴되는 오브젝트이므로 [Object Pool](https://github.com/DaeHyeokk/Poker-Tower-Defense/blob/main/Assets/Scripts/Common%20Scripts/ObjectPool.cs)을 통해 활성화 및 비활성화 되도록 구현하여 효율성을 높였다.  
       - Round Enemy가 생성되면 Enemy Spawner의 멤버 변수인 Round Enemy List에 담기게 된다.  
         Round Enemy List는 필드 위에 활성화 된 Round Enemy를 참조하거나 활성화 된 Round Enemy가 총 몇 마리인지 확인하기 위한 용도로 사용되는데,  
         List의 맨 앞에서부터 뒤로 탐색하는 로직만 수행하기 때문에 **List의 원소에 인덱스로 직접 접근할 일이 없고** Enemy의 Die() 함수로 인해 **List의 중간 원소를 삭제할 일이 많기 때문에** List가 아닌 **LinkedList**에 Round Enemy를 담도록 구현하여 효율성을 높였다.  
@@ -173,4 +173,9 @@
    
         https://github.com/DaeHyeokk/Poker-Tower-Defense/blob/d66a4e9eca3197299f5bf40d522c3500a18414f6/Assets/Scripts/Stage%20Scripts/Enemy%20Scripts/EnemyMovement.cs#L29-L74  
         </details>  
-      
+   - **몬스터 피격 및 디버프**  
+      - 몬스터는 타워로부터 데미지를 받거나 스턴, 슬로우, 방어력 감소 디버프를 받는다.
+      - **몬스터 피격 기능**
+         - 몬스터가 데미지를 받게 되면 체력이 감소하고 [Stage UI Manager]의 ShowDamageTakenText() 함수를 호출하여 받은 데미지를 나타내는 [Damage Taken Text]를 생성 한다.  
+         - [Damage Taken Text]는 매우 자주 생성되고 파괴되는 오브젝트이므로 Object Pool을 통해 활성화 및 비활성화 되도록 구현하여 효율성을 높였다.  
+         또한 커졌다 작아지고 위로 빠르게 올라가며 사라지는 애니메이션을 구현하여 타격감과 생동감을 느낄 수 있도록 구현하였다.
