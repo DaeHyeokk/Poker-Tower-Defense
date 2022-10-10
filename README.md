@@ -151,7 +151,7 @@
         </details>  
         
 ### 2. 몬스터 관련 로직
-   - [Enemy Class Diagram](https://user-images.githubusercontent.com/63538183/194780733-cd43bd44-9d9b-4838-9a2f-4d37eb80edff.png)
+   - ![Enemy Class Diagram](https://user-images.githubusercontent.com/63538183/194795302-425230a6-1722-4a45-abbc-c847af091bf5.png)
    - Enemy 클래스를 몬스터 각각의 특징에 따라 하위 클래스로 세분화 함으로써 코드의 중복을 최소화 하고 관리 및 유지보수가 용이하도록 구현하였다.  
       - [Enemy](https://github.com/DaeHyeokk/Poker-Tower-Defense/blob/main/Assets/Scripts/Stage%20Scripts/Enemy%20Scripts/Enemy.cs): 최상위 추상 클래스  
       - [Field Enemy](https://github.com/DaeHyeokk/Poker-Tower-Defense/blob/main/Assets/Scripts/Stage%20Scripts/Enemy%20Scripts/FieldEnemy.cs), [Special Boss Enemy](https://github.com/DaeHyeokk/Poker-Tower-Defense/blob/main/Assets/Scripts/Stage%20Scripts/Enemy%20Scripts/SpecialBossEnemy.cs): 움직이는지 여부에 따라 Enemy를 상속 받는 추상 클래스와 기본 클래스  
