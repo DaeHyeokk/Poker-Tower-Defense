@@ -1,5 +1,5 @@
 # 포타디 - 포커 타워 디펜스
-[![Video Label](http://img.youtube.com/vi/xIdag89_XPc/0.jpg)](https://youtu.be/xIdag89_XPc)  
+[![Video Label]( https://yt-embed.herokuapp.com/embed?v=xIdag89_XPc/0.jpg)](https://youtu.be/xIdag89_XPc)  
 <이미지를 클릭하시면 유튜브로 이동됩니다.>
 ## 프로젝트 개요  
 + [Play 스토어 링크](https://play.google.com/store/apps/details?id=com.devdduck.pokertowerdefense)
