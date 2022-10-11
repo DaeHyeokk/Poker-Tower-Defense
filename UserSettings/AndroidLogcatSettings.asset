@@ -3,7 +3,7 @@
     "m_SelectedPackage": {
         "deviceId": "R3CMB0D8TVP",
         "name": "com.devdduck.pokertowerdefense",
-        "processId": 17270,
+        "processId": 28392,
         "exited": false
     },
     "m_SelectedPriority": 0,
@@ -132,6 +132,12 @@
             "deviceId": "R3CMB0D8TVP",
             "name": "com.devdduck.pokertowerdefense",
             "processId": 17270,
+            "exited": false
+        },
+        {
+            "deviceId": "R3CMB0D8TVP",
+            "name": "com.devdduck.pokertowerdefense",
+            "processId": 28392,
             "exited": false
         }
     ],

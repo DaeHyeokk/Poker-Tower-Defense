@@ -40,7 +40,7 @@ public abstract class Enemy : MonoBehaviour
         get => _enemyHealthbar.health; 
         set => _enemyHealthbar.health = value;
     }
-        private float increaseReceiveDamageRate
+    private float increaseReceiveDamageRate
     {
         get => _increaseReceiveDamageRate;
         set
@@ -51,7 +51,7 @@ public abstract class Enemy : MonoBehaviour
             // increaseReceiveDamageRate 값이 0이 아니고 value값이 0이라면 디버프 스프라이트를 비활성화 한다.
             else if (_increaseReceiveDamageRate > 0 && value == 0)
                 _increaseReceiveDamageSprite.gameObject.SetActive(false);
-            
+
             _increaseReceiveDamageRate = value;
         }
     }
