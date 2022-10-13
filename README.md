@@ -252,22 +252,22 @@
            </details>
 
 ### 3. 미션 관련 로직
-   - [Mission 클래스 다이어그램](https://user-images.githubusercontent.com/63538183/195458433-dc3e0b61-2f3e-443d-b5f9-d44e977d54c9.png)
-   - 추상 클래스 [Mission](https://github.com/DaeHyeokk/Poker-Tower-Defense/blob/main/Assets/Scripts/Stage%20Scripts/Mission%20Scripts/Mission.cs)을 정의하고, 반복 여부에 따라 이를 상속 받는 추상 클래스 [Non Repeat Mission](https://github.com/DaeHyeokk/Poker-Tower-Defense/blob/main/Assets/Scripts/Stage%20Scripts/Mission%20Scripts/NonRepeatMission.cs)과 [Repeat Mission](https://github.com/DaeHyeokk/Poker-Tower-Defense/blob/main/Assets/Scripts/Stage%20Scripts/Mission%20Scripts/RepeatMission.cs)을 정의하였다.
-   - 미션 클리어 시 얻는 보상은 화면 정중앙에서 사운드와 함께 크게 나타나도록 구현하였다.  
-     동시에 여러개의 미션을 깨거나, 미션 완료와 동시에 Special Boss Enemy를 처치하는 경우에 대비하기 위해 화면에 바로 나타내지 않고 Stage UI Manager에서 Queue 객체를 통해 한 번에 하나씩 차례대로 나타내도록 구현하였다.
-   - 타워 수집 미션에서 사용되는 [Mission Tower](https://github.com/DaeHyeokk/Poker-Tower-Defense/blob/main/Assets/Scripts/Stage%20Scripts/Tower%20Scripts/MissionTower.cs) 오브젝트는 직렬화를 통해 타워의 종류, 레벨, 색상을 직접 설정 하거나 랜덤으로 설정 되도록 구현하였으며, 타워와 일치하는지 비교하는 역할을 수행한다.
+- [Mission 클래스 다이어그램](https://user-images.githubusercontent.com/63538183/195458433-dc3e0b61-2f3e-443d-b5f9-d44e977d54c9.png)
+- 추상 클래스 [Mission](https://github.com/DaeHyeokk/Poker-Tower-Defense/blob/main/Assets/Scripts/Stage%20Scripts/Mission%20Scripts/Mission.cs)을 정의하고, 반복 여부에 따라 이를 상속 받는 추상 클래스 [Non Repeat Mission](https://github.com/DaeHyeokk/Poker-Tower-Defense/blob/main/Assets/Scripts/Stage%20Scripts/Mission%20Scripts/NonRepeatMission.cs)과 [Repeat Mission](https://github.com/DaeHyeokk/Poker-Tower-Defense/blob/main/Assets/Scripts/Stage%20Scripts/Mission%20Scripts/RepeatMission.cs)을 정의하였다.
+- 미션 클리어 시 얻는 보상은 화면 정중앙에서 사운드와 함께 크게 나타나도록 구현하였다.  
+  동시에 여러개의 미션을 깨거나, 미션 완료와 동시에 Special Boss Enemy를 처치하는 경우에 대비하기 위해 화면에 바로 나타내지 않고 Stage UI Manager에서 Queue 객체를 통해 한 번에 하나씩 차례대로 나타내도록 구현하였다.
+- 타워 수집 미션에서 사용되는 [Mission Tower](https://github.com/DaeHyeokk/Poker-Tower-Defense/blob/main/Assets/Scripts/Stage%20Scripts/Tower%20Scripts/MissionTower.cs) 오브젝트는 직렬화를 통해 타워의 종류, 레벨, 색상을 직접 설정 하거나 랜덤으로 설정 되도록 구현하였으며, 타워와 일치하는지 비교하는 역할을 수행한다.
 
 ### 4. 사운드 관련 로직
-   - [Sound Manager](https://github.com/DaeHyeokk/Poker-Tower-Defense/blob/main/Assets/Scripts/Common%20Scripts/DontDestroyObjects/SoundManager.cs) 오브젝트를 통해 모든 BGM과 SFX를 출력하거나 정지하고, 사운드 설정값을 변경 및 저장한다.
-   - 플레이어의 사운드 설정값은 보안이나 유실에 대해 크게 중요하지 않기 때문에 PlayerPrefs를 통해 디바이스에 저장되도록 구현하였다.
-   - 씬에서 사용되는 모든 사운드의 Audio Clip 객체는 [Audio Clip Manager](https://github.com/DaeHyeokk/Poker-Tower-Defense/blob/main/Assets/Scripts/Common%20Scripts/Managers/AudioClipManager.cs) 오브젝트를 통해 참조하도록 구현하였으며, Audio Clip 목록을 담을 자료 구조는 파일 이름으로 접근하기 위해 Dictionary를 선택했다.
-   - 효과음을 출력할 때마다 string을 매개변수로 사용하기 때문에 Garbage 생성을 최소화 하기 위해 게임에 사용되는 모든 Audio Clip 파일 이름을 [Sound File Name Dictionary](https://github.com/DaeHyeokk/Poker-Tower-Defense/blob/main/Assets/Scripts/Common%20Scripts/SoundFileNameDictionary.cs)를 통해 참조할 수 있도록 구현하였다.
-   - 동일한 효과음이 여러개 중첩되는 경우 소리가 깨져서 들리는 문제가 있기 때문에 동일한 효과음이 10개 이상 중첩 되면 가장 먼저 출력한 효과음을 중지하도록 구현하였다.
-   - 효과음을 중간에 중지하기 위해 효과음 전용 Audio Source인 [SFX Audio Source](https://github.com/DaeHyeokk/Poker-Tower-Defense/blob/main/Assets/Scripts/Common%20Scripts/SFXAudioSource.cs)를 통해 출력하도록 구현하였고, 자주 생성되고 파괴되기 때문에 Object Pool을 통해 활성화 및 비활성화 되도록 구현하여 효율성을 높였다.
+- [Sound Manager](https://github.com/DaeHyeokk/Poker-Tower-Defense/blob/main/Assets/Scripts/Common%20Scripts/DontDestroyObjects/SoundManager.cs) 오브젝트를 통해 모든 BGM과 SFX를 출력하거나 정지하고, 사운드 설정값을 변경 및 저장한다.
+- 플레이어의 사운드 설정값은 보안이나 유실에 대해 크게 중요하지 않기 때문에 PlayerPrefs를 통해 디바이스에 저장되도록 구현하였다.
+- 씬에서 사용되는 모든 사운드의 Audio Clip 객체는 [Audio Clip Manager](https://github.com/DaeHyeokk/Poker-Tower-Defense/blob/main/Assets/Scripts/Common%20Scripts/Managers/AudioClipManager.cs) 오브젝트를 통해 참조하도록 구현하였으며, Audio Clip 목록을 담을 자료 구조는 파일 이름으로 접근하기 위해 Dictionary를 선택했다.
+- 효과음을 출력할 때마다 string을 매개변수로 사용하기 때문에 Garbage 생성을 최소화 하기 위해 게임에 사용되는 모든 Audio Clip 파일 이름을 [Sound File Name Dictionary](https://github.com/DaeHyeokk/Poker-Tower-Defense/blob/main/Assets/Scripts/Common%20Scripts/SoundFileNameDictionary.cs)를 통해 참조할 수 있도록 구현하였다.
+- 동일한 효과음이 여러개 중첩되는 경우 소리가 깨져서 들리는 문제가 있기 때문에 동일한 효과음이 10개 이상 중첩 되면 가장 먼저 출력한 효과음을 중지하도록 구현하였다.
+- 효과음을 중간에 중지하기 위해 효과음 전용 Audio Source인 [SFX Audio Source](https://github.com/DaeHyeokk/Poker-Tower-Defense/blob/main/Assets/Scripts/Common%20Scripts/SFXAudioSource.cs)를 통해 출력하도록 구현하였고, 자주 생성되고 파괴되기 때문에 Object Pool을 통해 활성화 및 비활성화 되도록 구현하여 효율성을 높였다.
    
 ## 성과 및 느낀점
-   - 클래스를 세분화 하여 구현 하는 경험을 통해 객체 지향 프로그래밍의 이해도가 향상되었다.
-   - 프로파일링 하는 과정을 통해 성능 최적화의 중요성과 , Frame Debugger를 통해 드로우콜 최적화의 중요성을 알게 되었다.
-   - 구글 플레이 스토어에 출시 하고 운영하면서 유저들의 피드백을 받고 요구 사항을 반영하는 경험을 하였고,  
-     유저의 돌발 행동에 대비하지 못해 데이터를 유실 시키게 되어 데이터를 복구 시켜주는 경험을 통해 현업에서 절대 해서는 안 될 실수에 대한 경각심을 가지게 되었다.
+- 클래스를 세분화 하여 구현 하는 경험을 통해 객체 지향 프로그래밍의 이해도가 향상되었다.
+- 프로파일링 하는 과정을 통해 성능 최적화의 중요성과 , Frame Debugger를 통해 드로우콜 최적화의 중요성을 알게 되었다.
+- 구글 플레이 스토어에 출시 하고 운영하면서 유저들의 피드백을 받고 요구 사항을 반영하는 경험을 하였고,  
+  유저의 돌발 행동에 대비하지 못해 데이터를 유실 시키게 되어 데이터를 복구 시켜주는 경험을 통해 현업에서 절대 해서는 안 될 실수에 대한 경각심을 가지게 되었다.
