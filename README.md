@@ -25,7 +25,7 @@
    - 마지막 보스를 처치하는데 걸린 시간을 기록하고 최고 기록을 달성하면 이를 리더보드에 등록함으로써 다른 플레이어들과 경쟁할 수 있도록 하였다.
 
 ## 주요 기능
-### 1. 포커 관련 
+### 1. 포커 관련 로직
    - 카드의 갯수가 총 **52장**이며 **중복이 없다**는 특성을 이용하여 **64비트 자료형**인 long 타입의 변수에 뽑은 카드 정보를 저장하는 **비트마스킹 기법**으로 구현하였다.
    - 리얼함을 위해 랜덤으로 뽑힌 카드의 순서를 저장하기 위한 별도의 카드 배열을 두는 것은 불가피 하기 때문에 카드 배열을 순회하며 족보를 판별하는 방식보다 **64비트만큼의 추가 메모리가 더 필요하다는 단점**이 있지만, 카드의 존재 유무를 확인하는 작업을 뽑은 카드 배열을 순회할 필요 없이 **비트 연산으로 O(1) 시간에 확인할 수 있어 매우 빠르게 족보를 판별할 수 있다는 장점**이 있다.
    - **족보 판별**  
@@ -252,19 +252,19 @@
            </details>
 
 ### 3. 미션 관련 로직
-  - [Mission 클래스 다이어그램](https://user-images.githubusercontent.com/63538183/195458433-dc3e0b61-2f3e-443d-b5f9-d44e977d54c9.png)
-  - 추상 클래스 [Mission](https://github.com/DaeHyeokk/Poker-Tower-Defense/blob/main/Assets/Scripts/Stage%20Scripts/Mission%20Scripts/Mission.cs)을 정의하고, 반복 여부에 따라 이를 상속 받는 추상 클래스 [Non Repeat Mission](https://github.com/DaeHyeokk/Poker-Tower-Defense/blob/main/Assets/Scripts/Stage%20Scripts/Mission%20Scripts/NonRepeatMission.cs)과 [Repeat Mission](https://github.com/DaeHyeokk/Poker-Tower-Defense/blob/main/Assets/Scripts/Stage%20Scripts/Mission%20Scripts/RepeatMission.cs)을 정의하였다.
-  - 미션 클리어 시 얻는 보상은 화면 정중앙에서 사운드와 함께 크게 나타나도록 구현하였다.  
-  동시에 여러개의 미션을 깨거나, 미션 완료와 동시에 Special Boss Enemy를 처치하는 경우에 대비하기 위해 화면에 바로 나타내지 않고 Stage UI Manager에서 Queue 객체를 통해 한 번에 하나씩 차례대로 나타내도록 구현하였다.
-  - 타워 수집 미션에서 사용되는 [Mission Tower](https://github.com/DaeHyeokk/Poker-Tower-Defense/blob/main/Assets/Scripts/Stage%20Scripts/Tower%20Scripts/MissionTower.cs) 오브젝트는 직렬화를 통해 타워의 종류, 레벨, 색상을 직접 설정 하거나 랜덤으로 설정 되도록 구현하였으며, 타워와 일치하는지 비교하는 역할을 수행한다.
+   - [Mission 클래스 다이어그램](https://user-images.githubusercontent.com/63538183/195458433-dc3e0b61-2f3e-443d-b5f9-d44e977d54c9.png)
+   - 추상 클래스 [Mission](https://github.com/DaeHyeokk/Poker-Tower-Defense/blob/main/Assets/Scripts/Stage%20Scripts/Mission%20Scripts/Mission.cs)을 정의하고, 반복 여부에 따라 이를 상속 받는 추상 클래스 [Non Repeat Mission](https://github.com/DaeHyeokk/Poker-Tower-Defense/blob/main/Assets/Scripts/Stage%20Scripts/Mission%20Scripts/NonRepeatMission.cs)과 [Repeat Mission](https://github.com/DaeHyeokk/Poker-Tower-Defense/blob/main/Assets/Scripts/Stage%20Scripts/Mission%20Scripts/RepeatMission.cs)을 정의하였다.
+   - 미션 클리어 시 얻는 보상은 화면 정중앙에서 사운드와 함께 크게 나타나도록 구현하였다.  
+   동시에 여러개의 미션을 깨거나, 미션 완료와 동시에 Special Boss Enemy를 처치하는 경우에 대비하기 위해 화면에 바로 나타내지 않고 Stage UI Manager에서 Queue 객체를 통해 한 번에 하나씩 차례대로 나타내도록 구현하였다.
+   - 타워 수집 미션에서 사용되는 [Mission Tower](https://github.com/DaeHyeokk/Poker-Tower-Defense/blob/main/Assets/Scripts/Stage%20Scripts/Tower%20Scripts/MissionTower.cs) 오브젝트는 직렬화를 통해 타워의 종류, 레벨, 색상을 직접 설정 하거나 랜덤으로 설정 되도록 구현하였으며, 타워와 일치하는지 비교하는 역할을 수행한다.
 
 ### 4. 사운드 관련 로직
-  - [Sound Manager](https://github.com/DaeHyeokk/Poker-Tower-Defense/blob/main/Assets/Scripts/Common%20Scripts/DontDestroyObjects/SoundManager.cs) 오브젝트를 통해 모든 BGM과 SFX를 출력하거나 정지하고, 사운드 설정값을 변경 및 저장한다.
-  - 플레이어의 사운드 설정값은 보안이나 유실에 대해 크게 중요하지 않기 때문에 PlayerPrefs를 통해 디바이스에 저장되도록 구현하였다.
-  - 씬에서 사용되는 모든 Audio Clip 객체는 [Audio Clip Manager](https://github.com/DaeHyeokk/Poker-Tower-Defense/blob/main/Assets/Scripts/Common%20Scripts/Managers/AudioClipManager.cs) 오브젝트를 통해 참조하도록 구현하였으며, Audio Clip 목록을 담을 자료 구조는 파일 이름으로 접근하기 위해 Dictionary를 사용하였다.
-  - 효과음을 출력할 때마다 string을 매개변수로 사용하기 때문에 Garbage 생성을 최소화 하기 위해 게임에 사용되는 모든 Audio Clip 파일 이름을 [Sound File Name Dictionary](https://github.com/DaeHyeokk/Poker-Tower-Defense/blob/main/Assets/Scripts/Common%20Scripts/SoundFileNameDictionary.cs)를 통해 참조할 수 있도록 구현하였다.
-  - 동일한 효과음이 여러개 중첩되는 경우 소리가 깨져서 들리는 문제가 있기 때문에 동일한 효과음이 10개 이상 중첩 되면 가장 먼저 출력한 효과음을 중지하도록 구현하였다.
-  - 효과음을 중간에 중지하기 위해 효과음 전용 Audio Source인 [SFX Audio Source](https://github.com/DaeHyeokk/Poker-Tower-Defense/blob/main/Assets/Scripts/Common%20Scripts/SFXAudioSource.cs)를 통해 출력하도록 구현하였고, 자주 생성되고 파괴되기 때문에 Object Pool을 통해 활성화 및 비활성화 되도록 구현하여 효율성을 높였다.
+   - [Sound Manager](https://github.com/DaeHyeokk/Poker-Tower-Defense/blob/main/Assets/Scripts/Common%20Scripts/DontDestroyObjects/SoundManager.cs) 오브젝트를 통해 모든 BGM과 SFX를 출력하거나 정지하고, 사운드 설정값을 변경 및 저장한다.
+   - 플레이어의 사운드 설정값은 보안이나 유실에 대해 크게 중요하지 않기 때문에 PlayerPrefs를 통해 디바이스에 저장되도록 구현하였다.
+   - 씬에서 사용되는 모든 Audio Clip 객체는 [Audio Clip Manager](https://github.com/DaeHyeokk/Poker-Tower-Defense/blob/main/Assets/Scripts/Common%20Scripts/Managers/AudioClipManager.cs) 오브젝트를 통해 참조하도록 구현하였으며, Audio Clip 목록을 담을 자료 구조는 파일 이름으로 접근하기 위해 Dictionary를 사용하였다.
+   - 효과음을 출력할 때마다 string을 매개변수로 사용하기 때문에 Garbage 생성을 최소화 하기 위해 게임에 사용되는 모든 Audio Clip 파일 이름을 [Sound File Name Dictionary](https://github.com/DaeHyeokk/Poker-Tower-Defense/blob/main/Assets/Scripts/Common%20Scripts/SoundFileNameDictionary.cs)를 통해 참조할 수 있도록 구현하였다.
+   - 동일한 효과음이 여러개 중첩되는 경우 소리가 깨져서 들리는 문제가 있기 때문에 동일한 효과음이 10개 이상 중첩 되면 가장 먼저 출력한 효과음을 중지하도록 구현하였다.
+   - 효과음을 중간에 중지하기 위해 효과음 전용 Audio Source인 [SFX Audio Source](https://github.com/DaeHyeokk/Poker-Tower-Defense/blob/main/Assets/Scripts/Common%20Scripts/SFXAudioSource.cs)를 통해 출력하도록 구현하였고, 자주 생성되고 파괴되기 때문에 Object Pool을 통해 활성화 및 비활성화 되도록 구현하여 효율성을 높였다.
    
 ## 성과 및 느낀점
 - 클래스를 세분화 하여 구현 하는 경험을 통해 객체 지향 프로그래밍의 이해도가 향상되었다.
