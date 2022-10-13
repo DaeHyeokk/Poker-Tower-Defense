@@ -253,10 +253,9 @@
 
 ### 3. 미션 관련 로직
    - [Mission 클래스 다이어그램](https://user-images.githubusercontent.com/63538183/195458433-dc3e0b61-2f3e-443d-b5f9-d44e977d54c9.png)
-      - ㅇㅇㅇ
-      - ㅇㅇㅇ
-      - ㅇㅇㅇ
+   
    - 추상 클래스 [Mission](https://github.com/DaeHyeokk/Poker-Tower-Defense/blob/main/Assets/Scripts/Stage%20Scripts/Mission%20Scripts/Mission.cs)을 정의하고, 반복 여부에 따라 이를 상속 받는 추상 클래스 [Non Repeat Mission](https://github.com/DaeHyeokk/Poker-Tower-Defense/blob/main/Assets/Scripts/Stage%20Scripts/Mission%20Scripts/NonRepeatMission.cs)과 [Repeat Mission](https://github.com/DaeHyeokk/Poker-Tower-Defense/blob/main/Assets/Scripts/Stage%20Scripts/Mission%20Scripts/RepeatMission.cs)을 정의하였다.
+   
    - 미션 클리어 시 얻는 보상은 화면 정중앙에서 사운드와 함께 크게 나타나도록 구현하였다.  
    동시에 여러개의 미션을 깨거나, 미션 완료와 동시에 Special Boss Enemy를 처치하는 경우에 대비하기 위해 화면에 바로 나타내지 않고 Stage UI Manager에서 Queue 객체를 통해 한 번에 하나씩 차례대로 나타내도록 구현하였다.
    - 타워 수집 미션에서 사용되는 [Mission Tower](https://github.com/DaeHyeokk/Poker-Tower-Defense/blob/main/Assets/Scripts/Stage%20Scripts/Tower%20Scripts/MissionTower.cs) 오브젝트는 직렬화를 통해 타워의 종류, 레벨, 색상을 직접 설정 하거나 랜덤으로 설정 되도록 구현하였으며, 타워와 일치하는지 비교하는 역할을 수행한다.
