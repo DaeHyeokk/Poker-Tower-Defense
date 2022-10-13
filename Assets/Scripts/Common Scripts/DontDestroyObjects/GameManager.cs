@@ -133,12 +133,14 @@ public class GameManager : MonoBehaviour
         PlayGamesPlatform.Activate();
     }
 
+    // 게임을 중지할 때 호출.
+    // 게임 속 저장되어 관리되는 데이터를 저장한다.
     private void OnApplicationPause(bool pause)
     {
 
         if (pause && Social.localUser.authenticated && SceneManager.GetActiveScene().name != "GameLoadingScene")
             Save();
-
+        SoundManager.instance.SavePlayerPrefsSoundData();
         PlayerPrefs.Save();
     }
 

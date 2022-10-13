@@ -59,24 +59,13 @@ public class MissionTower : MonoBehaviour
     {
         _towerImage.sprite = _towerBuilder.towerSprites[_towerIndex];
 
-        switch (_colorType)
+        _towerImage.color = _colorType switch
         {
-            case TowerColor.ColorType.Red:
-                _towerImage.color = Color.red;
-                break;
-
-            case TowerColor.ColorType.Green:
-                _towerImage.color = Color.green;
-                break;
-
-            case TowerColor.ColorType.Blue:
-                _towerImage.color = Color.blue;
-                break;
-
-            default:
-                _towerImage.color = Color.white;
-                break;
-        }
+            TowerColor.ColorType.Red => Color.red,
+            TowerColor.ColorType.Green => Color.green,
+            TowerColor.ColorType.Blue => Color.blue,
+            _ => Color.white,
+        };
     }
 
     private void SetTowerLevelImage()

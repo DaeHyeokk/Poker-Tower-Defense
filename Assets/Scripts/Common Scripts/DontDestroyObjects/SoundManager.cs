@@ -152,15 +152,7 @@ public class SoundManager : MonoBehaviour
         isSfxMuted = PlayerPrefs.GetString("IsSfxMuted") == "True" ? true : false;
     }
 
-    // 앱을 닫거나 다른앱으로 전환하거나 종료될 때 호출.
-    private void OnApplicationPause(bool pause)
-    {
-        // 앱을 중지하는 경우 현재 사운드 설정값을 디스크에 저장한다.
-        if (pause)
-            SoundManager.instance.SavePlayerPrefsSoundData();
-    }
-
-    private void SavePlayerPrefsSoundData()
+    public void SavePlayerPrefsSoundData()
     {
         PlayerPrefs.SetFloat("BgmVolume", _bgmAudioSource.volume);
         PlayerPrefs.SetFloat("SfxVolume", _commonSfxAudioSource.volume);
