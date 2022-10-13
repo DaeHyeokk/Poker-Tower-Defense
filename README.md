@@ -264,11 +264,6 @@
    - 씬에서 사용되는 모든 사운드의 Audio Clip 객체는 [Audio Clip Manager](https://github.com/DaeHyeokk/Poker-Tower-Defense/blob/main/Assets/Scripts/Common%20Scripts/Managers/AudioClipManager.cs) 오브젝트를 통해 참조하도록 구현하였으며, Audio Clip 목록을 담을 자료 구조는 파일 이름으로 접근하기 위해 Dictionary를 선택했다.
    - 효과음을 출력할 때마다 string을 매개변수로 사용하기 때문에 Garbage 생성을 최소화 하기 위해 게임에 사용되는 모든 Audio Clip 파일 이름을 [Sound File Name Dictionary](https://github.com/DaeHyeokk/Poker-Tower-Defense/blob/main/Assets/Scripts/Common%20Scripts/SoundFileNameDictionary.cs)를 통해 참조할 수 있도록 구현하였다.
    - 동일한 효과음이 여러개 중첩되는 경우 소리가 깨져서 들리는 문제가 있기 때문에 동일한 효과음이 10개 이상 중첩 되면 가장 먼저 출력한 효과음을 중지하도록 구현하였다.
-      - <details>
-        <summary>코드 보기/숨기기</summary>
-   
-        https://github.com/DaeHyeokk/Poker-Tower-Defense/blob/e249f26c3936f414aa9541597de5ccd1be9e7ca3/Assets/Scripts/Common%20Scripts/DontDestroyObjects/SoundManager.cs#L195-L210
-        </details>
    - 효과음을 중간에 중지하기 위해 효과음 전용 Audio Source인 [SFX Audio Source](https://github.com/DaeHyeokk/Poker-Tower-Defense/blob/main/Assets/Scripts/Common%20Scripts/SFXAudioSource.cs)를 통해 출력하도록 구현하였고, 자주 생성되고 파괴되기 때문에 Object Pool을 통해 활성화 및 비활성화 되도록 구현하여 효율성을 높였다.
    
 ## 성과 및 느낀점
