@@ -259,11 +259,17 @@
    - 타워 수집 미션에서 사용되는 [Mission Tower](https://github.com/DaeHyeokk/Poker-Tower-Defense/blob/main/Assets/Scripts/Stage%20Scripts/Tower%20Scripts/MissionTower.cs) 오브젝트는 직렬화를 통해 타워의 종류, 레벨, 색상을 직접 설정 하거나 랜덤으로 설정 되도록 구현하였으며, 타워와 일치하는지 비교하는 역할을 수행한다.
 
 ### 4. 사운드 관련 로직
+   - [Sound Manager](https://github.com/DaeHyeokk/Poker-Tower-Defense/blob/main/Assets/Scripts/Common%20Scripts/DontDestroyObjects/SoundManager.cs) 오브젝트를 통해 모든 BGM과 SFX를 출력하거나 정지하고, 사운드 설정값을 변경 및 저장한다.
    - 플레이어의 사운드 설정값은 보안이나 유실에 대해 크게 중요하지 않기 때문에 PlayerPrefs를 통해 디바이스에 저장되도록 구현하였다.
    - 씬에서 사용되는 모든 사운드의 Audio Clip 객체는 [Audio Clip Manager](https://github.com/DaeHyeokk/Poker-Tower-Defense/blob/main/Assets/Scripts/Common%20Scripts/Managers/AudioClipManager.cs) 오브젝트를 통해 참조하도록 구현하였으며, Audio Clip 목록을 담을 자료 구조는 파일 이름으로 접근하기 위해 Dictionary를 선택했다.
    - 효과음을 출력할 때마다 string을 매개변수로 사용하기 때문에 Garbage 생성을 최소화 하기 위해 게임에 사용되는 모든 Audio Clip 파일 이름을 [Sound File Name Dictionary](https://github.com/DaeHyeokk/Poker-Tower-Defense/blob/main/Assets/Scripts/Common%20Scripts/SoundFileNameDictionary.cs)를 통해 참조할 수 있도록 구현하였다.
    - 동일한 효과음이 여러개 중첩되는 경우 소리가 깨져서 들리는 문제가 있기 때문에 동일한 효과음이 10개 이상 중첩 되면 가장 먼저 출력한 효과음을 중지하도록 구현하였다.
-   - 효과음을 중간에 중지하기 위해 효과음 전용 Audio Source인 [SFX Audio Source](https://github.com/DaeHyeokk/Poker-Tower-Defense/blob/main/Assets/Scripts/Common%20Scripts/SFXAudioSource.cs)를 통해 출력되도록 구현하였고, 자주 생성되고 파괴되기 때문에 Object Pool을 통해 활성화 및 비활성화 되도록 구현하여 효율성을 높였다.
+      - <details>
+        <summary>코드 보기/숨기기</summary>
+   
+        https://github.com/DaeHyeokk/Poker-Tower-Defense/blob/e249f26c3936f414aa9541597de5ccd1be9e7ca3/Assets/Scripts/Common%20Scripts/DontDestroyObjects/SoundManager.cs#L195-L210
+        </details>
+   - 효과음을 중간에 중지하기 위해 효과음 전용 Audio Source인 [SFX Audio Source](https://github.com/DaeHyeokk/Poker-Tower-Defense/blob/main/Assets/Scripts/Common%20Scripts/SFXAudioSource.cs)를 통해 출력하도록 구현하였고, 자주 생성되고 파괴되기 때문에 Object Pool을 통해 활성화 및 비활성화 되도록 구현하여 효율성을 높였다.
    
 ## 성과 및 느낀점
    - 클래스를 세분화 하여 구현 하는 경험을 통해 객체 지향 프로그래밍의 이해도가 향상되었다.
