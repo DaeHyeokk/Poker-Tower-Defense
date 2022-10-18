@@ -137,7 +137,7 @@
    - **타워 드래그 앤 드롭 기능**
       - [Object Detector](https://github.com/DaeHyeokk/Poker-Tower-Defense/blob/main/Assets/Scripts/Stage%20Scripts/Tower%20Scripts/Tower%20Function%20Scripts/ObjectDetector.cs)에서 플레이어의 타워 터치 입력을 감지하여 타워의 이동, 합치기, 색 변경, 판매, 상세 정보 보기 기능을 수행한다.
       - Scene에서 [PopupUI](https://github.com/DaeHyeokk/Poker-Tower-Defense/blob/main/Assets/Scripts/Stage%20Scripts/UI%20Scripts/PopupUI.cs) 컴포넌트를 가진 오브젝트가 활성화 되면 Object Detector의 popupUICount 변수가 1 증가하고, 비활성화 되면 다시 1 감소 시키는 방식으로 화면에 Popup UI가 활성화 되어 있는 경우(popupUiCount가 1 이상일 경우) 플레이어의 터치 입력을 받지 않도록 구현하였다.
-      - 플레이어가 타워를 터치하면 마우스 포인터를 따라다니는 FollowTower 오브젝트를 활성화 시켜 타워 드래그 기능을 구현하였다.
+      - 플레이어가 타워를 터치하면 마우스 포인터를 따라다니는 [Follow Tower](https://github.com/DaeHyeokk/Poker-Tower-Defense/blob/main/Assets/Scripts/Stage%20Scripts/Tower%20Scripts/FollowTower.cs) 오브젝트를 활성화 시켜 타워 드래그 기능을 구현하였다.
       - 플레이어가 손을 떼면 FollowTower 오브젝트를 비활성화 하고, 플레이어가 손을 뗀 좌표에서 Ray를 생성하여 타워 드롭 기능을 구현하였다.
       - **타워의 이동**
          - Ray가 Tile 오브젝트와 충돌했을 때 해당 Tile에 배치된 타워가 없다면 Tile의 좌표로 타워를 이동시킨다.
