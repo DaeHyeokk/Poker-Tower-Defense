@@ -267,7 +267,7 @@
    
    - 타워 수집 미션에서 사용되는 [Mission Tower](https://github.com/DaeHyeokk/Poker-Tower-Defense/blob/main/Assets/Scripts/Stage%20Scripts/Tower%20Scripts/MissionTower.cs) 오브젝트는 직렬화를 통해 타워의 종류, 레벨, 색상을 직접 설정 하거나 랜덤으로 설정 되도록 구현하였으며, 타워와 일치하는지 비교하는 역할을 수행한다.
    
-### 4. 사운드 관련 
+### 4. 사운드 관련 기능
    - [Sound Manager](https://github.com/DaeHyeokk/Poker-Tower-Defense/blob/main/Assets/Scripts/Common%20Scripts/DontDestroyObjects/SoundManager.cs) 오브젝트를 통해 모든 BGM과 SFX를 출력하거나 정지하고, 사운드 설정값을 변경 및 저장한다.
    
    - 플레이어의 사운드 설정값은 보안이나 유실에 대해 크게 중요하지 않기 때문에 PlayerPrefs를 통해 디바이스에 저장되도록 구현하였다.
