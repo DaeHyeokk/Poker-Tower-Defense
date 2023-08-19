@@ -191,7 +191,7 @@
 
    - **타워 성장 기능**
 
-     <img src="https://github.com/DaeHyeokk/Poker-Tower-Defense/assets/63538183/dc6635de-f8a8-4ae1-84e8-338ad6e4251c" width="35%" height="35%"/>
+     <img src="https://github.com/DaeHyeokk/Poker-Tower-Defense/assets/63538183/dc6635de-f8a8-4ae1-84e8-338ad6e4251c" width="30%" height="30%"/>
 
       - 타워는 멤버 함수 AccumulateKillCount()를 통해 몬스터를 처치할 때마다 킬 카운트를 획득한다.
       - 킬 카운트는 모든 타워가 공유하는 데이터이므로 전역 변수로 선언하였고, 게임을 패배하거나 클리어할 경우 타워가 기록한 킬 카운트를 [Game Manager](https://github.com/DaeHyeokk/Poker-Tower-Defense/blob/a2d22a6b713ac10c1a7ee226d654f2d42d5bfd26/Assets/Scripts/Common%20Scripts/DontDestroyObjects/GameManager.cs)의 Player Tower Data에 누적시키는 방식으로 구현하였다.  
@@ -315,7 +315,7 @@
    <details>
    <summary>펼치기/접기</summary>
 
-![mission](https://github.com/DaeHyeokk/Poker-Tower-Defense/assets/63538183/c77c03bf-00b5-4798-9c2d-4b06fa00c45d)
+<img src="https://github.com/DaeHyeokk/Poker-Tower-Defense/assets/63538183/c77c03bf-00b5-4798-9c2d-4b06fa00c45d" width="30%" height="30%"/>
 
    - [Mission 클래스 다이어그램](https://user-images.githubusercontent.com/63538183/195458433-dc3e0b61-2f3e-443d-b5f9-d44e977d54c9.png)
    
