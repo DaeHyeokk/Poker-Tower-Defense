@@ -47,9 +47,8 @@
         </details>
       
    - **카드 뽑기**
-     <p align="center">
-     <img src="https://github.com/DaeHyeokk/Poker-Tower-Defense/assets/63538183/be9855b7-0a57-45e1-be34-d2bfb919abb0">
-     </p>
+
+     ![card-draw](https://github.com/DaeHyeokk/Poker-Tower-Defense/assets/63538183/b5821a8f-42d0-4a37-bd5d-5b2732d46778)
 
       - 랜덤으로 카드를 뽑은 다음 카드의 인덱스에 해당하는 비트를 켰을 때 키기 전 마스킹 변수와 값을 비교하여 값이 같을 경우 이미 뽑힌 카드를 뽑은 것이므로 다시 뽑는 방식으로 카드를 중복해서 뽑지 않도록 구현하였다.
       - bool 타입의 매개변수인 isFirst를 통해 이미 뽑힌 카드를 뽑아서 다시 시도하는 경우가 아닌 처음으로 시도하는 경우에만 일정 확률로 조커 카드가 뽑히도록 구현하였다.
