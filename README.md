@@ -31,8 +31,8 @@
 
 ## 주요 기능
 ### 1. 포커 관련 기능
-   <details>
-   <summary>펼치기/접기</summary>
+<details>
+<summary>펼치기/접기</summary>
    
    - [Card Drawer](https://github.com/DaeHyeokk/Poker-Tower-Defense/blob/main/Assets/Scripts/Stage%20Scripts/Card%20Scripts/CardDrawer.cs) 에서 포커 관련 모든 기능을 수행한다.
    - 카드의 갯수가 총 **52장**이며 **중복이 없다**는 특성을 이용하여 **64비트 자료형**인 long 타입의 변수에 뽑은 카드 정보를 저장하는 **비트마스킹 기법**으로 구현하였다.
@@ -53,7 +53,7 @@
         <summary>코드 보기/숨기기</summary>
    
         https://github.com/DaeHyeokk/Poker-Tower-Defense/blob/11ecd87d756b2c837c9664faea20d6a0e1572099/Assets/Scripts/Stage%20Scripts/Card%20Scripts/CardDrawer.cs#L80-L113  
-   </details>
+</details>
    
    - **카드 랜덤 변경**
       - **카드 뽑기** 로직을 수행한 다음, 바꿀 카드의 인덱스에 해당하는 비트를 끄는 방식으로 구현하였다.  
