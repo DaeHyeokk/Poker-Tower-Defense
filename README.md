@@ -190,6 +190,9 @@
         </details>
 
    - **타워 성장 기능**
+
+     ![tower-info](https://github.com/DaeHyeokk/Poker-Tower-Defense/assets/63538183/dc6635de-f8a8-4ae1-84e8-338ad6e4251c)
+
       - 타워는 멤버 함수 AccumulateKillCount()를 통해 몬스터를 처치할 때마다 킬 카운트를 획득한다.
       - 킬 카운트는 모든 타워가 공유하는 데이터이므로 전역 변수로 선언하였고, 게임을 패배하거나 클리어할 경우 타워가 기록한 킬 카운트를 [Game Manager](https://github.com/DaeHyeokk/Poker-Tower-Defense/blob/a2d22a6b713ac10c1a7ee226d654f2d42d5bfd26/Assets/Scripts/Common%20Scripts/DontDestroyObjects/GameManager.cs)의 Player Tower Data에 누적시키는 방식으로 구현하였다.  
         전역 변수이므로 Scene을 새로 로드해도 데이터가 유지되기 때문에 Scene을 로드할 때마다 킬 카운트를 초기화 하도록 구현하였다.
