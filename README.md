@@ -314,7 +314,9 @@
 ### 3. 미션 관련 기능
    <details>
    <summary>펼치기/접기</summary>
-      
+
+![mission](https://github.com/DaeHyeokk/Poker-Tower-Defense/assets/63538183/c77c03bf-00b5-4798-9c2d-4b06fa00c45d)
+
    - [Mission 클래스 다이어그램](https://user-images.githubusercontent.com/63538183/195458433-dc3e0b61-2f3e-443d-b5f9-d44e977d54c9.png)
    
    - 추상 클래스 [Mission](https://github.com/DaeHyeokk/Poker-Tower-Defense/blob/main/Assets/Scripts/Stage%20Scripts/Mission%20Scripts/Mission.cs)을 정의하고, 반복 여부에 따라 이를 상속 받는 추상 클래스 [Non Repeat Mission](https://github.com/DaeHyeokk/Poker-Tower-Defense/blob/main/Assets/Scripts/Stage%20Scripts/Mission%20Scripts/NonRepeatMission.cs)과 [Repeat Mission](https://github.com/DaeHyeokk/Poker-Tower-Defense/blob/main/Assets/Scripts/Stage%20Scripts/Mission%20Scripts/RepeatMission.cs)을 정의하였다.
