@@ -110,7 +110,7 @@
       
    - **타워의 공격**
 
-     <img src="https://github.com/DaeHyeokk/Poker-Tower-Defense/assets/63538183/52951f6a-115d-4b31-995d-8009fcde54ce" width="300" height="300"/>
+     <img src="https://github.com/DaeHyeokk/Poker-Tower-Defense/assets/63538183/52951f6a-115d-4b31-995d-8009fcde54ce"/>
 
       - 타워의 공격은 사거리 내 적 탐색 -> 발사체 생성 -> 발사체 충돌 -> 충돌한 대상 또는 대상 주변에 피해를 입힘 순으로 이루어진다.
       - **사거리 내 적 탐색**
@@ -169,7 +169,7 @@
          - Ray가 Tile 오브젝트와 충돌했을 때 해당 Tile에 배치된 타워가 없다면 Tile의 좌표로 타워를 이동시킨다.
       - **타워 합치기**
     
-        <img src="https://github.com/DaeHyeokk/Poker-Tower-Defense/assets/63538183/55e09d6d-c895-41a1-b1d2-511ff2b8ea5a" width="300" height="300"/>
+        <img src="https://github.com/DaeHyeokk/Poker-Tower-Defense/assets/63538183/55e09d6d-c895-41a1-b1d2-511ff2b8ea5a"/>
 
          - Ray가 Tile 오브젝트와 충돌했을 때 해당 Tile에 배치된 타워가 있다면 배치된 타워와 합치기를 시도한다.
       - **색 변환, 판매, 상세 정보 보기**
