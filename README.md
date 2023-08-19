@@ -47,6 +47,7 @@
         </details>
       
    - **카드 뽑기**
+     
      <p align="center">
      <img src="![card-draw](https://github.com/DaeHyeokk/Poker-Tower-Defense/assets/63538183/be9855b7-0a57-45e1-be34-d2bfb919abb0)">
      </p>
