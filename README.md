@@ -236,7 +236,7 @@
       - 몬스터는 타워로부터 데미지를 받거나 스턴, 슬로우, 방어력 감소 디버프를 받는다.
       - **몬스터 피격**
     
-        ![monster-hit](https://github.com/DaeHyeokk/Poker-Tower-Defense/assets/63538183/7e14b4fc-8c76-41a0-b7f4-1194d9c42da0)
+        ![enemy-hit](https://github.com/DaeHyeokk/Poker-Tower-Defense/assets/63538183/7e14b4fc-8c76-41a0-b7f4-1194d9c42da0)
 
          - 몬스터가 데미지를 받게 되면 체력이 감소하고 [Stage UI Manager](https://github.com/DaeHyeokk/Poker-Tower-Defense/blob/a2d22a6b713ac10c1a7ee226d654f2d42d5bfd26/Assets/Scripts/Stage%20Scripts/Manager%20Scripts/StageUIManager.cs)의 ShowDamageTakenText() 함수를 호출하여 받은 데미지를 나타내는 [Damage Taken Text](https://github.com/DaeHyeokk/Poker-Tower-Defense/blob/main/Assets/Scripts/Stage%20Scripts/UI%20Scripts/Dynamic%20UI%20Scripts/DamageTakenText.cs)를 생성 한다.
          - Damage Taken Text는 매우 자주 생성되고 파괴되는 오브젝트이므로 Object Pool을 통해 활성화 및 비활성화 되도록 구현하여 효율성을 높였고, 커졌다 작아진 다음 빠르게 올라가며 사라지는 애니메이션을 추가하여 타격감과 생동감을 느낄 수 있도록 구현하였다.
@@ -251,6 +251,9 @@
            </details>
 
       - **몬스터 스턴**
+    
+        ![enemy-stun](https://github.com/DaeHyeokk/Poker-Tower-Defense/assets/63538183/c77d557f-96ef-4699-ac7b-b9286c69a98c)
+
          - Field Enemy가 스턴 공격을 받게 되면 공격 받은 스턴의 지속 시간 동안 이동을 멈추고 Stun 파티클을 활성화 한다.
          - 지속 시간이 감소하는 로직은 코루틴을 이용하였으며, 현재 남아있는 지속 시간보다 더 짧은 지속 시간의 스턴 공격을 받게 되는 상황과 같이 스턴 공격을 중첩해서 받는 경우에 대한 예외 처리 로직을 간단하게 구현하기 위해 Reference Counting 기법을 참고하여 스턴 공격을 받게 되면 stunCount를 증가 시키고, 지속 시간이 종료 되면 stunCount를 다시 감소시키는 방식으로 구현하였다.
          - stunCount 값이 1 이상이 되면 이동을 멈추고 stun 파티클을 활성화 하며, 0이 되면 이동을 재게하고 stun 파티클을 비활성화 하는 로직을 프로퍼티로 구현하였다.
