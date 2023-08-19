@@ -108,7 +108,10 @@
         https://github.com/DaeHyeokk/Poker-Tower-Defense/blob/32fb7abb2728e3909b6eb8ec99ef3c0dce747680/Assets/Scripts/Stage%20Scripts/Tower%20Scripts/Tower.cs#L232-L257  
         </details>  
       
-   - **타워의 공격**  
+   - **타워의 공격**
+
+     ![tower-attack](https://github.com/DaeHyeokk/Poker-Tower-Defense/assets/63538183/52951f6a-115d-4b31-995d-8009fcde54ce)
+
       - 타워의 공격은 사거리 내 적 탐색 -> 발사체 생성 -> 발사체 충돌 -> 충돌한 대상 또는 대상 주변에 피해를 입힘 순으로 이루어진다.
       - **사거리 내 적 탐색**
         - 타워가 타일에 배치 되면 Update() 함수를 통해 매 프레임마다 Target Detector의 SearchTarget() 함수를 호출하여 사거리 내의 적을 탐색하게 된다.
