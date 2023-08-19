@@ -163,6 +163,9 @@
       - 플레이어가 타워를 터치하면 마우스 포인터를 따라다니는 [Follow Tower](https://github.com/DaeHyeokk/Poker-Tower-Defense/blob/main/Assets/Scripts/Stage%20Scripts/Tower%20Scripts/FollowTower.cs) 오브젝트를 활성화 시켜 타워 드래그 기능을 구현하였다.
       - 플레이어가 손을 떼면 FollowTower 오브젝트를 비활성화 하고, 플레이어가 손을 뗀 좌표에서 Ray를 생성하여 타워 드롭 기능을 구현하였다.
       - **타워의 이동**
+    
+        ![tower-move](https://github.com/DaeHyeokk/Poker-Tower-Defense/assets/63538183/0f7d925a-1a07-41cd-84fe-509cc4d5df9f)
+
          - Ray가 Tile 오브젝트와 충돌했을 때 해당 Tile에 배치된 타워가 없다면 Tile의 좌표로 타워를 이동시킨다.
       - **타워 합치기**
     
