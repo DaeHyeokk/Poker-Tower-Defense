@@ -173,6 +173,9 @@
 
          - Ray가 Tile 오브젝트와 충돌했을 때 해당 Tile에 배치된 타워가 있다면 배치된 타워와 합치기를 시도한다.
       - **색 변환, 판매, 상세 정보 보기**
+    
+        ![tower-colorchange-sales-info](https://github.com/DaeHyeokk/Poker-Tower-Defense/assets/63538183/af10d860-fdc7-49e9-bd15-29fd95e163c2)
+
          - Ray가 Tile 오브젝트와 충돌하지 않았을 경우 GraphicRaycaster.Raycast() 함수를 호출하여 캔버스 영역에 존재하는 UI 오브젝트와 충돌하는 Ray를 생성하고, Ray가 충돌한 UI 오브젝트의 Tag를 검사하여 각각의 기능을 수행하게 된다.
          - 상세 정보 문자열은 길이가 길고 여러 문자열이 결합된 형태로 이루어져 있기 때문에 Garbage 생성을 최소화 하기 위해 StringBuilder를 사용하여 구현하였다.
          - 타워를 판매하여 얻은 보상은 [Reward Text](https://github.com/DaeHyeokk/Poker-Tower-Defense/blob/a2d22a6b713ac10c1a7ee226d654f2d42d5bfd26/Assets/Scripts/Stage%20Scripts/UI%20Scripts/Dynamic%20UI%20Scripts/RewardText.cs) 오브젝트를 통해 화면에 나타나게 되며, [Stage UI Manager](https://github.com/DaeHyeokk/Poker-Tower-Defense/blob/a2d22a6b713ac10c1a7ee226d654f2d42d5bfd26/Assets/Scripts/Stage%20Scripts/Manager%20Scripts/StageUIManager.cs) 오브젝트에서 오브젝트풀로 관리하여 코드의 중복을 줄이고 효율성을 높였다.
