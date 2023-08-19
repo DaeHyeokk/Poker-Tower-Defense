@@ -1,9 +1,0 @@
-lastUpgrade=01014
-proj.pluginVersion=0.10.14
-proj.AppId=184556893855
-and.BundleId=com.devdduck.pokertowerdefense
-proj.classDir=Assets
-proj.ConstantsClassName=GPGSIds
-and.ResourceData=%3c%3fxml+version%3d%221.0%22+encoding%3d%22utf-8%22%3f%3e%0d%0a%3c%21--Google+Play+game+services+IDs.+Save+this+file+as+res%2fvalues%2fgames-ids.xml+in+your+project.--%3e%0d%0a%3cresources%3e%0d%0a++%3c%21--app_id--%3e%0d%0a++%3cstring+name%3d%22app_id%22+translatable%3d%22false%22%3e184556893855%3c%2fstring%3e%0d%0a++%3c%21--package_name--%3e%0d%0a++%3cstring+name%3d%22package_name%22+translatable%3d%22false%22%3ecom.devdduck.pokertowerdefense%3c%2fstring%3e%0d%0a++%3c%21--leaderboard+Easy+Mode+Boss+Killed+Taken+Time--%3e%0d%0a++%3cstring+name%3d%22leaderboard_easy_mode_boss_killed_taken_time%22+translatable%3d%22false%22%3eCgkIn-3Kw68FEAIQAw%3c%2fstring%3e%0d%0a++%3c%21--leaderboard+Normal+Mode+Boss+Killed+Taken+Time--%3e%0d%0a++%3cstring+name%3d%22leaderboard_normal_mode_boss_killed_taken_time%22+translatable%3d%22false%22%3eCgkIn-3Kw68FEAIQBA%3c%2fstring%3e%0d%0a++%3c%21--leaderboard+Hard+Mode+Boss+Killed+Taken+Time--%3e%0d%0a++%3cstring+name%3d%22leaderboard_hard_mode_boss_killed_taken_time%22+translatable%3d%22false%22%3eCgkIn-3Kw68FEAIQBQ%3c%2fstring%3e%0d%0a++%3c%21--leaderboard+Hell+Mode+Boss+Killed+Taken+Time--%3e%0d%0a++%3cstring+name%3d%22leaderboard_hell_mode_boss_killed_taken_time%22+translatable%3d%22false%22%3eCgkIn-3Kw68FEAIQBg%3c%2fstring%3e%0d%0a%3c%2fresources%3e
-and.ClientId=184556893855-rkpq09gdh0i7hh4l4ds9jrm03ocuhk9c.apps.googleusercontent.com
-android.SetupDone=true
