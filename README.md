@@ -110,7 +110,7 @@
       
    - **타워의 공격**
 
-     ![tower-attack](https://github.com/DaeHyeokk/Poker-Tower-Defense/assets/63538183/52951f6a-115d-4b31-995d-8009fcde54ce)
+     <img src="https://github.com/DaeHyeokk/Poker-Tower-Defense/assets/63538183/52951f6a-115d-4b31-995d-8009fcde54ce" width="300" height="300"/>
 
       - 타워의 공격은 사거리 내 적 탐색 -> 발사체 생성 -> 발사체 충돌 -> 충돌한 대상 또는 대상 주변에 피해를 입힘 순으로 이루어진다.
       - **사거리 내 적 탐색**
@@ -173,8 +173,8 @@
 
          - Ray가 Tile 오브젝트와 충돌했을 때 해당 Tile에 배치된 타워가 있다면 배치된 타워와 합치기를 시도한다.
       - **색 변환, 판매, 상세 정보 보기**
-    
-        ![tower-colorchange-sales-info](https://github.com/DaeHyeokk/Poker-Tower-Defense/assets/63538183/af10d860-fdc7-49e9-bd15-29fd95e163c2)
+
+        <img src="https://github.com/DaeHyeokk/Poker-Tower-Defense/assets/63538183/af10d860-fdc7-49e9-bd15-29fd95e163c2" width="300" height="300"/>
 
          - Ray가 Tile 오브젝트와 충돌하지 않았을 경우 GraphicRaycaster.Raycast() 함수를 호출하여 캔버스 영역에 존재하는 UI 오브젝트와 충돌하는 Ray를 생성하고, Ray가 충돌한 UI 오브젝트의 Tag를 검사하여 각각의 기능을 수행하게 된다.
          - 상세 정보 문자열은 길이가 길고 여러 문자열이 결합된 형태로 이루어져 있기 때문에 Garbage 생성을 최소화 하기 위해 StringBuilder를 사용하여 구현하였다.
