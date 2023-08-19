@@ -294,6 +294,9 @@
            </details>
            
       - **몬스터 처치 보상 지급**
+    
+        ![boss-reward](https://github.com/DaeHyeokk/Poker-Tower-Defense/assets/63538183/bca341f1-491d-4d9d-b6c0-2456203c85f6)
+
          - Field Boss Enemy와 Special Boss Enemy를 처치할 경우 플레이어에게 골드와 카드 교환권을 지급하며 Special Boss Enemy의 경우 보스 레벨에 따라 랜덤 타워를 추가로 지급한다.
          - 보스 몬스터를 처치하여 얻은 보상은 [Reward Text](https://github.com/DaeHyeokk/Poker-Tower-Defense/blob/a2d22a6b713ac10c1a7ee226d654f2d42d5bfd26/Assets/Scripts/Stage%20Scripts/UI%20Scripts/Dynamic%20UI%20Scripts/RewardText.cs) 오브젝트를 통해 화면에 나타나게 되며, [Stage UI Manager](https://github.com/DaeHyeokk/Poker-Tower-Defense/blob/a2d22a6b713ac10c1a7ee226d654f2d42d5bfd26/Assets/Scripts/Stage%20Scripts/Manager%20Scripts/StageUIManager.cs) 오브젝트에서 오브젝트풀로 관리하여 코드의 중복을 줄이고 효율성을 높였다.
          - Special Boss Enemy를 처치하여 얻는 보상은 화면 정중앙에서 사운드와 함께 크게 나타나도록 구현하였고, 미션 클리어 시 얻는 보상과 같은 위치에서 동일한 애니메이션으로 나타나기 때문에 동시에 나타나는 것을 방지하기 위해 화면에 바로 나타내지 않고 Stage UI Manager에서 Queue 객체를 통해 한 번에 하나씩 차례대로 나타내도록 구현하였다.
