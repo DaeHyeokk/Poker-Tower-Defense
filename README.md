@@ -47,9 +47,8 @@
         </details>
       
    - **카드 뽑기**
-     
      <p align="center">
-     <img src="![card-draw](https://github.com/DaeHyeokk/Poker-Tower-Defense/assets/63538183/be9855b7-0a57-45e1-be34-d2bfb919abb0)">
+     <img src="https://github.com/DaeHyeokk/Poker-Tower-Defense/assets/63538183/be9855b7-0a57-45e1-be34-d2bfb919abb0">
      </p>
 
       - 랜덤으로 카드를 뽑은 다음 카드의 인덱스에 해당하는 비트를 켰을 때 키기 전 마스킹 변수와 값을 비교하여 값이 같을 경우 이미 뽑힌 카드를 뽑은 것이므로 다시 뽑는 방식으로 카드를 중복해서 뽑지 않도록 구현하였다.
