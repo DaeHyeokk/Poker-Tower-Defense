@@ -284,7 +284,7 @@
            
       - **몬스터 처치 보상 지급**
     
-        <img src="https://github.com/DaeHyeokk/Poker-Tower-Defense/assets/63538183/bca341f1-491d-4d9d-b6c0-2456203c85f6" width="50%" height="50%"/>
+        <img src="https://github.com/DaeHyeokk/Poker-Tower-Defense/assets/63538183/bca341f1-491d-4d9d-b6c0-2456203c85f6" width="30%" height="30%"/>
 
          - Field Boss Enemy와 Special Boss Enemy를 처치할 경우 플레이어에게 골드와 카드 교환권을 지급하며 Special Boss Enemy의 경우 보스 레벨에 따라 랜덤 타워를 추가로 지급한다.
          - 보스 몬스터를 처치하여 얻은 보상은 [Reward Text](https://github.com/DaeHyeokk/Poker-Tower-Defense/blob/a2d22a6b713ac10c1a7ee226d654f2d42d5bfd26/Assets/Scripts/Stage%20Scripts/UI%20Scripts/Dynamic%20UI%20Scripts/RewardText.cs) 오브젝트를 통해 화면에 나타나게 되며, [Stage UI Manager](https://github.com/DaeHyeokk/Poker-Tower-Defense/blob/a2d22a6b713ac10c1a7ee226d654f2d42d5bfd26/Assets/Scripts/Stage%20Scripts/Manager%20Scripts/StageUIManager.cs) 오브젝트에서 오브젝트풀로 관리하여 코드의 중복을 줄이고 효율성을 높였다.
